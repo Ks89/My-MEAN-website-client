@@ -1,0 +1,94 @@
+<navigation></navigation>
+
+<div class="container">
+  <page-header content="vm.pageHeader"></page-header>
+
+  <div class="row">
+    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7">
+      <!--<label for="filter">Filter results</label><br/>-->
+      <div style="margin-bottom: 25px" class="input-group">
+        <span class="input-group-addon"><i class="glyphicon glyphicon-filter"></i></span>
+        <input id="login-username" type="text" class="form-control" name="username" ng-model="search.name"  placeholder="Write a letter to filter">
+      </div>
+
+      <div class="error">{{ vm.message }}</div>
+      <div ng-repeat="project in vm.data.projects | filter:search:strict" ng-switch on="project.visible">
+        <span ng-switch-when="true">
+          <div class="media well">
+            <div class="media-left media-middle">
+              <a ng-href="/#/projects/{{ project._id }}">
+                <img class="media-object" src={{project.iconPath}} alt="iconPath">
+              </a>
+            </div>
+            <div class="media-body">
+              <div class="row">
+                <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                  <h4 class="media-heading"><a ng-href="/#/projects/{{ project._id }}">{{ project.name }}</a></h4>
+                  <p class="name">{{ project.shortDescription }}</p>
+                  <p>
+                    <span class="label label-warning label-facility" ng-repeat="tag in project.tags">
+                      {{ tag }}
+                    </span>
+                  </p>
+                </div>
+                <div class="col-sm-2 col-md-2 col-lg-2">
+                  <a href="{{project.url}}"> <span class="fa fa-github fa-4x" style="color:ligthblue"></span></a>
+                </div> 
+              </div>
+            </div>
+          </div>
+        </span>
+      </div>
+    </div>
+    
+    <!-- Emtpty div to create horizontal space -->
+    <div class="col-md-1 col-lg-1"></div>
+
+    <!-- Sidebar, taken from http://bootsnipp.com/snippets/featured/timeline-responsive -->
+    <div class="col-md-3 col-lg-4">
+      <div class="page-header">
+          <h3 id="timeline">{{vm.sidebarTitle}}</h3>
+      </div>
+      <ul class="timeline" ng-repeat="time in vm.sidebar.timeline">
+        <li class="{{$index%2==0 ? '' : 'timeline-inverted'}}">
+          <div class="timeline-badge {{time.color}}"><i class="glyphicon glyphicon-{{time.icon}}"></i></div>
+          <div class="timeline-panel">
+            <div class="timeline-heading">
+              <h4 class="timeline-title">{{time.title}}</h4>
+            </div>
+            <hr>
+            <div class="timeline-body">
+              <p>{{time.body}}</p>
+            </div>
+          </div>
+        </li>
+        <!-- <li>
+          <div class="timeline-badge info"><i class="glyphicon glyphicon-floppy-disk"></i></div>
+          <div class="timeline-panel">
+            <div class="timeline-heading">
+              <h4 class="timeline-title">Be curious</h4>
+              <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> 11 hours ago via Twitter</small></p>
+            </div>
+            <div class="timeline-body">
+              <p>Send me an email for more information</p>
+              <hr>
+              <div class="btn-group">
+                <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
+                  <i class="glyphicon glyphicon-cog"></i> <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="#">Action</a></li>
+                  <li><a href="#">Another action</a></li>
+                  <li class="divider"></li>
+                  <li><a href="#">Separated link</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </li> -->
+      </ul>
+    </div>
+  </div>
+
+  <footer-generic></footer-generic>
+</div>

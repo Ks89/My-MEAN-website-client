@@ -1,0 +1,95 @@
+<navigation></navigation>
+
+<div class="container">
+	<page-header content="vm.pageHeader"></page-header>
+
+	<div class="row">
+
+		<div class="col-sm-6">
+			<!-- check if the user has this token (is the user authenticated with this social account) -->
+			<div class="well" ng-switch on="vm.usertoken"> 
+				<h3 class="text-primary"><span class="fa fa-facebook"></span> Facebook</h3>
+
+				<div ng-switch-when="true">
+					<p>
+						<strong>id</strong>: {{user.facebook.id }}<br>
+						<strong>token</strong>: {{ user.facebook.token }}<br>
+						<strong>email</strong>: {{ user.facebook.email }}<br>
+						<strong>name</strong>: {{ user.facebook.name }}<br>
+					</p>
+
+					<a class="btn btn-primary" ng-click="vm.unlink('facebook')">Unlink Facebook</a>&nbsp;&nbsp;  
+				</div>
+				<div ng-switch-when="false">
+					<a class="btn btn-primary" ng-click="vm.connect('facebook')">Connect Facebook</a>&nbsp;&nbsp;  
+				</div>
+			</div>
+		</div>
+
+		<div class="col-sm-6">
+			<!-- check if the user has this token (is the user authenticated with this social account) -->
+			<div class="well" ng-switch on="vm.usertoken"> 
+				<h3 class="text-primary"><span class="fa fa-github"></span> Github</h3>
+
+				<div ng-switch-when="true">
+					<p>
+						<strong>id</strong>: {{user.github.id }}<br>
+						<strong>token</strong>: {{ user.github.token }}<br>
+						<strong>email</strong>: {{ user.github.email }}<br>
+						<strong>name</strong>: {{ user.github.name }}<br>
+					</p>
+
+					<a class="btn btn-primary" ng-click="vm.unlink('github')">Unlink github</a>&nbsp;&nbsp;  
+				</div>
+				<div ng-switch-when="false">
+					<a class="btn btn-primary" ng-click="vm.connect('github')">Connect github</a>&nbsp;&nbsp;  
+				</div>
+			</div>
+		</div>
+
+		<div class="col-sm-6">
+			<!-- check if the user has this token (is the user authenticated with this social account) -->
+			<div class="well" ng-switch on="vm.usertoken"> 
+				<h3 class="text-primary"><span class="fa fa-google"></span> Google</h3>
+
+				<div ng-switch-when="true">
+					<p>
+						<strong>id</strong>: {{user.google.id }}<br>
+						<strong>token</strong>: {{ user.google.token }}<br>
+						<strong>email</strong>: {{ user.google.email }}<br>
+						<strong>name</strong>: {{ user.google.name }}<br>
+					</p>
+
+					<a class="btn btn-primary" ng-click="vm.unlink('google')">Unlink google</a>&nbsp;&nbsp;  
+				</div>
+				<div ng-switch-when="false">
+					<a class="btn btn-primary" ng-click="vm.connect('google')">Connect google</a>&nbsp;&nbsp;  
+				</div>
+			</div>
+		</div>
+
+		<div class="col-sm-6">
+			<!-- check if the user has this token (is the user authenticated with this social account) -->
+			<div class="well" ng-switch on="vm.usertoken"> 
+				<h3 class="text-primary"><span class="fa fa-twitter"></span> Twitter</h3>
+
+				<div ng-switch-when="true">
+					<p>
+						<strong>id</strong>: {{user.twitter.id }}<br>
+						<strong>token</strong>: {{ user.twitter.token }}<br>
+						<strong>email</strong>: {{ user.twitter.email }}<br>
+						<strong>name</strong>: {{ user.twitter.name }}<br>
+					</p>
+
+					<a class="btn btn-primary" ng-click="vm.unlink('twitter')">Unlink twitter</a>&nbsp;&nbsp;  
+				</div>
+				<div ng-switch-when="false">
+					<a class="btn btn-primary" ng-click="vm.connect('twitter')">Connect twitter</a>&nbsp;&nbsp;  
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<footer-generic></footer-generic>
+</div>
