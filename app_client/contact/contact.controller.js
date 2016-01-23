@@ -4,8 +4,8 @@
 	.module('mySiteApp')
 	.controller('contactCtrl', contactCtrl);
 
-	contactCtrl.$inject = ['$scope', 'contactData', 'vcRecaptchaService'];
-	function contactCtrl ($scope, contactData, vcRecaptchaService) {
+	contactCtrl.$inject = ['$scope', 'contactData', '$window'];
+	function contactCtrl ($scope, contactData, $window) {
 		var vm = this;
 		vm.pageHeader = {
 			title: 'Contact',
@@ -16,39 +16,30 @@
 		vm.publicKey = "6Lf0jxQTAAAAAIDxhvAqGseKy_KV2_4iViVeQWYi"; //not secret, no problem ;)
 
 		vm.onSubmit = function () {
-			vm.formResultMessage = "";
-			
-			console.log("recaptcha: " + vcRecaptchaService.getResponse());
+			console.log(vm.formData);
 
-			if(vcRecaptchaService.getResponse() === ""){ 
-                alert("Please resolve the captcha and submit!")
-            } else {
-				if (!vm.formData.email || !vm.formData.object || !vm.formData.messageText) {
-					vm.formResultMessage = "All fields required, please try again";
-					vm.error = "warning";
-					return true;
-				} else {
-					vm.sendEmail(vm.formData, vcRecaptchaService.getResponse());
-				}
-			}
-		};
+	        var response = $window.grecaptcha.getResponse("");
 
-		vm.sendEmail = function (formData, vcRecaptchaResp) {
-			contactData.sendEmail({
-				email: formData.email,
-				object : formData.object,
-				messageText : formData.messageText,
-				vcRecaptchaResp: vcRecaptchaResp
-			})
-			.success(function (data) {
-				vm.formResultMessage = "Success! Email sent, thank you.";
-				vm.error = "success";
-			})
-			.error(function (data) {
-				vm.formResultMessage = "Your email has not been sent!";
-				vm.error = "danger";
-			});
-		};
-		return
+	        console.log('Response is: ' + response);
+
+	        // Build the post data with the emailFormData and the response string
+	        var data = {
+	            response: response,
+	            emailFormData: vm.formData
+	        };
+
+	        //send the form with the captcha
+	        //if the result is "succes" display a message
+	        //otherwise print an error
+	        contactData.sendTheFormWithCaptcha(data)
+	            .success(function (result) {
+	                vm.formResultMessage = "Success! Captcha is valid, thank you.";
+	                vm.error = "success";
+	            })
+	            .error(function (result) {
+	                vm.formResultMessage = "Invalid Captcha!";
+	                vm.error = "danger";
+	            });
+		}
 	}
 })();

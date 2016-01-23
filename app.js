@@ -1,4 +1,5 @@
-require('dotenv').load(); //to read info from .env file
+require('dotenv').config(); //to read info from .env file
+//attention: i'm using "dotenv" 2.0 and for this reason I must call "config()".
 
 var express = require('express');
 var path = require('path');
@@ -11,6 +12,7 @@ var bodyParser = require('body-parser');
 var uglifyJs = require("uglify-js");
 var fs = require('fs');
 var passport = require('passport');
+var methodOverride = require('method-override')
 
 //require for mongo
 require('./app_api/models/db');
@@ -20,6 +22,9 @@ require('./app_api/config/passport');
 var routesApi = require('./app_api/routes/index');
 
 var app = express();
+
+// override with the X-HTTP-Method-Override header in the request
+app.use(methodOverride('X-HTTP-Method-Override'))
 
 //use uglify
 var appClientFiles = [

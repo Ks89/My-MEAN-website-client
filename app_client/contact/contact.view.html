@@ -32,8 +32,9 @@
               </div>
               <button type="submit" class="btn btn-default">Submit</button>
               
-              <div vc-recaptcha key="vm.publicKey"></div>
-              <!--<div class="g-recaptcha" data-sitekey="{{vm.publicKey}}"></div>-->
+              <!-- The recaptcha. 
+              Remember to include into index.html the api js file from google server!!!-->
+              <div class="g-recaptcha pull-right" data-sitekey="{{vm.publicKey}}"></div>
             </form>
           </div>
           <div class="col-md-1"></div>

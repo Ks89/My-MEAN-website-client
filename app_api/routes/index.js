@@ -23,7 +23,7 @@ router.get('/projects/:projectid', ctrlProjects.projectsReadOne);
 router.put('/projects/:projectid', ctrlProjects.projectsUpdateOne);
 router.delete('/projects/:projectid', ctrlProjects.projectsDeleteOne);
 
-router.post('/email', ctrlContact.sendEmail);
+router.post('/email', ctrlContact.sendEmailWithRecaptcha);
 
 
 //------------------------------authenticate (first login)---------------------------------
