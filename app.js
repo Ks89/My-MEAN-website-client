@@ -12,7 +12,6 @@ var bodyParser = require('body-parser');
 var uglifyJs = require("uglify-js");
 var fs = require('fs');
 var passport = require('passport');
-var methodOverride = require('method-override')
 
 //require for mongo
 require('./app_api/models/db');
@@ -22,9 +21,6 @@ require('./app_api/config/passport');
 var routesApi = require('./app_api/routes/index');
 
 var app = express();
-
-// override with the X-HTTP-Method-Override header in the request
-app.use(methodOverride('X-HTTP-Method-Override'))
 
 //use uglify
 var appClientFiles = [
