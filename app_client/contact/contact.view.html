@@ -4,16 +4,14 @@
   <page-header content="vm.pageHeader"></page-header>
 
   <div class="row">
-    <div class="col-md-1"></div>
-    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+    <div class="col-sm-7 col-sm-offset-1">
      <div class="panel panel-primary">
       <div class="panel-heading">
         <h2 class="panel-title">Send me an email</h2>
       </div>
       <div class="panel-body">
         <div class="row">
-          <div class="col-md-1"></div>
-          <div class="col-md-10">
+          <div class="col-sm-8 col-sm-offset-2">
             <div role="alert" class="alert alert-{{vm.error}}">
               {{ vm.formResultMessage }}
             </div>
@@ -37,11 +35,9 @@
               <div class="g-recaptcha pull-right" data-sitekey="{{vm.publicKey}}"></div>
             </form>
           </div>
-          <div class="col-md-1"></div>
         </div>
       </div>
     </div>
-    <div class="col-md-5"></div>
   </div>
 
   <footer-generic></footer-generic>
