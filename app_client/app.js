@@ -46,7 +46,10 @@
           		controller: 'loginCtrl',
           		controllerAs: 'vm'
 			})
-			.when('/profile', {
+			//attention: '?' means "optional parameter". 
+			//You can call /profile and also /profile/uhfffg
+			//using the same route
+			.when('/profile/:token?', { 
           		templateUrl: '/profile/profile.view.html',
           		controller: 'profileCtrl',
           		controllerAs: 'vm'

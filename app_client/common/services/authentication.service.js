@@ -53,50 +53,50 @@
       $window.localStorage.removeItem('mywebsite-token');
     };
 
-    thirdPartyLogin = function(serviceName) {
-      console.log("thirdPartyLogin called with serviceName: " + serviceName);
-      return $http({
-        method: 'GET',
-        url: '/api/auth/' + serviceName,
-      }).then(function successCallback(response) {
-        console.log("http success response: ");
-        console.log(response);
-        //saveToken(data.token);
-      }, function errorCallback(response) {
-        console.log("http error response: ");
-        console.log(response);
-      });
-    };
+    // thirdPartyLogin = function(serviceName) {
+    //   console.log("thirdPartyLogin called with serviceName: " + serviceName);
+    //   return $http({
+    //     method: 'GET',
+    //     url: '/api/authentication/' + serviceName,
+    //   }).then(function successCallback(response) {
+    //     console.log("http success response: ");
+    //     console.log(response);
+    //     //saveToken(data.token);
+    //   }, function errorCallback(response) {
+    //     console.log("http error response: ");
+    //     console.log(response);
+    //   });
+    // };
 
-    connect = function(serviceName) {
-      console.log("connect called with serviceName: " + serviceName);
-      return $http({
-        method: 'GET',
-        url: '/api/connect/' + serviceName
-      }).then(function successCallback(response) {
-        console.log("connect success response: ");
-        console.log(response);
-        //saveToken(data.token);
-      }, function errorCallback(response) {
-        console.log("connect error response: ");
-        console.log(response);
-      });
-    };
+    // connect = function(serviceName) {
+    //   console.log("connect called with serviceName: " + serviceName);
+    //   return $http({
+    //     method: 'GET',
+    //     url: '/api/connect/' + serviceName
+    //   }).then(function successCallback(response) {
+    //     console.log("connect success response: ");
+    //     console.log(response);
+    //     //saveToken(data.token);
+    //   }, function errorCallback(response) {
+    //     console.log("connect error response: ");
+    //     console.log(response);
+    //   });
+    // };
 
-    unlink = function(serviceName) {
-      console.log("unlink called with serviceName: " + serviceName);
-      return $http({
-        method: 'GET',
-        url: '/api/unlink/' + serviceName
-      }).then(function successCallback(response) {
-        console.log("unlink success response: ");
-        console.log(response);
-        //saveToken(data.token);
-      }, function errorCallback(response) {
-        console.log("unlink error response: ");
-        console.log(response);
-      });
-    };
+    // unlink = function(serviceName) {
+    //   console.log("unlink called with serviceName: " + serviceName);
+    //   return $http({
+    //     method: 'GET',
+    //     url: '/api/unlink/' + serviceName
+    //   }).then(function successCallback(response) {
+    //     console.log("unlink success response: ");
+    //     console.log(response);
+    //     //saveToken(data.token);
+    //   }, function errorCallback(response) {
+    //     console.log("unlink error response: ");
+    //     console.log(response);
+    //   });
+    // };
 
     return {
       currentUser : currentUser,
@@ -106,9 +106,9 @@
       register : register,
       login : login,
       logout : logout,
-      thirdPartyLogin : thirdPartyLogin,
-      connect : connect,
-      unlink : unlink
+      // thirdPartyLogin : thirdPartyLogin,
+      // connect : connect,
+      // unlink : unlink
     };
   }
 })();

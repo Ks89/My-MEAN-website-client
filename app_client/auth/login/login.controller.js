@@ -47,16 +47,16 @@
         });
     };
 
-    vm.on3dPartyLogin = function (serviceName) {
-      console.log("on3dPartyLogin called");
-      authentication.thirdPartyLogin(serviceName)
-      .then(function(){
-          console.log("then " + serviceName);
-          $location.search('page', null); 
-          $location.path(vm.returnPage);
-      });
-      console.log("on3dPartyLogin completed");
-    };
+    // vm.on3dPartyLogin = function (serviceName) {
+    //   console.log("on3dPartyLogin called");
+    //   authentication.thirdPartyLogin(serviceName)
+    //   .then(function(){
+    //       console.log("then " + serviceName);
+    //       $location.search('page', null); 
+    //       $location.path(vm.returnPage);
+    //   });
+    //   console.log("on3dPartyLogin completed");
+    // };
   }
 
 })();

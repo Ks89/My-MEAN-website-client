@@ -6,6 +6,7 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
+var session = require('express-session');
 var bodyParser = require('body-parser');
 
 //uglify
@@ -36,6 +37,7 @@ var appClientFiles = [
 'app_client/auth/register/register.controller.js',
 'app_client/common/factories/underscore.factory.js',
 'app_client/common/services/authentication.service.js',
+'app_client/common/services/profile.service.js',
 'app_client/common/services/contactData.service.js',
 'app_client/common/services/projectsData.service.js',
 'app_client/common/filters/addHtmlLineBreaks.filter.js',
@@ -63,6 +65,17 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'app_client')));
+
+// Express Session
+app.use(session({
+    secret: 'asfasfa3asfa',
+    // resave: true,
+    // saveUninitialized: true,
+    cookie: {
+        secure: false,
+        maxAge: 2160000000
+    }
+}));
 
 app.use(passport.initialize());
 app.use(passport.session());

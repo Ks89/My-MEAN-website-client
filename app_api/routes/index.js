@@ -7,6 +7,7 @@ var auth = jwt({
   userProperty: 'payload'
 });
 
+
 var ctrlAuthLocal = require('../controllers/auth-local');
 var ctrlAuth3dParty = require('../controllers/auth-3dparty');
 var ctrlProjects = require('../controllers/projects');
@@ -26,13 +27,41 @@ router.delete('/projects/:projectid', ctrlProjects.projectsDeleteOne);
 router.post('/email', ctrlContact.sendEmailWithRecaptcha);
 
 
+// var request = require('request');
+//router.get('/authentication/github', function(req, res) {
+//	 console.log("authentication " +req);
+	//complete the request with my secret key
+	//as described in google documentation.
+	// var data = {
+	// 	secret: process.env.RECAPTCHA_SECRET,
+	// 	response: req.body.response
+	// 	//here I can add also the IP, but it's not mandatory
+	// }
+//	request('http://localhost:3000/api/auth/github', function (error, response, body) {
+	  //if (!error && response.statusCode == 200) {
+	    //console.log(body) // Print the google web page.
+	    //res.status(200).send(response);
+	  //   console.log("api called");
+	  //   	if (!error && response.statusCode == 200) {
+	  //   		console.log("api called in the if");
+			// }
+	  //}
+//	});
+	//res.redirect('/auth/github');
+//	});
+
+
 //------------------------------authenticate (first login)---------------------------------
 // local authentication
 router.post('/register', ctrlAuthLocal.register);
 router.post('/login', ctrlAuthLocal.login);
 
+
+//third party get user from db
+router.get('/users/:token', ctrlAuth3dParty.usersReadOneByToken)
+
 // third party anthentication
-router.get('/auth/github',ctrlAuth3dParty.authGithub);
+router.get('/auth/github', ctrlAuth3dParty.authGithub);
 router.get('/auth/github/callback', ctrlAuth3dParty.authGithubCallback, ctrlAuth3dParty.callbackRedirectGithub);
 
 router.get('/auth/google', ctrlAuth3dParty.authGoogle);

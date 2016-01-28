@@ -1,5 +1,9 @@
 var passport = require('passport');
 
+var mongoose = require('mongoose');
+var User = mongoose.model('User');
+
+
 //------------- INFORMATIONS -------------
 // GET /auth/****
 //   Use passport.authenticate() as route middleware to authenticate the
@@ -16,8 +20,37 @@ var passport = require('passport');
 var redirectFailure = { failureRedirect: '/login' };
 
 var connectRedirect = {
-    successRedirect : '/profile',
-    failureRedirect : '/'
+	successRedirect : '/profile',
+	failureRedirect : '/'
+};
+
+var sendJSONresponse = function(res, status, content) {
+  res.status(status);
+  res.contentType('application/json');
+  res.json(content);
+};
+
+/* GET a user by token */
+/* /api/users/:token */
+module.exports.usersReadOneByToken = function(req, res) {
+	console.log('Finding a User', req.params);
+	if (req.params && req.params.token) {
+		User.findOne({ 'github.token' : req.params.token }, function(err, user) {
+			console.log("User.findOne...");
+			if (err) { 
+				return done(err); 
+			}
+
+	        if (user) { // if the user is found, then log them in
+	        	console.log("User found: " + user);
+		        sendJSONresponse(res, 200, user);
+	        } else { //otherwise, if there is no user found with that github id, create them
+	          	sendJSONresponse(res, 404, "");
+	        }
+	    });
+	} else {
+		sendJSONresponse(res, 404, "");
+	}
 };
 
 module.exports.authFacebook = passport.authenticate('facebook', { scope: ['email'] });
@@ -47,25 +80,25 @@ module.exports.callbackRedirectFacebook = function(req, res) {
 	console.log("callbackRedirectFacebook called");
 	console.log(req.user.facebook); //the entire object
 	//only the object putted with passport.serializeUser(function(user, done) {
-	console.log(req.session); 
-	res.redirect('/profile'); 
-};
-module.exports.callbackRedirectGoogle = function(req, res) { 
-	console.log("callbackRedirectGoogle called");
-	console.log(req.user.google);
-	console.log(req.session);
-	res.redirect('/profile'); 
-};
-module.exports.callbackRedirectGithub = function(req, res) { 
-	console.log("callbackRedirectGithub called");
-	console.log(req.user.github);
-	console.log(req.session);
-	res.redirect('/profile'); 
-};
-module.exports.callbackRedirectTwitter = function(req, res) { 
-	console.log("callbackRedirectTwitter called");
-	console.log(req.user.twitter);
-	console.log(req.session);
-	res.redirect('/profile'); 
-};
+		console.log(req.session); 
+		res.redirect('/profile/'+req.user.facebook.token);
+	};
+	module.exports.callbackRedirectGoogle = function(req, res) { 
+		console.log("callbackRedirectGoogle called");
+		console.log(req.user.google);
+		console.log(req.session);
+		res.redirect('/profile/'+req.user.google.token);
+	};
+	module.exports.callbackRedirectGithub = function(req, res) { 
+		console.log("callbackRedirectGithub called");
+		console.log(req.user.github);
+		console.log(req.session);
+		res.redirect('/profile/'+req.user.github.token);
+	};
+	module.exports.callbackRedirectTwitter = function(req, res) { 
+		console.log("callbackRedirectTwitter called");
+		console.log(req.user.twitter);
+		console.log(req.session);
+		res.redirect('/profile/'+req.user.twitter.token);
+	};
 

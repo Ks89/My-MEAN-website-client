@@ -10,17 +10,18 @@ var mongoose = require('mongoose');
 var User = mongoose.model('User');
 
 passport.serializeUser(function(user, done) {
-  //TODO i can change this specifying the desired data, 
-  //like id, email an so on... 
-  //Id is mandatory, because required to deserialize a user 
-  //with User.findById -> id is the primary key ;)
+  console.log("Serializing user " + user);
   done(null, user.id);
 });
 
 passport.deserializeUser(function(id, done) {
   User.findById(id, function(err, user) {
+    console.log("Deserializing user " + user);
     done(err, user);
   });
+
+  // var user = JSON.stringify(obj);
+  // done(null, user);
 });
 
 passport.use(new LocalStrategy({
