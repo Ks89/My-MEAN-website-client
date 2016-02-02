@@ -68,13 +68,14 @@ app.use(express.static(path.join(__dirname, 'app_client')));
 
 // Express Session
 app.use(session({
-    secret: 'asfasfa3asfa',
-    // resave: true,
+    secret: 'mysecret',
+    // resave: false,
     // saveUninitialized: true,
-    cookie: {
-        secure: false,
-        maxAge: 2160000000
-    }
+    // cookie: {
+    //   httpOnly: false,
+    //     secure: false, //to use true, you must use https. If you'll use true with http it won't work.
+    //     //maxAge: 2160000000
+    // }
 }));
 
 app.use(passport.initialize());

@@ -56,7 +56,6 @@ router.post('/email', ctrlContact.sendEmailWithRecaptcha);
 router.post('/register', ctrlAuthLocal.register);
 router.post('/login', ctrlAuthLocal.login);
 
-
 //third party get user from db
 router.get('/users/:token', ctrlAuth3dParty.usersReadOneByToken)
 

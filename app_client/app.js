@@ -1,5 +1,5 @@
 (function () {
-	angular.module('mySiteApp', ['ngRoute', 'ngSanitize', 'ui.bootstrap', 'vcRecaptcha', 'jkuri.gallery']);
+	angular.module('mySiteApp', ['ngRoute', 'ngSanitize', 'ui.bootstrap', 'vcRecaptcha', 'jkuri.gallery', 'ngCookies']);
 
 	function config ($routeProvider, $locationProvider) {
 		$routeProvider

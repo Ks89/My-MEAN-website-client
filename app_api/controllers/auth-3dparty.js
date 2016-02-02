@@ -3,7 +3,6 @@ var passport = require('passport');
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 
-
 //------------- INFORMATIONS -------------
 // GET /auth/****
 //   Use passport.authenticate() as route middleware to authenticate the
@@ -80,25 +79,30 @@ module.exports.callbackRedirectFacebook = function(req, res) {
 	console.log("callbackRedirectFacebook called");
 	console.log(req.user.facebook); //the entire object
 	//only the object putted with passport.serializeUser(function(user, done) {
-		console.log(req.session); 
-		res.redirect('/profile/'+req.user.facebook.token);
-	};
-	module.exports.callbackRedirectGoogle = function(req, res) { 
-		console.log("callbackRedirectGoogle called");
-		console.log(req.user.google);
-		console.log(req.session);
-		res.redirect('/profile/'+req.user.google.token);
-	};
-	module.exports.callbackRedirectGithub = function(req, res) { 
-		console.log("callbackRedirectGithub called");
-		console.log(req.user.github);
-		console.log(req.session);
-		res.redirect('/profile/'+req.user.github.token);
-	};
-	module.exports.callbackRedirectTwitter = function(req, res) { 
-		console.log("callbackRedirectTwitter called");
-		console.log(req.user.twitter);
-		console.log(req.session);
-		res.redirect('/profile/'+req.user.twitter.token);
-	};
+	console.log('Session ->'); 
+	console.log(req.session);
+	res.cookie("usertoken", req.user.facebook.token+''/*, { maxAge: 900000, httpOnly: true }*/);
+	res.redirect('/profile');
+};
+module.exports.callbackRedirectGoogle = function(req, res) { 
+	console.log("callbackRedirectGoogle called");
+	console.log('Session ->'); 
+	console.log(req.session);
+	res.cookie("usertoken", req.user.google.token+''/*, { maxAge: 900000, httpOnly: true }*/);
+	res.redirect('/profile');
+};
+module.exports.callbackRedirectGithub = function(req, res) { 
+	console.log("callbackRedirectGithub called");
+	console.log('Session ->'); 
+	console.log(req.session);
+	res.cookie('usertoken', req.user.github.token+''/*, { maxAge: 900000, httpOnly: true }*/);
+	res.redirect('/profile');
+};
+module.exports.callbackRedirectTwitter = function(req, res) { 
+	console.log("callbackRedirectTwitter called");
+	console.log('Session ->'); 
+	console.log(req.session);
+	res.cookie("usertoken", req.user.twitter.token+''/*, { maxAge: 900000, httpOnly: true }*/);
+	res.redirect('/profile');
+};
 

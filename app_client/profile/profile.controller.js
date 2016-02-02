@@ -4,8 +4,8 @@
   .controller('profileCtrl', profileCtrl);
 
 
-  profileCtrl.$inject = ['$routeParams','authentication','profile'];
-  function profileCtrl($routeParams, authentication, profile) {
+  profileCtrl.$inject = ['$routeParams','authentication','profile', '$cookies'];
+  function profileCtrl($routeParams, authentication, profile, $cookies) {
     var vm = this;
     vm.pageHeader = {
       title: 'Profile',
@@ -41,14 +41,30 @@
       token : ''
     };
 
-    vm.token = $routeParams.token;
+    // vm.token = $routeParams.token;
 
-    console.log('token is: ' + vm.token);
+    var cookie = $cookies.get('connect.sid');
+    var cookie2 = $cookies.get('usertoken');
 
-    if(vm.token) {
-      profile.saveToken(vm.token);
 
-      profile.getUserByToken(vm.token)
+    console.log("COOKIES:-> ");
+    console.log(cookie);
+
+    console.log(cookie2);
+
+
+    // var jcookie = angular.fromJson(cookie);
+
+    // console.log(jcookie);
+
+    // console.log(jcookie);
+
+    console.log('token is: ' + cookie2);
+
+    if(cookie2) {
+      profile.saveToken(cookie2);
+
+      profile.getUserByToken(cookie2)
       .success(function(data) {
         console.log(data);
         if(data.github) {
