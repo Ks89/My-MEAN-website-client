@@ -14,8 +14,8 @@
       return $window.localStorage['mywebsite-token-profile'];
     };
 
-    var getUserByToken = function (token) {
-      return $http.get('/api/users/' + token);
+    var getUserByToken = function (service, token) {
+      return $http.get('/api/users/' + service + '/' + token);
     };
 
     var isLoggedIn = function() {

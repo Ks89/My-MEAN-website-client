@@ -33,8 +33,12 @@ var sendJSONresponse = function(res, status, content) {
 /* /api/users/:token */
 module.exports.usersReadOneByToken = function(req, res) {
 	console.log('Finding a User', req.params);
-	if (req.params && req.params.token) {
-		User.findOne({ 'github.token' : req.params.token }, function(err, user) {
+	if (req.params && req.params.service && req.params.token) {
+
+		var query = {};
+		query[req.params.service+'.token'] = req.params.token;
+
+		User.findOne(query, function(err, user) {
 			console.log("User.findOne...");
 			if (err) { 
 				return done(err); 
@@ -81,28 +85,41 @@ module.exports.callbackRedirectFacebook = function(req, res) {
 	//only the object putted with passport.serializeUser(function(user, done) {
 	console.log('Session ->'); 
 	console.log(req.session);
-	res.cookie("usertoken", req.user.facebook.token+''/*, { maxAge: 900000, httpOnly: true }*/);
-	res.redirect('/profile');
+	var jsonobj = { 
+			'service': 'facebook',
+			'value': req.user.facebook.token
+	};
+	res.cookie('usertoken', JSON.stringify(jsonobj)/*, { maxAge: 900000, httpOnly: true }*/);	res.redirect('/profile');
 };
 module.exports.callbackRedirectGoogle = function(req, res) { 
 	console.log("callbackRedirectGoogle called");
 	console.log('Session ->'); 
 	console.log(req.session);
-	res.cookie("usertoken", req.user.google.token+''/*, { maxAge: 900000, httpOnly: true }*/);
-	res.redirect('/profile');
+	var jsonobj = { 
+		'service': 'google',
+		'value': req.user.google.token
+	};
+	res.cookie('usertoken', JSON.stringify(jsonobj)/*, { maxAge: 900000, httpOnly: true }*/);	res.redirect('/profile');
 };
 module.exports.callbackRedirectGithub = function(req, res) { 
 	console.log("callbackRedirectGithub called");
 	console.log('Session ->'); 
 	console.log(req.session);
-	res.cookie('usertoken', req.user.github.token+''/*, { maxAge: 900000, httpOnly: true }*/);
+	var jsonobj = { 
+		'service': 'github',
+		'value': req.user.github.token
+	};
+	res.cookie('usertoken', JSON.stringify(jsonobj)/*, { maxAge: 900000, httpOnly: true }*/);
 	res.redirect('/profile');
 };
 module.exports.callbackRedirectTwitter = function(req, res) { 
 	console.log("callbackRedirectTwitter called");
 	console.log('Session ->'); 
-	console.log(req.session);
-	res.cookie("usertoken", req.user.twitter.token+''/*, { maxAge: 900000, httpOnly: true }*/);
+	console.log(req.session);var jsonobj = { 
+		'service': 'twitter',
+		'value': req.user.twitter.token
+	};
+	res.cookie('usertoken', JSON.stringify(jsonobj)/*, { maxAge: 900000, httpOnly: true }*/);
 	res.redirect('/profile');
 };
 

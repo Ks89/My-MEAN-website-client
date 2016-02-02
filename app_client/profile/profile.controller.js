@@ -46,11 +46,16 @@
     var cookie = $cookies.get('connect.sid');
     var cookie2 = $cookies.get('usertoken');
 
+    // cookie2 = cookie2.replace('j:','');
+    // cookie2 = cookie2.replace('{','');
+    // cookie2 = cookie2.replace('}','');
+
+    var parsed = JSON.parse(cookie2);
 
     console.log("COOKIES:-> ");
     console.log(cookie);
 
-    console.log(cookie2);
+    console.log(parsed);
 
 
     // var jcookie = angular.fromJson(cookie);
@@ -59,12 +64,12 @@
 
     // console.log(jcookie);
 
-    console.log('token is: ' + cookie2);
+    console.log('token is: ' + parsed.value);
 
-    if(cookie2) {
-      profile.saveToken(cookie2);
+    if(parsed) {
+      profile.saveToken(parsed.value);
 
-      profile.getUserByToken(cookie2)
+      profile.getUserByToken(parsed.service, parsed.value)
       .success(function(data) {
         console.log(data);
         if(data.github) {
