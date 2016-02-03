@@ -34,16 +34,13 @@ var sendJSONresponse = function(res, status, content) {
 module.exports.usersReadOneByToken = function(req, res) {
 	console.log('Finding a User', req.params);
 	if (req.params && req.params.service && req.params.token) {
-
 		var query = {};
 		query[req.params.service+'.token'] = req.params.token;
-
 		User.findOne(query, function(err, user) {
 			console.log("User.findOne...");
 			if (err) { 
 				return done(err); 
 			}
-
 	        if (user) { // if the user is found, then log them in
 	        	console.log("User found: " + user);
 		        sendJSONresponse(res, 200, user);
@@ -77,49 +74,41 @@ module.exports.connectGithub = passport.authorize('github', { scope: [ 'user:ema
 module.exports.connectGithubCallback = passport.authorize('github', connectRedirect);
 
 
-//----- functions used to manage the object "user" returned --------
+//----- functions used to manage the object "user" returned in req.user.servicename.token --------
 
 module.exports.callbackRedirectFacebook = function(req, res) { 
 	console.log("callbackRedirectFacebook called");
-	console.log(req.user.facebook); //the entire object
-	//only the object putted with passport.serializeUser(function(user, done) {
-	console.log('Session ->'); 
 	console.log(req.session);
-	var jsonobj = { 
-			'service': 'facebook',
-			'value': req.user.facebook.token
-	};
-	res.cookie('usertoken', JSON.stringify(jsonobj)/*, { maxAge: 900000, httpOnly: true }*/);	res.redirect('/profile');
+	var myCookie = getCookie('facebook', req.user.facebook.token);
+
+	res.cookie('usertoken', myCookie /*, { maxAge: 900000, httpOnly: true }*/);	
+	res.redirect('/profile');
 };
 module.exports.callbackRedirectGoogle = function(req, res) { 
 	console.log("callbackRedirectGoogle called");
-	console.log('Session ->'); 
-	console.log(req.session);
-	var jsonobj = { 
-		'service': 'google',
-		'value': req.user.google.token
-	};
-	res.cookie('usertoken', JSON.stringify(jsonobj)/*, { maxAge: 900000, httpOnly: true }*/);	res.redirect('/profile');
+	var myCookie = getCookie('google', req.user.google.token);
+
+	res.cookie('usertoken', myCookie);	
+	res.redirect('/profile');
 };
 module.exports.callbackRedirectGithub = function(req, res) { 
 	console.log("callbackRedirectGithub called");
-	console.log('Session ->'); 
-	console.log(req.session);
-	var jsonobj = { 
-		'service': 'github',
-		'value': req.user.github.token
-	};
-	res.cookie('usertoken', JSON.stringify(jsonobj)/*, { maxAge: 900000, httpOnly: true }*/);
+	var myCookie = getCookie('github', req.user.github.token);
+
+	res.cookie('usertoken', myCookie);
 	res.redirect('/profile');
 };
 module.exports.callbackRedirectTwitter = function(req, res) { 
 	console.log("callbackRedirectTwitter called");
-	console.log('Session ->'); 
-	console.log(req.session);var jsonobj = { 
-		'service': 'twitter',
-		'value': req.user.twitter.token
-	};
-	res.cookie('usertoken', JSON.stringify(jsonobj)/*, { maxAge: 900000, httpOnly: true }*/);
+	var myCookie = getCookie('twitter', req.user.twitter.token);
+
+	res.cookie('usertoken', myCookie);
 	res.redirect('/profile');
 };
 
+function getCookie(serviceName, token) {
+	return JSON.stringify({ 
+		'service': serviceName,
+		'value': token
+	});
+};

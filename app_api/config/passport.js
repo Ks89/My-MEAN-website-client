@@ -19,9 +19,6 @@ passport.deserializeUser(function(id, done) {
     console.log("Deserializing user " + user);
     done(err, user);
   });
-
-  // var user = JSON.stringify(obj);
-  // done(null, user);
 });
 
 passport.use(new LocalStrategy({

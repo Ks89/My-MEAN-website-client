@@ -16,91 +16,53 @@
     };
     vm.message = "Profile page";
 
-    vm.github = {
-      id : '',
-      email : '',
-      name : '',
-      token : ''
-    };
-    vm.google = {
-      id : '',
-      email : '',
-      name : '',
-      token : ''
-    };
-    vm.facebook = {
-      id : '',
-      email : '',
-      name : '',
-      token : ''
-    };
-    vm.twitter = {
-      id : '',
-      email : '',
-      name : '',
-      token : ''
-    };
-
-    // vm.token = $routeParams.token;
+    //initialization
+    vm.github = buildJsonUserData();
+    vm.google = buildJsonUserData();
+    vm.facebook = buildJsonUserData();
+    vm.twitter = buildJsonUserData();
 
     var cookie = $cookies.get('connect.sid');
-    var cookie2 = $cookies.get('usertoken');
 
-    // cookie2 = cookie2.replace('j:','');
-    // cookie2 = cookie2.replace('{','');
-    // cookie2 = cookie2.replace('}','');
-
-    var parsed = JSON.parse(cookie2);
+    var jsonCookie = JSON.parse($cookies.get('usertoken'));
 
     console.log("COOKIES:-> ");
     console.log(cookie);
 
-    console.log(parsed);
+    console.log('User token is: ' + jsonCookie.value);
 
+    if(jsonCookie) {
+      profile.saveToken(jsonCookie.value);
 
-    // var jcookie = angular.fromJson(cookie);
-
-    // console.log(jcookie);
-
-    // console.log(jcookie);
-
-    console.log('token is: ' + parsed.value);
-
-    if(parsed) {
-      profile.saveToken(parsed.value);
-
-      profile.getUserByToken(parsed.service, parsed.value)
+      profile.getUserByToken(jsonCookie.service, jsonCookie.value)
       .success(function(data) {
-        console.log(data);
-        if(data.github) {
-          vm.github.id = data.github.id;
-          vm.github.email = data.github.email;
-          vm.github.name = data.github.name;
-          vm.github.token = data.github.token;
-        };
-        if(data.facebook) {
-          vm.facebook.id = data.facebook.id;
-          vm.facebook.email = data.facebook.email;
-          vm.facebook.name = data.facebook.name;
-          vm.facebook.token = data.facebook.token;
-        };
-        if(data.google) {
-          vm.google.id = data.google.id;
-          vm.google.email = data.google.email;
-          vm.google.name = data.google.name;
-          vm.google.token = data.google.token;
-        };
-        if(data.twitter) {
-          vm.twitter.id = data.twitter.id;
-          vm.twitter.email = data.twitter.email;
-          vm.twitter.name = data.twitter.name;
-          vm.twitter.token = data.twitter.token;
-        };
+        setObjectValues(data.github, vm.github);
+        setObjectValues(data.facebook, vm.facebook);
+        setObjectValues(data.google, vm.google);
+        setObjectValues(data.twitter, vm.twitter);
       })
       .error(function (e) {
         console.log(e);
       });
     }
+
+    function buildJsonUserData() {
+      return {
+        id : '',
+        email : '',
+        name : '',
+        token : ''
+      };
+    };
+
+    function setObjectValues(originData, destData) {
+      if(originData) {
+        destData.id = originData.id;
+        destData.email = originData.email;
+        destData.name = originData.name;
+        destData.token = originData.token;
+      }
+    };
 
     vm.connect = function (serviceName) {
       console.log("connect called");

@@ -18,9 +18,6 @@ var passport = require('passport');
 require('./app_api/models/db');
 require('./app_api/config/passport');
 
-//var routes = require('./app_server/routes/index');
-var routesApi = require('./app_api/routes/index');
-
 var app = express();
 
 //use uglify
@@ -60,17 +57,17 @@ var appClientFiles = [
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'app_client')));
+app.use(cookieParser('keyboard cat'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // Express Session
 app.use(session({
-    secret: 'mysecret',
-    // resave: false,
-    // saveUninitialized: true,
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: true
     // cookie: {
     //   httpOnly: false,
     //     secure: false, //to use true, you must use https. If you'll use true with http it won't work.
@@ -78,11 +75,12 @@ app.use(session({
     // }
 }));
 
+//app.use(express.csrf());
+
 app.use(passport.initialize());
 app.use(passport.session());
 
-
-//app.use('/', routes);
+var routesApi = require('./app_api/routes/index');
 app.use('/api', routesApi);
 
 app.use(function(req, res) {
