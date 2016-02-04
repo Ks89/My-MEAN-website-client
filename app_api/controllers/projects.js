@@ -11,23 +11,6 @@ var sendJSONresponse = function(res, status, content) {
   res.json(content);
 };
 
-// var varWithMethods = (function() {
-//   var variable = 6371;
-
-//   var method = function(param) {
-//     return parseFloat(param * variable);
-//   };
-
-//   var anotherMethod = function(param) {
-//     return parseFloat(param / variable);
-//   };
-
-//   return {
-//     method: method,
-//     anotherMethod: anotherMethod
-//   };
-// })();
-
 /* GET list of projects */
 module.exports.projectsList = function(req, res) {
   console.log('projectsList');
@@ -83,21 +66,4 @@ module.exports.projectsReadOne = function(req, res) {
       "message": "No projectid in request"
     });
   }
-};
-
-
-/* POST a new project */
-/* /api/projects */
-module.exports.projectsCreate = function(req, res) {
-
-};
-
-/* PUT /api/projects/:projectid */
-module.exports.projectsUpdateOne = function(req, res) {
-
-};
-
-/* DELETE /api/projects/:projectid */
-module.exports.projectsDeleteOne = function(req, res) {
-
 };

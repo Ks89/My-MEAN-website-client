@@ -2,11 +2,6 @@ var passport = require('passport');
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 
-var sendJSONresponse = function(res, status, content) {
-  res.status(status);
-  res.json(content);
-};
-
 module.exports.register = function(req, res) {
   if(!req.body.name || !req.body.email || !req.body.password) {
     sendJSONresponse(res, 400, {
@@ -31,7 +26,6 @@ module.exports.register = function(req, res) {
       });
     }
   });
-
 };
 
 module.exports.login = function(req, res) {
@@ -57,4 +51,9 @@ module.exports.login = function(req, res) {
       sendJSONresponse(res, 401, info);
     }
   })(req, res);
+};
+
+function sendJSONresponse(res, status, content) {
+  res.status(status);
+  res.json(content);
 };

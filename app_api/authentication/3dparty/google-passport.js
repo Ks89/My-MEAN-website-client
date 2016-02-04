@@ -1,18 +1,16 @@
-var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-var mongoose = require('mongoose');
-var User = mongoose.model('User');
-var thirdpartyConfig = require('./3dpartyconfig');
+module.exports = function (userRef, passportRef) {
+	var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+	var thirdpartyConfig = require('./3dpartyconfig');
 
-function updateUser (user, accessToken, profile) {
-    user.google.id = profile.id;
-    user.google.token = accessToken;
-    user.google.name  = profile.displayName;
-    user.google.email = profile.emails[0].value; //get the first email
-    return user;
-}
+	function updateUser (user, accessToken, profile) {
+	    user.google.id = profile.id;
+	    user.google.token = accessToken;
+	    user.google.name  = profile.displayName;
+	    user.google.email = profile.emails[0].value; //get the first email
+	    return user;
+	}
 
-module.exports = function(passport) {
-	passport.use(new GoogleStrategy({
+	passportRef.use(new GoogleStrategy({
 	    clientID: thirdpartyConfig.google.clientID,
 	    clientSecret: thirdpartyConfig.google.clientSecret,
 		callbackURL: thirdpartyConfig.google.callbackURL
@@ -22,7 +20,7 @@ module.exports = function(passport) {
 	    process.nextTick(function () {
 	      	console.log(profile);
 
-	      	User.findOne({ 'google.id': profile.id }, function (err, user) {
+	      	userRef.findOne({ 'google.id': profile.id }, function (err, user) {
 	        	console.log("User.findOne...");
 	        	if (err) { return done(err); }
 
@@ -39,7 +37,7 @@ module.exports = function(passport) {
 		            }
 		            return done(null, user); // user found, return that user
 		        } else { //otherwise, if there is no user found with that github id, create them
-		            var user = updateUser(new User(), accessToken, profile);
+		            var user = updateUser(new userRef(), accessToken, profile);
 		            console.log("New user created: " + user);
 		            user.save(function(err) {
 		              if (err) { throw err; }
@@ -49,4 +47,6 @@ module.exports = function(passport) {
 	        });
 	  	});
 	}));
+
+  	return module;
 }

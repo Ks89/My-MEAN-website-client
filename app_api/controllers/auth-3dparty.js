@@ -1,5 +1,4 @@
 var passport = require('passport');
-
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 
@@ -23,19 +22,15 @@ var connectRedirect = {
 	failureRedirect : '/'
 };
 
-var sendJSONresponse = function(res, status, content) {
-  res.status(status);
-  res.contentType('application/json');
-  res.json(content);
-};
-
 /* GET a user by token */
 /* /api/users/:token */
 module.exports.usersReadOneByToken = function(req, res) {
 	console.log('Finding a User', req.params);
 	if (req.params && req.params.service && req.params.token) {
+		//build the query from req.params values
 		var query = {};
 		query[req.params.service+'.token'] = req.params.token;
+
 		User.findOne(query, function(err, user) {
 			console.log("User.findOne...");
 			if (err) { 
@@ -75,34 +70,25 @@ module.exports.connectGithubCallback = passport.authorize('github', connectRedir
 
 
 //----- functions used to manage the object "user" returned in req.user.servicename.token --------
-
 module.exports.callbackRedirectFacebook = function(req, res) { 
-	console.log("callbackRedirectFacebook called");
-	console.log(req.session);
-	var myCookie = getCookie('facebook', req.user.facebook.token);
-
-	res.cookie('usertoken', myCookie /*, { maxAge: 900000, httpOnly: true }*/);	
-	res.redirect('/profile');
+	//console.log(req.session);
+	redirectToProfile(req.user.facebook.token, "facebook", res);
 };
 module.exports.callbackRedirectGoogle = function(req, res) { 
-	console.log("callbackRedirectGoogle called");
-	var myCookie = getCookie('google', req.user.google.token);
-
-	res.cookie('usertoken', myCookie);	
-	res.redirect('/profile');
+	redirectToProfile(req.user.google.token, "google", res);
 };
 module.exports.callbackRedirectGithub = function(req, res) { 
-	console.log("callbackRedirectGithub called");
-	var myCookie = getCookie('github', req.user.github.token);
-
-	res.cookie('usertoken', myCookie);
-	res.redirect('/profile');
+	redirectToProfile(req.user.github.token, "github", res);
 };
 module.exports.callbackRedirectTwitter = function(req, res) { 
-	console.log("callbackRedirectTwitter called");
-	var myCookie = getCookie('twitter', req.user.twitter.token);
+	redirectToProfile(req.user.twitter.token, "twitter", res);
+};
 
-	res.cookie('usertoken', myCookie);
+function redirectToProfile(token, serviceName, res) {
+	console.log("callbackRedirect" + serviceName + " called");
+	var myCookie = getCookie(serviceName, token);
+
+	res.cookie('usertoken', myCookie /*, { maxAge: 900000, httpOnly: true }*/);	
 	res.redirect('/profile');
 };
 
@@ -111,4 +97,10 @@ function getCookie(serviceName, token) {
 		'service': serviceName,
 		'value': token
 	});
+};
+
+var sendJSONresponse = function(res, status, content) {
+  res.status(status);
+  res.contentType('application/json');
+  res.json(content);
 };

@@ -1,20 +1,17 @@
-var FacebookStrategy = require('passport-facebook').Strategy;
-var mongoose = require('mongoose');
-var User = mongoose.model('User');
-var thirdpartyConfig = require('./3dpartyconfig');
+module.exports = function (userRef, passportRef) {
+  var FacebookStrategy = require('passport-facebook').Strategy;
+  var thirdpartyConfig = require('./3dpartyconfig');
 
+  function updateUser (user, accessToken, profile) {
+    user.facebook.id = profile.id;
+    user.facebook.token = accessToken;
+    user.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName;
+    user.facebook.email = profile.emails[0].value; //get the first email
+    user.facebook.profileUrl = profile.profileUrl;
+    return user;
+  }
 
-function updateUser (user, accessToken, profile) {
-  user.facebook.id = profile.id;
-  user.facebook.token = accessToken;
-  user.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName;
-  user.facebook.email = profile.emails[0].value; //get the first email
-  user.facebook.profileUrl = profile.profileUrl;
-  return user;
-}
-
-module.exports = function(passport) {
-  passport.use(new FacebookStrategy({
+  passportRef.use(new FacebookStrategy({
     clientID: thirdpartyConfig.facebook.clientID,
     clientSecret: thirdpartyConfig.facebook.clientSecret,
     callbackURL: thirdpartyConfig.facebook.callbackURL,
@@ -27,7 +24,7 @@ module.exports = function(passport) {
     process.nextTick(function () {
       console.log(profile);
       if (!req.user) { //check if the user is already logged in    
-        User.findOne({ 'facebook.id': profile.id }, function (err, user) {
+        userRef.findOne({ 'facebook.id': profile.id }, function (err, user) {
           console.log("User.findOne...");
           if (err) { return done(err); }
 
@@ -44,7 +41,7 @@ module.exports = function(passport) {
             }
             return done(null, user); // user found, return that user
           } else { //otherwise, if there is no user found with that id, create them
-            var user = updateUser(new User(), accessToken, profile);
+            var user = updateUser(new userRef(), accessToken, profile);
             console.log("New user created: " + user);
             user.save(function(err) {
               if (err) { throw err; }
@@ -64,4 +61,6 @@ module.exports = function(passport) {
     }); //end of process.nextTick
   } //end of function(...)
   ));//end of passport.use
+
+  return module;
 }

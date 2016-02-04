@@ -1,31 +1,29 @@
-var GitHubStrategy = require('passport-github2').Strategy;
-var mongoose = require('mongoose');
-var User = mongoose.model('User');
-var thirdpartyConfig = require('./3dpartyconfig');
+module.exports = function (userRef, passportRef) {
+  var GitHubStrategy = require('passport-github2').Strategy;
+  var thirdpartyConfig = require('./3dpartyconfig');
 
-function updateUser (user, accessToken, profile) {
-    user.github.id = profile.id;
-    user.github.token = accessToken;
-    user.github.displayName  = profile.displayName;
-    user.github.email = profile.emails[0].value; //get the first email
-    user.github.username = profile.username;
-    user.github.profileUrl = profile.profileUrl;
-    return user;
-}
+  function updateUser (user, accessToken, profile) {
+      user.github.id = profile.id;
+      user.github.token = accessToken;
+      user.github.displayName  = profile.displayName;
+      user.github.email = profile.emails[0].value; //get the first email
+      user.github.username = profile.username;
+      user.github.profileUrl = profile.profileUrl;
+      return user;
+  }
 
-module.exports = function(passport) {
-  passport.use(new GitHubStrategy({
+  passportRef.use(new GitHubStrategy({
     clientID: thirdpartyConfig.github.clientID,
     clientSecret: thirdpartyConfig.github.clientSecret,
     callbackURL: thirdpartyConfig.github.callbackURL,
     passReqToCallback: true
-},
-function(req, accessToken, refreshToken, profile, done) {
+  },
+  function(req, accessToken, refreshToken, profile, done) {
     console.log("GitHub authentication called");
     process.nextTick(function () {
       	if (!req.user) { //check if the user is already logged in    
         // find the user in the database based on their id
-	        User.findOne({ 'github.id' : profile.id }, function(err, user) {
+	        userRef.findOne({ 'github.id' : profile.id }, function(err, user) {
 	          	console.log("User.findOne...");
 	          	if (err) { return done(err); }
 
@@ -42,7 +40,7 @@ function(req, accessToken, refreshToken, profile, done) {
 		            }
 		            return done(null, user); // user found, return that user
 	          	} else { //otherwise, if there is no user found with that github id, create them
-		            var user = updateUser(new User(), accessToken, profile);
+		            var user = updateUser(new userRef(), accessToken, profile);
 		            console.log("New user created: " + user);
 		            user.save(function(err) {
 		              if (err) { throw err; }
@@ -60,6 +58,8 @@ function(req, accessToken, refreshToken, profile, done) {
           	});
         }
     }); //end of process.nextTick
-} //end of function(...)
-));//end of passport.use
+  } //end of function(...)
+  ));//end of passport.use
+
+  return module;
 }
