@@ -22,7 +22,6 @@ router.get('/projects/:projectid', ctrlProjects.projectsReadOne);
 
 router.post('/email', ctrlContact.sendEmailWithRecaptcha);
 
-
 //third party get user from db
 router.get('/users/:service/:token', ctrlAuth3dParty.usersReadOneByToken)
 

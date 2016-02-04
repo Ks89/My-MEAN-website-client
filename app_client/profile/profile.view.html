@@ -7,7 +7,7 @@
 
 		<div class="col-sm-6">
 			<!-- check if the user has this token (is the user authenticated with this social account) -->
-			<div class="well" ng-switch on="vm.usertoken"> 
+			<div class="well" ng-switch on="vm.facebook.connected"> 
 				<h3 class="text-primary"><span class="fa fa-facebook"></span> Facebook</h3>
 
 				<div ng-switch-when="true">
@@ -28,7 +28,7 @@
 
 		<div class="col-sm-6">
 			<!-- check if the user has this token (is the user authenticated with this social account) -->
-			<div class="well" ng-switch on="vm.usertoken"> 
+			<div class="well" ng-switch on="vm.github.connected"> 
 				<h3 class="text-primary"><span class="fa fa-github"></span> Github</h3>
 
 				<div ng-switch-when="true">
@@ -49,7 +49,7 @@
 
 		<div class="col-sm-6">
 			<!-- check if the user has this token (is the user authenticated with this social account) -->
-			<div class="well" ng-switch on="vm.usertoken"> 
+			<div class="well" ng-switch on="vm.google.connected"> 
 				<h3 class="text-primary"><span class="fa fa-google"></span> Google</h3>
 
 				<div ng-switch-when="true">
@@ -70,7 +70,7 @@
 
 		<div class="col-sm-6">
 			<!-- check if the user has this token (is the user authenticated with this social account) -->
-			<div class="well" ng-switch on="vm.usertoken"> 
+			<div class="well" ng-switch on="vm.twitter.connected"> 
 				<h3 class="text-primary"><span class="fa fa-twitter"></span> Twitter</h3>
 
 				<div ng-switch-when="true">

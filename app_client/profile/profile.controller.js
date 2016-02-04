@@ -22,16 +22,14 @@
     vm.facebook = buildJsonUserData();
     vm.twitter = buildJsonUserData();
 
-    var cookie = $cookies.get('connect.sid');
+    //var cookie = $cookies.get('connect.sid');
 
-    var jsonCookie = JSON.parse($cookies.get('usertoken'));
-
-    console.log("COOKIES:-> ");
-    console.log(cookie);
-
-    console.log('User token is: ' + jsonCookie.value);
-
-    if(jsonCookie) {
+    var userToken = $cookies.get('usertoken');
+    
+    if(userToken != null) {
+      var jsonCookie = JSON.parse(userToken);
+      console.log('User token is: ' + jsonCookie.value);
+      
       profile.saveToken(jsonCookie.value);
 
       profile.getUserByToken(jsonCookie.service, jsonCookie.value)
@@ -51,7 +49,8 @@
         id : '',
         email : '',
         name : '',
-        token : ''
+        token : '',
+        connected : false
       };
     };
 
@@ -61,6 +60,7 @@
         destData.email = originData.email;
         destData.name = originData.name;
         destData.token = originData.token;
+        destData.connected = true;
       }
     };
 
@@ -72,9 +72,6 @@
       });
       console.log("connect completed");
     };
-
-    //TODO change this with a real implementation
-    vm.usertoken = true;
 
     vm.unlink = function (serviceName) {
       console.log("unlink called");
