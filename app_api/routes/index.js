@@ -59,5 +59,11 @@ router.get('/connect/twitter', ctrlAuth3dParty.connectTwitter);
 router.get('/connect/twitter/callback', ctrlAuth3dParty.connectTwitterCallback);
 
 //add the unlinks
+// facebook -------------------------------
+router.get('/unlink/facebook', ctrlAuth3dParty.unlinkFacebook);
+router.get('/unlink/github', ctrlAuth3dParty.unlinkGithub);
+router.get('/unlink/google', ctrlAuth3dParty.unlinkGoogle);
+router.get('/unlink/twitter', ctrlAuth3dParty.unlinkTwitter);
+
 
 module.exports = router;

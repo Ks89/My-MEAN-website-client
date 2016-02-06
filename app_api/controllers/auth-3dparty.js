@@ -99,6 +99,39 @@ function getCookie(serviceName, token) {
 	});
 };
 
+module.exports.unlinkFacebook = function(req, res) {
+	console.log("User found to unlink: " + req.user);
+	var user = req.user;
+	user.facebook = undefined;
+    user.save(function(err) {
+        res.redirect('/profile');
+    });
+};
+module.exports.unlinkGithub = function(req, res) {
+console.log("User found to unlink: " + req.user);
+	var user = req.user;
+	user.github = undefined;
+    user.save(function(err) {
+        res.redirect('/profile');
+    });
+};
+module.exports.unlinkGoogle = function(req, res) {
+	console.log("User found to unlink: " + req.user);
+	var user = req.user;
+	user.google = undefined;
+    user.save(function(err) {
+        res.redirect('/profile');
+    });
+};
+module.exports.unlinkTwitter = function(req, res) {
+	console.log("User found to unlink: " + req.user);
+	var user = req.user;
+	user.twitter = undefined;
+    user.save(function(err) {
+        res.redirect('/profile');
+    });
+};
+
 var sendJSONresponse = function(res, status, content) {
   res.status(status);
   res.contentType('application/json');

@@ -22,6 +22,17 @@
     vm.facebook = buildJsonUserData();
     vm.twitter = buildJsonUserData();
 
+    //connect REST path
+    vm.facebookConnectOauthUrl = 'api/connect/facebook';
+    vm.googleConnectOauthUrl = 'api/connect/google';
+    vm.githubConnectOauthUrl = 'api/connect/github';
+    vm.twitterConnectOauthUrl = 'api/connect/twitter';
+    //unlink REST path
+    vm.facebookUnlinkOauthUrl = 'api/unlink/facebook';
+    vm.googleUnlinkOauthUrl = 'api/unlink/google';
+    vm.githubUnlinkOauthUrl = 'api/unlink/github';
+    vm.twitterUnlinkOauthUrl = 'api/unlink/twitter';
+
     //var cookie = $cookies.get('connect.sid');
 
     var userToken = $cookies.get('usertoken');
@@ -50,7 +61,6 @@
         email : '',
         name : '',
         token : '',
-        connected : false
       };
     };
 
@@ -60,26 +70,7 @@
         destData.email = originData.email;
         destData.name = originData.name;
         destData.token = originData.token;
-        destData.connected = true;
       }
-    };
-
-    vm.connect = function (serviceName) {
-      console.log("connect called");
-      authentication.connect(serviceName)
-      .then(function(){
-        console.log("connect then " + serviceName);
-      });
-      console.log("connect completed");
-    };
-
-    vm.unlink = function (serviceName) {
-      console.log("unlink called");
-      authentication.unlink(serviceName)
-      .then(function(){
-        console.log("unlink then " + serviceName);
-      });
-      console.log("unlink completed");
     };
   }
 })();
