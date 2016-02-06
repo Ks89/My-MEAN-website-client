@@ -45,7 +45,7 @@
 
       profile.getUserByToken(jsonCookie.service, jsonCookie.value)
       .success(function(data) {
-        setObjectValues(data.github, vm.github);
+        setObjectValuesGithub(data.github, vm.github);
         setObjectValues(data.facebook, vm.facebook);
         setObjectValues(data.google, vm.google);
         setObjectValues(data.twitter, vm.twitter);
@@ -69,6 +69,15 @@
         destData.id = originData.id;
         destData.email = originData.email;
         destData.name = originData.name;
+        destData.token = originData.token;
+      }
+    };
+    // TODO remove this and merge with setObjectValues
+    function setObjectValuesGithub(originData, destData) {
+      if(originData) {
+        destData.id = originData.id;
+        destData.email = originData.email;
+        destData.name = originData.displayName;
         destData.token = originData.token;
       }
     };

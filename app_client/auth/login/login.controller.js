@@ -17,7 +17,6 @@
       password : ""
     };
 
-    //using the working solution
     vm.facebookOauthUrl = 'api/auth/facebook';
     vm.googleOauthUrl = 'api/auth/google';
     vm.githubOauthUrl = 'api/auth/github';
@@ -46,17 +45,6 @@
           $location.path(vm.returnPage);
         });
     };
-
-    // vm.on3dPartyLogin = function (serviceName) {
-    //   console.log("on3dPartyLogin called");
-    //   authentication.thirdPartyLogin(serviceName)
-    //   .then(function(){
-    //       console.log("then " + serviceName);
-    //       $location.search('page', null); 
-    //       $location.path(vm.returnPage);
-    //   });
-    //   console.log("on3dPartyLogin completed");
-    // };
   }
 
 })();

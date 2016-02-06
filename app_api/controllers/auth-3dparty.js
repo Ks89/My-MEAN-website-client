@@ -28,18 +28,20 @@ module.exports.usersReadOneByToken = function(req, res) {
 	console.log('Finding a User', req.params);
 	if (req.params && req.params.service && req.params.token) {
 		//build the query from req.params values
-		var query = {};
-		query[req.params.service+'.token'] = req.params.token;
+		// var query = {};
+		// query[req.params.service+'.token'] = req.params.token;
 
-		User.findOne(query, function(err, user) {
+		User.findById(req.params.token, function(err, user) {
 			console.log("User.findOne...");
 			if (err) { 
+				console.log('Error user not found (usersReadOneByToken)' + err);
 				return done(err); 
 			}
 	        if (user) { // if the user is found, then log them in
-	        	console.log("User found: " + user);
+	        	console.log("User found (usersReadOneByToken): " + user);
 		        sendJSONresponse(res, 200, user);
 	        } else { //otherwise, if there is no user found with that github id, create them
+	        	console.log("User not found (usersReadOneByToken)");
 	          	sendJSONresponse(res, 404, "");
 	        }
 	    });
@@ -72,30 +74,30 @@ module.exports.connectGithubCallback = passport.authorize('github', connectRedir
 //----- functions used to manage the object "user" returned in req.user.servicename.token --------
 module.exports.callbackRedirectFacebook = function(req, res) { 
 	//console.log(req.session);
-	redirectToProfile(req.user.facebook.token, "facebook", res);
+	redirectToProfile(req.user._id, "facebook", res);
 };
 module.exports.callbackRedirectGoogle = function(req, res) { 
-	redirectToProfile(req.user.google.token, "google", res);
+	redirectToProfile(req.user._id, "google", res);
 };
 module.exports.callbackRedirectGithub = function(req, res) { 
-	redirectToProfile(req.user.github.token, "github", res);
+	redirectToProfile(req.user._id, "github", res);
 };
 module.exports.callbackRedirectTwitter = function(req, res) { 
-	redirectToProfile(req.user.twitter.token, "twitter", res);
+	redirectToProfile(req.user._id, "twitter", res);
 };
 
-function redirectToProfile(token, serviceName, res) {
+function redirectToProfile(_id, serviceName, res) {
 	console.log("callbackRedirect" + serviceName + " called");
-	var myCookie = getCookie(serviceName, token);
+	var myCookie = getCookie(serviceName, _id);
 
 	res.cookie('usertoken', myCookie /*, { maxAge: 900000, httpOnly: true }*/);	
 	res.redirect('/profile');
 };
 
-function getCookie(serviceName, token) {
+function getCookie(serviceName, _id) {
 	return JSON.stringify({ 
 		'service': serviceName,
-		'value': token
+		'value': _id
 	});
 };
 
