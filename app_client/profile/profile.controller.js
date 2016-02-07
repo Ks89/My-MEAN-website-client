@@ -35,15 +35,15 @@
 
     //var cookie = $cookies.get('connect.sid');
 
-    var userToken = $cookies.get('usertoken');
+    var userCookie = $cookies.get('userCookie');
     
-    if(userToken != null) {
-      var jsonCookie = JSON.parse(userToken);
-      console.log('User token is: ' + jsonCookie.value);
+    if(userCookie != null) {
+      var jsonCookie = JSON.parse(userCookie);
+      console.log('User cookie is: ' + jsonCookie.value);
       
       profile.saveToken(jsonCookie.value);
 
-      profile.getUserByToken(jsonCookie.service, jsonCookie.value)
+      profile.getUserById(jsonCookie.value)
       .success(function(data) {
         setObjectValuesGithub(data.github, vm.github);
         setObjectValues(data.facebook, vm.facebook);

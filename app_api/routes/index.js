@@ -12,6 +12,7 @@ var ctrlAuthLocal = require('../controllers/auth-local');
 var ctrlAuth3dParty = require('../controllers/auth-3dparty');
 var ctrlProjects = require('../controllers/projects');
 var ctrlContact = require('../controllers/contact');
+var ctrlUser = require('../controllers/users');
 //var ctrlAuthors = require('../controllers/authors');
 
 //--------------------------------normal routes-----------------------------------
@@ -22,8 +23,8 @@ router.get('/projects/:projectid', ctrlProjects.projectsReadOne);
 
 router.post('/email', ctrlContact.sendEmailWithRecaptcha);
 
-//third party get user from db
-router.get('/users/:service/:token', ctrlAuth3dParty.usersReadOneByToken)
+//get user from db
+router.get('/users/:id', ctrlUser.usersReadOneById)
 
 
 //------------------------------authenticate (first login)---------------------------------
