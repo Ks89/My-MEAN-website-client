@@ -34,7 +34,6 @@ var appClientFiles = [
   'app_client/auth/register/register.controller.js',
   'app_client/common/factories/underscore.factory.js',
   'app_client/common/services/authentication.service.js',
-  'app_client/common/services/profile.service.js',
   'app_client/common/services/contactData.service.js',
   'app_client/common/services/projectsData.service.js',
   'app_client/common/filters/addHtmlLineBreaks.filter.js',

@@ -17,7 +17,7 @@ module.exports.usersReadOneById = function(req, res) {
 			console.log("User.findOne...");
 			if (err) { 
 				console.log('Error user not found (usersReadOneById)' + err);
-				return done(err); 
+				utils.sendJSONresponse(res, 404, "");
 			}
 	        if (user) { // if the user is found, then log them in
 	        	console.log("User found (usersReadOneById): " + user);

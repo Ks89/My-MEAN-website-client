@@ -4,8 +4,8 @@
   .controller('profileCtrl', profileCtrl);
 
 
-  profileCtrl.$inject = ['$routeParams','authentication','profile', '$cookies'];
-  function profileCtrl($routeParams, authentication, profile, $cookies) {
+  profileCtrl.$inject = ['$routeParams','authentication', '$cookies'];
+  function profileCtrl($routeParams, authentication, $cookies) {
     var vm = this;
     vm.pageHeader = {
       title: 'Profile',
@@ -41,9 +41,9 @@
       var jsonCookie = JSON.parse(userCookie);
       console.log('User cookie is: ' + jsonCookie.value);
       
-      profile.saveToken(jsonCookie.value);
+      authentication.saveToken('3dauth', jsonCookie.value);
 
-      profile.getUserById(jsonCookie.value)
+      authentication.getUserById(jsonCookie.value)
       .success(function(data) {
         setObjectValuesGithub(data.github, vm.github);
         setObjectValues(data.facebook, vm.facebook);
