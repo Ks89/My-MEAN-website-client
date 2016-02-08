@@ -5,6 +5,20 @@
 
 	<div class="row">
 
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<!-- check if the user has this token (is the user authenticated with this social account) -->
+			<div class="well"> 
+				<div ng-if="vm.facebook.token.length > 0">
+					<p>
+						<strong>name</strong>: {{ vm.facebook.name }}<br>
+						<strong>email</strong>: {{ vm.facebook.email }}<br>
+						<strong>id</strong>: {{vm.facebook.id }}
+					</p>
+				</div>
+			</div>
+
+		</div>
+
 		<div class="col-xs-12 col-sm-12 col-md-6 col-lg-5">
 			<!-- check if the user has this token (is the user authenticated with this social account) -->
 			<div class="well"> 

@@ -12,10 +12,12 @@
 
     vm.isLoggedIn = authentication.isLoggedIn();
 
-    vm.currentUser = authentication.currentUser();
+    //set the current user retrieving data from local
+    vm.currentUser = authentication.getLocalAuthCurrentUser();
 
+    //set the current user retrieving data from 3auth
     if(authentication.isAuth3dLoggedIn()) {
-      authentication.getAuth()
+      authentication.getUserById(authentication.getToken('3dauth'))
       .success(function(data) {
         if(data.github) {
           vm.currentUser = {
