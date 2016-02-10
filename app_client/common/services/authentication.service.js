@@ -11,13 +11,13 @@
     //----------------------------
     var register = function(user) {
       return $http.post('/api/register', user).success(function(data){
-        saveToken('local', data.token);
+        saveToken('local', data);
       });
     };
 
     var login = function(user) {
       return $http.post('/api/login', user).success(function(data) {
-        saveToken('local', data.token);
+        saveToken('local', data);
       });
     };
 
@@ -26,22 +26,18 @@
     //----------------------------
     var getLocalAuthCurrentUser = function() {
       if(isLoggedIn()){
-        console.log("User is logged in");
-        var token = getToken('local');
-        var token3dauth = getToken('3dauth');
-        console.log("User is logged in with token3dauth " + token3dauth + " and/or " + token);
+        var token = JSON.parse(getToken('local'));
+        console.log("User is logged in with token ");
+        console.log(token);
         if(token) {
-          var payload = JSON.parse($window.atob(token.split('.')[1]));
-          return {
-            email : payload.email,
-            name : payload.name
-          };
-        } 
-      }
+          return getUserById(token.id);
+        };
+      } 
     };
 
     var isAuth3dLoggedIn = function() {
       var token3dauth = getToken('3dauth');
+      console.log("User is logged in with token3dauth " + token3dauth);
       if(token3dauth) {
         return true;
       } else {

@@ -5,21 +5,24 @@
 
 	<div class="row">
 
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-			<!-- check if the user has this token (is the user authenticated with this social account) -->
+		<div class="col-xs-12 col-sm-12 col-md-6 col-lg-5">
 			<div class="well"> 
-				<div ng-if="vm.facebook.token.length > 0">
+				<h3 class="text-primary"><span class="fa fa-user"></span> Local</h3>
+
+				<div ng-if="vm.local.email.length > 0">
 					<p>
-						<strong>name</strong>: {{ vm.facebook.name }}<br>
-						<strong>email</strong>: {{ vm.facebook.email }}<br>
-						<strong>id</strong>: {{vm.facebook.id }}
+						<strong>name</strong>: {{ vm.local.name }}<br>
+						<strong>email</strong>: {{ vm.local.email }}<br>
 					</p>
+					<a class="btn btn-primary" ng-href="">Logout Local</a>&nbsp;&nbsp;  
+				</div>
+				<div ng-if="vm.local.email.length === 0">
+					<a class="btn btn-primary" ng-href="">Login Local</a>&nbsp;&nbsp;  		
 				</div>
 			</div>
-
 		</div>
 
-		<div class="col-xs-12 col-sm-12 col-md-6 col-lg-5">
+		<div class="col-xs-12 col-sm-12 col-md-6 col-lg-5 col-lg-offset-2">
 			<!-- check if the user has this token (is the user authenticated with this social account) -->
 			<div class="well"> 
 				<h3 class="text-primary"><span class="fa fa-facebook"></span> Facebook</h3>
@@ -38,7 +41,7 @@
 			</div>
 		</div>
 
-		<div class="col-xs-12 col-sm-12 col-md-6 col-lg-5 col-lg-offset-2">
+		<div class="col-xs-12 col-sm-12 col-md-6 col-lg-5">
 			<!-- check if the user has this token (is the user authenticated with this social account) -->
 			<div class="well"> 
 				<h3 class="text-primary"><span class="fa fa-github"></span> Github</h3>
@@ -58,7 +61,7 @@
 			</div>
 		</div>
 
-		<div class="col-xs-12 col-sm-12 col-md-6 col-lg-5">
+		<div class="col-xs-12 col-sm-12 col-md-6 col-lg-5 col-lg-offset-2">
 			<!-- check if the user has this token (is the user authenticated with this social account) -->
 			<div class="well"> 
 				<h3 class="text-primary"><span class="fa fa-google"></span> Google</h3>
@@ -78,7 +81,7 @@
 			</div>
 		</div>
 
-		<div class="col-xs-12 col-sm-12 col-md-6 col-lg-5 col-lg-offset-2">
+		<div class="col-xs-12 col-sm-12 col-md-6 col-lg-5">
 			<!-- check if the user has this token (is the user authenticated with this social account) -->
 			<div class="well"> 
 				<h3 class="text-primary"><span class="fa fa-twitter"></span> Twitter</h3>
@@ -98,6 +101,25 @@
 			</div>
 		</div>
 
+		<div class="col-xs-12 col-sm-12 col-md-6 col-lg-5 col-lg-offset-2">
+			<!-- check if the user has this token (is the user authenticated with this social account) -->
+			<div class="well"> 
+				<h3 class="text-primary"><span class="fa fa-linkedin"></span> Linkedin</h3>
+
+				<div ng-if="vm.twitter.token.length > 0">
+					<p>
+						<strong>name</strong>: <br>
+						<strong>email</strong>: <br>
+						<strong>id</strong>: <br>
+					</p>
+
+					<a class="btn btn-primary" ng-href="">Unlink Linkedin</a>&nbsp;&nbsp;  
+				</div>
+				<div ng-if="vm.twitter.token.length === 0">
+					<a class="btn btn-primary" ng-href="">Connect Linkedin</a>&nbsp;&nbsp;  		
+				</div>
+			</div>
+		</div>
 	</div>
 
 	<footer-generic></footer-generic>

@@ -18,15 +18,18 @@ module.exports.register = function(req, res) {
   user.local.email = req.body.email;
   user.setPassword(req.body.password);
 
-  user.save(function(err) {
+  user.save(function(err, savedUser) {
     var token;
     if (err) {
       utils.sendJSONresponse(res, 404, err);
     } else {
       token = user.generateJwt();
-      utils.sendJSONresponse(res, 200, {
-        "token" : token
-      });
+      utils.sendJSONresponse(res, 200, 
+        JSON.stringify({ 
+          'token' : token,
+          'id' : savedUser._id
+        })
+      );
     }
   });
 };
@@ -47,9 +50,12 @@ module.exports.login = function(req, res) {
     }
     if(user){
       token = user.generateJwt();
-      utils.sendJSONresponse(res, 200, {
-        "token" : token
-      });
+      utils.sendJSONresponse(res, 200, 
+        JSON.stringify({ 
+          'token' : token,
+          'id' : user._id
+        })
+      );
     } else {
       utils.sendJSONresponse(res, 401, info);
     }

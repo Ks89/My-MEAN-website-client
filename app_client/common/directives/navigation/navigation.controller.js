@@ -13,7 +13,21 @@
     vm.isLoggedIn = authentication.isLoggedIn();
 
     //set the current user retrieving data from local
-    vm.currentUser = authentication.getLocalAuthCurrentUser();
+    var localToken = authentication.getToken('local');
+    if(vm.isLoggedIn && localToken) {
+      authentication.getUserById((JSON.parse(localToken)).id)
+      .success(function(data) {
+        console.log('Local user ');
+        console.log(data);
+        vm.currentUser = {
+          email : data.local.email,
+          name : data.local.name
+        };
+      })
+      .error(function(e) {
+        console.log(e);
+      });
+    };
 
     //set the current user retrieving data from 3auth
     if(authentication.isAuth3dLoggedIn()) {
