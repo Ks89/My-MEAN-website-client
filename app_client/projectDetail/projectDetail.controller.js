@@ -4,12 +4,16 @@
     .module('mySiteApp')
     .controller('projectDetailCtrl', projectDetailCtrl);
 
-  projectDetailCtrl.$inject = ['$routeParams', 'projectsData'];
-  function projectDetailCtrl ($routeParams, projectsData) {
+  projectDetailCtrl.$inject = ['$location', '$routeParams', 'projectsData'];
+  function projectDetailCtrl ($location, $routeParams, projectsData) {
     var vm = this;
     vm.projectid = $routeParams.projectid;
 
     vm.images = []; 
+
+    vm.scrollTo = function (destination) {
+      return $location.path() + '#' + destination;
+    };
 
     projectsData.projectById(vm.projectid)
       .success(function(data) {

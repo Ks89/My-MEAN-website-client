@@ -77,7 +77,7 @@
     <nav class="col-md-1 col-lg-2 bs-docs-sidebar">
       <ul id="sidebar" class="nav nav-stacked fixed">
             <li>
-                <a href="#Description">Description</a>
+                <a href="{{vm.scrollTo('Description')}}">Description</a>
             </li>
             <li>
                 <a href="#News">News</a>
@@ -107,10 +107,4 @@
   </div>
   <footer-generic></footer-generic>
 </div>
-
-<script>
-  $('body').scrollspy({
-    target: '.bs-docs-sidebar',
-    offset: 40
-  });
-</script>
+<!-- To be able to use the bs-docs-sidebar you must import bs-docs-sidebar in your index.html-->

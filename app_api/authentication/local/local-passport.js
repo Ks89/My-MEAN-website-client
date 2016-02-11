@@ -7,47 +7,40 @@ module.exports = function (userRef, passportRef) {
     passwordField : 'password',
     passReqToCallback : true
   },
-  function(req, email, password, done) {
+  function(req, username, password, done) {
     process.nextTick(function() {
-      userRef.findOne({ email: email }, function (err, user) {
+      userRef.findOne({ 'local.email': username }, function (err, user) {
         if (err) { 
           return done(err); 
         }
-        if (user) {
-          return done(null, false, 'Email already taken!');
-        } else {
-          // if there is no user with that email
-          // create the user
-          var newUser = new userRef();
 
-          // set the user's local credentials
-          newUser.local.email    = email;
-          newUser.local.password = newUser.setPassword(password);
-
-          // save the user
-          newUser.save(function(err) {
-              if (err)
-                  throw err;
-              return done(null, newUser);
-          });
+        if (!user || !user.validPassword(password)) {
+          return done(null, false, 'Incorrect username or password.');
         }
 
+        //if (user) {
+        // return done(null, false, 'Email already taken!');
+        //} else {
+          return done(null, user);
+        //}
+      //     // if there is no user with that email
+      //     // create the user
+      //     var newUser = new userRef();
 
+      //     // set the user's local credentials
+      //     newUser.local.email    = email;
+      //     newUser.local.password = newUser.setPassword(password);
 
-        // if (!user) {
-        //   return done(null, false, {
-        //     message: 'Incorrect username.'
-        //   });
-        // }
-        // if (!user.validPassword(password)) {
-        //   return done(null, false, {
-        //     message: 'Incorrect password.'
-        //   });
-        // }
-        // return done(null, user);
+      //     // save the user
+      //     newUser.save(function(err) {
+      //       if (err)
+      //         throw err;
+      //       return done(null, newUser);
+      //     });
+      //   }
       });
-    });
-  }));
+  });
+}));
 
-  return module;
+return module;
 }
