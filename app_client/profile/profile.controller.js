@@ -60,25 +60,10 @@
       email: ''
     };
 
-     //set the current user retrieving data from local
-    //if(vm.isLoggedIn) {
-    var localToken = authentication.getToken('local');
-    if(localToken) {
-      authentication.getUserById((JSON.parse(localToken)).id)
-      .success(function(data) {
-        console.log('Profile local user ');
-        console.log(data.local);
-        vm.local = {
-          email : data.local.email,
-          name : data.local.name
-        };
-      })
-      .error(function(e) {
-                console.log('Profile local user error ');
-
-        console.log(e);
-      });
-    };
+    authentication.getLocalUser()
+    .then(function(data) {
+      vm.local = data;
+    });
 
     function buildJsonUserData() {
       return {

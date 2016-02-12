@@ -3,8 +3,8 @@
   .module('mySiteApp')
   .service('authentication', authentication);
 
-  authentication.$inject = ['$http', '$window', '$cookies'];
-  function authentication ($http, $window, $cookies) {
+  authentication.$inject = ['$q', '$http', '$window', '$cookies'];
+  function authentication ($q, $http, $window, $cookies) {
 
     //----------------------------
     //--- local authentication ---
@@ -50,6 +50,34 @@
       return $http.get('/api/users/' + id);
     };
 
+    var getLocalUser = function() {
+      // create a new instance of deferred
+      var deferred = $q.defer();
+
+      var localToken = getToken('local');
+      if(localToken) {
+
+        getUserById((JSON.parse(localToken)).id)
+        .success(function(data) {
+          console.log('Profile local user ');
+          console.log(data.local);
+          var localData = {
+            email : data.local.email,
+            name : data.local.name
+          };
+          deferred.resolve(localData);
+        })
+        .error(function(e) {
+          console.log('Profile local user error ');
+          console.log(e);
+          deferred.reject({});
+        });
+      }
+
+      // return promise object
+      return deferred.promise;
+    }
+
 
    //---------------------------------------
    //--- local and 3dauth authentication ---
@@ -93,6 +121,7 @@
     };
     
     return {
+      getLocalUser : getLocalUser,
       getToken : getToken,
       saveToken : saveToken,
       getLocalAuthCurrentUser : getLocalAuthCurrentUser,
