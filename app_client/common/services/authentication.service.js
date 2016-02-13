@@ -21,33 +21,9 @@
       });
     };
 
-    //-----------------------------
-    //--- 3dauth authentication ---
-    //----------------------------
-    var getLocalAuthCurrentUser = function() {
-      if(isLoggedIn()){
-        var token = JSON.parse(getToken('local'));
-        console.log("User is logged in with token ");
-        console.log(token);
-        if(token) {
-          return getUserById(token.id);
-        };
-      } 
-    };
-
-    var isAuth3dLoggedIn = function() {
-      var token3dauth = getToken('3dauth');
-      console.log("User is logged in with token3dauth " + token3dauth);
-      if(token3dauth) {
-        return true;
-      } else {
-       return false;
-      }
-    };
-
-    //function to call the /users/:id REST API
-    var getUserById = function (id) {
-      return $http.get('/api/users/' + id);
+    var isAuthLocalLoggedIn = function(token) {
+      var payload = JSON.parse($window.atob(token.split('.')[1]));
+      return payload.exp > Date.now() / 1000;
     };
 
     var getLocalUser = function() {
@@ -78,10 +54,84 @@
       return deferred.promise;
     }
 
+    var getLocalAuthCurrentUser = function() {
+      if(isLoggedIn()){
+        var token = JSON.parse(getToken('local'));
+        console.log("User is logged in with token ");
+        console.log(token);
+        if(token) {
+          return getUserById(token.id);
+        };
+      } 
+    };
 
-   //---------------------------------------
-   //--- local and 3dauth authentication ---
-   //---------------------------------------
+    //-----------------------------
+    //--- 3dauth authentication ---
+    //-----------------------------
+    var isAuth3dLoggedIn = function() {
+      var token3dauth = getToken('3dauth');
+      console.log("User is logged in with token3dauth " + token3dauth);
+      if(token3dauth) {
+        return true;
+      } else {
+       return false;
+      }
+    };
+
+    var get3dAuthUser = function() {
+      // create a new instance of deferred
+      var deferred = $q.defer();
+
+      if(isAuth3dLoggedIn()) {
+        var token = getToken('3dauth');
+        var thirdauthData = '';
+        getUserById(token)
+        .success(function(data) {
+          if(data.github) {
+            thirdauthData = {
+              email : data.github.email,
+              name : data.github.displayName
+            }; 
+          }
+          if(data.google) {
+            thirdauthData = {
+              email : data.google.email,
+              name : data.google.name
+            }; 
+          }
+          if(data.facebook) {
+            thirdauthData = {
+              email : data.facebook.email,
+              name : data.facebook.name
+            }; 
+          }
+          if(data.twitter) {
+            thirdauthData = {
+              email : data.twitter.email,
+              name : data.twitter.name
+            }; 
+          }
+          deferred.resolve(thirdauthData);
+        })
+        .error(function (e) {
+          console.log(e);
+          deferred.reject({});
+        });
+      };
+
+      // return promise object
+      return deferred.promise;
+    };
+
+
+    //---------------------------------------
+    //--- local and 3dauth authentication ---
+    //---------------------------------------
+    //function to call the /users/:id REST API
+    var getUserById = function (id) {
+      return $http.get('/api/users/' + id);
+    };
+
     var logout = function() {
       removeToken('local');
       removeToken('3dauth');
@@ -90,12 +140,11 @@
     };
 
     var isLoggedIn = function() {
-      //local 
-      var token = getToken('local');
-      if(token) {
-        var payload = JSON.parse($window.atob(token.split('.')[1]));
-        return payload.exp > Date.now() / 1000;
-      } else {
+    //local 
+    var token = getToken('local');
+    if(token) {
+      return isAuthLocalLoggedIn(token);
+    } else {
         //3dauth
         return isAuth3dLoggedIn();
       }
@@ -110,7 +159,7 @@
     };
 
     //-----------------------------------
-    //--- private functions - not exposed
+    //--- others functions - not exposed
     //-----------------------------------
     function removeToken(key) {
       $window.localStorage.removeItem(key);
@@ -121,16 +170,17 @@
     };
     
     return {
-      getLocalUser : getLocalUser,
-      getToken : getToken,
-      saveToken : saveToken,
-      getLocalAuthCurrentUser : getLocalAuthCurrentUser,
-      getUserById : getUserById,
-      isLoggedIn : isLoggedIn,
-      isAuth3dLoggedIn : isAuth3dLoggedIn,
       register : register,
       login : login,
-      logout : logout
+      getLocalUser : getLocalUser,
+      getLocalAuthCurrentUser : getLocalAuthCurrentUser,
+      isAuth3dLoggedIn : isAuth3dLoggedIn,
+      get3dAuthUser : get3dAuthUser,
+      getUserById : getUserById,
+      logout : logout,
+      isLoggedIn : isLoggedIn,
+      getToken : getToken,
+      saveToken : saveToken
     };
   }
 })();
