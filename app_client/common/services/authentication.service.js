@@ -21,11 +21,6 @@
       });
     };
 
-    var isAuthLocalLoggedIn = function(token) {
-      var payload = JSON.parse($window.atob(token.split('.')[1]));
-      return payload.exp > Date.now() / 1000;
-    };
-
     var getLocalUser = function() {
       // create a new instance of deferred
       var deferred = $q.defer();
@@ -65,6 +60,11 @@
       } 
     };
 
+    function isAuthLocalLoggedIn(token) {
+      var payload = JSON.parse($window.atob(token.split('.')[1]));
+      return payload.exp > Date.now() / 1000;
+    };
+
     //-----------------------------
     //--- 3dauth authentication ---
     //-----------------------------
@@ -84,32 +84,20 @@
 
       if(isAuth3dLoggedIn()) {
         var token = getToken('3dauth');
-        var thirdauthData = '';
+        var thirdauthData = {};
         getUserById(token)
         .success(function(data) {
           if(data.github) {
-            thirdauthData = {
-              email : data.github.email,
-              name : data.github.displayName
-            }; 
+            thirdauthData = getThirdAuthData(data.github);
           }
           if(data.google) {
-            thirdauthData = {
-              email : data.google.email,
-              name : data.google.name
-            }; 
+            thirdauthData = getThirdAuthData(data.google); 
           }
           if(data.facebook) {
-            thirdauthData = {
-              email : data.facebook.email,
-              name : data.facebook.name
-            }; 
+            thirdauthData = getThirdAuthData(data.facebook);
           }
           if(data.twitter) {
-            thirdauthData = {
-              email : data.twitter.email,
-              name : data.twitter.name
-            }; 
+            thirdauthData = getThirdAuthData(data.twitter);
           }
           deferred.resolve(thirdauthData);
         })
@@ -123,6 +111,19 @@
       return deferred.promise;
     };
 
+    function getThirdAuthData(serviceData) {
+      if(serviceData.displayName) {
+        return { 
+          email : serviceData.email,
+          name : serviceData.displayName
+        }
+      } else {
+        return { 
+          email : serviceData.email,
+          name : serviceData.name
+        }
+      }
+    };
 
     //---------------------------------------
     //--- local and 3dauth authentication ---
@@ -164,7 +165,6 @@
     function removeToken(key) {
       $window.localStorage.removeItem(key);
     };
-
     function removeCookie(key) {
       $cookies.remove(key);
     };
