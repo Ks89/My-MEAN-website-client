@@ -77,7 +77,7 @@
     <nav class="col-md-1 col-lg-2 bs-docs-sidebar">
       <ul id="sidebar" class="nav nav-stacked fixed">
             <li>
-                <a href="{{vm.scrollTo('Description')}}">Description</a>
+                <a ng-click="vm.scrollTo('Description')" >Description</a>
             </li>
             <li>
                 <a href="#News">News</a>
@@ -87,19 +87,19 @@
                 </ul>
             </li>
             <li>
-                <a href="#Features">Features</a>
+                <a href="{{vm.location}}/#Features">Features</a>
             </li>
             <li>
-                <a href="#FutureExtensions">Future extensions</a>
+                <a href="/#FutureExtensions">Future extensions</a>
             </li>
             <li>
-                <a href="#Video">Video</a>
+                <a href="/#Video">Video</a>
             </li>
             <li>
-                <a href="#Images">Images</a>
+                <a ng-click="scrollTo('Images')">Images</a>
             </li>
             <li>
-                <a href="#License">License</a>
+                <a href="/#License">License</a>
             </li>
         </ul>
     </nav>
