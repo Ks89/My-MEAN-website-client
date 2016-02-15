@@ -23,16 +23,19 @@
     vm.google = buildJsonUserData();
     vm.facebook = buildJsonUserData();
     vm.twitter = buildJsonUserData();
+    vm.linkedin = buildJsonUserData();
     //connect REST path
     vm.facebookConnectOauthUrl = 'api/connect/facebook';
     vm.googleConnectOauthUrl = 'api/connect/google';
     vm.githubConnectOauthUrl = 'api/connect/github';
     vm.twitterConnectOauthUrl = 'api/connect/twitter';
+    vm.linkedinConnectOauthUrl = 'api/connect/linkedin';
     //unlink REST path
     vm.facebookUnlinkOauthUrl = 'api/unlink/facebook';
     vm.googleUnlinkOauthUrl = 'api/unlink/google';
     vm.githubUnlinkOauthUrl = 'api/unlink/github';
     vm.twitterUnlinkOauthUrl = 'api/unlink/twitter';
+    vm.linkedinUnlinkOauthUrl = 'api/unlink/linkedin';
     //3dparty authentication
     var userCookie = $cookies.get('userCookie');
     if(userCookie != null) {
@@ -48,6 +51,7 @@
         setObjectValues(data.facebook, vm.facebook);
         setObjectValues(data.google, vm.google);
         setObjectValues(data.twitter, vm.twitter);
+        setObjectValues(data.linkedin, vm.linkedin);
       })
       .error(function (e) {
         console.log(e);

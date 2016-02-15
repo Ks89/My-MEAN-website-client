@@ -113,10 +113,10 @@
 						<strong>id</strong>: <br>
 					</p>
 
-					<a class="btn btn-primary" ng-href="">Unlink Linkedin</a>&nbsp;&nbsp;  
+					<a class="btn btn-primary" ng-href="{{vm.linkedinUnlinkOauthUrl}}">Unlink Linkedin</a>&nbsp;&nbsp;  
 				</div>
 				<div ng-if="vm.twitter.token.length === 0">
-					<a class="btn btn-primary" ng-href="">Connect Linkedin</a>&nbsp;&nbsp;  		
+					<a class="btn btn-primary" ng-href="{{vm.linkedinConnectOauthUrl}}">Connect Linkedin</a>&nbsp;&nbsp;  		
 				</div>
 			</div>
 		</div>

@@ -1,25 +1,26 @@
 module.exports = function (userRef, passportRef) {
-  var FacebookStrategy = require('passport-facebook').Strategy;
+  
+  var LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
   var thirdpartyConfig = require('./3dpartyconfig');
 
   function updateUser (user, accessToken, profile) {
-    user.facebook.id = profile.id;
-    user.facebook.token = accessToken;
-    user.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName;
-    user.facebook.email = profile.emails[0].value; //get the first email
-    user.facebook.profileUrl = profile.profileUrl;
+    user.linkedin.id = profile.id;
+    user.linkedin.token = accessToken;
+    user.linkedin.name  = profile.name;
+    user.linkedin.email = profile.emails[0].value; //get the first email
+    user.linkedin.profileUrl = profile.profileUrl;
     return user;
-  }
 
-  passportRef.use(new FacebookStrategy({
-    clientID: thirdpartyConfig.facebook.clientID,
-    clientSecret: thirdpartyConfig.facebook.clientSecret,
-    callbackURL: thirdpartyConfig.facebook.callbackURL,
-    profileFields: ['id', 'email', 'gender', 'link', 'locale', 'name', 'timezone', 'updated_time', 'verified'],
-    passReqToCallback: true
-  },
+  passportRef.use(new LinkedInStrategy({
+    clientID: thirdpartyConfig.linkedin.clientID,
+    clientSecret: thirdpartyConfig.linkedin.clientSecret,
+    callbackURL: thirdpartyConfig.linkedin.callbackURL,
+    profileFields: ['id', 'first-name', 'last-name', 'email-address'],
+    passReqToCallback: true,
+    state: true,
+  }, 
   function(req, accessToken, refreshToken, profile, done) {
-    console.log("Facebook callback called");
+    console.log("LinkedIn callback called");
     
     console.log("reading cookies: ");
     console.log(req.cookies);
@@ -42,7 +43,7 @@ module.exports = function (userRef, passportRef) {
         });
       } else {
       if (!req.user) { //if the user is NOT already logged in    
-        userRef.findOne({ 'facebook.id': profile.id }, function (err, user) {
+        userRef.findOne({ 'linkein.id': profile.id }, function (err, user) {
           console.log("User.findOne...");
           if (err) { return done(err); }
 
@@ -50,7 +51,7 @@ module.exports = function (userRef, passportRef) {
             console.log("User found");
             // if there is a user id already but no token (user was linked at one point and then removed)
             // just add our token and profile information
-            if (!user.facebook.token) {
+            if (!user.linkein.token) {
               var user = updateUser(user, accessToken, profile);
               user.save(function(err) {
                 if (err) { throw err; }
@@ -80,6 +81,6 @@ module.exports = function (userRef, passportRef) {
     }); //end of process.nextTick
   } //end of function(...)
   ));//end of passport.use
-
+}
   return module;
 }

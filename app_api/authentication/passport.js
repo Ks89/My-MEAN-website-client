@@ -24,6 +24,8 @@ module.exports = function (passportRef) {
   require('./3dparty/google-passport')(User, passportRef);
   require('./3dparty/github-passport')(User, passportRef);
   require('./3dparty/twitter-passport')(User, passportRef);
+  require('./3dparty/linkedin-passport')(User, passportRef);
+
 
   return module;
 };

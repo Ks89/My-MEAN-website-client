@@ -26,8 +26,9 @@ module.exports = function (userRef, passportRef) {
 
     process.nextTick(function () {
       //check if the user is already logged in using the local authentication
-      var localUser = JSON.parse(req.cookies.localCookie);
-      if(localUser) {
+      var localCookie = req.cookies.localCookie;
+      if(localCookie) {
+        var localUser = JSON.parse(localCookie);
         //the user is already logged in
         userRef.findOne({ '_id': localUser._id }, function (err, user) {
           var userUpdated = updateUser(user, accessToken, profile);

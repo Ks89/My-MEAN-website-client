@@ -41,6 +41,12 @@ module.exports.connectGithub = passport.authorize('github', { scope: [ 'user:ema
 module.exports.connectGithubCallback = passport.authorize('github', connectRedirect);
 
 
+module.exports.authLinkedin = passport.authenticate('linkedin', { scope: ['r_basicprofile', 'r_emailaddress'] });
+module.exports.authLinkedinCallback = passport.authenticate('linkedin', redirectFailure);
+module.exports.connectLinkedin = passport.authorize('linkedin', { scope: ['r_basicprofile', 'r_emailaddress'] });
+module.exports.connectLinkedinCallback = passport.authorize('linkedin', connectRedirect);
+
+
 //----- functions used to manage the object "user" returned in req.user.servicename.token --------
 module.exports.callbackRedirectFacebook = function(req, res) { 
 	//console.log(req.session);
@@ -53,6 +59,9 @@ module.exports.callbackRedirectGithub = function(req, res) {
 	redirectToProfile(req.user._id, res);
 };
 module.exports.callbackRedirectTwitter = function(req, res) { 
+	redirectToProfile(req.user._id, res);
+};
+module.exports.callbackRedirectLinkedin = function(req, res) { 
 	redirectToProfile(req.user._id, res);
 };
 
@@ -94,6 +103,14 @@ module.exports.unlinkTwitter = function(req, res) {
 	console.log("User found to unlink: " + req.user);
 	var user = req.user;
 	user.twitter = undefined;
+    user.save(function(err) {
+        res.redirect('/profile');
+    });
+};
+module.exports.unlinkLinkedin = function(req, res) {
+	console.log("User found to unlink: " + req.user);
+	var user = req.user;
+	user.linkedin = undefined;
     user.save(function(err) {
         res.redirect('/profile');
     });

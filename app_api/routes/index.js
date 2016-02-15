@@ -47,6 +47,9 @@ router.get('/auth/facebook/callback', ctrlAuth3dParty.authFacebookCallback, ctrl
 router.get('/auth/twitter', ctrlAuth3dParty.authTwitter);
 router.get('/auth/twitter/callback', ctrlAuth3dParty.authTwitterCallback, ctrlAuth3dParty.callbackRedirectTwitter);
 
+router.get('/auth/linkedin', ctrlAuth3dParty.authLinkedin);
+router.get('/auth/linkedin/callback', ctrlAuth3dParty.authLinkedinCallback, ctrlAuth3dParty.callbackRedirectLinkedin);
+
 //-------------------authorize (already logged in/connecting other social account)-------------------
 // third party authorization
 router.get('/connect/github', ctrlAuth3dParty.connectGithub);
@@ -61,11 +64,15 @@ router.get('/connect/facebook/callback', ctrlAuth3dParty.connectFacebookCallback
 router.get('/connect/twitter', ctrlAuth3dParty.connectTwitter);
 router.get('/connect/twitter/callback', ctrlAuth3dParty.connectTwitterCallback);
 
+router.get('/connect/linkedin', ctrlAuth3dParty.connectLinkedin);
+router.get('/connect/linkedin/callback', ctrlAuth3dParty.connectLinkedinCallback);
+
 //add the unlinks
 router.get('/unlink/facebook', ctrlAuth3dParty.unlinkFacebook);
 router.get('/unlink/github', ctrlAuth3dParty.unlinkGithub);
 router.get('/unlink/google', ctrlAuth3dParty.unlinkGoogle);
 router.get('/unlink/twitter', ctrlAuth3dParty.unlinkTwitter);
+router.get('/unlink/linkedin', ctrlAuth3dParty.unlinkLinkedin);
 
 
 //TODO try to implement this adding:
