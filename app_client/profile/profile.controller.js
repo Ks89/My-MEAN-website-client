@@ -86,6 +86,8 @@
       name: '',
       email: ''
     };
+    //unlink REST path
+    vm.localUnlinkOauthUrl = 'api/unlink/local';
     //get local user
     authentication.getLocalUser()
     .then(function(data) {

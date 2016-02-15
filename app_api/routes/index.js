@@ -31,6 +31,8 @@ router.get('/users/:id', ctrlUser.usersReadOneById)
 // local authentication
 router.post('/register', ctrlAuthLocal.register);
 router.post('/login', ctrlAuthLocal.login);
+router.get('/unlink/local', ctrlAuthLocal.unlinkLocal);
+
 
 // third party anthentication
 router.get('/auth/github', ctrlAuth3dParty.authGithub);
@@ -60,7 +62,6 @@ router.get('/connect/twitter', ctrlAuth3dParty.connectTwitter);
 router.get('/connect/twitter/callback', ctrlAuth3dParty.connectTwitterCallback);
 
 //add the unlinks
-// facebook -------------------------------
 router.get('/unlink/facebook', ctrlAuth3dParty.unlinkFacebook);
 router.get('/unlink/github', ctrlAuth3dParty.unlinkGithub);
 router.get('/unlink/google', ctrlAuth3dParty.unlinkGoogle);

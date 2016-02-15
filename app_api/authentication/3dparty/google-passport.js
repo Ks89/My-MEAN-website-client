@@ -19,6 +19,19 @@ module.exports = function (userRef, passportRef) {
 	function(req, accessToken, refreshToken, profile, done) {
 		console.log("GitHub authentication called");
     	process.nextTick(function () {
+    		//check if the user is already logged in using the local authentication
+      	var localUser = JSON.parse(req.cookies.localCookie);
+      	if(localUser) {
+        	//the user is already logged in
+        	userRef.findOne({ '_id': localUser._id }, function (err, user) {
+	          var userUpdated = updateUser(user, accessToken, profile);
+	          console.log("updated localuser with 3dpartyauth");
+	          userUpdated.save(function(err) {
+	            if (err) { throw err; }
+	            return done(null, userUpdated);
+	          });
+        	});
+      	} else {
 	      	if (!req.user) { //check if the user is already logged in    
 	        	// find the user in the database based on their id
 		        userRef.findOne({ 'google.id' : profile.id }, function(err, user) {
@@ -55,6 +68,7 @@ module.exports = function (userRef, passportRef) {
 	            	return done(null, user);
 	          	});
 	        }
+	    }
     	}); //end of process.nextTick
   	} //end of function(...)
 	));//end of passport.use

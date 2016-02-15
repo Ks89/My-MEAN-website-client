@@ -28,6 +28,12 @@ module.exports.register = function(req, res) {
         utils.sendJSONresponse(res, 404, err);
       } else {
         token = user.generateJwt();
+
+        var myCookie = JSON.stringify(user);
+
+        res.cookie('localCookie', myCookie /*, { maxAge: 900000, httpOnly: true }*/);
+
+
         utils.sendJSONresponse(res, 200, 
           JSON.stringify({ 
             'token' : token,
@@ -67,4 +73,20 @@ module.exports.login = function(req, res) {
       utils.sendJSONresponse(res, 401, info);
     }
   })(req, res);
+};
+
+module.exports.unlinkLocal = function(req, res) {
+  console.log("User found to unlink: ");
+  console.log(req.cookies);
+  console.log(req.cookies.localCookie);
+  var localUser = JSON.parse(req.cookies.localCookie);
+  if(localUser) {
+    User.findOne({ '_id': localUser._id }, function (err, user) {
+      user.local = undefined;
+      user.save(function(err) {
+        res.clearCookie('localCookie');
+        res.redirect('/profile');
+      });
+    });
+  }
 };

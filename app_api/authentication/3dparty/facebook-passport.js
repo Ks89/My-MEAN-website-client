@@ -20,10 +20,27 @@ module.exports = function (userRef, passportRef) {
   },
   function(req, accessToken, refreshToken, profile, done) {
     console.log("Facebook callback called");
+    
+    console.log("reading cookies: ");
+    console.log(req.cookies);
 
     process.nextTick(function () {
       console.log(profile);
-      if (!req.user) { //check if the user is already logged in    
+
+      //check if the user is already logged in using the local authentication
+      var localUser = JSON.parse(req.cookies.localCookie);
+      if(localUser) {
+        //the user is already logged in
+        userRef.findOne({ '_id': localUser._id }, function (err, user) {
+          var userUpdated = updateUser(user, accessToken, profile);
+          console.log("updated localuser with 3dpartyauth");
+          userUpdated.save(function(err) {
+            if (err) { throw err; }
+            return done(null, userUpdated);
+          });
+        });
+      } else {
+      if (!req.user) { //if the user is NOT already logged in    
         userRef.findOne({ 'facebook.id': profile.id }, function (err, user) {
           console.log("User.findOne...");
           if (err) { return done(err); }
@@ -58,6 +75,7 @@ module.exports = function (userRef, passportRef) {
           return done(null, user);
         });
       }
+    }
     }); //end of process.nextTick
   } //end of function(...)
   ));//end of passport.use
