@@ -4,27 +4,26 @@
   .module('mySiteApp')
   .controller('projectDetailCtrl', projectDetailCtrl);
 
-  projectDetailCtrl.$inject = ['$location', '$routeParams', '$anchorScroll', 'projectsData'];
-  function projectDetailCtrl ($location, $routeParams, $anchorScroll, projectsData) {
+  projectDetailCtrl.$inject = ['$scope', '$location', '$routeParams', '$anchorScroll', 'projectsData'];
+  function projectDetailCtrl ($scope, $location, $routeParams, $anchorScroll, projectsData) {
     var vm = this;
     vm.projectid = $routeParams.projectid;
 
     vm.images = []; 
 
-    vm.location = $location.path();
+    // vm.scrollTo = function (destination) {
+    //    return $location.path() + '#' + destination;
+    // };
 
-    vm.scrollTo = function (destination) {
-       return $location.path() + '#' + destination;
-    };
-
-    // vm.scrollTo = function(id) {
-    //   var old = $location.hash();
-    //   $location.hash(id);
-    //   $anchorScroll();
-    //   $anchorScroll.yOffset = 50;
-    //   //reset to old to keep any additional routing logic from kicking in
-    //   $location.hash(old);
-    // }
+    //it's mandatory to use $scope, because it's called by bs-docs-sidebar.js
+    $scope.scrollTo = function(id) {
+      var old = $location.hash();
+      $location.hash(id);
+      $anchorScroll();
+      $anchorScroll.yOffset = 50;
+      //reset to old to keep any additional routing logic from kicking in
+      $location.hash(old);
+    }
 
     projectsData.projectById(vm.projectid)
     .success(function(data) {
