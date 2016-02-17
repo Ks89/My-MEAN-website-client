@@ -11,20 +11,20 @@
 
     vm.images = []; 
 
-    // vm.scrollTo = function (destination) {
-    //   return $location.path() + '#' + destination;
-    // };
+    vm.location = $location.path();
 
-    vm.scrollTo = function(id) {
-         var old = $location.hash();
-    $location.hash(id);
-    $anchorScroll();
-    //reset to old to keep any additional routing logic from kicking in
-    $location.hash(old);
-    
-      // $location.hash(id);
-      // $anchorScroll();
-    }
+    vm.scrollTo = function (destination) {
+       return $location.path() + '#' + destination;
+    };
+
+    // vm.scrollTo = function(id) {
+    //   var old = $location.hash();
+    //   $location.hash(id);
+    //   $anchorScroll();
+    //   $anchorScroll.yOffset = 50;
+    //   //reset to old to keep any additional routing logic from kicking in
+    //   $location.hash(old);
+    // }
 
     projectsData.projectById(vm.projectid)
     .success(function(data) {

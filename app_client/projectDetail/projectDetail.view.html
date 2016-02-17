@@ -74,32 +74,32 @@
 
 
     <!--Nav Bar -->
-    <nav class="col-md-1 col-lg-2 bs-docs-sidebar">
+    <nav class="col-md-1 col-lg-2 bs-docs-sidebar" id="scrollable">
       <ul id="sidebar" class="nav nav-stacked fixed">
             <li>
-                <a ng-click="vm.scrollTo('Description')" >Description</a>
+                <a href="#Description" onclick="return f1('-Description');" id="-Description" mytag="{{vm.scrollTo('Description')}}" >Description</a>
             </li>
             <li>
-                <a href="#News">News</a>
+                <a href="#News" onclick="return f1('-News');" id="-News" mytag="{{vm.scrollTo('News')}}">News</a>
                 <ul class="nav nav-stacked">
-                    <li><a href="#Changelog">Changelog</a></li>
-                    <li><a href="#Releases">Releases</a></li>
+                    <li><a href="#Changelog" onclick="return f1('-Changelog');" id="-Changelog"  mytag="{{vm.scrollTo('Changelog')}}">Changelog</a></li>
+                    <li><a href="#Releases" onclick="return f1('-Releases');" id="-Releases"  mytag="{{vm.scrollTo('Releases')}}">Releases</a></li>
                 </ul>
             </li>
             <li>
-                <a href="{{vm.location}}/#Features">Features</a>
+                <a href="#Features" onclick="return f1('-Features');" id="-Features"  mytag="{{vm.scrollTo('Features')}}">Features</a>
             </li>
             <li>
-                <a href="/#FutureExtensions">Future extensions</a>
+                <a href="#FutureExtensions" onclick="return f1('-FutureExtensions');" id="-FutureExtensions"  mytag="{{vm.scrollTo('FutureExtensions')}}">Future extensions</a>
             </li>
             <li>
-                <a href="/#Video">Video</a>
+                <a href="#Video" onclick="return f1('-Video');" id="-Video"  mytag="{{vm.scrollTo('Video')}}">Video</a>
             </li>
             <li>
-                <a ng-click="scrollTo('Images')">Images</a>
+                <a href="#Images" onclick="return f1('-Images');" id="-Images"  mytag="{{vm.scrollTo('Images')}}">Images</a>
             </li>
             <li>
-                <a href="/#License">License</a>
+                <a href="#License" onclick="return f1('-License');"  id="-License" mytag="{{vm.scrollTo('License')}}">License</a>
             </li>
         </ul>
     </nav>
@@ -107,4 +107,6 @@
   </div>
   <footer-generic></footer-generic>
 </div>
+
+
 <!-- To be able to use the bs-docs-sidebar you must import bs-docs-sidebar in your index.html-->
