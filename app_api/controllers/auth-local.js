@@ -125,8 +125,27 @@ module.exports.decodeToken = function(req, res) {
 
           console.log("decoding...");
           console.log(decoded);
+          var convertedDate = new Date();
+          convertedDate.setTime(decoded.exp);
+          var day = convertedDate.getDay();
+          var month = convertedDate.getMonth();
+          var year = convertedDate.getFullYear();
+          var hour = convertedDate.getHours();
+          var min = convertedDate.getMinutes();
+          var sec = convertedDate.getSeconds();
 
-          if(decoded.exp < new Date()) {
+          console.log("date jwt: " + convertedDate.getTime() + ", formatted: " + day + "/" + month + "/" + year + "/" + hour + ":" + min + ":" + sec);
+          
+          var date = new Date();
+          day = date.getDay();
+          month = date.getMonth();
+          year = date.getFullYear();
+          hour = date.getHours();
+          min = date.getMinutes();
+          sec = date.getSeconds();
+          console.log("date current: " + date.getTime() + ", formatted: " + day + "/" + month + "/" + year + "/" + hour + ":" + min + ":" + sec);
+
+          if( convertedDate.getTime() > date.getTime() ) {
             console.log("date valid");
             console.log("stringifying...");
             console.log(JSON.stringify(decoded));

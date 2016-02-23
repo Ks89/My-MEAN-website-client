@@ -54,13 +54,13 @@ userSchema.methods.validPassword = function(password) {
 userSchema.methods.generateJwt3dauth = function(user) {
   console.log("data received to generate jwt: " + user);
 
-  var expiry = new Date();
-  expiry.setDate(expiry.getDate() + 7);
+  var expiry = new Date(); 
+  expiry.setTime(expiry.getTime() + 600000); //valid for 10 minutes (10*60*1000)
 
   return jwt.sign({
     _id: this._id,
     user: user,
-    exp: parseInt(expiry.getTime() / 1000),
+    exp: parseFloat(expiry.getTime()),
   }, process.env.JWT_SECRET); // DO NOT KEEP YOUR SECRET IN THE CODE!
 };
 
@@ -68,13 +68,13 @@ userSchema.methods.generateJwt = function(email, name) {
   console.log("data received to generate jwt: " + email + ", " + name);
 
   var expiry = new Date();
-  expiry.setDate(expiry.getDate() + 7);
+  expiry.setTime(expiry.getTime() + 600000); //valid for 10 minutes (10*60*1000)
 
   return jwt.sign({
     _id: this._id,
     email: email,
     name: name,
-    exp: parseInt(expiry.getTime() / 1000),
+    exp: parseFloat(expiry.getTime()),
   }, process.env.JWT_SECRET); // DO NOT KEEP YOUR SECRET IN THE CODE!
 };
 
