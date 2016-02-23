@@ -14,7 +14,7 @@
 						<strong>name</strong>: {{ vm.local.name }}<br>
 						<strong>email</strong>: {{ vm.local.email }}<br>
 					</p>
-					<a class="btn btn-primary" ng-href="{{vm.localUnlinkOauthUrl}}">Logout Local</a>&nbsp;&nbsp;  
+					<a class="btn btn-primary" ng-click="vm.unlinkLocal()">Unlink Local</a>&nbsp;&nbsp;  
 				</div>
 				<div ng-if="vm.local.email.length === 0">
 					<a class="btn btn-primary" ng-href="">Login Local</a>&nbsp;&nbsp;  		

@@ -10,104 +10,146 @@
     //--- local authentication ---
     //----------------------------
     var register = function(user) {
-      return $http.post('/api/register', user).success(function(data){
-        saveToken('local', data);
+      return $http.post('/api/register', user)
+      .success(function (data) {
+        console.log('called register - success');
+        console.log(data.token);
+        saveToken('local', JSON.stringify(data.token));
+      })
+      .error(function (err) {
+        // Erase the token if the user fails to log in
+        console.log('called register - error');
+        removeToken('local');
       });
     };
 
+
     var login = function(user) {
-      return $http.post('/api/login', user).success(function(data) {
-        saveToken('local', data);
+      return $http.post('/api/login', user)
+      .success(function(data) {
+        saveToken('local', JSON.stringify(data.token));
       });
     };
 
     var getLocalUser = function() {
-      // create a new instance of deferred
+      console.log("reading token: ");
       var deferred = $q.defer();
+        
+      getUserByToken('local')
+      .success(function(data) {
+        console.log('getUserByToken user ');
+        var user = JSON.parse(data);
+        console.log('user:');
+        console.log(user);
+          //return getUserById(data.user._id);
+          if(user) {
+            var localData = {
+              email : user.email,
+              name : user.name
+            };
+            deferred.resolve(localData);
+          } else {
+            deferred.reject({});
+          }
+      })
+      .error(function(e) {
+        console.log('getUserByToken error ');
+        console.log(e);
+        deferred.reject(null);
+      });
 
-      var localToken = getToken('local');
-      if(localToken) {
-
-        getUserById((JSON.parse(localToken)).id)
-        .success(function(data) {
-          console.log('Profile local user ');
-          console.log(data.local);
-          var localData = {
-            email : data.local.email,
-            name : data.local.name
-          };
-          deferred.resolve(localData);
-        })
-        .error(function(e) {
-          console.log('Profile local user error ');
-          console.log(e);
-          deferred.reject({});
-        });
-      }
-
-      // return promise object
       return deferred.promise;
-    }
+    };
 
     var getLocalAuthCurrentUser = function() {
       if(isLoggedIn()){
-        var token = JSON.parse(getToken('local'));
-        console.log("User is logged in with token ");
-        console.log(token);
-        if(token) {
-          return getUserById(token.id);
-        };
-      } 
+        console.log('getLocalAuthCurrentUser');
+
+        var user = getUserByToken('local');
+        console.log("getLocalAuthCurrentUser: ");
+        console.log(user);
+        if(user) {
+          return user;
+        } else {
+          return null;
+        }
+      } else {
+        return null;
+      }
+    }
+
+    var unlinkLocal = function() {
+      removeToken('local');
+      return $http.get('/api/unlink/local');
     };
 
-    function isAuthLocalLoggedIn(token) {
-      var payload = JSON.parse($window.atob(token.split('.')[1]));
-      return payload.exp > Date.now() / 1000;
+    function isAuthLocalLoggedIn() {
+      var user = getUserByToken('local');
+      console.log("isAuthLocalLoggedIn: ");
+      console.log(user);
+      if(user) {
+        return true;
+      } else {
+        return false;
+      }
     };
+
 
     //-----------------------------
     //--- 3dauth authentication ---
     //-----------------------------
     var isAuth3dLoggedIn = function() {
-      var token3dauth = getToken('3dauth');
-      console.log("User is logged in with token3dauth " + token3dauth);
-      if(token3dauth) {
+      var user = getUserByToken('3dauth');
+      console.log("isAuth3dLoggedIn: ");
+      console.log(user);
+      if(user) {
         return true;
       } else {
-       return false;
+        return false;
       }
     };
 
     var get3dAuthUser = function() {
-      // create a new instance of deferred
-      var deferred = $q.defer();
-
       if(isAuth3dLoggedIn()) {
-        var token = getToken('3dauth');
-        var thirdauthData = {};
-        getUserById(token)
-        .success(function(data) {
-          if(data.github) {
-            thirdauthData = getThirdAuthData(data.github);
-          }
-          if(data.google) {
-            thirdauthData = getThirdAuthData(data.google); 
-          }
-          if(data.facebook) {
-            thirdauthData = getThirdAuthData(data.facebook);
-          }
-          if(data.twitter) {
-            thirdauthData = getThirdAuthData(data.twitter);
-          }
-          deferred.resolve(thirdauthData);
-        })
-        .error(function (e) {
-          console.log(e);
-          deferred.reject({});
-        });
-      };
 
-      // return promise object
+        var thirdauthData = {};
+
+        var deferred = $q.defer();
+        
+        getUserByToken('3dauth')
+        .success(function(data) {
+          console.log('get3dAuthUser user ');
+          var userData = JSON.parse(data);
+          console.log('userData:');
+          console.log(userData);
+          var user = userData.user;
+            //return getUserById(data.user._id);
+            if(user) {
+              if(user.github) {
+                thirdauthData = getThirdAuthData(user.github);
+              }
+              if(user.google) {
+                thirdauthData = getThirdAuthData(user.google); 
+              }
+              if(user.facebook) {
+                thirdauthData = getThirdAuthData(user.facebook);
+              }
+              if(user.twitter) {
+                thirdauthData = getThirdAuthData(user.twitter);
+              }   
+              deferred.resolve(thirdauthData);
+            } else {
+              deferred.reject({});
+            }
+        })
+        .error(function(e) {
+          console.log('get3dAuthUser error ');
+          console.log(e);
+          deferred.reject(null);
+        });
+      } else {
+        deferred.reject({});
+      }
       return deferred.promise;
     };
 
@@ -141,29 +183,37 @@
     };
 
     var isLoggedIn = function() {
-    //local 
-    var token = getToken('local');
-    if(token) {
-      return isAuthLocalLoggedIn(token);
-    } else {
-        //3dauth
-        return isAuth3dLoggedIn();
+      //local 
+      if(isAuthLocalLoggedIn()) { //TODO simplify this stupid function
+        return true;
       }
-    };
-
-    var getToken = function (key) {
-      return $window.localStorage[key];
+      //3dauth
+      return isAuth3dLoggedIn();
     };
 
     var saveToken = function (key, token) {
-      $window.localStorage[key] = token;
+      $window.sessionStorage[key] = token;
     };
+
+    var decodeJwtToken = function(jwtToken) {
+      return $http.get('/api/decodeToken/' + jwtToken);
+    }
 
     //-----------------------------------
     //--- others functions - not exposed
     //-----------------------------------
+    function getToken(key) {
+      return $window.sessionStorage[key];
+    };
+    function getUserByToken(key) {
+      var token = JSON.parse(getToken(key));
+      console.log("getUserByToken token ");
+      console.log(token);
+    
+      return decodeJwtToken(token);
+    };
     function removeToken(key) {
-      $window.localStorage.removeItem(key);
+      $window.sessionStorage.removeItem(key);
     };
     function removeCookie(key) {
       $cookies.remove(key);
@@ -174,13 +224,14 @@
       login : login,
       getLocalUser : getLocalUser,
       getLocalAuthCurrentUser : getLocalAuthCurrentUser,
+      unlinkLocal : unlinkLocal,
       isAuth3dLoggedIn : isAuth3dLoggedIn,
       get3dAuthUser : get3dAuthUser,
       getUserById : getUserById,
       logout : logout,
       isLoggedIn : isLoggedIn,
-      getToken : getToken,
-      saveToken : saveToken
+      saveToken : saveToken,
+      decodeJwtToken : decodeJwtToken
     };
   }
 })();

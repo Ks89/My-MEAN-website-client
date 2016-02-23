@@ -1,4 +1,6 @@
 var passport = require('passport');
+var mongoose = require('mongoose');
+var User = mongoose.model('User');
 
 //------------- INFORMATIONS -------------
 // GET /auth/****
@@ -50,25 +52,30 @@ module.exports.connectLinkedinCallback = passport.authorize('linkedin', connectR
 //----- functions used to manage the object "user" returned in req.user.servicename.token --------
 module.exports.callbackRedirectFacebook = function(req, res) { 
 	//console.log(req.session);
-	redirectToProfile(req.user._id, res);
+	redirectToProfile(req.user, res);
 };
 module.exports.callbackRedirectGoogle = function(req, res) { 
-	redirectToProfile(req.user._id, res);
+	redirectToProfile(req.user, res);
 };
 module.exports.callbackRedirectGithub = function(req, res) { 
-	redirectToProfile(req.user._id, res);
+	redirectToProfile(req.user, res);
 };
 module.exports.callbackRedirectTwitter = function(req, res) { 
-	redirectToProfile(req.user._id, res);
+	redirectToProfile(req.user, res);
 };
 module.exports.callbackRedirectLinkedin = function(req, res) { 
-	redirectToProfile(req.user._id, res);
+	redirectToProfile(req.user, res);
 };
 
-function redirectToProfile(_id, res) {
+function redirectToProfile(user, res) {
 	console.log("callbackRedirect called");
+
+	var token3dauth = user.generateJwt3dauth(user);
+	//req.session.token = JSON.stringify({ token : token3dauth });
+
 	var myCookie = JSON.stringify({ 
-		'value': _id
+		'value': user._id,
+		'token': token3dauth
 	});
 
 	res.cookie('userCookie', myCookie /*, { maxAge: 900000, httpOnly: true }*/);	
@@ -79,39 +86,39 @@ module.exports.unlinkFacebook = function(req, res) {
 	console.log("User found to unlink: " + req.user);
 	var user = req.user;
 	user.facebook = undefined;
-    user.save(function(err) {
-        res.redirect('/profile');
-    });
+	user.save(function(err) {
+		res.redirect('/profile');
+	});
 };
 module.exports.unlinkGithub = function(req, res) {
-console.log("User found to unlink: " + req.user);
+	console.log("User found to unlink: " + req.user);
 	var user = req.user;
 	user.github = undefined;
-    user.save(function(err) {
-        res.redirect('/profile');
-    });
+	user.save(function(err) {
+		res.redirect('/profile');
+	});
 };
 module.exports.unlinkGoogle = function(req, res) {
 	console.log("User found to unlink: " + req.user);
 	var user = req.user;
 	user.google = undefined;
-    user.save(function(err) {
-        res.redirect('/profile');
-    });
+	user.save(function(err) {
+		res.redirect('/profile');
+	});
 };
 module.exports.unlinkTwitter = function(req, res) {
 	console.log("User found to unlink: " + req.user);
 	var user = req.user;
 	user.twitter = undefined;
-    user.save(function(err) {
-        res.redirect('/profile');
-    });
+	user.save(function(err) {
+		res.redirect('/profile');
+	});
 };
 module.exports.unlinkLinkedin = function(req, res) {
 	console.log("User found to unlink: " + req.user);
 	var user = req.user;
 	user.linkedin = undefined;
-    user.save(function(err) {
-        res.redirect('/profile');
-    });
+	user.save(function(err) {
+		res.redirect('/profile');
+	});
 };

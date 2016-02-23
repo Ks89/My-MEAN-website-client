@@ -1,7 +1,7 @@
 (function () {
 	angular.module('mySiteApp', ['ngRoute', 'ngSanitize', 'ui.bootstrap', 'jkuri.gallery', 'ngCookies']);
 
-	function config ($routeProvider, $locationProvider) {
+	function config ($routeProvider, $locationProvider, $httpProvider) {
 		$routeProvider
 			.when('/', {
 				redirectTo: '/home'
@@ -61,10 +61,32 @@
 			requireBase: true,
 			rewriteLinks: false
 		});
+
+		$httpProvider.interceptors.push('authInterceptor'); //inject my authInterceptor.factory.js
 	}
 
 	angular
 		.module('mySiteApp')
-		.config(['$routeProvider', '$locationProvider', config]);
+		.config(['$routeProvider', '$locationProvider', '$httpProvider', config]);
 
 })();
+
+
+// .when('/profile/:token?', { 
+//           		templateUrl: '/profile/profile.view.html',
+//           		controller: 'profileCtrl',
+//           		controllerAs: 'vm',
+//           		resolve: {
+// 				    resolvedAuth: function( $q, authentication ) {
+// 				        var deferred = $q.defer();
+// 				        deferred.resolve({
+// 				        	isLogged: function( ) {
+// 				            	return authentication.isLoggedIn();
+// 				            }
+// 				        });
+// 				        return deferred.promise;
+// 				    }
+//           		}
+//           		// ,
+//           		// resolveAs: 'resolve'
+// 			})

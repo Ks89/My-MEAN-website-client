@@ -1,12 +1,6 @@
 var express = require('express');
 var app = express();
 var router = express.Router();
-var jwt = require('express-jwt');
-var auth = jwt({
-  secret: process.env.JWT_SECRET,
-  userProperty: 'payload'
-});
-
 
 var ctrlAuthLocal = require('../controllers/auth-local');
 var ctrlAuth3dParty = require('../controllers/auth-3dparty');
@@ -31,8 +25,8 @@ router.get('/users/:id', ctrlUser.usersReadOneById)
 // local authentication
 router.post('/register', ctrlAuthLocal.register);
 router.post('/login', ctrlAuthLocal.login);
-router.get('/unlink/local', ctrlAuthLocal.unlinkLocal);
 
+router.get('/decodeToken/:token', ctrlAuthLocal.decodeToken); //TODO move to a general place, and not into authlocal
 
 // third party anthentication
 router.get('/auth/github', ctrlAuth3dParty.authGithub);
@@ -67,24 +61,52 @@ router.get('/connect/twitter/callback', ctrlAuth3dParty.connectTwitterCallback);
 router.get('/connect/linkedin', ctrlAuth3dParty.connectLinkedin);
 router.get('/connect/linkedin/callback', ctrlAuth3dParty.connectLinkedinCallback);
 
+
+// ---------------------------------------------------------
+// route middleware to authenticate and check token
+// ---------------------------------------------------------
+// router.use(function(req, res, next) {
+
+// 	// check header or url parameters or post parameters for token
+// 	var token = req.body.token || req.query.token || req.headers['x-access-token'];
+// 	console.log('[api-auth] Verifying authentication for this api\'s request');
+// 	console.log(req);
+// 	// decode token
+// 	if (token) {
+// 		console.log(token);
+// 		console.log('[api-auth] Token found with: ' + process.env.JWT_SECRET);
+// 		// verifies secret and checks exp
+// 		jwt.verify(token, app.get(process.env.JWT_SECRET), function(err, decoded) {			
+// 			if (err) {
+// 				console.log('[api-auth] Error during verify process');
+// 				return res.json({ success: false, message: 'Failed to authenticate token.' });		
+// 			} else {
+// 				// if everything is good, save to request for use in other routes
+// 				console.log('[api-auth] OK');
+// 				req.decoded = decoded;	
+// 				next();
+// 			}
+// 		});
+
+// 	} else {
+// 		console.log('[api-auth] No token');
+// 		// if there is no token
+// 		// return an error
+// 		return res.status(403).send({ 
+// 			success: false, 
+// 			message: 'No token provided.'
+// 		});
+		
+// 	}
+	
+// });
+
 //add the unlinks
+router.get('/unlink/local', ctrlAuthLocal.unlinkLocal);
 router.get('/unlink/facebook', ctrlAuth3dParty.unlinkFacebook);
 router.get('/unlink/github', ctrlAuth3dParty.unlinkGithub);
 router.get('/unlink/google', ctrlAuth3dParty.unlinkGoogle);
 router.get('/unlink/twitter', ctrlAuth3dParty.unlinkTwitter);
 router.get('/unlink/linkedin', ctrlAuth3dParty.unlinkLinkedin);
-
-
-//TODO try to implement this adding:
-//router.***('..' , isLoggedIn , ....)
-// route middleware to make sure a user is logged in
-// function isLoggedIn(req, res, next) {
-//     // if user is authenticated in the session, carry on 
-//     if (req.isAuthenticated())
-//         return next();
-//     // if they aren't redirect them to the home page
-//     res.redirect('/');
-// }
-
 
 module.exports = router;

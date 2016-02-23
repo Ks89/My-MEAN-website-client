@@ -16,12 +16,15 @@
     //---------------------------local--------------------------
     authentication.getLocalUser()
     .then(function(data) {
+      console.log("Navigation conttroller localuser:");
+      console.log(data);
       vm.currentUser = data;
     });
 
     //--------------------------3dauth--------------------------
     authentication.get3dAuthUser()
     .then(function(data) {
+      console.log("Navigation conttroller 3dauthuser:");
       vm.currentUser = data;
     });
 

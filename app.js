@@ -8,6 +8,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var bodyParser = require('body-parser');
+// var staticAsset = require('static-asset');
 
 //uglify
 var uglifyJs = require("uglify-js");
@@ -33,6 +34,7 @@ var appClientFiles = [
   'app_client/auth/login/login.controller.js',
   'app_client/auth/register/register.controller.js',
   'app_client/common/factories/underscore.factory.js',
+  'app_client/common/factories/authInterceptor.factory.js',
   'app_client/common/services/authentication.service.js',
   'app_client/common/services/contactData.service.js',
   'app_client/common/services/projectsData.service.js',
@@ -55,6 +57,8 @@ fs.writeFile('public/angular/mysite.min.js', uglified.code, function (err){
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
+// app.use(staticAsset(path.join(__dirname, 'public')));
+// app.use(staticAsset(path.join(__dirname, 'app_client')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'app_client')));
 app.use(cookieParser('keyboard cat'));

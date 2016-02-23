@@ -3,8 +3,8 @@
   .module('mySiteApp')
   .controller('profileCtrl', profileCtrl);
 
-  profileCtrl.$inject = ['$routeParams','authentication', '$cookies'];
-  function profileCtrl($routeParams, authentication, $cookies) {
+  profileCtrl.$inject = ['$routeParams','authentication', '$cookies', '$window'];
+  function profileCtrl($routeParams, authentication, $cookies, $window) {
     var vm = this;
     vm.pageHeader = {
       title: 'Profile',
@@ -14,6 +14,12 @@
       content: "Profile page"
     };
     vm.message = "Profile page";
+
+    // vm.isAuthenticated = resolvedAuth.isLogged();
+
+    // if(vm.isAuthenticated) {
+    //   $window.location.href = '/';
+    // }
 
     //----------------------------------------------------------
     //--------------------------3dauth--------------------------
@@ -37,21 +43,35 @@
     vm.twitterUnlinkOauthUrl = 'api/unlink/twitter';
     vm.linkedinUnlinkOauthUrl = 'api/unlink/linkedin';
     //3dparty authentication
+
+    //req.session.token = JSON.stringify({ token : token3dauth });
+
+
     var userCookie = $cookies.get('userCookie');
     if(userCookie != null) {
       var jsonCookie = JSON.parse(userCookie);
-      console.log('User cookie is: ' + jsonCookie.value);
-      
-      //necessary for the navigation bar
-      authentication.saveToken('3dauth', jsonCookie.value);
+      var auth3dtoken = jsonCookie.token;
 
-      authentication.getUserById(jsonCookie.value)
+      console.log('User cookie has value: ' + jsonCookie.value);
+      console.log('User cookie has token: ' + auth3dtoken);
+
+      //necessary for the navigation bar
+      authentication.saveToken('3dauth', JSON.stringify(auth3dtoken));
+
+      // authentication.getUserById(payload._id)
+      // .success(function(data) {
+      authentication.decodeJwtToken(auth3dtoken)
       .success(function(data) {
-        setObjectValuesGithub(data.github, vm.github);
-        setObjectValues(data.facebook, vm.facebook);
-        setObjectValues(data.google, vm.google);
-        setObjectValues(data.twitter, vm.twitter);
-        setObjectValues(data.linkedin, vm.linkedin);
+        console.log("decoded: ");
+        var user = JSON.parse(data);
+        console.log(user);
+        if(user) {
+          setObjectValuesGithub(user.user.github, vm.github);
+          setObjectValues(user.user.facebook, vm.facebook);
+          setObjectValues(user.user.google, vm.google);
+          setObjectValues(user.user.twitter, vm.twitter);
+          setObjectValues(user.user.linkedin, vm.linkedin);
+        }
       })
       .error(function (e) {
         console.log(e);
@@ -95,7 +115,19 @@
     //get local user
     authentication.getLocalUser()
     .then(function(data) {
+      console.log(data);
       vm.local = data;
     });
+
+    vm.unlinkLocal = function() {
+      authentication.unlinkLocal()
+      .then(function(data) {
+        console.log('unlinklocal finished ');
+      vm.local = {
+        name: '',
+        email: ''
+      };
+    });
+    }
   }
 })();

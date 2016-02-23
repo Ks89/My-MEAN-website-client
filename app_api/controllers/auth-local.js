@@ -6,6 +6,7 @@ var Utils = require('../utils/util.js');
 var utils = new Utils();
 
 module.exports.register = function(req, res) {
+  console.log('called register server side');
   if(!req.body.name || !req.body.email || !req.body.password) {
     utils.sendJSONresponse(res, 400, "All fields required");
     return;
@@ -27,19 +28,23 @@ module.exports.register = function(req, res) {
       if (err) {
         utils.sendJSONresponse(res, 404, err);
       } else {
-        token = user.generateJwt();
+        console.log("USER: "); 
+      console.log(savedUser);
+        token = savedUser.generateJwt(user.local.email, user.local.name);
 
-        var myCookie = JSON.stringify(user);
+        // var myCookie = JSON.stringify(user);
 
-        res.cookie('localCookie', myCookie /*, { maxAge: 900000, httpOnly: true }*/);
+        // res.cookie('localCookie', myCookie /*, { maxAge: 900000, httpOnly: true }*/);
+        res.status(200);
+        // res.contentType('application/json');
+        res.json({ token : token });
 
-
-        utils.sendJSONresponse(res, 200, 
-          JSON.stringify({ 
-            'token' : token,
-            'id' : savedUser._id
-          })
-          );
+        // utils.sendJSONresponse(res, 200, 
+        //   JSON.stringify({ 
+        //     'token' : token,
+        //     'id' : savedUser._id
+        //   })
+        //   );
       }
     });
   });
@@ -62,13 +67,23 @@ module.exports.login = function(req, res) {
       return;
     }
     if(user){
-      token = user.generateJwt();
-      utils.sendJSONresponse(res, 200, 
-        JSON.stringify({ 
-          'token' : token,
-          'id' : user._id
-        })
-        );
+
+      console.log("USER: "); 
+      console.log(user);
+      token = user.generateJwt(user.local.email, user.local.name);
+
+      // var myCookie = JSON.stringify(user);
+
+      //   res.cookie('localCookie', myCookie /*, { maxAge: 900000, httpOnly: true }*/);
+      // utils.sendJSONresponse(res, 200, 
+      //   JSON.stringify({ 
+      //     'token' : token,
+      //     'id' : user._id
+      //   })
+      //   );
+
+      res.json({ token: token });
+
     } else {
       utils.sendJSONresponse(res, 401, info);
     }
@@ -88,5 +103,42 @@ module.exports.unlinkLocal = function(req, res) {
         res.redirect('/profile');
       });
     });
+  }
+};
+
+    var jwt = require('jsonwebtoken');
+
+
+module.exports.decodeToken = function(req, res) {
+  console.log('devocetoken', req.params);
+  if (req.params && req.params.token) {
+    
+    var token = req.params.token;
+
+      console.log("data received jwt: " + token);
+
+        // verify a token symmetric
+        jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
+          if(err) {
+            return null;
+          } 
+
+          console.log("decoding...");
+          console.log(decoded);
+
+          if(decoded.exp < new Date()) {
+            console.log("date valid");
+            console.log("stringifying...");
+            console.log(JSON.stringify(decoded));
+            utils.sendJSONresponse(res, 200, JSON.stringify(decoded));
+          } else {
+            console.log('No data valid');
+            utils.sendJSONresponse(res, 404, null);
+          }
+        });
+
+  } else {
+    console.log('No token');
+    utils.sendJSONresponse(res, 404, null);
   }
 };
