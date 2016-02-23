@@ -11,14 +11,26 @@
     vm.currentPath = $location.path();
 
     //used to show or hide links and buttons into the navigation bar
-    vm.isLoggedIn = authentication.isLoggedIn();
+    
+    authentication.isLoggedIn()
+    .then(function(result) {
+        console.log('Nav isLoggedIn local  Success: ' + result);
+        vm.isLoggedIn =  result;
+      }, function(reason) {
+        console.log('Nav isLoggedIn local  Failed: ' + reason);
+        vm.isLoggedIn =  false;
+      });
 
     //---------------------------local--------------------------
     authentication.getLocalUser()
     .then(function(data) {
-      console.log("Navigation conttroller localuser:");
-      console.log(data);
-      vm.currentUser = data;
+      console.log("authentication.getLocalUser()");
+      if(data) {
+        console.log(data);
+        vm.currentUser = data;
+      } else {
+        console.log("Navigation called authentication.getLocalUser() but data was null");
+      }
     });
 
     //--------------------------3dauth--------------------------

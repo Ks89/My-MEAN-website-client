@@ -84,14 +84,29 @@
     };
 
     function isAuthLocalLoggedIn() {
-      var user = getUserByToken('local');
-      console.log("isAuthLocalLoggedIn: ");
-      console.log(user);
-      if(user) {
-        return true;
-      } else {
-        return false;
-      }
+      console.log("reading token: ");
+      var deferred = $q.defer();
+        
+      getUserByToken('local')
+      .success(function(data) {
+        console.log('isAuthLocalLoggedIn user ');
+        var user = JSON.parse(data);
+        console.log('user:');
+        console.log(user);
+          //return getUserById(data.user._id);
+          if(user) {
+            deferred.resolve(true);
+          } else {
+            deferred.reject(false);
+          }
+      })
+      .error(function(e) {
+        console.log('isAuthLocalLoggedIn error ');
+        console.log(e);
+        deferred.reject(false);
+      });
+
+      return deferred.promise;
     };
 
 
@@ -99,14 +114,29 @@
     //--- 3dauth authentication ---
     //-----------------------------
     var isAuth3dLoggedIn = function() {
-      var user = getUserByToken('3dauth');
-      console.log("isAuth3dLoggedIn: ");
-      console.log(user);
-      if(user) {
-        return true;
-      } else {
-        return false;
-      }
+      console.log("reading 3dauth: ");
+      var deferred = $q.defer();
+        
+      getUserByToken('3dauth')
+      .success(function(data) {
+        console.log('isAuth3dLoggedIn user ');
+        var user = JSON.parse(data);
+        console.log('user:');
+        console.log(user);
+          //return getUserById(data.user._id);
+          if(user) {
+            deferred.resolve(true);
+          } else {
+            deferred.reject(false);
+          }
+      })
+      .error(function(e) {
+        console.log('isAuth3dLoggedIn error ');
+        console.log(e);
+        deferred.reject(false);
+      });
+
+      return deferred.promise;
     };
 
     var get3dAuthUser = function() {
@@ -184,11 +214,24 @@
 
     var isLoggedIn = function() {
       //local 
-      if(isAuthLocalLoggedIn()) { //TODO simplify this stupid function
-        return true;
-      }
-      //3dauth
-      return isAuth3dLoggedIn();
+      return isAuthLocalLoggedIn();
+      // .then(function(result) {
+      //   console.log('isLoggedIn local  Success: ' + result);
+      //   return result;
+      // }, function(reason) {
+      //   console.log('isLoggedIn local  Failed: ' + reason);
+      //   return false;
+      // });
+
+      //3dauth TODO uncomment and fix this
+      // isAuth3dLoggedIn()
+      // .then(function(result) {
+      //   console.log('isLoggedIn 3dauth  Success: ' + result);
+      //   return result;
+      // }, function(reason) {
+      //   console.log('isLoggedIn 3dauth  Failed: ' + reason);
+      //   return false;
+      // });
     };
 
     var saveToken = function (key, token) {
@@ -206,11 +249,17 @@
       return $window.sessionStorage[key];
     };
     function getUserByToken(key) {
-      var token = JSON.parse(getToken(key));
-      console.log("getUserByToken token ");
-      console.log(token);
-    
-      return decodeJwtToken(token);
+      console.log("getUserByToken");
+      var sessionToken = getToken(key); 
+      if(sessionToken) {
+        console.log("getUserByToken sessionToken");
+        var token = JSON.parse(sessionToken);
+        console.log("getUserByToken token ");
+        console.log(token);
+        return decodeJwtToken(token);
+      } else {
+        return decodeJwtToken();
+      }
     };
     function removeToken(key) {
       $window.sessionStorage.removeItem(key);

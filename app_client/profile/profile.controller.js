@@ -62,15 +62,19 @@
       // .success(function(data) {
       authentication.decodeJwtToken(auth3dtoken)
       .success(function(data) {
-        console.log("decoded: ");
-        var user = JSON.parse(data);
-        console.log(user);
-        if(user) {
-          setObjectValuesGithub(user.user.github, vm.github);
-          setObjectValues(user.user.facebook, vm.facebook);
-          setObjectValues(user.user.google, vm.google);
-          setObjectValues(user.user.twitter, vm.twitter);
-          setObjectValues(user.user.linkedin, vm.linkedin);
+        console.log("Profile called decodeJwtToken");
+        if(data) {
+          var user = JSON.parse(data);
+          console.log(user);
+          if(user) {
+            setObjectValuesGithub(user.user.github, vm.github);
+            setObjectValues(user.user.facebook, vm.facebook);
+            setObjectValues(user.user.google, vm.google);
+            setObjectValues(user.user.twitter, vm.twitter);
+            setObjectValues(user.user.linkedin, vm.linkedin);
+          }
+        } else {
+          console.log("Profile called decodeJwtToken but data was null");
         }
       })
       .error(function (e) {
@@ -115,19 +119,23 @@
     //get local user
     authentication.getLocalUser()
     .then(function(data) {
-      console.log(data);
-      vm.local = data;
+      if(data) {
+        console.log(data);
+        vm.local = data;
+      } else {
+        console.log("Profile called authentication.getLocalUser() but data was null");
+      }
     });
 
     vm.unlinkLocal = function() {
       authentication.unlinkLocal()
       .then(function(data) {
         console.log('unlinklocal finished ');
-      vm.local = {
-        name: '',
-        email: ''
-      };
-    });
+        vm.local = {
+          name: '',
+          email: ''
+        };
+      });
     }
   }
 })();
