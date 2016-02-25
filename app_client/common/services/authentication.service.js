@@ -38,6 +38,12 @@
       getUserByToken('local')
       .success(function(data) {
         console.log('getUserByToken user ');
+
+        if(data!=null && data=='invalid-data') {
+            removeToken('local');
+            deferred.reject(null);
+          }
+
         var user = JSON.parse(data);
         console.log('user:');
         console.log(user);
@@ -49,12 +55,14 @@
             };
             deferred.resolve(localData);
           } else {
+            removeToken('local');
             deferred.reject({});
           }
       })
       .error(function(e) {
         console.log('getUserByToken error ');
         console.log(e);
+        removeToken('local');
         deferred.reject(null);
       });
 
@@ -149,6 +157,13 @@
         getUserByToken('3dauth')
         .success(function(data) {
           console.log('get3dAuthUser user ');
+
+          if(data!=null && data=='invalid-data') {
+            removeToken('3dauth');
+            removeCookie('userCookie');
+            deferred.reject(null);
+          }
+
           var userData = JSON.parse(data);
           console.log('userData:');
           console.log(userData);
@@ -175,9 +190,13 @@
         .error(function(e) {
           console.log('get3dAuthUser error ');
           console.log(e);
+          removeToken('3dauth');
+          removeCookie('userCookie');
           deferred.reject(null);
         });
       } else {
+        removeToken('3dauth');
+        removeCookie('userCookie');
         deferred.reject({});
       }
       return deferred.promise;

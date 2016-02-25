@@ -153,7 +153,7 @@ module.exports.decodeToken = function(req, res) {
               utils.sendJSONresponse(res, 200, JSON.stringify(decoded));
             } else {
               console.log('No data valid');
-              utils.sendJSONresponse(res, 404, null);
+              utils.sendJSONresponse(res, 404, "invalid-data");
             }
           }
         });

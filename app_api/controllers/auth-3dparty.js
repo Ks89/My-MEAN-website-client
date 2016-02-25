@@ -87,6 +87,13 @@ module.exports.unlinkFacebook = function(req, res) {
 	var user = req.user;
 	user.facebook = undefined;
 	user.save(function(err) {
+		//here i should call redirectToProfile(...) to prevent this code duplication
+		var token3dauth = user.generateJwt3dauth(user);
+		var myCookie = JSON.stringify({ 
+			'value': user._id,
+			'token': token3dauth
+		});
+		res.cookie('userCookie', myCookie /*, { maxAge: 900000, httpOnly: true }*/);	
 		res.redirect('/profile');
 	});
 };
@@ -95,6 +102,12 @@ module.exports.unlinkGithub = function(req, res) {
 	var user = req.user;
 	user.github = undefined;
 	user.save(function(err) {
+		var token3dauth = user.generateJwt3dauth(user);
+		var myCookie = JSON.stringify({ 
+			'value': user._id,
+			'token': token3dauth
+		});
+		res.cookie('userCookie', myCookie /*, { maxAge: 900000, httpOnly: true }*/);	
 		res.redirect('/profile');
 	});
 };
@@ -103,6 +116,12 @@ module.exports.unlinkGoogle = function(req, res) {
 	var user = req.user;
 	user.google = undefined;
 	user.save(function(err) {
+		var token3dauth = user.generateJwt3dauth(user);
+		var myCookie = JSON.stringify({ 
+			'value': user._id,
+			'token': token3dauth
+		});
+		res.cookie('userCookie', myCookie /*, { maxAge: 900000, httpOnly: true }*/);	
 		res.redirect('/profile');
 	});
 };
@@ -111,6 +130,12 @@ module.exports.unlinkTwitter = function(req, res) {
 	var user = req.user;
 	user.twitter = undefined;
 	user.save(function(err) {
+		var token3dauth = user.generateJwt3dauth(user);
+		var myCookie = JSON.stringify({ 
+			'value': user._id,
+			'token': token3dauth
+		});
+		res.cookie('userCookie', myCookie /*, { maxAge: 900000, httpOnly: true }*/);	
 		res.redirect('/profile');
 	});
 };
@@ -119,6 +144,12 @@ module.exports.unlinkLinkedin = function(req, res) {
 	var user = req.user;
 	user.linkedin = undefined;
 	user.save(function(err) {
+		var token3dauth = user.generateJwt3dauth(user);
+		var myCookie = JSON.stringify({ 
+			'value': user._id,
+			'token': token3dauth
+		});
+		res.cookie('userCookie', myCookie /*, { maxAge: 900000, httpOnly: true }*/);	
 		res.redirect('/profile');
 	});
 };
