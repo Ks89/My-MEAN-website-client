@@ -17,6 +17,7 @@ module.exports = function (userRef, passportRef) {
         if (!user || !user.validPassword(password)) {
           return done(null, false, 'Incorrect username or password.');
         }
+
         return done(null, user);
       });
     });

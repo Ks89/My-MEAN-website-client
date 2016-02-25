@@ -18,7 +18,7 @@ module.exports = function (userRef, passportRef) {
 		passReqToCallback : true
 	},
 	function(token, tokenSecret, profile, done) {
-		console.log("Twitter authentication called");
+		console.log("---------->Twitter authentication called");
 		process.nextTick(function () {
 			console.log(profile);
 			userRef.findOne({ 'twitter.id': profile.id }, function (err, user) {

@@ -70,16 +70,7 @@ module.exports.callbackRedirectLinkedin = function(req, res) {
 function redirectToProfile(user, res) {
 	console.log("callbackRedirect called");
 
-	var token3dauth = user.generateJwt3dauth(user);
-	//req.session.token = JSON.stringify({ token : token3dauth });
-
-	var myCookie = JSON.stringify({ 
-		'value': user._id,
-		'token': token3dauth
-	});
-
-	res.cookie('userCookie', myCookie /*, { maxAge: 900000, httpOnly: true }*/);	
-	res.redirect('/profile');
+	redirectToProfile(user, res);
 };
 
 module.exports.unlinkFacebook = function(req, res) {
@@ -88,13 +79,7 @@ module.exports.unlinkFacebook = function(req, res) {
 	user.facebook = undefined;
 	user.save(function(err) {
 		//here i should call redirectToProfile(...) to prevent this code duplication
-		var token3dauth = user.generateJwt3dauth(user);
-		var myCookie = JSON.stringify({ 
-			'value': user._id,
-			'token': token3dauth
-		});
-		res.cookie('userCookie', myCookie /*, { maxAge: 900000, httpOnly: true }*/);	
-		res.redirect('/profile');
+		redirectToProfile(user, res);
 	});
 };
 module.exports.unlinkGithub = function(req, res) {
@@ -102,13 +87,7 @@ module.exports.unlinkGithub = function(req, res) {
 	var user = req.user;
 	user.github = undefined;
 	user.save(function(err) {
-		var token3dauth = user.generateJwt3dauth(user);
-		var myCookie = JSON.stringify({ 
-			'value': user._id,
-			'token': token3dauth
-		});
-		res.cookie('userCookie', myCookie /*, { maxAge: 900000, httpOnly: true }*/);	
-		res.redirect('/profile');
+		redirectToProfile(user, res);
 	});
 };
 module.exports.unlinkGoogle = function(req, res) {
@@ -116,13 +95,7 @@ module.exports.unlinkGoogle = function(req, res) {
 	var user = req.user;
 	user.google = undefined;
 	user.save(function(err) {
-		var token3dauth = user.generateJwt3dauth(user);
-		var myCookie = JSON.stringify({ 
-			'value': user._id,
-			'token': token3dauth
-		});
-		res.cookie('userCookie', myCookie /*, { maxAge: 900000, httpOnly: true }*/);	
-		res.redirect('/profile');
+		redirectToProfile(user, res);
 	});
 };
 module.exports.unlinkTwitter = function(req, res) {
@@ -130,13 +103,7 @@ module.exports.unlinkTwitter = function(req, res) {
 	var user = req.user;
 	user.twitter = undefined;
 	user.save(function(err) {
-		var token3dauth = user.generateJwt3dauth(user);
-		var myCookie = JSON.stringify({ 
-			'value': user._id,
-			'token': token3dauth
-		});
-		res.cookie('userCookie', myCookie /*, { maxAge: 900000, httpOnly: true }*/);	
-		res.redirect('/profile');
+		redirectToProfile(user, res);
 	});
 };
 module.exports.unlinkLinkedin = function(req, res) {
@@ -144,12 +111,21 @@ module.exports.unlinkLinkedin = function(req, res) {
 	var user = req.user;
 	user.linkedin = undefined;
 	user.save(function(err) {
-		var token3dauth = user.generateJwt3dauth(user);
-		var myCookie = JSON.stringify({ 
-			'value': user._id,
-			'token': token3dauth
-		});
-		res.cookie('userCookie', myCookie /*, { maxAge: 900000, httpOnly: true }*/);	
-		res.redirect('/profile');
+		redirectToProfile(user, res);
 	});
+};
+
+function redirectToProfile(user, res) {
+	var cookie = get3dAuthCookie(user);
+	res.cookie('userCookie', cookie /*, { maxAge: 900000, httpOnly: true }*/);	
+	res.redirect('/profile');
+}
+
+function get3dAuthCookie(user) {
+	var token3dauth = user.generateJwt3dauth(user);
+	var myCookie = JSON.stringify({ 
+		'value': user._id,
+		'token': token3dauth
+	});
+	return myCookie;
 };

@@ -31,12 +31,14 @@ module.exports.register = function(req, res) {
       } else {
         console.log("USER: "); 
         console.log(savedUser);
-        token = savedUser.generateJwt(user.local.email, user.local.name);
+        token = savedUser.generateJwt(savedUser);
 
         // var myCookie = JSON.stringify(user);
+        req.session.localUserId = savedUser._id;
 
         // res.cookie('localCookie', myCookie /*, { maxAge: 900000, httpOnly: true }*/);
         res.status(200);
+
         // res.contentType('application/json');
         res.json({ token : token });
 
@@ -71,7 +73,7 @@ module.exports.login = function(req, res) {
 
       console.log("USER: "); 
       console.log(user);
-      token = user.generateJwt(user.local.email, user.local.name);
+      token = user.generateJwt(user);
 
       // var myCookie = JSON.stringify(user);
 
@@ -82,7 +84,9 @@ module.exports.login = function(req, res) {
       //     'id' : user._id
       //   })
       //   );
+      req.session.localUserId = user._id;
 
+      res.status(200);
       res.json({ token: token });
 
     } else {

@@ -19,18 +19,14 @@ module.exports = function (userRef, passportRef) {
     passReqToCallback: true
   },
   function(req, accessToken, refreshToken, profile, done) {
-    console.log("GitHub authentication called");
-
-    console.log("reading cookies: ");
-    console.log(req.cookies);
+    console.log("---------->GitHub authentication called");
 
     process.nextTick(function () {
       //check if the user is already logged in using the local authentication
-      var localCookie = req.cookies.localCookie;
-      if(localCookie) {
-        var localUser = JSON.parse(localCookie);
+      var sessionLocalUserId = req.session.localUserId;
+      if(sessionLocalUserId) {
         //the user is already logged in
-        userRef.findOne({ '_id': localUser._id }, function (err, user) {
+        userRef.findOne({ '_id': sessionLocalUserId }, function (err, user) {
           var userUpdated = updateUser(user, accessToken, profile);
           console.log("updated localuser with 3dpartyauth");
           userUpdated.save(function(err) {

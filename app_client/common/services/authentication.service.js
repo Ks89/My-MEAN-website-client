@@ -34,31 +34,27 @@
     var getLocalUser = function() {
       console.log("reading token: ");
       var deferred = $q.defer();
-        
+
       getUserByToken('local')
       .success(function(data) {
         console.log('getUserByToken user ');
 
         if(data!=null && data=='invalid-data') {
-            removeToken('local');
-            deferred.reject(null);
-          }
+          removeToken('local');
+          deferred.reject(null);
+        }
 
         var user = JSON.parse(data);
         console.log('user:');
         console.log(user);
           //return getUserById(data.user._id);
           if(user) {
-            var localData = {
-              email : user.email,
-              name : user.name
-            };
-            deferred.resolve(localData);
+            deferred.resolve(user);
           } else {
             removeToken('local');
             deferred.reject({});
           }
-      })
+        })
       .error(function(e) {
         console.log('getUserByToken error ');
         console.log(e);
@@ -91,10 +87,10 @@
       return $http.get('/api/unlink/local');
     };
 
-    function isAuthLocalLoggedIn() {
+    function isAuthLocalLoggedIn () {
       console.log("reading token: ");
       var deferred = $q.defer();
-        
+
       getUserByToken('local')
       .success(function(data) {
         console.log('isAuthLocalLoggedIn user ');
@@ -105,13 +101,13 @@
           if(user) {
             deferred.resolve(true);
           } else {
-            deferred.reject(false);
+            deferred.resolve(false);
           }
-      })
+        })
       .error(function(e) {
         console.log('isAuthLocalLoggedIn error ');
         console.log(e);
-        deferred.reject(false);
+        deferred.resolve(false);
       });
 
       return deferred.promise;
@@ -121,10 +117,10 @@
     //-----------------------------
     //--- 3dauth authentication ---
     //-----------------------------
-    var isAuth3dLoggedIn = function() {
+    function isAuth3dLoggedIn () {
       console.log("reading 3dauth: ");
       var deferred = $q.defer();
-        
+
       getUserByToken('3dauth')
       .success(function(data) {
         console.log('isAuth3dLoggedIn user ');
@@ -135,13 +131,13 @@
           if(user) {
             deferred.resolve(true);
           } else {
-            deferred.reject(false);
+            deferred.resolve(false);
           }
-      })
+        })
       .error(function(e) {
         console.log('isAuth3dLoggedIn error ');
         console.log(e);
-        deferred.reject(false);
+        deferred.resolve(false);
       });
 
       return deferred.promise;
@@ -186,7 +182,7 @@
             } else {
               deferred.reject({});
             }
-        })
+          })
         .error(function(e) {
           console.log('get3dAuthUser error ');
           console.log(e);
@@ -232,8 +228,28 @@
     };
 
     var isLoggedIn = function() {
+      var deferred = $q.defer();
+
+      $q.all([isAuthLocalLoggedIn(), isAuth3dLoggedIn()])
+      .then(function(results) {
+        console.log("Isloggedin called");
+        var r0 = results[0];
+        var r1 = results[1];
+        console.log(r0);
+        console.log(r1);
+        deferred.resolve(r0 || r1);
+        //return false;
+      }, function(error) {
+        deferred.resolve(false);
+        //return false;
+      }).catch(function(err){
+        deferred.resolve(false);
+      });
+
+      return deferred.promise;
+
       //local 
-      return isAuthLocalLoggedIn();
+      //return isAuthLocalLoggedIn();
       // .then(function(result) {
       //   console.log('isLoggedIn local  Success: ' + result);
       //   return result;

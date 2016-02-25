@@ -50,7 +50,7 @@ userSchema.methods.validPassword = function(password) {
   return bcrypt.compareSync(password, this.local.hash);
 };
 
-
+//TODO remove this because it's equal to generateJwt
 userSchema.methods.generateJwt3dauth = function(user) {
   console.log("data received to generate jwt: " + user);
 
@@ -64,16 +64,15 @@ userSchema.methods.generateJwt3dauth = function(user) {
   }, process.env.JWT_SECRET); // DO NOT KEEP YOUR SECRET IN THE CODE!
 };
 
-userSchema.methods.generateJwt = function(email, name) {
-  console.log("data received to generate jwt: " + email + ", " + name);
+userSchema.methods.generateJwt = function(user) {
+  console.log("data received to generate jwt: " + user);
 
   var expiry = new Date();
   expiry.setTime(expiry.getTime() + 600000); //valid for 10 minutes (10*60*1000)
 
   return jwt.sign({
     _id: this._id,
-    email: email,
-    name: name,
+    user: user,
     exp: parseFloat(expiry.getTime()),
   }, process.env.JWT_SECRET); // DO NOT KEEP YOUR SECRET IN THE CODE!
 };
