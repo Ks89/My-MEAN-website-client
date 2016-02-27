@@ -21,32 +21,51 @@
       vm.isLoggedIn =  false;
     });
 
-    //---------------------------local--------------------------
-    authentication.getLocalUser()
-    .then(function(data) {
-      console.log("navigation -> authentication.getLocalUser()");
+    vm.currentUser = {
+      'name' : '' 
+    };
 
-      if(data && data.user && data.user.local) {
-        var user = data.user;
-        console.log("setting vm.local in Navigation.controller");
+    authentication.getLoggedUser()
+    .then(function(data) {
+      console.log("navigation called getLoggedUser");
+      if(data) {
+        console.log(data);
+        console.log("navigation called data valid");
+        var user = JSON.parse(data);
+        console.log("navigation called getLoggedUser user parsed");
         console.log(user);
-        vm.currentUser = user.local;
+        if(user) {
+          console.log("setting currentUser navigation.........................");
+          if(user.local) {
+            setCurrentUser(user.local);
+          } else if(user.github) {
+            setCurrentUser(user.github);
+          } else if(user.facebook) {
+            setCurrentUser(user.facebook);
+          } else if(user.google) {
+            setCurrentUser(user.google);
+          } else if(user.twitter) {
+            setCurrentUser(user.twitter);
+          }
+        }
       } else {
-        console.log("Navigation called authentication.getLocalUser() but data was null");
+        console.log("navigation called getLoggedUser but data was null");
       }
+    }, function(error){
+        console.log(error);
     });
 
-    //--------------------------3dauth--------------------------
-    authentication.get3dAuthUser()
-    .then(function(data) {
-      console.log("Navigation conttroller 3dauthuser:");
-      if(data && data.user) {
-        var user = data.user;
-        vm.currentUser = user;
+    function setCurrentUser(originData) {
+      if(originData.displayName) {
+        vm.currentUser = {
+          name : originData.displayName
+        };
+      } else if(originData) {
+        vm.currentUser = {
+          name : originData.name
+        }
       }
-    }, function(reason) {
-      console.log("navigation - get3dAuthUser failed: " + reason);
-    });
+    };
 
     vm.logout = function() {
       authentication.logout();

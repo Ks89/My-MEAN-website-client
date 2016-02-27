@@ -122,7 +122,7 @@ function redirectToProfile(user, res) {
 }
 
 function get3dAuthCookie(user) {
-	var token3dauth = user.generateJwt3dauth(user);
+	var token3dauth = user.generateJwt(user);
 	var myCookie = JSON.stringify({ 
 		'value': user._id,
 		'token': token3dauth

@@ -15,11 +15,10 @@
     };
     vm.message = "Profile page";
 
-    // vm.isAuthenticated = resolvedAuth.isLogged();
-
-    // if(vm.isAuthenticated) {
-    //   $window.location.href = '/';
-    // }
+    vm.local = {
+      name: '',
+      email: ''
+    };
 
     //----------------------------------------------------------
     //--------------------------3dauth--------------------------
@@ -45,63 +44,42 @@
     //3dparty authentication
     var userCookie = $cookies.get('userCookie');
     
-    if(!userCookie) { 
-      //this means that userCookie is not available, but this don't imply that 
-      //my user (on db) haven't 3dauth service saved
-      //I must get the entire user object
-      authentication.getLocalUser()
-      .then(function(data) {
-        console.log("Profile called getLocalUser");
-        console.log(data);
-        if(data && data.user && data.user.user) {
-          console.log("getLocalUser data ok");
-          var user = data.user.user;
-          if(user) {
-            console.log("user found");
-            setObjectValuesGithub(user.github, vm.github);
-            setObjectValues(user.facebook, vm.facebook);
-            setObjectValues(user.google, vm.google);
-            setObjectValues(user.twitter, vm.twitter);
-            setObjectValues(user.linkedin, vm.linkedin);
-          }
-        } else {
-          console.log("Profile called getLocalUser but data was null");
-        }
-      }, function(reason) {
-        console.log('Session expired: ' + reason);
-      });
-    } else {
+    if(userCookie) {
       var jsonCookie = JSON.parse(userCookie);
       var auth3dtoken = jsonCookie.token;
 
       console.log('User cookie has token: ' + auth3dtoken);
 
       //necessary for the navigation bar
-      authentication.saveToken('3dauth', JSON.stringify(auth3dtoken));
+      authentication.saveToken('auth', JSON.stringify(auth3dtoken));
+    }
 
-      // authentication.getUserById(payload._id)
-      // .success(function(data) {
-      authentication.decodeJwtToken(auth3dtoken)
-      .success(function(data) {
-        console.log("Profile called decodeJwtToken");
-        if(data) {
-          var user = JSON.parse(data);
-          console.log(user);
-          if(user) {
-            setObjectValuesGithub(user.user.github, vm.github);
-            setObjectValues(user.user.facebook, vm.facebook);
-            setObjectValues(user.user.google, vm.google);
-            setObjectValues(user.user.twitter, vm.twitter);
-            setObjectValues(user.user.linkedin, vm.linkedin);
-          }
-        } else {
-          console.log("Profile called decodeJwtToken but data was null");
+    authentication.getLoggedUser()
+    .then(function(data) {
+      console.log("Profile called getLoggedUser");
+      if(data) {
+        console.log(data);
+        console.log("Profile called data valid");
+        var user = JSON.parse(data);
+        console.log("Profile called getLoggedUser user parsed");
+        console.log(user);
+        if(user) {
+          console.log("setting data.........................");
+          setObjectValuesLocal(user.local, vm.local);
+          setObjectValuesGithub(user.github, vm.github);
+          setObjectValues(user.facebook, vm.facebook);
+          setObjectValues(user.google, vm.google);
+          setObjectValues(user.twitter, vm.twitter);
+          setObjectValues(user.linkedin, vm.linkedin);
+          console.log("---------------setted----------------");
         }
-      })
-      .error(function (e) {
-        console.log(e);
-      });
-    };
+      } else {
+        console.log("Profile called getLoggedUser but data was null");
+      }
+    }, function(error){
+        console.log(error);
+    });
+
 
     function buildJsonUserData() {
       return {
@@ -127,36 +105,20 @@
         destData.token = originData.token;
       }
     };
+    function setObjectValuesLocal(originData, destData) {
+      if(originData) {
+        destData.email = originData.email;
+        destData.name = originData.name;
+      }
+    };
 
     //----------------------------------------------------------
     //------------------------local auth------------------------
     //----------------------------------------------------------
-    //init
-    vm.local = {
-      name: '',
-      email: ''
-    };
+
     //unlink REST path
     vm.localUnlinkOauthUrl = 'api/unlink/local';
-    //get local user
-    authentication.getLocalUser()
-    .then(function(data) {
-      console.log("-------------");
-      console.log(data);
-      if(data && data.user && data.user.local) {
-        var user = data.user;
-        console.log("setting vm.local in profile.controller");
-        console.log(user);
-        vm.local = {
-          name: user.local.name,
-          email: user.local.email
-        };
-      } else {
-        console.log("Profile called authentication.getLocalUser() but data was null");
-      }
-    }, function(reason) {
-        console.log('Session expired: ' + reason);
-    });
+    
 
     vm.unlinkLocal = function() {
       authentication.unlinkLocal()

@@ -14,12 +14,12 @@
       .success(function (data) {
         console.log('called register - success');
         console.log(data.token);
-        saveToken('local', JSON.stringify(data.token));
+        saveToken('auth', JSON.stringify(data.token));
       })
       .error(function (err) {
         // Erase the token if the user fails to log in
         console.log('called register - error');
-        removeToken('local');
+        removeToken('auth');
       });
     };
 
@@ -27,63 +27,13 @@
     var login = function(user) {
       return $http.post('/api/login', user)
       .success(function(data) {
-        saveToken('local', JSON.stringify(data.token));
+        saveToken('auth', JSON.stringify(data.token));
       });
     };
 
-    var getLocalUser = function() {
-      console.log("reading token: ");
-      var deferred = $q.defer();
-
-      getUserByToken('local')
-      .success(function(data) {
-        console.log('getUserByToken user ');
-
-        if(data!=null && data=='invalid-data') {
-          removeToken('local');
-          deferred.reject(null);
-        }
-
-        var user = JSON.parse(data);
-        console.log('user:');
-        console.log(user);
-          //return getUserById(data.user._id);
-          if(user) {
-            deferred.resolve(user);
-          } else {
-            removeToken('local');
-            deferred.reject({});
-          }
-        })
-      .error(function(e) {
-        console.log('getUserByToken error ');
-        console.log(e);
-        removeToken('local');
-        deferred.reject(null);
-      });
-
-      return deferred.promise;
-    };
-
-    var getLocalAuthCurrentUser = function() {
-      if(isLoggedIn()){
-        console.log('getLocalAuthCurrentUser');
-
-        var user = getUserByToken('local');
-        console.log("getLocalAuthCurrentUser: ");
-        console.log(user);
-        if(user) {
-          return user;
-        } else {
-          return null;
-        }
-      } else {
-        return null;
-      }
-    }
 
     var unlinkLocal = function() {
-      removeToken('local');
+      removeToken('auth');
       return $http.get('/api/unlink/local');
     };
 
@@ -91,7 +41,7 @@
       console.log("reading token: ");
       var deferred = $q.defer();
 
-      getUserByToken('local')
+      getUserByToken('auth')
       .success(function(data) {
         console.log('isAuthLocalLoggedIn user ');
         var user = JSON.parse(data);
@@ -143,75 +93,6 @@
       return deferred.promise;
     };
 
-    var get3dAuthUser = function() {
-      if(isAuth3dLoggedIn()) {
-
-        var thirdauthData = {};
-
-        var deferred = $q.defer();
-        
-        getUserByToken('3dauth')
-        .success(function(data) {
-          console.log('get3dAuthUser user ');
-
-          if(data!=null && data=='invalid-data') {
-            removeToken('3dauth');
-            removeCookie('userCookie');
-            deferred.reject(null);
-          }
-
-          var userData = JSON.parse(data);
-          console.log('userData:');
-          console.log(userData);
-          var user = userData.user;
-            //return getUserById(data.user._id);
-            if(user) {
-              if(user.github) {
-                thirdauthData = getThirdAuthData(user.github);
-              }
-              if(user.google) {
-                thirdauthData = getThirdAuthData(user.google); 
-              }
-              if(user.facebook) {
-                thirdauthData = getThirdAuthData(user.facebook);
-              }
-              if(user.twitter) {
-                thirdauthData = getThirdAuthData(user.twitter);
-              }   
-              deferred.resolve(thirdauthData);
-            } else {
-              deferred.reject({});
-            }
-          })
-        .error(function(e) {
-          console.log('get3dAuthUser error ');
-          console.log(e);
-          removeToken('3dauth');
-          removeCookie('userCookie');
-          deferred.reject(null);
-        });
-      } else {
-        removeToken('3dauth');
-        removeCookie('userCookie');
-        deferred.reject({});
-      }
-      return deferred.promise;
-    };
-
-    function getThirdAuthData(serviceData) {
-      if(serviceData.displayName) {
-        return { 
-          email : serviceData.email,
-          name : serviceData.displayName
-        }
-      } else {
-        return { 
-          email : serviceData.email,
-          name : serviceData.name
-        }
-      }
-    };
-
     //---------------------------------------
     //--- local and 3dauth authentication ---
     //---------------------------------------
@@ -221,8 +102,7 @@
     };
 
     var logout = function() {
-      removeToken('local');
-      removeToken('3dauth');
+      removeToken('auth');
       removeCookie('userCookie');
       removeCookie('connect.sid');
     };
@@ -245,28 +125,7 @@
       }).catch(function(err){
         deferred.resolve(false);
       });
-
       return deferred.promise;
-
-      //local 
-      //return isAuthLocalLoggedIn();
-      // .then(function(result) {
-      //   console.log('isLoggedIn local  Success: ' + result);
-      //   return result;
-      // }, function(reason) {
-      //   console.log('isLoggedIn local  Failed: ' + reason);
-      //   return false;
-      // });
-
-      //3dauth TODO uncomment and fix this
-      // isAuth3dLoggedIn()
-      // .then(function(result) {
-      //   console.log('isLoggedIn 3dauth  Success: ' + result);
-      //   return result;
-      // }, function(reason) {
-      //   console.log('isLoggedIn 3dauth  Failed: ' + reason);
-      //   return false;
-      // });
     };
 
     var saveToken = function (key, token) {
@@ -275,7 +134,68 @@
 
     var decodeJwtToken = function(jwtToken) {
       return $http.get('/api/decodeToken/' + jwtToken);
-    }
+    };
+
+    var getLoggedUser = function() {
+      console.log("reading token: ");
+      var deferred = $q.defer();
+      var thirdauthData = {};
+
+      getUserByToken('auth')
+      .success(function(data) {
+        console.log('getUserByToken user ');
+
+        if(data!=null && data=='invalid-data') {
+          removeToken('auth');
+          removeCookie('userCookie');
+          deferred.reject(null);
+        }
+
+        //var userData = JSON.parse(data);
+        console.log('********************************************************');
+        console.log('******************************************************** user:');
+        console.log('********************************************************');
+        console.log(data);
+          if(data) {
+              var userData = JSON.parse(data);
+              console.log(userData);
+              var user = userData.user;
+              console.log(user);
+
+              if(user._id) {
+                getUserById(user._id)
+                .success(function(data) {
+                  console.log("Obtained user by its id");
+                  console.log("getUserByToken finished with local user");
+                  console.log(data);
+
+                  console.log("updated user with local infos:");
+                  console.log(user);
+
+                  deferred.resolve(JSON.stringify(user));
+                })
+                .error(function(e) {
+                  console.log("Impossible to retrieve user by its id");
+                  console.log("getUserByToken finished without local user");
+                  deferred.resolve(JSON.stringify(user));
+                });
+              }
+          } else {
+            removeToken('auth');
+            removeCookie('userCookie');
+            deferred.reject(JSON.stringify({}));
+          }
+      })
+      .error(function(e) {
+        console.log('getUserByToken error ');
+        console.log(e);
+        removeToken('auth');
+        removeCookie('userCookie');
+        deferred.reject(JSON.stringify({}));
+      });
+      console.log("getUserByToken finished returning...");
+      return deferred.promise;
+    };
 
     //-----------------------------------
     //--- others functions - not exposed
@@ -284,7 +204,7 @@
       return $window.sessionStorage[key];
     };
     function getUserByToken(key) {
-      console.log("getUserByToken");
+      console.log("getUserByToken called method");
       var sessionToken = getToken(key); 
       if(sessionToken) {
         console.log("getUserByToken sessionToken");
@@ -306,13 +226,10 @@
     return {
       register : register,
       login : login,
-      getLocalUser : getLocalUser,
-      getLocalAuthCurrentUser : getLocalAuthCurrentUser,
       unlinkLocal : unlinkLocal,
-      isAuth3dLoggedIn : isAuth3dLoggedIn,
-      get3dAuthUser : get3dAuthUser,
       getUserById : getUserById,
       logout : logout,
+      getLoggedUser : getLoggedUser,
       isLoggedIn : isLoggedIn,
       saveToken : saveToken,
       decodeJwtToken : decodeJwtToken
