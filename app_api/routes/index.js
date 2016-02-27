@@ -102,7 +102,7 @@ router.get('/connect/linkedin/callback', ctrlAuth3dParty.connectLinkedinCallback
 // });
 
 //add the unlinks
-router.get('/unlink/local', ctrlAuthLocal.unlinkLocal);
+router.get('/unlink/local/:id', ctrlAuthLocal.unlinkLocal);
 router.get('/unlink/facebook', ctrlAuth3dParty.unlinkFacebook);
 router.get('/unlink/github', ctrlAuth3dParty.unlinkGithub);
 router.get('/unlink/google', ctrlAuth3dParty.unlinkGoogle);

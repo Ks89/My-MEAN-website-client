@@ -75,15 +75,6 @@ module.exports.login = function(req, res) {
       console.log(user);
       token = user.generateJwt(user);
 
-      // var myCookie = JSON.stringify(user);
-
-      //   res.cookie('localCookie', myCookie /*, { maxAge: 900000, httpOnly: true }*/);
-      // utils.sendJSONresponse(res, 200, 
-      //   JSON.stringify({ 
-      //     'token' : token,
-      //     'id' : user._id
-      //   })
-      //   );
       req.session.localUserId = user._id;
 
       res.status(200);
@@ -97,21 +88,28 @@ module.exports.login = function(req, res) {
 
 module.exports.unlinkLocal = function(req, res) {
   console.log("User found to unlink: ");
-  console.log(req.cookies);
-  console.log(req.cookies.localCookie);
-  var localUser = JSON.parse(req.cookies.localCookie);
-  if(localUser) {
-    User.findOne({ '_id': localUser._id }, function (err, user) {
+  if (req.params && req.params.id) {
+    var id = req.params.id;
+    console.log("data received id: " + id);
+    User.findOne({ '_id': id }, function (err, user) {
       user.local = undefined;
       user.save(function(err) {
-        res.clearCookie('localCookie');
-        res.redirect('/profile');
+        var cookie = regenerateJwtCookie(user);
+        res.cookie('userCookie', cookie /*, { maxAge: 900000, httpOnly: true }*/);  
+        utils.sendJSONresponse(res, 200, user);
       });
     });
   }
 };
 
-
+function regenerateJwtCookie(user) {
+  var token3dauth = user.generateJwt(user);
+  var myCookie = JSON.stringify({ 
+    'value': user._id,
+    'token': token3dauth
+  });
+  return myCookie;
+};
 
 module.exports.decodeToken = function(req, res) {
   console.log('decodetoken', req.params);

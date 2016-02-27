@@ -3,8 +3,8 @@
   .module('mySiteApp')
   .controller('profileCtrl', profileCtrl);
 
-  profileCtrl.$inject = ['$routeParams','authentication', '$cookies', '$window'];
-  function profileCtrl($routeParams, authentication, $cookies, $window) {
+  profileCtrl.$inject = ['$location', '$routeParams','authentication', '$cookies', '$window'];
+  function profileCtrl($location, $routeParams, authentication, $cookies, $window) {
     var vm = this;
     vm.pageHeader = {
       title: 'Profile',
@@ -19,6 +19,8 @@
       name: '',
       email: ''
     };
+
+    vm.currentPath = $location.path();
 
     //----------------------------------------------------------
     //--------------------------3dauth--------------------------
@@ -118,7 +120,6 @@
 
     //unlink REST path
     vm.localUnlinkOauthUrl = 'api/unlink/local';
-    
 
     vm.unlinkLocal = function() {
       authentication.unlinkLocal()
@@ -128,6 +129,8 @@
           name: '',
           email: ''
         };
+        //redirect to profile page
+        $location.url('/profile');
       }, function(reason) {
         console.log('unlinkLocal failed: ' + reason);
       });

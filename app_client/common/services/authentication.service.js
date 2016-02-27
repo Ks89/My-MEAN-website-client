@@ -33,8 +33,75 @@
 
 
     var unlinkLocal = function() {
-      removeToken('auth');
-      return $http.get('/api/unlink/local');
+      console.log("unlinkLocal: ");
+      var deferred = $q.defer();
+
+      getUserByToken('auth')
+      .success(function(data) {
+        console.log('unlink user ');
+
+        if(data!=null && data=='invalid-data') {
+          removeToken('auth');
+          removeCookie('userCookie');
+          deferred.reject(null);
+        }
+
+        //var userData = JSON.parse(data);
+        console.log('********************************************************');
+        console.log('******************************************************** unlinkLocal user:');
+        console.log('********************************************************');
+        console.log(data);
+          if(data) {
+              var userData = JSON.parse(data);
+              console.log(userData);
+              var user = userData.user;
+              console.log(user);
+
+              if(user._id) {
+
+                $http.get('/api/unlink/local/' + user._id)
+                .success(function (data) {
+                  console.log("unlink");
+                  console.log(data);
+                  deferred.resolve(data);
+                })
+                .error(function(e) {
+                  console.log(e);
+                  deferred.reject(null);
+                });
+
+                // getUserById(user._id)
+                // .success(function(data) {
+                //   console.log("Obtained user by its id");
+                //   console.log("getUserByToken finished with local user");
+                //   console.log(data);
+
+                //   console.log("updated user with local infos:");
+                //   console.log(user);
+
+                //   deferred.resolve(JSON.stringify(user));
+                // })
+                // .error(function(e) {
+                //   console.log("Impossible to retrieve user by its id");
+                //   console.log("getUserByToken finished without local user");
+                //   deferred.resolve(JSON.stringify(user));
+                // });
+              }
+          } else {
+            removeToken('auth');
+            removeCookie('userCookie');
+            deferred.reject(null);
+          }
+      })
+      .error(function(e) {
+        console.log('getUserByToken error ');
+        console.log(e);
+        removeToken('auth');
+        removeCookie('userCookie');
+        deferred.reject(null);
+      });
+
+      return deferred.promise;
     };
 
     function isAuthLocalLoggedIn () {

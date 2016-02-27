@@ -18,7 +18,7 @@
       password : ""
     };
 
-    vm.returnPage = $location.search().page || '/';
+    // vm.returnPage = $location.search().page || '/';
 
     vm.onSubmit = function () {
       vm.formError = "";
@@ -32,17 +32,17 @@
 
     vm.doRegister = function() {
       vm.formError = "";
-      authentication
-        .register(vm.credentials)
-        .error(function(err){
-          vm.formError = err;
-        })
-        .then(function(){
-          $location.search('page', null); 
-          $location.path(vm.returnPage);
-        });
+      authentication.register(vm.credentials)
+      .then(function(){
+        // $location.search('page', null); 
+        // $location.path(vm.returnPage);
+        //redirect to profile page
+        $location.url('/profile');
+      })
+      .error(function(err){
+        vm.formError = err;
+      });
     };
-
   }
 
 })();

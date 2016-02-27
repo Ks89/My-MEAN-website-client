@@ -21,7 +21,7 @@
     vm.googleOauthUrl = 'api/auth/google';
     vm.githubOauthUrl = 'api/auth/github';
 
-    vm.returnPage = $location.search().page || '/';
+    //vm.returnPage = $location.search().page || '/';
 
     vm.onSubmit = function () {
       vm.formError = "";
@@ -35,16 +35,18 @@
 
     vm.doLogin = function() {
       vm.formError = "";
-      authentication
-        .login(vm.credentials)
-        .error(function(err){
-          vm.formError = err;
-        })
-        .then(function(){
-          $location.search('page', null); 
-          $location.path(vm.returnPage);
-        });
+      authentication.login(vm.credentials)
+      .then(function(){
+        // $location.search('page', null); 
+        // $location.path(vm.returnPage);
+        //redirect to profile page
+        $location.url('/profile');
+        // $location.search('page', null); 
+        // $location.path(vm.returnPage);
+      })
+      .error(function(err){
+        vm.formError = err;
+      });
     };
   }
-
 })();
