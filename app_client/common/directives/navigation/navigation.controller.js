@@ -61,7 +61,7 @@
           name : originData.name
         }
       }
-    };
+    }
 
     vm.logout = function() {
       authentication.logout();

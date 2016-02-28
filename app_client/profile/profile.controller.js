@@ -90,7 +90,7 @@
         name : '',
         token : '',
       };
-    };
+    }
     function setObjectValues(originData, destData) {
       if(originData) {
         destData.id = originData.id;
@@ -98,13 +98,13 @@
         destData.name = originData.name;
         destData.token = originData.token;
       }
-    };
+    }
     function setObjectValuesLocal(originData, destData) {
       if(originData) {
         destData.email = originData.email;
         destData.name = originData.name;
       }
-    };
+    }
 
     //----------------------------------------------------------
     //------------------------local auth------------------------

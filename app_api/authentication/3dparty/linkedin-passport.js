@@ -10,7 +10,8 @@ module.exports = function (userRef, passportRef) {
     user.linkedin.email = profile.emails[0].value; //get the first email
     user.linkedin.profileUrl = profile.profileUrl;
     return user;
-
+  }
+  
   passportRef.use(new LinkedInStrategy( thirdpartyConfig.linkedin, 
   function(req, accessToken, refreshToken, profile, done) {
     console.log("---------->LinkedIn callback called");
@@ -71,6 +72,6 @@ module.exports = function (userRef, passportRef) {
     }); //end of process.nextTick
   } //end of function(...)
   ));//end of passport.use
-}
+
   return module;
 }
