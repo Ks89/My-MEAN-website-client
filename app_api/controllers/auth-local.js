@@ -19,12 +19,12 @@ module.exports.register = function(req, res) {
       return;
     }
 
-    var user = new User();
-    user.local.name = req.body.name;
-    user.local.email = req.body.email;
-    user.setPassword(req.body.password);
+    var newUser = new User();
+    newUser.local.name = req.body.name;
+    newUser.local.email = req.body.email;
+    newUser.setPassword(req.body.password);
 
-    user.save(function(err, savedUser) {
+    newUser.save(function(err, savedUser) {
       var token;
       if (err) {
         utils.sendJSONresponse(res, 404, err);
@@ -79,8 +79,14 @@ module.exports.unlinkLocal = function(req, res) {
     var id = req.params.id;
     console.log("data received id: " + id);
     User.findOne({ '_id': id }, function (err, user) {
+      if(err) {
+        utils.sendJSONresponse(res, 200, null);
+      }
       user.local = undefined;
       user.save(function(err) {
+        if(err) {
+          utils.sendJSONresponse(res, 200, null);
+        }
         var cookie = regenerateJwtCookie(user);
         res.cookie('userCookie', cookie /*, { maxAge: 900000, httpOnly: true }*/);  
         utils.sendJSONresponse(res, 200, user);
