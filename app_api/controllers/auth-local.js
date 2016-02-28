@@ -102,7 +102,7 @@ function regenerateJwtCookie(user) {
     'token': token3dauth
   });
   return myCookie;
-};
+}
 
 module.exports.decodeToken = function(req, res) {
   console.log('decodetoken', req.params);

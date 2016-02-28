@@ -47,7 +47,7 @@ module.exports = function (userRef, passportRef) {
 			            }
 			            return done(null, user); // user found, return that user
 		          	} else { //otherwise, if there is no user found with that google id, create them
-			            var newUser = updateUser(new userObject(), accessToken, profile);
+			            var newUser = updateUser(new userRef(), accessToken, profile);
 			            console.log("New user created: " + newUser);
 			            newUser.save(function(err) {
 			              if (err) { throw err; }
