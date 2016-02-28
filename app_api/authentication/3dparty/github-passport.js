@@ -3,21 +3,16 @@ module.exports = function (userRef, passportRef) {
   var thirdpartyConfig = require('./3dpartyconfig');
 
   function updateUser (user, accessToken, profile) {
-      user.github.id = profile.id;
-      user.github.token = accessToken;
-      user.github.name  = profile.displayName;
-      user.github.email = profile.emails[0].value; //get the first email
-      user.github.username = profile.username;
-      user.github.profileUrl = profile.profileUrl;
-      return user;
+    user.github.id = profile.id;
+    user.github.token = accessToken;
+    user.github.name  = profile.displayName;
+    user.github.email = profile.emails[0].value; //get the first email
+    user.github.username = profile.username;
+    user.github.profileUrl = profile.profileUrl;
+    return user;
   }
 
-  passportRef.use(new GitHubStrategy({
-    clientID: thirdpartyConfig.github.clientID,
-    clientSecret: thirdpartyConfig.github.clientSecret,
-    callbackURL: thirdpartyConfig.github.callbackURL,
-    passReqToCallback: true
-  },
+  passportRef.use(new GitHubStrategy( thirdpartyConfig.github,
   function(req, accessToken, refreshToken, profile, done) {
     console.log("---------->GitHub authentication called");
 
@@ -27,6 +22,7 @@ module.exports = function (userRef, passportRef) {
       if(sessionLocalUserId) {
         //the user is already logged in
         userRef.findOne({ '_id': sessionLocalUserId }, function (err, user) {
+          if (err) { throw err; }
           var userUpdated = updateUser(user, accessToken, profile);
           console.log("updated localuser with 3dpartyauth");
           userUpdated.save(function(err) {
@@ -54,7 +50,7 @@ module.exports = function (userRef, passportRef) {
 		            }
 		            return done(null, user); // user found, return that user
 	          	} else { //otherwise, if there is no user found with that github id, create them
-		            var user = updateUser(new userRef(), accessToken, profile);
+		            var user = updateUser(new userObject(), accessToken, profile);
 		            console.log("New user created: " + user);
 		            user.save(function(err) {
 		              if (err) { throw err; }

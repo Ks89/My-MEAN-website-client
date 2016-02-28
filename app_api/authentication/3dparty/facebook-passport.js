@@ -11,13 +11,7 @@ module.exports = function (userRef, passportRef) {
     return user;
   }
 
-  passportRef.use(new FacebookStrategy({
-    clientID: thirdpartyConfig.facebook.clientID,
-    clientSecret: thirdpartyConfig.facebook.clientSecret,
-    callbackURL: thirdpartyConfig.facebook.callbackURL,
-    profileFields: ['id', 'email', 'gender', 'link', 'locale', 'name', 'timezone', 'updated_time', 'verified'],
-    passReqToCallback: true
-  },
+  passportRef.use(new FacebookStrategy( thirdpartyConfig.facebook,
   function(req, accessToken, refreshToken, profile, done) {
     console.log("---------->Facebook callback called");
 
@@ -29,6 +23,7 @@ module.exports = function (userRef, passportRef) {
       if(sessionLocalUserId) {
         //the user is already logged in
         userRef.findOne({ '_id': sessionLocalUserId }, function (err, user) {
+          if (err) { throw err; }
           var userUpdated = updateUser(user, accessToken, profile);
           console.log("updated localuser with 3dpartyauth");
           userUpdated.save(function(err) {
@@ -55,7 +50,7 @@ module.exports = function (userRef, passportRef) {
             }
             return done(null, user); // user found, return that user
           } else { //otherwise, if there is no user found with that id, create them
-            var user = updateUser(new userRef(), accessToken, profile);
+            var user = updateUser(new userObject(), accessToken, profile);
             console.log("New user created: " + user);
             user.save(function(err) {
               if (err) { throw err; }

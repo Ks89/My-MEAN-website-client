@@ -11,12 +11,7 @@ module.exports = function (userRef, passportRef) {
 		return user;
 	}
 
-	passportRef.use(new TwitterStrategy({
-		consumerKey: thirdpartyConfig.twitter.consumerKey,
-		consumerSecret: thirdpartyConfig.twitter.consumerSecret,
-		callbackURL: thirdpartyConfig.twitter.callbackURL,
-		passReqToCallback : true
-	},
+	passportRef.use(new TwitterStrategy( thirdpartyConfig.twitter,
 	function(token, tokenSecret, profile, done) {
 		console.log("---------->Twitter authentication called");
 		process.nextTick(function () {

@@ -49,83 +49,72 @@ module.exports.connectLinkedin = passport.authorize('linkedin', { scope: ['r_bas
 module.exports.connectLinkedinCallback = passport.authorize('linkedin', connectRedirect);
 
 
-//----- functions used to manage the object "user" returned in req.user.servicename.token --------
+//----- functions used to manage the object "user" returned in req.user --------
 module.exports.callbackRedirectFacebook = function(req, res) { 
-	//console.log(req.session);
+	console.log("callbackRedirect called");
 	redirectToProfile(req.user, res);
 };
 module.exports.callbackRedirectGoogle = function(req, res) { 
+	console.log("callbackRedirect called");
 	redirectToProfile(req.user, res);
 };
 module.exports.callbackRedirectGithub = function(req, res) { 
+	console.log("callbackRedirect called");
 	redirectToProfile(req.user, res);
 };
 module.exports.callbackRedirectTwitter = function(req, res) { 
+	console.log("callbackRedirect called");
 	redirectToProfile(req.user, res);
 };
 module.exports.callbackRedirectLinkedin = function(req, res) { 
+	console.log("callbackRedirect called");
 	redirectToProfile(req.user, res);
 };
 
-function redirectToProfile(user, res) {
-	console.log("callbackRedirect called");
-
-	redirectToProfile(user, res);
-};
-
 module.exports.unlinkFacebook = function(req, res) {
-	console.log("User found to unlink: " + req.user);
-	var user = req.user;
-	user.facebook = undefined;
-	user.save(function(err) {
-		//here i should call redirectToProfile(...) to prevent this code duplication
-		redirectToProfile(user, res);
-	});
+	unlinkFromDb(req, req.user.facebook, res);
 };
 module.exports.unlinkGithub = function(req, res) {
-	console.log("User found to unlink: " + req.user);
-	var user = req.user;
-	user.github = undefined;
-	user.save(function(err) {
-		redirectToProfile(user, res);
-	});
+	unlinkFromDb(req, req.user.github, res);
 };
 module.exports.unlinkGoogle = function(req, res) {
-	console.log("User found to unlink: " + req.user);
-	var user = req.user;
-	user.google = undefined;
-	user.save(function(err) {
-		redirectToProfile(user, res);
-	});
+	unlinkFromDb(req, req.user.google, res);
 };
 module.exports.unlinkTwitter = function(req, res) {
-	console.log("User found to unlink: " + req.user);
-	var user = req.user;
-	user.twitter = undefined;
-	user.save(function(err) {
-		redirectToProfile(user, res);
-	});
+	unlinkFromDb(req, req.user.twitter, res);
 };
 module.exports.unlinkLinkedin = function(req, res) {
-	console.log("User found to unlink: " + req.user);
-	var user = req.user;
-	user.linkedin = undefined;
-	user.save(function(err) {
-		redirectToProfile(user, res);
-	});
+	unlinkFromDb(req, req.user.linkedin, res);
 };
 
+function unlinkFromDb(req, userService, res) {
+	var user = req.user;
+	if(user) {
+		userService = undefined;
+		user.save(function(err) {
+			if(!err) {
+				redirectToProfile(user, res);
+			} else {
+				console.log("Impossible to remove userService from db");
+			}
+		});
+	} else {
+		console.log("Impossible to unlink, req.user is null");
+	}
+}
+
 function redirectToProfile(user, res) {
-	var cookie = get3dAuthCookie(user);
+	var cookie = getAuthToken(user);
 	res.cookie('userCookie', cookie /*, { maxAge: 900000, httpOnly: true }*/);	
 	res.redirect('/profile');
 }
 
-function get3dAuthCookie(user) {
+// get the auth token
+function getAuthToken(user) {
 	var token3dauth = user.generateJwt(user);
 	var myCookie = JSON.stringify({ 
 		'value': user._id,
 		'token': token3dauth
 	});
 	return myCookie;
-};
+}
