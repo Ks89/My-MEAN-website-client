@@ -30,6 +30,6 @@ module.exports = {
     callbackURL: "http://localhost:3000/api/auth/linkedin/callback",
     profileFields: ['id', 'first-name', 'last-name', 'email-address'],
     passReqToCallback: true,
-    state: true,
+    state: true
   }
 }

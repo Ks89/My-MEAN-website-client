@@ -47,11 +47,11 @@ module.exports = function (userRef, passportRef) {
 			            }
 			            return done(null, user); // user found, return that user
 		          	} else { //otherwise, if there is no user found with that google id, create them
-			            var user = updateUser(new userObject(), accessToken, profile);
-			            console.log("New user created: " + user);
-			            user.save(function(err) {
+			            var newUser = updateUser(new userObject(), accessToken, profile);
+			            console.log("New user created: " + newUser);
+			            newUser.save(function(err) {
 			              if (err) { throw err; }
-			              return done(null, user);
+			              return done(null, newUser);
 			            });
 		          	}
 		        });
