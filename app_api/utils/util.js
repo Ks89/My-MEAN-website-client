@@ -10,7 +10,17 @@ Utils.prototype = {
 		res.json(content);
   	},
 
-  	//other methods
+  getTextFormattedDate : function(date) {
+  	var day = date.getDay();
+    var month = date.getMonth();
+    var year = date.getFullYear();
+    var hour = date.getHours();
+    var min = date.getMinutes();
+    var sec = date.getSeconds();
+
+    return day + "/" + month 
+    	+ "/" + year + " " + hour + ":" + min + ":" + sec;
+  }
 };
 
 module.exports = Utils;

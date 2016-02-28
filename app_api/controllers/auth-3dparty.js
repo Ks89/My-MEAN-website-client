@@ -72,27 +72,28 @@ module.exports.callbackRedirectLinkedin = function(req, res) {
 };
 
 module.exports.unlinkFacebook = function(req, res) {
-	unlinkFromDb(req, req.user.facebook, res);
+	unlinkFromDb(req, 'facebook', res);
 };
 module.exports.unlinkGithub = function(req, res) {
-	unlinkFromDb(req, req.user.github, res);
+	unlinkFromDb(req, 'github', res);
 };
 module.exports.unlinkGoogle = function(req, res) {
-	unlinkFromDb(req, req.user.google, res);
+	unlinkFromDb(req, 'google', res);
 };
 module.exports.unlinkTwitter = function(req, res) {
-	unlinkFromDb(req, req.user.twitter, res);
+	unlinkFromDb(req, 'twitter', res);
 };
 module.exports.unlinkLinkedin = function(req, res) {
-	unlinkFromDb(req, req.user.linkedin, res);
+	unlinkFromDb(req, 'linkedin', res);
 };
 
-function unlinkFromDb(req, userService, res) {
+function unlinkFromDb(req, serviceName, res) {
 	var user = req.user;
 	if(user) {
-		userService = undefined;
+		user = removeServiceFromDb(serviceName, user);
 		user.save(function(err) {
 			if(!err) {
+				console.log("Unlinking...");
 				redirectToProfile(user, res);
 			} else {
 				console.log("Impossible to remove userService from db");
@@ -101,6 +102,30 @@ function unlinkFromDb(req, userService, res) {
 	} else {
 		console.log("Impossible to unlink, req.user is null");
 	}
+}
+
+function removeServiceFromDb(serviceName, user) {
+	switch(serviceName) {
+			case 'facebook': 
+				user.facebook = undefined;
+				break;
+			case 'github': 
+				user.github = undefined;
+				break;
+			case 'google': 
+				user.google = undefined;
+				break;
+			case 'twitter': 
+				user.twitter = undefined;
+				break;
+			case 'linkedin': 
+				user.linkedin = undefined;
+				break;
+			default:
+				console.log('Service name not recognized to unlink');
+				break;
+		}
+		return user;
 }
 
 function redirectToProfile(user, res) {

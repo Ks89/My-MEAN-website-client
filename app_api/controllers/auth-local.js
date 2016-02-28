@@ -130,26 +130,16 @@ module.exports.decodeToken = function(req, res) {
             console.log(decoded);
             var convertedDate = new Date();
             convertedDate.setTime(decoded.exp);
-            var day = convertedDate.getDay();
-            var month = convertedDate.getMonth();
-            var year = convertedDate.getFullYear();
-            var hour = convertedDate.getHours();
-            var min = convertedDate.getMinutes();
-            var sec = convertedDate.getSeconds();
-
-            console.log("date jwt: " + convertedDate.getTime() + ", formatted: " + day + "/" + month + "/" + year + "/" + hour + ":" + min + ":" + sec);
             
-            var date = new Date();
-            day = date.getDay();
-            month = date.getMonth();
-            year = date.getFullYear();
-            hour = date.getHours();
-            min = date.getMinutes();
-            sec = date.getSeconds();
-            console.log("date current: " + date.getTime() + ", formatted: " + day + "/" + month + "/" + year + "/" + hour + ":" + min + ":" + sec);
+            console.log("date jwt: " + convertedDate.getTime() +
+              ", formatted: " + utils.getTextFormattedDate(convertedDate));
+            
+            var systemDate = new Date();
+            console.log("systemDate: " + systemDate.getTime() + 
+              ", formatted: " + utils.getTextFormattedDate(systemDate));
 
-            if( convertedDate.getTime() > date.getTime() ) {
-              console.log("date valid");
+            if( convertedDate.getTime() > systemDate.getTime() ) {
+              console.log("systemDate valid");
               console.log("stringifying...");
               console.log(JSON.stringify(decoded));
               utils.sendJSONresponse(res, 200, JSON.stringify(decoded));

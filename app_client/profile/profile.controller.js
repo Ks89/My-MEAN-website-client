@@ -109,10 +109,6 @@
     //----------------------------------------------------------
     //------------------------local auth------------------------
     //----------------------------------------------------------
-
-    //unlink REST path
-    vm.localUnlinkOauthUrl = 'api/unlink/local';
-
     vm.unlinkLocal = function() {
       authentication.unlinkLocal()
       .then(function(data) {
