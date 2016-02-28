@@ -11,24 +11,29 @@
     //----------------------------
     var register = function(user) {
       return $http.post('/api/register', user)
-      .success(function (data) {
-        console.log('called register - success');
-        console.log(data.token);
-        saveToken('auth', JSON.stringify(data.token));
-      })
-      .error(function (err) {
-        // Erase the token if the user fails to log in
-        console.log('called register - error');
-        removeToken('auth');
-      });
+            .success(function (data) {
+              console.log('called register - success');
+              console.log(data.token);
+              saveToken('auth', JSON.stringify(data.token));
+            })
+            .error(function (err) {
+              // Erase the token if the user fails to log in
+              console.log('called register - error');
+              removeToken('auth');
+            });
     };
 
 
     var login = function(user) {
       return $http.post('/api/login', user)
-      .success(function(data) {
-        saveToken('auth', JSON.stringify(data.token));
-      });
+            .success(function(data) {
+              saveToken('auth', JSON.stringify(data.token));
+            })
+            .error(function (err) {
+              // Erase the token if the user fails to log in
+              console.log('called register - error');
+              removeToken('auth');
+            });
     };
 
 

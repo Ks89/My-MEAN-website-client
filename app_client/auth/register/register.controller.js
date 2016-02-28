@@ -38,9 +38,8 @@
         // $location.path(vm.returnPage);
         //redirect to profile page
         $location.url('/profile');
-      })
-      .error(function(err){
-        vm.formError = err;
+      }, function(err) {
+        vm.formError = err.data;
       });
     };
   }

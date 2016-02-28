@@ -43,9 +43,8 @@
         $location.url('/profile');
         // $location.search('page', null); 
         // $location.path(vm.returnPage);
-      })
-      .error(function(err){
-        vm.formError = err;
+      }, function(err) {
+        vm.formError = err.data;
       });
     };
   }
