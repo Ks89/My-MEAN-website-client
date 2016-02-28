@@ -56,11 +56,7 @@
     });
 
     function setCurrentUser(originData) {
-      if(originData.displayName) {
-        vm.currentUser = {
-          name : originData.displayName
-        };
-      } else if(originData) {
+      if(originData) {
         vm.currentUser = {
           name : originData.name
         }

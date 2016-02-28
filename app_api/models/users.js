@@ -32,7 +32,7 @@ var userSchema = new mongoose.Schema({
     id : String,
     token : String,
     email : String,
-    displayName : String,
+    name : String,
     username: String,
     profileUrl: String
   }

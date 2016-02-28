@@ -68,7 +68,7 @@
         if(user) {
           console.log("setting data.........................");
           setObjectValuesLocal(user.local, vm.local);
-          setObjectValuesGithub(user.github, vm.github);
+          setObjectValues(user.github, vm.github);
           setObjectValues(user.facebook, vm.facebook);
           setObjectValues(user.google, vm.google);
           setObjectValues(user.twitter, vm.twitter);
@@ -96,14 +96,6 @@
         destData.id = originData.id;
         destData.email = originData.email;
         destData.name = originData.name;
-        destData.token = originData.token;
-      }
-    };
-    function setObjectValuesGithub(originData, destData) {
-      if(originData) {
-        destData.id = originData.id;
-        destData.email = originData.email;
-        destData.name = originData.displayName;
         destData.token = originData.token;
       }
     };

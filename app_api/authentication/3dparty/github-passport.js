@@ -5,7 +5,7 @@ module.exports = function (userRef, passportRef) {
   function updateUser (user, accessToken, profile) {
       user.github.id = profile.id;
       user.github.token = accessToken;
-      user.github.displayName  = profile.displayName; //TODO replace github.displayname with github.name
+      user.github.name  = profile.displayName;
       user.github.email = profile.emails[0].value; //get the first email
       user.github.username = profile.username;
       user.github.profileUrl = profile.profileUrl;
