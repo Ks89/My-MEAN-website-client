@@ -40,7 +40,7 @@
       .success(function(data) {
         console.log('unlink user ');
 
-        if(data!=null && data=='invalid-data') {
+        if(data !== null && data === 'invalid-data') {
           removeToken('auth');
           removeCookie('userCookie');
           deferred.reject(null);
@@ -69,23 +69,6 @@
                   console.log(e);
                   deferred.reject(null);
                 });
-
-                // getUserById(user._id)
-                // .success(function(data) {
-                //   console.log("Obtained user by its id");
-                //   console.log("getUserByToken finished with local user");
-                //   console.log(data);
-
-                //   console.log("updated user with local infos:");
-                //   console.log(user);
-
-                //   deferred.resolve(JSON.stringify(user));
-                // })
-                // .error(function(e) {
-                //   console.log("Impossible to retrieve user by its id");
-                //   console.log("getUserByToken finished without local user");
-                //   deferred.resolve(JSON.stringify(user));
-                // });
               }
           } else {
             removeToken('auth');
@@ -128,8 +111,7 @@
       });
 
       return deferred.promise;
-    };
-
+    }
 
     //-----------------------------
     //--- 3dauth authentication ---
@@ -158,7 +140,7 @@
       });
 
       return deferred.promise;
-    };
+    }
 
     //---------------------------------------
     //--- local and 3dauth authentication ---
@@ -212,7 +194,7 @@
       .success(function(data) {
         console.log('getUserByToken user ');
 
-        if(data!=null && data=='invalid-data') {
+        if(data !== null && data === 'invalid-data') {
           removeToken('auth');
           removeCookie('userCookie');
           deferred.reject(null);
@@ -269,7 +251,7 @@
     //-----------------------------------
     function getToken(key) {
       return $window.sessionStorage[key];
-    };
+    }
     function getUserByToken(key) {
       console.log("getUserByToken called method");
       var sessionToken = getToken(key); 
@@ -282,13 +264,13 @@
       } else {
         return decodeJwtToken();
       }
-    };
+    }
     function removeToken(key) {
       $window.sessionStorage.removeItem(key);
-    };
+    }
     function removeCookie(key) {
       $cookies.remove(key);
-    };
+    }
     
     return {
       register : register,
