@@ -35,19 +35,8 @@ module.exports.register = function(req, res) {
 
         // var myCookie = JSON.stringify(user);
         req.session.localUserId = savedUser._id;
-
-        // res.cookie('localCookie', myCookie /*, { maxAge: 900000, httpOnly: true }*/);
-        res.status(200);
-
-        // res.contentType('application/json');
-        res.json({ token : token });
-
-        // utils.sendJSONresponse(res, 200, 
-        //   JSON.stringify({ 
-        //     'token' : token,
-        //     'id' : savedUser._id
-        //   })
-        //   );
+        
+        utils.sendJSONresponse(res, 200, { token: token });
       }
     });
   });
@@ -77,9 +66,7 @@ module.exports.login = function(req, res) {
 
       req.session.localUserId = user._id;
 
-      res.status(200);
-      res.json({ token: token });
-
+      utils.sendJSONresponse(res, 200, { token: token });
     } else {
       utils.sendJSONresponse(res, 401, info);
     }
