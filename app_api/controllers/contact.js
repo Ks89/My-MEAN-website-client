@@ -1,6 +1,7 @@
 var nodemailer = require('nodemailer');
 var url = require('url');
 var request = require('request');
+var logger = require('../utils/logger.js');
 
 var mailTransport = nodemailer.createTransport({
 	host: 'mail.stefanocappa.it',

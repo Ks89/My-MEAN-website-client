@@ -1,6 +1,7 @@
 var mongoose = require( 'mongoose' );
 var bcrypt   = require('bcrypt-nodejs');
 var jwt = require('jsonwebtoken');
+var logger = require('../utils/logger.js');
 
 var userSchema = new mongoose.Schema({
   local: {

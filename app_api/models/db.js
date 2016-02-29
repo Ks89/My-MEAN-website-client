@@ -1,4 +1,5 @@
 var mongoose = require( 'mongoose' );
+var logger = require('../utils/logger.js');
 
 var gracefulShutdown;
 var dbURI = 'mongodb://localhost/KS';

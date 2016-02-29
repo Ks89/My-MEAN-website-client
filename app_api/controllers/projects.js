@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
-var ProjMongoose = mongoose.model('Project');
+var Project = mongoose.model('Project');
+var logger = require('../utils/logger.js');
 
 var Utils = require('../utils/util.js');
 var utils = new Utils();
@@ -11,7 +12,7 @@ var utils = new Utils();
 /* GET list of projects */
 module.exports.projectsList = function(req, res) {
   console.log('projectsList');
-  ProjMongoose.find({}, function(err, results) {
+  Project.find({}, function(err, results) {
     if (err) {
       console.log('projectsList error:', err);
       utils.sendJSONresponse(res, 404, err);
@@ -25,7 +26,7 @@ module.exports.projectsList = function(req, res) {
 /* GET list of projects that contains carouselImagePath for Homepage */
 module.exports.projectsListHomepage = function(req, res) {
   console.log('projectsListHomepage');
-  ProjMongoose
+  Project
     .find({"projectHomeView.carouselImagePath": { $exists: true } })
     .lean().exec(function(err, results) {
       if (err) {
@@ -41,7 +42,7 @@ module.exports.projectsListHomepage = function(req, res) {
 module.exports.projectsReadOne = function(req, res) {
   console.log('Finding a Project', req.params);
   if (req.params && req.params.projectid) {
-    ProjMongoose
+    Project
     .findById(req.params.projectid)
     .exec(function(err, project) {
       if (!project) {

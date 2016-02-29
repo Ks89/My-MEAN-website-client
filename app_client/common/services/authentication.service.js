@@ -3,8 +3,8 @@
   .module('mySiteApp')
   .service('authentication', authentication);
 
-  authentication.$inject = ['$q', '$http', '$window', '$cookies'];
-  function authentication ($q, $http, $window, $cookies) {
+  authentication.$inject = ['$q', '$http', '$window', '$cookies', '$log'];
+  function authentication ($q, $http, $window, $cookies, $log) {
 
     //----------------------------
     //--- local authentication ---

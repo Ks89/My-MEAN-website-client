@@ -12,17 +12,17 @@ module.exports = function (userRef, passportRef) {
 	}
 
 	passportRef.use(new TwitterStrategy( thirdpartyConfig.twitter,
-	function(token, tokenSecret, profile, done) {
-	
-	    logger.debug('Twitter authentication called');
+		function(token, tokenSecret, profile, done) {
+			
+			logger.debug('Twitter authentication called');
 
-		process.nextTick(function () {
-			console.log(profile);
-			userRef.findOne({ 'twitter.id': profile.id }, function (err, user) {
-				return done(err, user);
+			process.nextTick(function () {
+				console.log(profile);
+				userRef.findOne({ 'twitter.id': profile.id }, function (err, user) {
+					return done(err, user);
+				});
 			});
-		});
-	}));
+		}));
 	
-  	return module;
+	return module;
 }

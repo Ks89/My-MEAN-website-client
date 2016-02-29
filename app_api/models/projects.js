@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var logger = require('../utils/logger.js');
 
 var authorSchema = new mongoose.Schema({
     name: {

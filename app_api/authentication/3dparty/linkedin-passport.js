@@ -13,12 +13,12 @@ module.exports = function (userRef, passportRef) {
   }
   
   passportRef.use(new LinkedInStrategy( thirdpartyConfig.linkedin, 
-  function(req, accessToken, refreshToken, profile, done) {
+    function(req, accessToken, refreshToken, profile, done) {
 
-    logger.debug('Linkedin authentication called');
-    
-    process.nextTick(function () {
-      console.log(profile);
+      logger.debug('Linkedin authentication called');
+      
+      process.nextTick(function () {
+        console.log(profile);
 
       //check if the user is already logged in using the local authentication
       var sessionLocalUserId = req.session.localUserId;

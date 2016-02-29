@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
+var logger = require('../utils/logger.js');
 
 var Utils = require('../utils/util.js');
 var utils = new Utils();

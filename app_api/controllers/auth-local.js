@@ -1,6 +1,8 @@
 var passport = require('passport');
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
+var logger = require('../utils/logger.js');
+
 var jwt = require('jsonwebtoken');
 
 var Utils = require('../utils/util.js');

@@ -1,7 +1,8 @@
 //cused into the main app.js
 module.exports = function (userRef, passportRef) {
   var LocalStrategy = require('passport-local').Strategy;
-
+  var logger = require('../../utils/logger.js');
+  
   passportRef.use(new LocalStrategy({
     usernameField: 'email',
     passwordField : 'password',
