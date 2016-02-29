@@ -40,8 +40,6 @@ module.exports.register = function(req, res) {
       }
     });
   });
-
-  
 };
 
 module.exports.login = function(req, res) {
@@ -95,6 +93,51 @@ module.exports.unlinkLocal = function(req, res) {
   }
 };
 
+module.exports.decodeToken = function(req, res) {
+  console.log('decodetoken', req.params);
+  if (req.params && req.params.token) {
+
+    var token = req.params.token;
+    console.log("data received jwt: " + token);
+
+    // verify a token symmetric
+    jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
+      if(err) {
+        console.log("ERROR");
+        utils.sendJSONresponse(res, 404, null);
+      } 
+
+      if(decoded) {
+        console.log("decoding...");
+        console.log(decoded);
+        var convertedDate = new Date();
+        convertedDate.setTime(decoded.exp);
+        
+        console.log("date jwt: " + convertedDate.getTime() +
+          ", formatted: " + utils.getTextFormattedDate(convertedDate));
+        
+        var systemDate = new Date();
+        console.log("systemDate: " + systemDate.getTime() + 
+          ", formatted: " + utils.getTextFormattedDate(systemDate));
+
+        if( convertedDate.getTime() > systemDate.getTime() ) {
+          console.log("systemDate valid");
+          console.log("stringifying...");
+          console.log(JSON.stringify(decoded));
+          utils.sendJSONresponse(res, 200, JSON.stringify(decoded));
+        } else {
+          console.log('No data valid');
+          utils.sendJSONresponse(res, 404, "invalid-data");
+        }
+      }
+    });
+  } else {
+    console.log('No token found');
+    utils.sendJSONresponse(res, 404, null);
+  }
+};
+
+
 function regenerateJwtCookie(user) {
   var token3dauth = user.generateJwt(user);
   var myCookie = JSON.stringify({ 
@@ -103,48 +146,3 @@ function regenerateJwtCookie(user) {
   });
   return myCookie;
 }
-
-module.exports.decodeToken = function(req, res) {
-  console.log('decodetoken', req.params);
-  if (req.params && req.params.token) {
-
-    var token = req.params.token;
-    console.log("data received jwt: " + token);
-
-        // verify a token symmetric
-        jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
-          if(err) {
-            console.log("ERROR");
-            utils.sendJSONresponse(res, 404, null);
-          } 
-
-          if(decoded) {
-            console.log("decoding...");
-            console.log(decoded);
-            var convertedDate = new Date();
-            convertedDate.setTime(decoded.exp);
-            
-            console.log("date jwt: " + convertedDate.getTime() +
-              ", formatted: " + utils.getTextFormattedDate(convertedDate));
-            
-            var systemDate = new Date();
-            console.log("systemDate: " + systemDate.getTime() + 
-              ", formatted: " + utils.getTextFormattedDate(systemDate));
-
-            if( convertedDate.getTime() > systemDate.getTime() ) {
-              console.log("systemDate valid");
-              console.log("stringifying...");
-              console.log(JSON.stringify(decoded));
-              utils.sendJSONresponse(res, 200, JSON.stringify(decoded));
-            } else {
-              console.log('No data valid');
-              utils.sendJSONresponse(res, 404, "invalid-data");
-            }
-          }
-        });
-
-      } else {
-        console.log('No token found');
-        utils.sendJSONresponse(res, 404, null);
-      }
-    };

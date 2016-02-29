@@ -2,6 +2,10 @@ var express = require('express');
 var app = express();
 var router = express.Router();
 
+var jwt = require('jsonwebtoken');
+var Utils = require('../utils/util.js');
+var utils = new Utils();
+
 var ctrlAuthLocal = require('../controllers/auth-local');
 var ctrlAuth3dParty = require('../controllers/auth-3dparty');
 var ctrlProjects = require('../controllers/projects');
@@ -65,41 +69,57 @@ router.get('/connect/linkedin/callback', ctrlAuth3dParty.connectLinkedinCallback
 // ---------------------------------------------------------
 // route middleware to authenticate and check token
 // ---------------------------------------------------------
-// router.use(function(req, res, next) {
+router.use(function(req, res, next) {
+	console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+	console.log("route middleware to authenticate and check token");
+	console.log(req.cookies.userCookie);
+	// decode token
+	if (req.cookies.userCookie) {
+		var cookie = JSON.parse(req.cookies.userCookie);
+		var token = cookie.token;
+		console.log(token);
+		console.log('[api-auth] Token found with: ' + process.env.JWT_SECRET);
+		if (token) {
+			jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
+	      if(err) {
+	        console.log("ERROR");
+	        utils.sendJSONresponse(res, 404, null);
+	      } 
 
-// 	// check header or url parameters or post parameters for token
-// 	var token = req.body.token || req.query.token || req.headers['x-access-token'];
-// 	console.log('[api-auth] Verifying authentication for this api\'s request');
-// 	console.log(req);
-// 	// decode token
-// 	if (token) {
-// 		console.log(token);
-// 		console.log('[api-auth] Token found with: ' + process.env.JWT_SECRET);
-// 		// verifies secret and checks exp
-// 		jwt.verify(token, app.get(process.env.JWT_SECRET), function(err, decoded) {			
-// 			if (err) {
-// 				console.log('[api-auth] Error during verify process');
-// 				return res.json({ success: false, message: 'Failed to authenticate token.' });		
-// 			} else {
-// 				// if everything is good, save to request for use in other routes
-// 				console.log('[api-auth] OK');
-// 				req.decoded = decoded;	
-// 				next();
-// 			}
-// 		});
+	      if(decoded) {
+	        console.log("decoding...");
+	        console.log(decoded);
+	        var convertedDate = new Date();
+	        convertedDate.setTime(decoded.exp);
+	        
+	        console.log("date jwt: " + convertedDate.getTime() +
+	          ", formatted: " + utils.getTextFormattedDate(convertedDate));
+	        
+	        var systemDate = new Date();
+	        console.log("systemDate: " + systemDate.getTime() + 
+	          ", formatted: " + utils.getTextFormattedDate(systemDate));
 
-// 	} else {
-// 		console.log('[api-auth] No token');
-// 		// if there is no token
-// 		// return an error
-// 		return res.status(403).send({ 
-// 			success: false, 
-// 			message: 'No token provided.'
-// 		});
-		
-// 	}
-	
-// });
+	        if( convertedDate.getTime() > systemDate.getTime() ) {
+	          console.log("systemDate valid");
+	         	console.log("OOOOOOK");
+	          next();
+	        } else {
+	          console.log('No data valid');
+	          utils.sendJSONresponse(res, 404, "invalid-data");
+	        }
+      	}
+    	});
+		}
+	} else {
+		console.log('[api-auth] No token');
+		// if there is no token
+		// return an error
+		return res.status(403).send({ 
+			success: false, 
+			message: 'No token provided.'
+		});
+	}
+});
 
 //add the unlinks
 router.get('/unlink/local/:id', ctrlAuthLocal.unlinkLocal);
