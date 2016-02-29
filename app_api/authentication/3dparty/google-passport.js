@@ -1,6 +1,7 @@
 module.exports = function (userRef, passportRef) {
 	var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 	var thirdpartyConfig = require('./3dpartyconfig');
+	var logger = require('../../utils/logger.js');
 
 	function updateUser (user, accessToken, profile) {
 	    user.google.id = profile.id;
@@ -12,7 +13,9 @@ module.exports = function (userRef, passportRef) {
 
 	passportRef.use(new GoogleStrategy( thirdpartyConfig.google,
 	function(req, accessToken, refreshToken, profile, done) {
-		console.log("---------->Google authentication called");
+    	
+    	logger.debug('Google authentication called');
+    	
     	process.nextTick(function () {
     		//check if the user is already logged in using the local authentication
       	var sessionLocalUserId = req.session.localUserId;

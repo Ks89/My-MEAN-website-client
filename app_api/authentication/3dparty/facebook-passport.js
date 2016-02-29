@@ -1,6 +1,7 @@
 module.exports = function (userRef, passportRef) {
   var FacebookStrategy = require('passport-facebook').Strategy;
   var thirdpartyConfig = require('./3dpartyconfig');
+  var logger = require('../../utils/logger.js');
 
   function updateUser (user, accessToken, profile) {
     user.facebook.id = profile.id;
@@ -13,7 +14,8 @@ module.exports = function (userRef, passportRef) {
 
   passportRef.use(new FacebookStrategy( thirdpartyConfig.facebook,
   function(req, accessToken, refreshToken, profile, done) {
-    console.log("---------->Facebook callback called");
+    
+    logger.debug('Facebook authentication called');
 
     process.nextTick(function () {
       //console.log(profile);

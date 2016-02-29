@@ -1,6 +1,7 @@
 module.exports = function (userRef, passportRef) {
   var GitHubStrategy = require('passport-github2').Strategy;
   var thirdpartyConfig = require('./3dpartyconfig');
+  var logger = require('../../utils/logger.js');
 
   function updateUser (user, accessToken, profile) {
     user.github.id = profile.id;
@@ -14,7 +15,8 @@ module.exports = function (userRef, passportRef) {
 
   passportRef.use(new GitHubStrategy( thirdpartyConfig.github,
   function(req, accessToken, refreshToken, profile, done) {
-    console.log("---------->GitHub authentication called");
+   
+    logger.debug('Github authentication called');
 
     process.nextTick(function () {
       //check if the user is already logged in using the local authentication

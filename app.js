@@ -4,10 +4,13 @@ require('dotenv').config(); //to read info from .env file
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
-var logger = require('morgan');
+var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var bodyParser = require('body-parser');
+//logger created with winston
+var logger = require("./app_api/utils/logger");
+
 // var staticAsset = require('static-asset');
 
 //uglify
@@ -56,7 +59,7 @@ fs.writeFile('public/angular/mysite.min.js', uglified.code, function (err){
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
+app.use(morgan({ "stream": logger.stream }));
 // app.use(staticAsset(path.join(__dirname, 'public')));
 // app.use(staticAsset(path.join(__dirname, 'app_client')));
 app.use(express.static(path.join(__dirname, 'public')));

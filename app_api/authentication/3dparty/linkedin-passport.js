@@ -1,7 +1,7 @@
 module.exports = function (userRef, passportRef) {
-  
   var LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
   var thirdpartyConfig = require('./3dpartyconfig');
+  var logger = require('../../utils/logger.js');
 
   function updateUser (user, accessToken, profile) {
     user.linkedin.id = profile.id;
@@ -14,7 +14,8 @@ module.exports = function (userRef, passportRef) {
   
   passportRef.use(new LinkedInStrategy( thirdpartyConfig.linkedin, 
   function(req, accessToken, refreshToken, profile, done) {
-    console.log("---------->LinkedIn callback called");
+
+    logger.debug('Linkedin authentication called');
     
     process.nextTick(function () {
       console.log(profile);
