@@ -50,7 +50,8 @@ module.exports.connectLinkedin = passport.authorize('linkedin', { scope: ['r_bas
 module.exports.connectLinkedinCallback = passport.authorize('linkedin', connectRedirect);
 
 
-//----- functions used to manage the object "user" returned in req.user --------
+//GET that represents callbacks. This functions are used to manage the object "user" returned in req.user
+//All of these have this form: /auth/****serviceName****/callback
 module.exports.callbackRedirectFacebook = function(req, res) { 
 	console.log("callbackRedirect called");
 	redirectToProfile(req.user, res);
@@ -72,6 +73,8 @@ module.exports.callbackRedirectLinkedin = function(req, res) {
 	redirectToProfile(req.user, res);
 };
 
+//GET to unlink a 3dauth user
+//All of these have this form: /unlink/****serviceName****
 module.exports.unlinkFacebook = function(req, res) {
 	unlinkFromDb(req, 'facebook', res);
 };

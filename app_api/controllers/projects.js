@@ -5,11 +5,8 @@ var logger = require('../utils/logger.js');
 var Utils = require('../utils/util.js');
 var utils = new Utils();
 
-// var Grid = require('gridfs-stream');
-// Grid.mongo = mongoose.mongo;
-// var gfs = new Grid(mongoose.connection.db);
-
 /* GET list of projects */
+/* /api/projects */
 module.exports.projectsList = function(req, res) {
   console.log('projectsList');
   Project.find({}, function(err, results) {
@@ -24,6 +21,7 @@ module.exports.projectsList = function(req, res) {
 
 
 /* GET list of projects that contains carouselImagePath for Homepage */
+/* /api/projecthome */
 module.exports.projectsListHomepage = function(req, res) {
   console.log('projectsListHomepage');
   Project
@@ -38,7 +36,8 @@ module.exports.projectsListHomepage = function(req, res) {
     });
 };
 
-/* GET a project by the id */
+/* GET a project by the projectid */
+/* /api/projects/:projectid */
 module.exports.projectsReadOne = function(req, res) {
   console.log('Finding a Project', req.params);
   if (req.params && req.params.projectid) {

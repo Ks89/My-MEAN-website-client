@@ -8,6 +8,8 @@ var jwt = require('jsonwebtoken');
 var Utils = require('../utils/util.js');
 var utils = new Utils();
 
+/* POST to register a local user */
+/* /api/register */
 module.exports.register = function(req, res) {
   console.log('called register server side');
   if(!req.body.name || !req.body.email || !req.body.password) {
@@ -44,6 +46,8 @@ module.exports.register = function(req, res) {
   });
 };
 
+/* POST to login as local user */
+/* /api/login */
 module.exports.login = function(req, res) {
   if(!req.body.email || !req.body.password) {
     utils.sendJSONresponse(res, 400, {
@@ -73,6 +77,8 @@ module.exports.login = function(req, res) {
   })(req, res);
 };
 
+/* GET to unlink the local account by id*/
+/* /api/unlink/local/:id */
 module.exports.unlinkLocal = function(req, res) {
   console.log("User found to unlink: ");
   if (req.params && req.params.id) {
@@ -95,6 +101,9 @@ module.exports.unlinkLocal = function(req, res) {
   }
 };
 
+
+/* GET to decode a JWT passing the token itself*/
+/* /api/decodeToken/:token */
 module.exports.decodeToken = function(req, res) {
   console.log('decodetoken', req.params);
   if (req.params && req.params.token) {

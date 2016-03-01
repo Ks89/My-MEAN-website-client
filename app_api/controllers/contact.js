@@ -45,6 +45,8 @@ function send(formEmail, callback) {
 	}
 }
 
+/* POST to send an email */
+/* /api/email */
 module.exports.sendEmailWithRecaptcha = function(req, res) {
 	console.log("verifyCaptcha api called in app-api controllers " +req.body.response);
 
