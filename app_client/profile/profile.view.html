@@ -29,7 +29,7 @@
 			<div class="well"> 
 				<h3 class="text-primary"><span class="fa fa-facebook"></span> Facebook</h3>
 
-				<div ng-if="vm.facebook.token.length > 0">
+				<div ng-if="vm.facebook.email.length > 0">
 					<p>
 						<strong>name</strong>: {{ vm.facebook.name }}<br>
 						<strong>email</strong>: {{ vm.facebook.email }}<br>
@@ -37,7 +37,7 @@
 					</p>
 					<a class="btn btn-primary" ng-href="{{vm.facebookUnlinkOauthUrl}}">Unlink Facebook</a>&nbsp;&nbsp;  
 				</div>
-				<div ng-if="vm.facebook.token.length === 0">
+				<div ng-if="vm.facebook.email.length === 0">
 					<a class="btn btn-primary" ng-href="{{vm.facebookConnectOauthUrl}}">Connect Facebook</a>&nbsp;&nbsp;  		
 				</div>
 			</div>
@@ -48,7 +48,7 @@
 			<div class="well"> 
 				<h3 class="text-primary"><span class="fa fa-github"></span> Github</h3>
 
-				<div ng-if="vm.github.token.length > 0">
+				<div ng-if="vm.github.email.length > 0">
 					<p>
 						<strong>name</strong>: {{ vm.github.name }}<br>
 						<strong>email</strong>: {{ vm.github.email }}<br>
@@ -57,7 +57,7 @@
 
 					<a class="btn btn-primary" ng-href="{{vm.githubUnlinkOauthUrl}}">Unlink Github</a>&nbsp;&nbsp;  
 				</div>
-				<div ng-if="vm.github.token.length === 0">
+				<div ng-if="vm.github.email.length === 0">
 					<a class="btn btn-primary" ng-href="{{vm.githubConnectOauthUrl}}">Connect Github</a>&nbsp;&nbsp;  		
 				</div>
 			</div>
@@ -68,7 +68,7 @@
 			<div class="well"> 
 				<h3 class="text-primary"><span class="fa fa-google"></span> Google</h3>
 
-				<div ng-if="vm.google.token.length > 0">
+				<div ng-if="vm.google.email.length > 0">
 					<p>
 						<strong>name</strong>: {{ vm.google.name }}<br>
 						<strong>email</strong>: {{ vm.google.email }}<br>
@@ -77,7 +77,7 @@
 
 					<a class="btn btn-primary" ng-href="{{vm.googleUnlinkOauthUrl}}">Unlink Google</a>&nbsp;&nbsp;  
 				</div>
-				<div ng-if="vm.google.token.length === 0">
+				<div ng-if="vm.google.email.length === 0">
 					<a class="btn btn-primary" ng-href="{{vm.googleConnectOauthUrl}}">Connect Google</a>&nbsp;&nbsp;  		
 				</div>
 			</div>
@@ -88,7 +88,7 @@
 			<div class="well"> 
 				<h3 class="text-primary"><span class="fa fa-twitter"></span> Twitter</h3>
 
-				<div ng-if="vm.twitter.token.length > 0">
+				<div ng-if="vm.twitter.email.length > 0">
 					<p>
 						<strong>name</strong>: {{ vm.twitter.name }}<br>
 						<strong>email</strong>: {{ vm.twitter.email }}<br>
@@ -97,7 +97,7 @@
 
 					<a class="btn btn-primary" ng-href="{{vm.twitterUnlinkOauthUrl}}">Unlink Twitter</a>&nbsp;&nbsp;  
 				</div>
-				<div ng-if="vm.twitter.token.length === 0">
+				<div ng-if="vm.twitter.email.length === 0">
 					<a class="btn btn-primary" ng-href="{{vm.twitterConnectOauthUrl}}">Connect Twitter</a>&nbsp;&nbsp;  		
 				</div>
 			</div>
@@ -108,7 +108,7 @@
 			<div class="well"> 
 				<h3 class="text-primary"><span class="fa fa-linkedin"></span> Linkedin</h3>
 
-				<div ng-if="vm.twitter.token.length > 0">
+				<div ng-if="vm.twitter.email.length > 0">
 					<p>
 						<strong>name</strong>: <br>
 						<strong>email</strong>: <br>
@@ -117,7 +117,7 @@
 
 					<a class="btn btn-primary" ng-href="{{vm.linkedinUnlinkOauthUrl}}">Unlink Linkedin</a>&nbsp;&nbsp;  
 				</div>
-				<div ng-if="vm.twitter.token.length === 0">
+				<div ng-if="vm.twitter.email.length === 0">
 					<a class="btn btn-primary" ng-href="{{vm.linkedinConnectOauthUrl}}">Connect Linkedin</a>&nbsp;&nbsp;  		
 				</div>
 			</div>

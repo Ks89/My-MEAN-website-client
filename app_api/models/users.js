@@ -1,7 +1,12 @@
+"use strict";
+
 var mongoose = require( 'mongoose' );
 var bcrypt   = require('bcrypt-nodejs');
 var jwt = require('jsonwebtoken');
 var logger = require('../utils/logger.js');
+
+var Utils = require('../utils/util.js');
+var utils = new Utils();
 
 var userSchema = new mongoose.Schema({
   local: {
@@ -59,7 +64,9 @@ userSchema.methods.generateJwt = function(user) {
 
   return jwt.sign({
     _id: this._id,
-    user: user,
+     //I don't want to expose private information here -> I filter 
+     //the user object into a similar object without some fields
+    user: utils.getFilteredUser(user),
     exp: parseFloat(expiry.getTime()),
   }, process.env.JWT_SECRET); // DO NOT KEEP YOUR SECRET IN THE CODE!
 };
