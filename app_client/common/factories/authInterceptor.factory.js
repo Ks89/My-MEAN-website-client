@@ -8,8 +8,8 @@
     return {
       request: function (config) {
         config.headers = config.headers || {};
-        if ($window.sessionStorage.token) {
-          config.headers.Authorization = 'Bearer ' + $window.sessionStorage.token;
+        if ($window.sessionStorage.auth) {
+          config.headers.Authorization = 'Bearer ' + $window.sessionStorage.auth;
         }
         return config;
       },

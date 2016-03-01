@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-var logger = require('../utils/logger.js');
 
 var authorSchema = new mongoose.Schema({
     name: {
@@ -60,13 +59,13 @@ var projectSchema = new mongoose.Schema({
         required: true
     },
     visible: {
-		type: Boolean,
-        required: true
-    },
-    lastUpdate: {
-        type: Date,
-        "default": Date.now
-    }
+      type: Boolean,
+      required: true
+  },
+  lastUpdate: {
+    type: Date,
+    "default": Date.now
+}
 });
 
 mongoose.model('Project', projectSchema);

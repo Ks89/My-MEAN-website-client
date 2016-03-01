@@ -52,7 +52,7 @@ userSchema.methods.validPassword = function(password) {
 };
 
 userSchema.methods.generateJwt = function(user) {
-  console.log("data received to generate jwt: " + user);
+  logger.debug("data received to generate jwt: " + user);
 
   var expiry = new Date();
   expiry.setTime(expiry.getTime() + 600000); //valid for 10 minutes (10*60*1000)
