@@ -5,6 +5,17 @@ var jshint = require('gulp-jshint');
 var minifyCSS = require('gulp-minify-css');
 var prefix = require('gulp-autoprefixer');
 var del = require('del');
+var bSync = require('browser-sync');
+
+gulp.task('server', funcion(done) {
+	bSync({
+		server: {
+			baseDir: ['dist', 'app']
+		}
+	});
+	done();
+	&nbsp.
+});
 
 gulp.task('clean', function(done){
 	del(['dist'], done);
@@ -49,32 +60,64 @@ gulp.task('test', function() {
 
 gulp.task('scripts', 
 	gulp.series('test', function scriptsInternal() {
-	return gulp.src([
-		'app_client/app.js',
-		'app_client/home/home.controller.js',
-		'app_client/projectList/projectList.controller.js',
-		'app_client/projectDetail/projectDetail.controller.js',
-		'app_client/cv/cv.controller.js',
-		'app_client/contact/contact.controller.js',
-		'app_client/about/about.controller.js',
-		'app_client/profile/profile.controller.js',
-		'app_client/auth/login/login.controller.js',
-		'app_client/auth/register/register.controller.js',
-		'app_client/common/factories/underscore.factory.js',
-		'app_client/common/factories/authInterceptor.factory.js',
-		'app_client/common/services/authentication.service.js',
-		'app_client/common/services/contactData.service.js',
-		'app_client/common/services/projectsData.service.js',
-		'app_client/common/filters/addHtmlLineBreaks.filter.js',
-		'app_client/common/directives/navigation/navigation.controller.js',
-		'app_client/common/directives/navigation/navigation.controller.js',
-		'app_client/common/directives/navigation/navigation.directive.js',
-		'app_client/common/directives/pageHeader/pageHeader.directive.js'
-		])
-	.pipe(concat('mysite.min.js'))
-	.pipe(uglify())
-	.pipe(gulp.dest('dist'));
+		return gulp.src([
+			'app_client/app.js',
+			'app_client/home/home.controller.js',
+			'app_client/projectList/projectList.controller.js',
+			'app_client/projectDetail/projectDetail.controller.js',
+			'app_client/cv/cv.controller.js',
+			'app_client/contact/contact.controller.js',
+			'app_client/about/about.controller.js',
+			'app_client/profile/profile.controller.js',
+			'app_client/auth/login/login.controller.js',
+			'app_client/auth/register/register.controller.js',
+			'app_client/common/factories/underscore.factory.js',
+			'app_client/common/factories/authInterceptor.factory.js',
+			'app_client/common/services/authentication.service.js',
+			'app_client/common/services/contactData.service.js',
+			'app_client/common/services/projectsData.service.js',
+			'app_client/common/filters/addHtmlLineBreaks.filter.js',
+			'app_client/common/directives/navigation/navigation.controller.js',
+			'app_client/common/directives/navigation/navigation.controller.js',
+			'app_client/common/directives/navigation/navigation.directive.js',
+			'app_client/common/directives/pageHeader/pageHeader.directive.js'
+			])
+		.pipe(concat('mysite.min.js'))
+		.pipe(uglify())
+		.pipe(gulp.dest('dist'));
 	})
-);
+	);
 
-gulp.task('default', gulp.series('clean', gulp.parallel('styles', 'scripts')));
+gulp.task('default', gulp.series('clean', gulp.parallel('styles', 'scripts'),
+	'server', function watcher(done) {
+		gulp.watch(
+			['app_client/app.js',
+			'app_client/home/home.controller.js',
+			'app_client/projectList/projectList.controller.js',
+			'app_client/projectDetail/projectDetail.controller.js',
+			'app_client/cv/cv.controller.js',
+			'app_client/contact/contact.controller.js',
+			'app_client/about/about.controller.js',
+			'app_client/profile/profile.controller.js',
+			'app_client/auth/login/login.controller.js',
+			'app_client/auth/register/register.controller.js',
+			'app_client/common/factories/underscore.factory.js',
+			'app_client/common/factories/authInterceptor.factory.js',
+			'app_client/common/services/authentication.service.js',
+			'app_client/common/services/contactData.service.js',
+			'app_client/common/services/projectsData.service.js',
+			'app_client/common/filters/addHtmlLineBreaks.filter.js',
+			'app_client/common/directives/navigation/navigation.controller.js',
+			'app_client/common/directives/navigation/navigation.controller.js',
+			'app_client/common/directives/navigation/navigation.directive.js',
+			'app_client/common/directives/pageHeader/pageHeader.directive.js'
+			], 
+			gulp.parallel('scripts'));
+
+		gulp.watch('public/stylesheets', gulp.parallel('styles'));
+
+		gulp.watcher('dist/**/*', bSync.reload
+			&nbsp.);
+		done();
+	}
+));
