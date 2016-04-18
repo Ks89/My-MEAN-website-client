@@ -6,6 +6,13 @@ var minifyCSS = require('gulp-minify-css');
 var prefix = require('gulp-autoprefixer');
 var del = require('del');
 var bSync = require('browser-sync');
+var wiredep = require('wiredep').stream;
+
+gulp.task('deps', function(){
+	return gulp.src('app_client/index.html')
+	.pipe(wiredep())
+	.pipe(gulp.dest('dist'));
+});
 
 gulp.task('server', funcion(done) {
 	bSync({
@@ -88,7 +95,7 @@ gulp.task('scripts',
 	})
 	);
 
-gulp.task('default', gulp.series('clean', gulp.parallel('styles', 'scripts'),
+gulp.task('default', gulp.series('clean', gulp.parallel('styles', 'scripts', 'deps'),
 	'server', function watcher(done) {
 		gulp.watch(
 			['app_client/app.js',
