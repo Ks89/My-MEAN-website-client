@@ -1,11 +1,6 @@
 var express = require('express');
 var app = express();
 var router = express.Router();
-var jwt = require('jsonwebtoken');
-
-var logger = require('../utils/logger.js');
-var Utils = require('../utils/util.js');
-var utils = new Utils();
 
 var restAuthMiddleware = require('./rest-auth-middleware');
 
