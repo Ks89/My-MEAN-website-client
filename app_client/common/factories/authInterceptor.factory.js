@@ -19,7 +19,7 @@
         }
         return $q.reject(rejection);
       }
-    }
+    };
   }
 
 })();

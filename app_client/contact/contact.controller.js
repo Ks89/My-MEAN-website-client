@@ -40,6 +40,6 @@
 	                vm.formResultMessage = "Invalid Captcha!";
 	                vm.error = "danger";
 	            });
-		}
+		};
 	}
 })();

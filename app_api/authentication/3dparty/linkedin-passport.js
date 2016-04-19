@@ -44,10 +44,10 @@ module.exports = function (userRef, passportRef) {
             // if there is a user id already but no token (user was linked at one point and then removed)
             // just add our token and profile information
             if (!user.linkein.token) {
-              var user = updateUser(user, accessToken, profile);
-              user.save(function(err) {
+              var userUpd = updateUser(user, accessToken, profile);
+              userUpd.save(function(err) {
                 if (err) { throw err; }
-                return done(null, user);
+                return done(null, userUpd);
               });
             }
             return done(null, user); // user found, return that user
@@ -75,4 +75,4 @@ module.exports = function (userRef, passportRef) {
   ));//end of passport.use
 
   return module;
-}
+};

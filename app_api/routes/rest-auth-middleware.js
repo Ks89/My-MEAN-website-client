@@ -48,4 +48,4 @@ module.exports.restAuthenticationMiddleware = function(req, res, next) {
 			message: 'No token provided.'
 		});
 	}
-}
+};

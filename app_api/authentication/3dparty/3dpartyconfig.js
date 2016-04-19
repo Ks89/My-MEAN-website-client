@@ -32,4 +32,4 @@ module.exports = {
     passReqToCallback: true,
     state: true
   }
-}
+};

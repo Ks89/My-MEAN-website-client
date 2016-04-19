@@ -56,7 +56,7 @@ module.exports.sendEmailWithRecaptcha = function(req, res) {
 		secret: process.env.RECAPTCHA_SECRET,
 		response: req.body.response
 		//here I can add also the IP, but it's not mandatory
-	}
+	};
 
 	request.post({url:'https://www.google.com/recaptcha/api/siteverify', form: data}, 
 		function(err,response,body) {
@@ -73,12 +73,12 @@ module.exports.sendEmailWithRecaptcha = function(req, res) {
 			if(!result.success) {
 				res.status(404).send(result['error-codes']);
 			} else {
-				console.log("Trying to send an email")
+				console.log("Trying to send an email");
 				if (req && req.body.emailFormData) {
-					console.log("Preparing to send an email")	
+					console.log("Preparing to send an email");
 					
 					var callback = function(resultVal) {
-						console.log("callaback called with resultVal: " + resultVal)
+						console.log("callaback called with resultVal: " + resultVal);
 						if(resultVal == 200) {
 							console.log('Message sent successfully from: ' + req.body.emailFormData.email);
 							res.status(200);

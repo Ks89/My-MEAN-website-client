@@ -59,7 +59,7 @@
       if(originData) {
         vm.currentUser = {
           name : originData.name
-        }
+        };
       }
     }
 

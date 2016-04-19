@@ -25,4 +25,4 @@ module.exports = function (userRef, passportRef) {
   }));
 
   return module;
-}
+};

@@ -1,5 +1,5 @@
 // Constructor
-var Utils = function() {}
+var Utils = function() {};
 
 // properties and methods
 Utils.prototype = {
@@ -18,8 +18,7 @@ Utils.prototype = {
    var min = date.getMinutes();
    var sec = date.getSeconds();
 
-   return day + "/" + month 
-   + "/" + year + " " + hour + ":" + min + ":" + sec;
+   return day + "/" + month + "/" + year + " " + hour + ":" + min + ":" + sec;
  },
 
  getFilteredUser : function(user) {

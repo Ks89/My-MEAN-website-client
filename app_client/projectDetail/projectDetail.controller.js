@@ -23,7 +23,7 @@
       $anchorScroll.yOffset = 50;
       //reset to old to keep any additional routing logic from kicking in
       $location.hash(old);
-    }
+    };
 
     projectsData.projectById(vm.projectid)
     .success(function(data) {

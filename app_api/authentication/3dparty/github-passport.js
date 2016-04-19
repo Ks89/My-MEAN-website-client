@@ -43,8 +43,9 @@ module.exports = function (userRef, passportRef) {
 		            console.log("User found");
 		            // if there is a user id already but no token (user was linked at one point and then removed)
 		            // just add our token and profile information
+                var userUpdated = '';
 		            if (!user.github.token) {
-		              var userUpdated = updateUser(user, accessToken, profile);
+		              userUpdated = updateUser(user, accessToken, profile);
 		              userUpdated.save(function(err) {
 		                if (err) { throw err; }
 		                return done(null, userUpdated);
@@ -75,4 +76,4 @@ module.exports = function (userRef, passportRef) {
   ));//end of passport.use
 
   return module;
-}
+};

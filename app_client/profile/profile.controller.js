@@ -126,6 +126,6 @@
       }, function(reason) {
         console.log('unlinkLocal failed: ' + reason);
       });
-    }
+    };
   }
 })();

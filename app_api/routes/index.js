@@ -20,7 +20,7 @@ router.get('/projects/:projectid', ctrlProjects.projectsReadOne);
 router.post('/email', ctrlContact.sendEmailWithRecaptcha);
 
 //users for authentication
-router.get('/users/:id', ctrlUser.usersReadOneById)
+router.get('/users/:id', ctrlUser.usersReadOneById);
 
 //local authentication
 router.post('/register', ctrlAuthLocal.register);
