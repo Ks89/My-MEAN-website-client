@@ -13,12 +13,10 @@ var nodemon = require('gulp-nodemon');
 
 gulp.task('test', function() {
 	return gulp.src(['app_api/**/*.js',
-
 		'!app_client/lib/*.js',
 		'app_client/about/**/*.js',
 		'app_client/auth/**/*.js',
 		'app_client/common/**/*.js',
-
 		'app_client/contact/**/*.js',
 		'app_client/cv/**/*.js',
 		'app_client/home/**/*.js',
@@ -31,7 +29,6 @@ gulp.task('test', function() {
 		'public/javascripts/bs-docs-sidebar.js',
 		'public/javascripts/validation.js',
 		'!public/ngGallery/**/*'
-
 		])
 	.pipe(jshint())
 	.pipe(jshint.reporter('default'))
@@ -44,51 +41,28 @@ gulp.task('scripts',
           // var glob = mainBowerFiles('*.js');
           // glob.push('app/scripts/**/*.js');
           return gulp.src(/*glob*/ [
-			//only app_client files
+			//only app_client files, because the generated file will be imported into app_client/index.html
 			'app_client/app.js',
-  'app_client/home/home.controller.js',
-  'app_client/projectList/projectList.controller.js',
-  'app_client/projectDetail/projectDetail.controller.js',
-  'app_client/cv/cv.controller.js',
-  'app_client/contact/contact.controller.js',
-  'app_client/about/about.controller.js',
-  'app_client/profile/profile.controller.js',
-  'app_client/auth/login/login.controller.js',
-  'app_client/auth/register/register.controller.js',
-  'app_client/common/factories/underscore.factory.js',
-  'app_client/common/factories/authInterceptor.factory.js',
-  'app_client/common/services/authentication.service.js',
-  'app_client/common/services/contactData.service.js',
-  'app_client/common/services/projectsData.service.js',
-  'app_client/common/filters/addHtmlLineBreaks.filter.js',
-  'app_client/common/directives/navigation/navigation.controller.js',
-  'app_client/common/directives/navigation/navigation.controller.js',
-  'app_client/common/directives/navigation/navigation.directive.js',
-  'app_client/common/directives/pageHeader/pageHeader.directive.js'
-
-          	// 'app_api/router/*.js',
-          	// 'app_api/authentication/**/*.js',
-          	// 'app_api/controller/**/*.js',
-          	// 'app_api/models/**/*.js',
-          	// 'app_api/utils/util.js',
-           //  '!app_api/utils/logger.js', //TODO fix this, if i add this file i have problems
-
-           //  'app_client/about/**/*.js',
-           //  'app_client/auth/**/*.js',
-           //  'app_client/common/**/*.js',
-
-           //  'app_client/contact/**/*.js',
-           //  'app_client/cv/**/*.js',
-           //  'app_client/home/**/*.js',
-           //  'app_client/profile/**/*.js',
-           //  'app_client/projectDetail/**/*.js',
-           //  'app_client/projectList/**/*.js',
-           //  'app_client/app.js',
-           //  'app.js',
-           //  'public/javascripts/bs-docs-sidebar.js',
-           //  'public/javascripts/validation.js'
-
-                                    ])
+			'app_client/home/home.controller.js',
+			'app_client/projectList/projectList.controller.js',
+			'app_client/projectDetail/projectDetail.controller.js',
+			'app_client/cv/cv.controller.js',
+			'app_client/contact/contact.controller.js',
+			'app_client/about/about.controller.js',
+			'app_client/profile/profile.controller.js',
+			'app_client/auth/login/login.controller.js',
+			'app_client/auth/register/register.controller.js',
+			'app_client/common/factories/underscore.factory.js',
+			'app_client/common/factories/authInterceptor.factory.js',
+			'app_client/common/services/authentication.service.js',
+			'app_client/common/services/contactData.service.js',
+			'app_client/common/services/projectsData.service.js',
+			'app_client/common/filters/addHtmlLineBreaks.filter.js',
+			'app_client/common/directives/navigation/navigation.controller.js',
+			'app_client/common/directives/navigation/navigation.controller.js',
+			'app_client/common/directives/navigation/navigation.directive.js',
+			'app_client/common/directives/pageHeader/pageHeader.directive.js'
+			])
           .pipe(concat('mysite.min.js'))
           .pipe(uglify().on('error', gutil.log))
           .pipe(gulp.dest('public/angular'));
@@ -113,6 +87,32 @@ gulp.task('server', function () {
 		env: { 'NODE_ENV': 'development' }
 	})
 })
+
+
+// gulp.task('bsync', ['nodemon'], function() {
+// 	bSync.init(null, {
+// 		proxy: "http://localhost:3000",
+// 		files: ["**/*.*"],
+// 		browser: "google chrome",
+// 		port: 7000,
+// 	});
+// });
+
+
+// gulp.task('nodemon', function (cb) {
+// 	nodemon({
+// 		script: './bin/www',
+// 		ext: 'js html',
+// 		env: { 'NODE_ENV': 'development' }
+// 	})
+// 	.on('start', function () {
+// 		cb();
+// 	})
+// 	.on('error', function(err) {
+//      // Make sure failure causes gulp to exit
+//      throw err;
+//  })
+// });
 
 // gulp.task('server', function(done) {
 //      bSync({

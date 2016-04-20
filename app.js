@@ -13,8 +13,6 @@ var logger = require("./app_api/utils/logger");
 
 // var staticAsset = require('static-asset');
 
-//uglify
-var uglifyJs = require("uglify-js");
 var fs = require('fs');
 var passport = require('passport');
 
@@ -23,39 +21,6 @@ require('./app_api/models/db');
 require('./app_api/authentication/passport')(passport);
 
 var app = express();
-
-// //use uglify
-// var appClientFiles = [
-//   'app_client/app.js',
-//   'app_client/home/home.controller.js',
-//   'app_client/projectList/projectList.controller.js',
-//   'app_client/projectDetail/projectDetail.controller.js',
-//   'app_client/cv/cv.controller.js',
-//   'app_client/contact/contact.controller.js',
-//   'app_client/about/about.controller.js',
-//   'app_client/profile/profile.controller.js',
-//   'app_client/auth/login/login.controller.js',
-//   'app_client/auth/register/register.controller.js',
-//   'app_client/common/factories/underscore.factory.js',
-//   'app_client/common/factories/authInterceptor.factory.js',
-//   'app_client/common/services/authentication.service.js',
-//   'app_client/common/services/contactData.service.js',
-//   'app_client/common/services/projectsData.service.js',
-//   'app_client/common/filters/addHtmlLineBreaks.filter.js',
-//   'app_client/common/directives/navigation/navigation.controller.js',
-//   'app_client/common/directives/navigation/navigation.controller.js',
-//   'app_client/common/directives/navigation/navigation.directive.js',
-//   'app_client/common/directives/pageHeader/pageHeader.directive.js'
-// ];
-// var uglified = uglifyJs.minify(appClientFiles, { compress : false });
-
-// fs.writeFile('public/angular/mysite.min.js', uglified.code, function (err){
-//   if(err) {
-//     console.log(err);
-//   } else {
-//     console.log("Script generated and saved:", 'mysite.min.js');
-//   }
-// });
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
