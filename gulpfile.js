@@ -9,6 +9,10 @@ var del         = require('del');
 var bSync       = require('browser-sync');
 var wiredep     = require('wiredep').stream;
 var nodemon = require('gulp-nodemon');
+var cached = require('gulp-cached');
+var remember = require('gulp-remember');
+var applySourceMap = require('vinyl-sourcemaps-apply');
+
 // var mainBowerFiles = require('main-bower-files');
 
 gulp.task('test', function() {
@@ -29,7 +33,7 @@ gulp.task('test', function() {
 		'public/javascripts/bs-docs-sidebar.js',
 		'public/javascripts/validation.js',
 		'!public/ngGallery/**/*'
-		])
+		], {since: gulp.lastRun('test')})
 	.pipe(jshint())
 	.pipe(jshint.reporter('default'))
 	.pipe(jshint.reporter('fail'));
@@ -62,9 +66,12 @@ gulp.task('scripts',
 			'app_client/common/directives/navigation/navigation.controller.js',
 			'app_client/common/directives/navigation/navigation.directive.js',
 			'app_client/common/directives/pageHeader/pageHeader.directive.js'
-			])
-          .pipe(concat('mysite.min.js'))
+			] , {	sourcemaps: true,
+				since: gulp.lastRun('test')} )
+          .pipe(cached('ugly'))
           .pipe(uglify().on('error', gutil.log))
+          .pipe(remember('ugly'))
+          .pipe(concat('mysite.min.js'))
           .pipe(gulp.dest('public/angular'));
       })
 	);
