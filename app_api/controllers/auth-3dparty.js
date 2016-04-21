@@ -54,23 +54,23 @@ module.exports.connectLinkedinCallback = passport.authorize('linkedin', connectR
 //All of these have this form: /auth/****serviceName****/callback
 module.exports.callbackRedirectFacebook = function(req, res) { 
 	console.log("callbackRedirect called");
-	redirectToProfile(req.user, res);
+	redirectToProfile(req.user, res, req);
 };
 module.exports.callbackRedirectGoogle = function(req, res) { 
 	console.log("callbackRedirect called");
-	redirectToProfile(req.user, res);
+	redirectToProfile(req.user, res, req);
 };
 module.exports.callbackRedirectGithub = function(req, res) { 
 	console.log("callbackRedirect called");
-	redirectToProfile(req.user, res);
+	redirectToProfile(req.user, res, req);
 };
 module.exports.callbackRedirectTwitter = function(req, res) { 
 	console.log("callbackRedirect called");
-	redirectToProfile(req.user, res);
+	redirectToProfile(req.user, res, req);
 };
 module.exports.callbackRedirectLinkedin = function(req, res) { 
 	console.log("callbackRedirect called");
-	redirectToProfile(req.user, res);
+	redirectToProfile(req.user, res, req);
 };
 
 //GET to unlink a 3dauth user
@@ -98,7 +98,7 @@ function unlinkFromDb(req, serviceName, res) {
 		user.save(function(err) {
 			if(!err) {
 				console.log("Unlinking...");
-				redirectToProfile(user, res);
+				redirectToProfile(user, res, req);
 			} else {
 				console.log("Impossible to remove userService from db");
 			}
@@ -132,9 +132,10 @@ function removeServiceFromDb(serviceName, user) {
 		return user;
 }
 
-function redirectToProfile(user, res) {
+function redirectToProfile(user, res, req) {
 	var cookie = getAuthToken(user);
 	res.cookie('userCookie', cookie /*, { maxAge: 900000, httpOnly: true }*/);	
+	req.session.authToken = getAuthToken(user);
 	res.redirect('/profile');
 }
 

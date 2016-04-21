@@ -69,4 +69,7 @@ router.get('/unlink/google', ctrlAuth3dParty.unlinkGoogle);
 router.get('/unlink/twitter', ctrlAuth3dParty.unlinkTwitter);
 router.get('/unlink/linkedin', ctrlAuth3dParty.unlinkLinkedin);
 
+//--------------------logout-------------------------
+router.get('/logout', ctrlAuthLocal.logout);
+
 module.exports = router;

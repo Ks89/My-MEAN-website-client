@@ -149,6 +149,23 @@ module.exports.decodeToken = function(req, res) {
 };
 
 
+/* GET to logout removing session data stored in Redis */
+/* /api/logout */
+module.exports.logout = function(req, res) {
+  console.log('logout called');
+  console.log('data available (authToken): ' + req.session.authToken);
+  if(req.session.authToken) {
+    req.session.destroy(function(){
+      console.log('Session data destroyed');
+    });
+  } else {
+    console.log('Authtoken not available as session data in Redis, for instance you aren\'t logged');
+  }
+};
+  
+
+
+
 function regenerateJwtCookie(user) {
   var token3dauth = user.generateJwt(user);
   var myCookie = JSON.stringify({ 

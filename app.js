@@ -13,6 +13,10 @@ var logger = require("./app_api/utils/logger");
 
 // var staticAsset = require('static-asset');
 
+var redis   = require("redis"); //it's really useful?
+var RedisStore = require('connect-redis')(session);
+var client  = redis.createClient(); //it's really useful?
+
 var fs = require('fs');
 var passport = require('passport');
 
@@ -37,7 +41,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(session({
     secret: 'keyboard cat',
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: true,
+    store: new RedisStore({ host: 'localhost', port: 6379, client: client,ttl :  260}),
     // cookie: {
     //   httpOnly: false,
     //     secure: false, //to use true, you must use https. If you'll use true with http it won't work.
