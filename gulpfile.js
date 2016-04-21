@@ -2,21 +2,47 @@ var gulp        = require('gulp');
 var jshint      = require('gulp-jshint');
 var uglify      = require('gulp-uglify');
 var concat      = require('gulp-concat');
+// var less        = require('gulp-less');
 var minifyCSS   = require('gulp-minify-css');
 var prefix      = require('gulp-autoprefixer');
+
 var gutil       = require('gulp-util');
+
 var del         = require('del');
 var bSync       = require('browser-sync');
 var wiredep     = require('wiredep').stream;
-var nodemon = require('gulp-nodemon');
-var cached = require('gulp-cached');
-var remember = require('gulp-remember');
-var applySourceMap = require('vinyl-sourcemaps-apply');
+var mainBowerFiles = require('main-bower-files');
+
+var nodemon 	= require('gulp-nodemon');
+
+var cached 		= require('gulp-cached');
+var remember 	= require('gulp-remember');
+var sourcemaps  = require('gulp-sourcemaps');
+var combiner    = require('stream-combiner2');
+var through     = require('through2');
+
+var eslint 		= require('gulp-eslint');
+var babel 		= require('gulp-babel');
+
+var arguments 	= require('yargs').argv;
+
+var isprod = (arguments.env === 'prod');
+
+var noop = function() {
+	return through.obj();
+};
+
+var dev = function(task) {
+	return isprod ? noop() : task;
+};
+
+var prod = function(task) {
+	return isprod ? task : noop();
+};
 
 // var mainBowerFiles = require('main-bower-files');
 
-gulp.task('test', function() {
-	return gulp.src(['app_api/**/*.js',
+var testJs = ['app_api/**/*.js',
 		'!app_client/lib/*.js',
 		'app_client/about/**/*.js',
 		'app_client/auth/**/*.js',
@@ -33,20 +59,9 @@ gulp.task('test', function() {
 		'public/javascripts/bs-docs-sidebar.js',
 		'public/javascripts/validation.js',
 		'!public/ngGallery/**/*'
-		], {since: gulp.lastRun('test')})
-	.pipe(jshint())
-	.pipe(jshint.reporter('default'))
-	.pipe(jshint.reporter('fail'));
-});
+		];
 
-
-gulp.task('scripts',
-	gulp.series('test', function scriptsInternal() {
-          // var glob = mainBowerFiles('*.js');
-          // glob.push('app/scripts/**/*.js');
-          return gulp.src(/*glob*/ [
-			//only app_client files, because the generated file will be imported into app_client/index.html
-			'app_client/app.js',
+var app_clientJs = ['app_client/app.js',
 			'app_client/home/home.controller.js',
 			'app_client/projectList/projectList.controller.js',
 			'app_client/projectDetail/projectDetail.controller.js',
@@ -66,12 +81,30 @@ gulp.task('scripts',
 			'app_client/common/directives/navigation/navigation.controller.js',
 			'app_client/common/directives/navigation/navigation.directive.js',
 			'app_client/common/directives/pageHeader/pageHeader.directive.js'
-			] , {	sourcemaps: true,
-				since: gulp.lastRun('test')} )
+			];
+
+gulp.task('test', function() {
+	return gulp.src(testJs /*, {since: gulp.lastRun('test')}*/)
+	.pipe(jshint())
+	.pipe(jshint.reporter('default'))
+	.pipe(jshint.reporter('fail'));
+});
+
+
+gulp.task('scripts',
+	gulp.series('test', function scriptsInternal() {
+          // var glob = mainBowerFiles('*.js');
+          // glob.push('app/scripts/**/*.js');
+          return gulp.src(/*glob*/ 
+			//only app_client files, because the generated file will be imported into app_client/index.html
+			app_clientJs , {	sourcemaps: true /*,
+				since: gulp.lastRun('test')*/} )
+          .pipe(dev(sourcemaps.init()))
           .pipe(cached('ugly'))
           .pipe(uglify().on('error', gutil.log))
           .pipe(remember('ugly'))
           .pipe(concat('mysite.min.js'))
+          //.pipe(dev(sourcemaps.write('.', {sourceRoot: 'js-source'})))
           .pipe(gulp.dest('public/angular'));
       })
 	);
@@ -122,12 +155,14 @@ gulp.task('server', function () {
 // });
 
 // gulp.task('server', function(done) {
+//	if(!isprod) {	
 //      bSync({
 //           server: {
 //                baseDir: ['bin/www']
 //           }
 //      })
-//      done();
+//	}
+//  done();
 // });
 
 gulp.task('deps', function() {
@@ -141,13 +176,15 @@ gulp.task('default',
 		gulp.parallel('styles', 'scripts', 'deps'),
 		'server',
 		function watcher(done) {
-			gulp.watch(['app_api/**/*.js',
+			if(!isprod) {
+				var watcher = gulp.watch(['app_api/**/*.js',
 				'app_client/**/*.js',
 				'public/**/*.js',
 				'app.js',
 				], gulp.parallel('scripts'));
-			gulp.watch('public/stylesheets/*', gulp.parallel('styles'));
-			gulp.watch('dist/**/*', bSync.reload); //TODO remove this, i'm not using bsync anymore
+				gulp.watch('public/stylesheets/*', gulp.parallel('styles'));
+				gulp.watch('dist/**/*', bSync.reload); //TODO remove this, i'm not using bsync anymore
+			}
 		}
-		)
-	);
+	)
+);

@@ -42,16 +42,24 @@
     "del": "^2.2.0",
     "gulp": "github:gulpjs/gulp#4.0",
     "gulp-autoprefixer": "^3.1.0",
+    "gulp-babel": "^6.1.2",
     "gulp-cached": "^1.1.0",
     "gulp-concat": "^2.6.0",
+    "gulp-eslint": "^2.0.0",
     "gulp-jshint": "^2.0.0",
     "gulp-minify-css": "^1.2.4",
     "gulp-nodemon": "^2.0.6",
     "gulp-npm-files": "^0.1.3",
     "gulp-remember": "^0.3.1",
+    "gulp-sourcemaps": "^2.0.0-alpha",
     "gulp-uglify": "^1.5.3",
     "jshint": "^2.9.1",
+    "main-bower-files": "^2.11.1",
+    "merge2": "^1.0.2",
+    "stream-combiner2": "^1.1.1",
+    "through2": "^2.0.1",
     "vinyl-sourcemaps-apply": "^0.2.1",
-    "wiredep": "^4.0.0"
+    "wiredep": "^4.0.0",
+    "yargs": "^4.6.0"
   }
 }
