@@ -5,7 +5,7 @@ var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var morgan = require('morgan');
-var cookieParser = require('cookie-parser');
+//var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var bodyParser = require('body-parser');
 //logger created with winston
@@ -17,6 +17,13 @@ var redis   = require("redis"); //it's really useful?
 var RedisStore = require('connect-redis')(session);
 var client  = redis.createClient(); //it's really useful?
 
+//[http params pollution] security package to prevent http params pollution
+var hpp = require('hpp');
+
+//[large payload attacks] Make sure this application is not vulnerable to large payload attacks
+var contentLength = require('express-content-length-validator');
+var MAX_CONTENT_LENGTH_ACCEPTED = 9999;
+
 var fs = require('fs');
 var passport = require('passport');
 
@@ -26,6 +33,13 @@ require('./app_api/authentication/passport')(passport);
 
 var app = express();
 
+//[hemple] enable hemlet
+var helmet = require('helmet');
+app.use(helmet());
+
+//[large payload attacks] this line enables the middleware for all routes
+app.use(contentLength.validateMax({max: MAX_CONTENT_LENGTH_ACCEPTED, status: 400, message: "stop it!"})); // max size accepted for the content-length
+
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(morgan({ "stream": logger.stream }));
@@ -33,9 +47,13 @@ app.use(morgan({ "stream": logger.stream }));
 // app.use(staticAsset(path.join(__dirname, 'app_client')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'app_client')));
-app.use(cookieParser('keyboard cat'));
+//app.use(cookieParser('keyboard cat'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+//[http params pollution] activate http parameters pollution
+//use this ALWAYS AFTER app.use(bodyParser.urlencoded())
+app.use(hpp()); 
 
 // Express Session
 app.use(session({
