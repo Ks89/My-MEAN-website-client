@@ -5,10 +5,12 @@ var Utils = require('../utils/util.js');
 var utils = new Utils();
 
 module.exports.restAuthenticationMiddleware = function(req, res, next) {
-	logger.debug("route middleware to authenticate and check token: " + req.cookies.userCookie);
-	if (req.cookies.userCookie) {
-		var cookie = JSON.parse(req.cookies.userCookie);
-		var token = cookie.token;
+	logger.debug("route middleware to authenticate and check token: " + req.session.authToken);
+	if (req.session.authToken) {
+		// var cookie = JSON.parse(req.cookies.userCookie);
+		// var token = cookie.token;
+		var authToken = JSON.parse(req.session.authToken);
+		var token = authToken.token;
 		logger.debug("token: " + token);
 		if (token) {
 			jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {

@@ -6,6 +6,7 @@ var restAuthMiddleware = require('./rest-auth-middleware');
 
 var ctrlAuthLocal = require('../controllers/auth-local');
 var ctrlAuth3dParty = require('../controllers/auth-3dparty');
+var ctrlAuthCommon = require('../controllers/auth-common');
 var ctrlProjects = require('../controllers/projects');
 var ctrlContact = require('../controllers/contact');
 var ctrlUser = require('../controllers/users');
@@ -25,9 +26,6 @@ router.get('/users/:id', ctrlUser.usersReadOneById);
 //local authentication
 router.post('/register', ctrlAuthLocal.register);
 router.post('/login', ctrlAuthLocal.login);
-
-//TODO move to a general place, and not into authlocal
-router.get('/decodeToken/:token', ctrlAuthLocal.decodeToken); 
 
 //------------------------------authenticate (first login)---------------------------------
 router.get('/auth/github', ctrlAuth3dParty.authGithub);
@@ -54,12 +52,16 @@ router.get('/connect/linkedin', ctrlAuth3dParty.connectLinkedin);
 router.get('/connect/linkedin/callback', ctrlAuth3dParty.connectLinkedinCallback);
 
 
+//--------------------COMMON-------------------------
+router.get('/logout', ctrlAuthCommon.logout);
+router.get('/sessionToken', ctrlAuthCommon.sessionToken);
+router.get('/decodeToken/:token', ctrlAuthCommon.decodeToken); 
+
 // ----------------------------------------------------------------
 // route middleware to authenticate and check token
 // all routes defined below will be protected by the following code
 // ----------------------------------------------------------------
 router.use(restAuthMiddleware.restAuthenticationMiddleware);
-
 
 //-------------------unlink routes-------------------
 router.get('/unlink/local/:id', ctrlAuthLocal.unlinkLocal);
@@ -68,8 +70,5 @@ router.get('/unlink/github', ctrlAuth3dParty.unlinkGithub);
 router.get('/unlink/google', ctrlAuth3dParty.unlinkGoogle);
 router.get('/unlink/twitter', ctrlAuth3dParty.unlinkTwitter);
 router.get('/unlink/linkedin', ctrlAuth3dParty.unlinkLinkedin);
-
-//--------------------logout-------------------------
-router.get('/logout', ctrlAuthLocal.logout);
 
 module.exports = router;

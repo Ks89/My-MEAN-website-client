@@ -3,8 +3,8 @@
   .module('mySiteApp')
   .controller('profileCtrl', profileCtrl);
 
-  profileCtrl.$inject = ['$location', '$routeParams','authentication', '$cookies', '$window'];
-  function profileCtrl($location, $routeParams, authentication, $cookies, $window) {
+  profileCtrl.$inject = ['$location', '$routeParams','authentication', '$window'];
+  function profileCtrl($location, $routeParams, authentication, $window) {
     var vm = this;
     vm.pageHeader = {
       title: 'Profile',
@@ -48,44 +48,63 @@
     vm.twitterUnlinkOauthUrl = 'api/unlink/twitter';
     vm.linkedinUnlinkOauthUrl = 'api/unlink/linkedin';
     //3dparty authentication
-    var userCookie = $cookies.get('userCookie');
+
+    // var userCookie = $cookies.get('userCookie');
     
-    if(userCookie) {
-      var jsonCookie = JSON.parse(userCookie);
-      var auth3dtoken = jsonCookie.token;
+    // if(userCookie) {
+    //   var jsonCookie = JSON.parse(userCookie);
+    //   var auth3dtoken = jsonCookie.token;
 
-      console.log('User cookie has token: ' + auth3dtoken);
+    //   console.log('User cookie has token: ' + auth3dtoken);
 
-      //necessary for the navigation bar
-      authentication.saveToken('auth', JSON.stringify(auth3dtoken));
-    }
+    //   //necessary for the navigation bar
+    //   authentication.saveToken('auth', JSON.stringify(auth3dtoken));
+    // }
 
-    authentication.getLoggedUser()
-    .then(function(data) {
-      console.log("Profile called getLoggedUser");
-      if(data) {
-        console.log(data);
-        console.log("Profile called data valid");
-        var user = JSON.parse(data);
-        console.log("Profile called getLoggedUser user parsed");
-        console.log(user);
-        if(user) {
-          console.log("setting data.........................");
-          setObjectValuesLocal(user.local, vm.local);
-          setObjectValues(user.github, vm.github);
-          setObjectValues(user.facebook, vm.facebook);
-          setObjectValues(user.google, vm.google);
-          setObjectValues(user.twitter, vm.twitter);
-          setObjectValues(user.linkedin, vm.linkedin);
-          console.log("---------------setted----------------");
+
+    authentication.getTokenRedis('auth')
+    .then(function(tokenData) {
+      console.log('token obtained from redis');     
+      console.log("sessionToken");
+      if(tokenData && tokenData.data) {
+        console.log(tokenData.data);
+        var tokenObj = JSON.parse(tokenData.data);
+        console.log("tokenobj: " + tokenObj);
+        if(tokenObj) {
+          var token = tokenObj.token;
+          console.log("real token is: " + token);
+          authentication.saveToken('auth', token);
+
+          authentication.getLoggedUser()
+          .then(function(data) {
+            console.log("Profile called getLoggedUser");
+            if(data) {
+              console.log(data);
+              console.log("Profile called data valid");
+              var user = JSON.parse(data);
+              console.log("Profile called getLoggedUser user parsed");
+              console.log(user);
+              if(user) {
+                console.log("setting data.........................");
+                setObjectValuesLocal(user.local, vm.local);
+                setObjectValues(user.github, vm.github);
+                setObjectValues(user.facebook, vm.facebook);
+                setObjectValues(user.google, vm.google);
+                setObjectValues(user.twitter, vm.twitter);
+                setObjectValues(user.linkedin, vm.linkedin);
+                console.log("---------------setted----------------");
+              }
+            } else {
+              console.log("Profile called getLoggedUser but data was null");
+            }
+          }, function(error){
+              console.log(error);
+          });
         }
-      } else {
-        console.log("Profile called getLoggedUser but data was null");
       }
-    }, function(error){
-        console.log(error);
+    }, function(error) {
+      console.log(error);
     });
-
 
     function buildJsonUserData() {
       return {

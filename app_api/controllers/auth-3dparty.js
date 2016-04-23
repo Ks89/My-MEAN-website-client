@@ -134,7 +134,7 @@ function removeServiceFromDb(serviceName, user) {
 
 function redirectToProfile(user, res, req) {
 	var cookie = getAuthToken(user);
-	res.cookie('userCookie', cookie /*, { maxAge: 900000, httpOnly: true }*/);	
+	//res.cookie('userCookie', cookie /*, { maxAge: 900000, httpOnly: true }*/);	
 	req.session.authToken = getAuthToken(user);
 	res.redirect('/profile');
 }
