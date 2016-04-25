@@ -62,49 +62,50 @@
     // }
 
 
-    authentication.getTokenRedis('auth')
-    .then(function(tokenData) {
-      console.log('token obtained from redis');     
-      console.log("sessionToken");
-      if(tokenData && tokenData.data) {
-        console.log(tokenData.data);
-        var tokenObj = JSON.parse(tokenData.data);
-        console.log("tokenobj: " + tokenObj);
-        if(tokenObj) {
-          var token = tokenObj.token;
-          console.log("real token is: " + token);
-          authentication.saveToken('auth', token);
+    // authentication.getTokenRedis('auth')
+    // .then(function(tokenData) {
+    //   console.log('token obtained from redis');     
+    //   console.log("sessionToken");
+    //   if(tokenData && tokenData.data) {
+    //     console.log(tokenData.data);
+    //     var tokenObj = JSON.parse(tokenData.data);
+    //     console.log("tokenobj: " + tokenObj);
+    //     if(tokenObj) {
+    //       var token = tokenObj.token;
+    //       console.log("real token is: " + token);
+    //       authentication.saveToken('auth', token);
 
-          authentication.getLoggedUser()
+          authentication.getLoggedUserExperimental()
           .then(function(data) {
-            console.log("Profile called getLoggedUser");
+            console.log("[[[[[[[]]]]]] Profile called getLoggedUser");
             if(data) {
               console.log(data);
-              console.log("Profile called data valid");
+              console.log("[[[[[[[]]]]]] Profile called data valid");
               var user = JSON.parse(data);
-              console.log("Profile called getLoggedUser user parsed");
+              console.log("[[[[[[[]]]]]] Profile called getLoggedUser user parsed");
               console.log(user);
               if(user) {
-                console.log("setting data.........................");
+                console.log("[[[[[[[]]]]]] setting data.........................");
                 setObjectValuesLocal(user.local, vm.local);
                 setObjectValues(user.github, vm.github);
                 setObjectValues(user.facebook, vm.facebook);
                 setObjectValues(user.google, vm.google);
                 setObjectValues(user.twitter, vm.twitter);
                 setObjectValues(user.linkedin, vm.linkedin);
-                console.log("---------------setted----------------");
+                console.log("[[[[[[[]]]]]] ---------------setted----------------");
               }
             } else {
-              console.log("Profile called getLoggedUser but data was null");
+              console.log("[[[[[[[]]]]]] Profile called getLoggedUser but data was null");
             }
           }, function(error){
+              console.log("{{{{{{{{{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}}}}}}}}");
               console.log(error);
           });
-        }
-      }
-    }, function(error) {
-      console.log(error);
-    });
+    //     }
+    //   }
+    // }, function(error) {
+    //   console.log(error);
+    // });
 
     function buildJsonUserData() {
       return {
