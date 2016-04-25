@@ -27,7 +27,7 @@
 
     authentication.getLoggedUserExperimental()
     .then(function(data) {
-      console.log("navigation called getLoggedUser");
+      console.log("##########################navigation called getLoggedUser");
       if(data) {
         console.log(data);
         console.log("navigation called data valid");
@@ -48,6 +48,15 @@
             setCurrentUser(user.twitter);
           }
         }
+
+        authentication.isLoggedIn()
+        .then(function(result) {
+          console.log('Nav isLoggedIn local  Success: ' + result);
+          vm.isLoggedIn =  result;
+        },function(reason) {
+          console.log('Nav isLoggedIn local  Failed: ' + reason);
+          vm.isLoggedIn =  false;
+        });
       } else {
         console.log("navigation called getLoggedUser but data was null");
       }
