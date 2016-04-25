@@ -271,7 +271,7 @@
                   //TODO remove logout
                   deferred.reject(JSON.stringify({}));
                 }  
-            })
+              })
             .error(function(e) {
               console.log('<<<<<<< ' + 'getUserByToken error ');
               console.log(e);
@@ -289,7 +289,7 @@
         console.log('<<<<<<< ' + "ERROR experimental...");
         deferred.reject(JSON.stringify({}));
       });
-    
+      
       return deferred.promise;
     };
 
