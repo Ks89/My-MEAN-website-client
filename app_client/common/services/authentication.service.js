@@ -290,69 +290,6 @@
     };
 
 
-
-
-    var getLoggedUser = function() {
-      console.log("reading token: ");
-      var deferred = $q.defer();
-      var thirdauthData = {};
-
-      getUserByToken('auth')
-      .success(function(data) {
-        console.log('getUserByToken user ');
-
-        if(data !== null && data === 'invalid-data') {
-          removeToken('auth');
-          //TODO remove session data with logout
-          deferred.reject(null);
-        }
-
-        //var userData = JSON.parse(data);
-        console.log('********************************************************');
-        console.log('******************************************************** user:');
-        console.log('********************************************************');
-        console.log(data);
-        if(data) {
-          var userData = JSON.parse(data);
-          console.log(userData);
-          var user = userData.user;
-          console.log(user);
-
-          if(user._id) {
-            getUserById(user._id)
-            .success(function(data) {
-              console.log("Obtained user by its id");
-              console.log("getUserByToken finished with local user");
-              console.log(data);
-
-              console.log("updated user with local infos:");
-              console.log(user);
-
-              deferred.resolve(JSON.stringify(user));
-            })
-            .error(function(e) {
-              console.log("Impossible to retrieve user by its id");
-              console.log("getUserByToken finished without local user");
-              deferred.resolve(JSON.stringify(user));
-            });
-          }
-        } else {
-          removeToken('auth');
-            //TODO remove logout
-            deferred.reject(JSON.stringify({}));
-          }
-        })
-      .error(function(e) {
-        console.log('getUserByToken error ');
-        console.log(e);
-        removeToken('auth');
-        //TODO remove logout
-        deferred.reject(JSON.stringify({}));
-      });
-      console.log("getUserByToken finished returning...");
-      return deferred.promise;
-    };
-
     //-----------------------------------
     //--- others functions - not exposed
     //-----------------------------------
@@ -398,7 +335,6 @@
       unlinkLocal : unlinkLocal,
       getUserById : getUserById,
       logout : logout,
-      getLoggedUser : getLoggedUser,
       getLoggedUserExperimental : getLoggedUserExperimental,
       isLoggedIn : isLoggedIn,
       saveToken : saveToken,

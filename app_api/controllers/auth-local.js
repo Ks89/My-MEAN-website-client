@@ -41,6 +41,8 @@ module.exports.register = function(req, res) {
         //TODO why I'm doing this here????
         req.session.localUserId = savedUser._id;
         
+        req.session.authToken = regenerateJwtCookie(savedUser);
+
         utils.sendJSONresponse(res, 200, { token: token });
       }
     });
@@ -71,6 +73,8 @@ module.exports.login = function(req, res) {
 
       req.session.localUserId = user._id;
 
+      req.session.authToken = regenerateJwtCookie(user);
+      
       utils.sendJSONresponse(res, 200, { token: token });
     } else {
       utils.sendJSONresponse(res, 401, info);
