@@ -47,7 +47,6 @@
 
         if(data !== null && data === 'invalid-data') {
           removeToken('auth');
-          removeCookie('userCookie');
           //TODO call logout to remove sessio data from redis
           deferred.reject(null);
         }
@@ -78,16 +77,14 @@
           }
         } else {
           removeToken('auth');
-          removeCookie('userCookie'); 
             //TODO remove session logout
             deferred.reject(null);
-          }
+        }
         })
       .error(function(e) {
         console.log('getUserByToken error ');
         console.log(e);
         removeToken('auth');
-        removeCookie('userCookie');
         //TODO remove session logout
         deferred.reject(null);
       });
@@ -159,10 +156,12 @@
     };
 
     var logout = function() {
-      //TODO remove session data - logout
+      console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Called authentication logout");
       removeToken('auth');
-      removeCookie('userCookie');
       removeCookie('connect.sid');
+
+      //call REST service to remove session data from redis
+      return $http.get('/api/logout');
     };
 
     var isLoggedIn = function() {
@@ -230,7 +229,6 @@
 
               if(data !== null && data === 'invalid-data') {
                 removeToken('auth');
-                removeCookie('userCookie');
                 //TODO remove session data with logout
                 console.log('<<<<<<< INVALID DATA !!!!');
                 deferred.reject(null);
@@ -267,7 +265,6 @@
                 }
               } else {
                 removeToken('auth');
-                removeCookie('userCookie');
                   //TODO remove logout
                   deferred.reject(JSON.stringify({}));
                 }  
@@ -276,7 +273,6 @@
               console.log('<<<<<<< ' + 'getUserByToken error ');
               console.log(e);
               removeToken('auth');
-              removeCookie('userCookie');
               //TODO remove logout
               deferred.reject(JSON.stringify({}));
             });
@@ -307,7 +303,6 @@
 
         if(data !== null && data === 'invalid-data') {
           removeToken('auth');
-          removeCookie('userCookie');
           //TODO remove session data with logout
           deferred.reject(null);
         }
@@ -343,7 +338,6 @@
           }
         } else {
           removeToken('auth');
-          removeCookie('userCookie');
             //TODO remove logout
             deferred.reject(JSON.stringify({}));
           }
@@ -352,7 +346,6 @@
         console.log('getUserByToken error ');
         console.log(e);
         removeToken('auth');
-        removeCookie('userCookie');
         //TODO remove logout
         deferred.reject(JSON.stringify({}));
       });
@@ -396,7 +389,6 @@
       $window.sessionStorage.removeItem(key);
     }
     function removeCookie(key) {
-      //TODO remove this function 
       //$cookies.remove(key);
     }
     

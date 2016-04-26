@@ -73,7 +73,14 @@
     }
 
     vm.logout = function() {
-      authentication.logout();
+      authentication.logout()
+      .then(function(result) {
+        console.log('Logged out: ' + result);
+        vm.isLoggedIn =  false;
+      },function(reason) {
+        console.log('Impossibile to logout: ' + reason);
+        vm.isLoggedIn =  false; //FIXME, Choose the value, I don't know, but I suppose "false"
+      });
       $location.path('/');
     };
   }
