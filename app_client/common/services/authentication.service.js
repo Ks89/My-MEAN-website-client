@@ -128,7 +128,7 @@
       console.log("reading 3dauth: ");
       var deferred = $q.defer();
 
-      getUserByToken('3dauth')
+      getUserByToken('auth')
       .success(function(data) {
         console.log('isAuth3dLoggedIn user ');
         var user = JSON.parse(data);
