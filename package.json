@@ -6,8 +6,8 @@
     "start": "node ./bin/www"
   },
   "engines": {
-    "node": "~5.10.1",
-    "npm": "~3.8.3"
+    "node": "~6.0.0",
+    "npm": "~3.8.6"
   },
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
