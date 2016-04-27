@@ -200,12 +200,10 @@
     };
 
 
-
-    //Experimental
-    var getLoggedUserExperimental = function() {
+    var getLoggedUser = function() {
       var deferred = $q.defer();
       var thirdauthData = {};
-      console.log('<<<<<<< getLoggedUserExperimental');
+      console.log('<<<<<<< getLoggedUser');
       getTokenRedis('auth')
       .success(function(tokenData) {
         console.log('<<<<<<< token obtained from redis');     
@@ -335,7 +333,7 @@
       unlinkLocal : unlinkLocal,
       getUserById : getUserById,
       logout : logout,
-      getLoggedUserExperimental : getLoggedUserExperimental,
+      getLoggedUser : getLoggedUser,
       isLoggedIn : isLoggedIn,
       saveToken : saveToken,
       getTokenRedis : getTokenRedis,

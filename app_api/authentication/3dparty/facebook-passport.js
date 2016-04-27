@@ -51,7 +51,7 @@ module.exports = function (userRef, passportRef) {
                 return done(null, userUpdated);
               });
             }
-            return done(null, userUpdated); // user found, return that user
+            return done(null, user); // user found, return that user
           } else { //otherwise, if there is no user found with that id, create them
             var newUser = updateUser(new userRef(), accessToken, profile);
             console.log("New user created: " + newUser);

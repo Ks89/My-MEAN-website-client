@@ -25,7 +25,7 @@
       'name' : '' 
     };
 
-    authentication.getLoggedUserExperimental()
+    authentication.getLoggedUser()
     .then(function(data) {
       console.log("##########################navigation called getLoggedUser");
       if(data) {

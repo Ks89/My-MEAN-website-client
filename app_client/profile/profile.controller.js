@@ -49,7 +49,7 @@
     vm.linkedinUnlinkOauthUrl = 'api/unlink/linkedin';
 
     //3dparty authentication
-    authentication.getLoggedUserExperimental()
+    authentication.getLoggedUser()
     .then(function(data) {
       $log.info("[[[[[[[]]]]]] Profile called getLoggedUser");
       if(data) {

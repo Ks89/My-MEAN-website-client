@@ -51,7 +51,7 @@ module.exports = function (userRef, passportRef) {
 		                return done(null, userUpdated);
 		              });
 		            }
-		            return done(null, userUpdated); // user found, return that user
+		            return done(null, user); // user found, return that user
 	          	} else { //otherwise, if there is no user found with that github id, create them
 		            var newUser = updateUser(new userRef(), accessToken, profile);
 		            console.log("New user created: " + newUser);
@@ -63,7 +63,7 @@ module.exports = function (userRef, passportRef) {
 	        });
       	} else { // user already exists and is logged in, we have to link accounts    
           	// req.user pull the user out of the session
-          	// and finally update the user with the currecnt users credentials
+          	// and finally update the user with the current users credentials
           	var user = updateUser(req.user, accessToken, profile);
           	user.save(function(err) {
             	if (err) { throw err; }
