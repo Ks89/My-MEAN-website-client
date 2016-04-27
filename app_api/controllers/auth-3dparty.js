@@ -133,18 +133,15 @@ function removeServiceFromDb(serviceName, user) {
 }
 
 function redirectToProfile(user, res, req) {
-	var cookie = getAuthToken(user);
-	//res.cookie('userCookie', cookie /*, { maxAge: 900000, httpOnly: true }*/);	
 	req.session.authToken = getAuthToken(user);
 	res.redirect('/profile');
 }
 
-// get the auth token
 function getAuthToken(user) {
 	var token3dauth = user.generateJwt(user);
-	var myCookie = JSON.stringify({ 
+	var authToken = JSON.stringify({ 
 		'value': user._id,
 		'token': token3dauth
 	});
-	return myCookie;
+	return authToken;
 }

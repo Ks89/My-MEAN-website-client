@@ -104,6 +104,9 @@
     //------------------------local auth------------------------
     //----------------------------------------------------------
     vm.unlinkLocal = function() {
+
+      //TODO check if there are other account. If not, call also logout!!!
+
       authentication.unlinkLocal()
       .then(function(data) {
         console.log('unlinklocal finished ');

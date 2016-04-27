@@ -37,8 +37,6 @@ module.exports.register = function(req, res) {
         console.log(savedUser);
         token = savedUser.generateJwt(savedUser);
 
-        // var myCookie = JSON.stringify(user);
-        //TODO why I'm doing this here????
         req.session.localUserId = savedUser._id;
         
         req.session.authToken = regenerateJwtCookie(savedUser);
@@ -97,9 +95,7 @@ module.exports.unlinkLocal = function(req, res) {
       user.save(function(err) {
         if(err) {
           utils.sendJSONresponse(res, 200, null);
-        }
-        //var cookie = regenerateJwtCookie(user);
-        //res.cookie('userCookie', cookie /*, { maxAge: 900000, httpOnly: true }*/);  
+        } 
         req.session.authToken = regenerateJwtCookie(user);
         utils.sendJSONresponse(res, 200, user);
       });
@@ -109,9 +105,9 @@ module.exports.unlinkLocal = function(req, res) {
 
 function regenerateJwtCookie(user) {
   var token3dauth = user.generateJwt(user);
-  var myCookie = JSON.stringify({ 
+  var authToken = JSON.stringify({ 
     'value': user._id,
     'token': token3dauth
   });
-  return myCookie;
+  return authToken;
 }
