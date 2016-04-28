@@ -98,7 +98,19 @@ function unlinkFromDb(req, serviceName, res) {
 		user.save(function(err) {
 			if(!err) {
 				console.log("Unlinking...");
-				redirectToProfile(user, res, req);
+				console.log("--------------------------------------------");
+				console.log(!user.github.id);
+				console.log(!user.facebook.id);
+				console.log(!user.google.id);
+				console.log(!user.local.id);
+				console.log("--------------------------------------------");
+
+				if(!user.github.id && !user.facebook.id && !user.google.id && !user.local.id) {
+					console.log('Last unlink');
+					redirectToProfileAfterUnlink(user, res, req);
+				} else {
+					redirectToProfile(req.user, res, req);
+				}
 			} else {
 				console.log("Impossible to remove userService from db");
 			}
@@ -134,6 +146,15 @@ function removeServiceFromDb(serviceName, user) {
 
 function redirectToProfile(user, res, req) {
 	req.session.authToken = getAuthToken(user);
+	res.redirect('/profile');
+}
+
+function redirectToProfileAfterUnlink(user, res, req) {
+	if(req.session.authToken) {
+		req.session.destroy(function(){
+			console.log('Last unlink, session data destroyed');
+		});
+	}
 	res.redirect('/profile');
 }
 
