@@ -3,8 +3,8 @@
   .module('mySiteApp')
   .controller('profileCtrl', profileCtrl);
 
-  profileCtrl.$inject = ['$location', '$routeParams','authentication', '$window', '$log'];
-  function profileCtrl($location, $routeParams, authentication, $window, $log) {
+  profileCtrl.$inject = ['$location', '$routeParams','authentication', '$window', '$log', '$scope'];
+  function profileCtrl($location, $routeParams, authentication, $window, $log, $scope) {
     var vm = this;
     vm.pageHeader = {
       title: 'Profile',
@@ -47,6 +47,11 @@
     vm.githubUnlinkOauthUrl = 'api/unlink/github';
     vm.twitterUnlinkOauthUrl = 'api/unlink/twitter';
     vm.linkedinUnlinkOauthUrl = 'api/unlink/linkedin';
+
+
+    $scope.unlinkByServiceName = function(serviceName) {
+      console.log("clicked - called in controller!!! YESSSSS with serviceName: " + serviceName);
+    };
 
     //3dparty authentication
     authentication.getLoggedUser()

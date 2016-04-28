@@ -35,7 +35,7 @@
 						<strong>email</strong>: {{ vm.facebook.email }}<br>
 						<strong>id</strong>: {{vm.facebook.id }}
 					</p>
-					<a class="btn btn-primary" ng-href="{{vm.facebookUnlinkOauthUrl}}">Unlink Facebook</a>&nbsp;&nbsp;  
+					<a class="btn btn-primary" href-call-function-controller function-to-call="unlinkByServiceName(arg1)" servicename="facebook" href="{{vm.facebookUnlinkOauthUrl}}">Unlink Facebook</a>&nbsp;&nbsp;  
 				</div>
 				<div ng-if="vm.facebook.email.length === 0">
 					<a class="btn btn-primary" ng-href="{{vm.facebookConnectOauthUrl}}">Connect Facebook</a>&nbsp;&nbsp;  		
