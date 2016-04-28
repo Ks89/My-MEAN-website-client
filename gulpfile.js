@@ -80,7 +80,8 @@ var app_clientJs = ['app_client/app.js',
 			'app_client/common/directives/navigation/navigation.controller.js',
 			'app_client/common/directives/navigation/navigation.controller.js',
 			'app_client/common/directives/navigation/navigation.directive.js',
-			'app_client/common/directives/pageHeader/pageHeader.directive.js'
+			'app_client/common/directives/pageHeader/pageHeader.directive.js',
+			'app_client/common/directives/hrefCallFunctionController/hrefCallFunctionController.directive.js'
 			];
 
 gulp.task('test', function() {
