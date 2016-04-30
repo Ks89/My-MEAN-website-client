@@ -93,6 +93,11 @@
       return deferred.promise;
     };
 
+    var unlink3dAuth = function(serviceName) {
+      console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Called unlink " + serviceName);
+      return $http.get('/api/unlink/' + serviceName);
+    };
+
     function isAuthLocalLoggedIn () {
       console.log("reading token: ");
       var deferred = $q.defer();
@@ -332,6 +337,7 @@
       register : register,
       login : login,
       unlinkLocal : unlinkLocal,
+      unlink3dAuth : unlink3dAuth,
       getUserById : getUserById,
       logout : logout,
       getLoggedUser : getLoggedUser,

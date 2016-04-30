@@ -60,9 +60,11 @@ module.exports.logout = function(req, res) {
   if(req.session.authToken) {
     req.session.destroy(function(){
       console.log('Session data destroyed');
+      utils.sendJSONresponse(res, 200, {});
     });
   } else {
     console.log('Authtoken not available as session data in Redis, for instance you aren\'t logged');
+    utils.sendJSONresponse(res, 404, null);
   }
 };
 

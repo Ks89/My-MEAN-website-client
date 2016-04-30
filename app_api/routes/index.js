@@ -61,7 +61,7 @@ router.get('/decodeToken/:token', ctrlAuthCommon.decodeToken);
 // route middleware to authenticate and check token
 // all routes defined below will be protected by the following code
 // ----------------------------------------------------------------
-router.use(restAuthMiddleware.restAuthenticationMiddleware);
+//router.use(restAuthMiddleware.restAuthenticationMiddleware);
 
 //-------------------unlink routes-------------------
 router.get('/unlink/local/:id', ctrlAuthLocal.unlinkLocal);

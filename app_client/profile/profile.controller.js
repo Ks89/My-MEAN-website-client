@@ -27,28 +27,101 @@
     // }
 
 
-    $scope.unlinkByServiceName = function(serviceName) {
+    vm.unlink3dAuth = function(serviceName) {
       console.log("clicked - called in controller!!! YESSSSS with serviceName: " + serviceName);
 
       switch(serviceName) {
         case 'facebook':
           console.log("facebook!!");
-          if(vm.github.name!=='' && vm.google.name!=='' && vm.local.name!=='') {
-            authentication.logout()
-            .then(function(result) {
-              console.log('Logged out: ' + result);
-            },function(reason) {
-              console.log('Impossibile to logout: ' + reason);
-            });
+          console.log("github: " + vm.github.name);
+          console.log("google: " + vm.google.name);
+          console.log("local: " + vm.local.name);
+
+          if(vm.github.name==='' && vm.google.name==='' && vm.local.name==='') {
+            // authentication.logout()
+            // .then(function(result) {
+            //   console.log('Logged out: ' + result);
+
+              authentication.unlink3dAuth('facebook')
+              .then(function(result) {
+                console.log('Unlinked: ' + result);
+                $location.url('/profile');
+              },function(reason) {
+                console.log('Impossibile to unlink: ' + reason);
+              });
+            // },function(reason) {
+            //   console.log('Impossibile to logout: ' + reason);
+            // });
+          } else {
+            authentication.unlink3dAuth('facebook')
+              .then(function(result) {
+                console.log('Unlinked: ' + result.data);
+                $location.url('/profile');
+              },function(reason) {
+                console.log('Impossibile to unlink: ' + reason);
+              });
           }
         break;
         case 'github':
-          
+          console.log('//////////////////////////////no');
+          if(vm.facebook.name==='' && vm.google.name==='' && vm.local.name==='') {
+            // authentication.logout()
+            // .then(function(result) {
+            //   console.log('Logged out: ' + result);
+              
+              authentication.unlink3dAuth('github')
+              .then(function(result) {
+                console.log('Unlinked: ' + result);
+                $location.url('/profile');
+                //$location.path()
+              },function(reason) {
+                console.log('Impossibile to unlink: ' + reason);
+              });
+
+            // },function(reason) {
+            //   console.log('Impossibile to logout: ' + reason);
+            // });
+          } else {
+            console.log('///////////////////unlinking...');
+            authentication.unlink3dAuth('github')
+              .then(function(result) {
+                console.log('github Unlinked: ' + result);
+                $location.url('/profile');
+              },function(reason) {
+                console.log('Impossibile to unlink: ' + reason);
+              });
+          }
         break;
         case 'google':
-          
+          console.log('//////////////////////////////no');
+          if(vm.github.name==='' && vm.facebook.name==='' && vm.local.name==='') {
+            // authentication.logout()
+            // .then(function(result) {
+            //   console.log('Logged out: ' + result);
+              
+              authentication.unlink3dAuth('google')
+              .then(function(result) {
+                console.log('Unlinked: ' + result);
+                $location.url('/profile');
+              },function(reason) {
+                console.log('Impossibile to logout: ' + reason);
+              });
+
+            // },function(reason) {
+            //   console.log('Impossibile to logout: ' + reason);
+            // });
+          } else {
+            authentication.unlink3dAuth('google')
+              .then(function(result) {
+                console.log('Unlinked: ' + result);
+                $location.url('/profile');
+              },function(reason) {
+                console.log('Impossibile to unlink: ' + reason);
+              });
+          }
         break;
         default :
+          console.log('////////////////////////////// default case');
           console.log("other unknown service");
       }
 
@@ -70,9 +143,9 @@
     vm.twitterConnectOauthUrl = 'api/connect/twitter';
     vm.linkedinConnectOauthUrl = 'api/connect/linkedin';
     //unlink REST path
-    vm.facebookUnlinkOauthUrl = 'api/unlink/facebook';
-    vm.googleUnlinkOauthUrl = 'api/unlink/google';
-    vm.githubUnlinkOauthUrl = 'api/unlink/github';
+    // vm.facebookUnlinkOauthUrl = 'api/unlink/facebook';
+    // vm.googleUnlinkOauthUrl = 'api/unlink/google';
+    // vm.githubUnlinkOauthUrl = 'api/unlink/github';
     vm.twitterUnlinkOauthUrl = 'api/unlink/twitter';
     vm.linkedinUnlinkOauthUrl = 'api/unlink/linkedin';
 
