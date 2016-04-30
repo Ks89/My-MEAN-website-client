@@ -55,7 +55,7 @@
 						<strong>id</strong>: {{vm.github.id }}<br>
 					</p>
 
-					<a class="btn btn-primary" ng-href="{{vm.githubUnlinkOauthUrl}}">Unlink Github</a>&nbsp;&nbsp;  
+					<a class="btn btn-primary" href-call-function-controller function-to-call="unlinkByServiceName(arg1)" servicename="github" href="{{vm.githubUnlinkOauthUrl}}">Unlink Github</a>&nbsp;&nbsp;  
 				</div>
 				<div ng-if="vm.github.email.length === 0">
 					<a class="btn btn-primary" ng-href="{{vm.githubConnectOauthUrl}}">Connect Github</a>&nbsp;&nbsp;  		
@@ -75,7 +75,7 @@
 						<strong>id</strong>: {{vm.google.id }}<br>
 					</p>
 
-					<a class="btn btn-primary" ng-href="{{vm.googleUnlinkOauthUrl}}">Unlink Google</a>&nbsp;&nbsp;  
+					<a class="btn btn-primary" href-call-function-controller function-to-call="unlinkByServiceName(arg1)" servicename="google" href="{{vm.googleUnlinkOauthUrl}}">Unlink Google</a>&nbsp;&nbsp;  
 				</div>
 				<div ng-if="vm.google.email.length === 0">
 					<a class="btn btn-primary" ng-href="{{vm.googleConnectOauthUrl}}">Connect Google</a>&nbsp;&nbsp;  		

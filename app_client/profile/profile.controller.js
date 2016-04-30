@@ -26,6 +26,34 @@
     //   $location.path('/login');
     // }
 
+
+    $scope.unlinkByServiceName = function(serviceName) {
+      console.log("clicked - called in controller!!! YESSSSS with serviceName: " + serviceName);
+
+      switch(serviceName) {
+        case 'facebook':
+          console.log("facebook!!");
+          if(vm.github.name!=='' && vm.google.name!=='' && vm.local.name!=='') {
+            authentication.logout()
+            .then(function(result) {
+              console.log('Logged out: ' + result);
+            },function(reason) {
+              console.log('Impossibile to logout: ' + reason);
+            });
+          }
+        break;
+        case 'github':
+          
+        break;
+        case 'google':
+          
+        break;
+        default :
+          console.log("other unknown service");
+      }
+
+    };
+
     //----------------------------------------------------------
     //--------------------------3dauth--------------------------
     //----------------------------------------------------------
@@ -49,9 +77,7 @@
     vm.linkedinUnlinkOauthUrl = 'api/unlink/linkedin';
 
 
-    $scope.unlinkByServiceName = function(serviceName) {
-      console.log("clicked - called in controller!!! YESSSSS with serviceName: " + serviceName);
-    };
+    
 
     //3dparty authentication
     authentication.getLoggedUser()

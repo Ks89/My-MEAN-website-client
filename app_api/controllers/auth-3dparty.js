@@ -94,27 +94,47 @@ module.exports.unlinkLinkedin = function(req, res) {
 function unlinkFromDb(req, serviceName, res) {
 	var user = req.user;
 	if(user) {
-		user = removeServiceFromDb(serviceName, user);
-		user.save(function(err) {
-			if(!err) {
-				console.log("Unlinking...");
-				console.log("--------------------------------------------");
-				console.log(!user.github.id);
-				console.log(!user.facebook.id);
-				console.log(!user.google.id);
-				console.log(!user.local.id);
-				console.log("--------------------------------------------");
-
-				if(!user.github.id && !user.facebook.id && !user.google.id && !user.local.id) {
-					console.log('Last unlink');
-					redirectToProfileAfterUnlink(user, res, req);
-				} else {
-					redirectToProfile(req.user, res, req);
-				}
-			} else {
-				console.log("Impossible to remove userService from db");
+		console.log('check if last unlink');
+		if(serviceName==='github') {
+			if(!user.facebook.id && !user.google.id && !user.local.id) {
+				user.remove(function() {
+					console.log("removed user");
+				});
+				redirectToProfileAfterUnlink(user, res, req);
 			}
-		});
+		} else if(serviceName==='google') {
+			if(!user.github.id && !user.facebook.id && !user.local.id) {
+				user.remove(function() {
+					console.log("removed user");
+				});
+				redirectToProfileAfterUnlink(user, res, req);
+			}
+		} else if(serviceName==='facebook') {
+			if(!user.github.id && !user.google.id && !user.local.id) {
+				user.remove(function() {
+					console.log("removed user");
+				});
+				redirectToProfileAfterUnlink(user, res, req);
+			}
+		} else {
+
+			user = removeServiceFromDb(serviceName, user);
+			user.save(function(err) {
+				if(!err) {
+					console.log("Unlinking...");
+					console.log("--------------------------------------------");
+					console.log(!user.github.id);
+					console.log(!user.facebook.id);
+					console.log(!user.google.id);
+					console.log(!user.local.id);
+					console.log("--------------------------------------------");
+
+					redirectToProfile(req.user, res, req);
+				} else {
+					console.log("Impossible to remove userService from db");
+				}
+			});
+		}
 	} else {
 		console.log("Impossible to unlink, req.user is null");
 	}
