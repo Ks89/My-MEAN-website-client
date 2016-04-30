@@ -38,20 +38,24 @@
           console.log("local: " + vm.local.name);
 
           if(vm.github.name==='' && vm.google.name==='' && vm.local.name==='') {
-            // authentication.logout()
-            // .then(function(result) {
-            //   console.log('Logged out: ' + result);
-
+        
               authentication.unlink3dAuth('facebook')
               .then(function(result) {
                 console.log('Unlinked: ' + result);
-                $location.url('/profile');
+
+                authentication.logout()
+                .then(function(result) {
+                  console.log('Logged out: ' + result);
+                  $location.path('/home');
+                },function(reason) {
+                  console.log('Impossibile to logout: ' + reason);
+                  $location.path('/home');
+                });
+
               },function(reason) {
                 console.log('Impossibile to unlink: ' + reason);
               });
-            // },function(reason) {
-            //   console.log('Impossibile to logout: ' + reason);
-            // });
+            
           } else {
             authentication.unlink3dAuth('facebook')
               .then(function(result) {
