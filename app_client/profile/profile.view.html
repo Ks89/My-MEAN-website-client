@@ -54,8 +54,7 @@
 						<strong>email</strong>: {{ vm.github.email }}<br>
 						<strong>id</strong>: {{vm.github.id }}<br>
 					</p>
-
-					<a class="btn btn-primary" ng-click="vm.unlink3dAuth('github')">Unlink Github</a>&nbsp;&nbsp;  
+					<a class="btn btn-primary" ng-click="vm.unlink3dAuth('github')">Unlink Github</a>&nbsp;&nbsp;
 				</div>
 				<div ng-if="vm.github.email.length === 0">
 					<a class="btn btn-primary" ng-href="{{vm.githubConnectOauthUrl}}">Connect Github</a>&nbsp;&nbsp;  		
@@ -74,8 +73,7 @@
 						<strong>email</strong>: {{ vm.google.email }}<br>
 						<strong>id</strong>: {{vm.google.id }}<br>
 					</p>
-
-					<a class="btn btn-primary" ng-click="vm.unlink3dAuth('google')">Unlink Google</a>&nbsp;&nbsp;  
+					<a class="btn btn-primary" ng-click="vm.unlink3dAuth('google')">Unlink Google</a>&nbsp;&nbsp;
 				</div>
 				<div ng-if="vm.google.email.length === 0">
 					<a class="btn btn-primary" ng-href="{{vm.googleConnectOauthUrl}}">Connect Google</a>&nbsp;&nbsp;  		
@@ -94,8 +92,7 @@
 						<strong>email</strong>: {{ vm.twitter.email }}<br>
 						<strong>id</strong>: {{vm.twitter.id }}<br>
 					</p>
-
-					<a class="btn btn-primary" ng-href="{{vm.twitterUnlinkOauthUrl}}">Unlink Twitter</a>&nbsp;&nbsp;  
+					<a class="btn btn-primary" ng-click="vm.unlink3dAuth('twitter')">Unlink Twitter</a>&nbsp;&nbsp;  
 				</div>
 				<div ng-if="vm.twitter.email.length === 0">
 					<a class="btn btn-primary" ng-href="{{vm.twitterConnectOauthUrl}}">Connect Twitter</a>&nbsp;&nbsp;  		
@@ -114,8 +111,7 @@
 						<strong>email</strong>: <br>
 						<strong>id</strong>: <br>
 					</p>
-
-					<a class="btn btn-primary" ng-href="{{vm.linkedinUnlinkOauthUrl}}">Unlink Linkedin</a>&nbsp;&nbsp;  
+					<a class="btn btn-primary" ng-click="vm.unlink3dAuth('linkedin')">Unlink Linkedin</a>&nbsp;&nbsp;  
 				</div>
 				<div ng-if="vm.twitter.email.length === 0">
 					<a class="btn btn-primary" ng-href="{{vm.linkedinConnectOauthUrl}}">Connect Linkedin</a>&nbsp;&nbsp;  		

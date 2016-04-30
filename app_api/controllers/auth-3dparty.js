@@ -97,30 +97,18 @@ function unlinkFromDb(req, serviceName, res) {
 	var user = req.user;
 	console.log('check if user exist, serviceName=' + serviceName);
 	if(user) {
-		console.log('check if last unlink');
-		console.log('user user.facebook.id:['+ user.facebook.id + ']');
-		console.log('user user.google.id:[' + user.google.id + ']');
-		console.log('user user.github.id:[' + user.github.id + ']');
-		console.log('user user.local.id:[' + user.local.id + ']');
-		if(serviceName==='github' && !user.facebook.id && !user.google.id && !user.local.id) {
+		var lastUnlink = checkIfLastUnlink(serviceName, user);
+		console.log('check if last unlink: ' + lastUnlink);
+		if(lastUnlink) {
+			console.log("last unlink found - removing....");
 			user.remove(function() {
 				console.log("removed user");
 			});
-			destroySessionAfterUnlink(user, res, req);
-			utils.sendJSONresponse(res, 200, {});
-		} else 
-		if(serviceName==='google' && !user.github.id && !user.facebook.id && !user.local.id) {
-			user.remove(function() {
-				console.log("removed user");
-			});
-			destroySessionAfterUnlink(user, res, req);
-			utils.sendJSONresponse(res, 200, {});
-		} else 
-		if(serviceName==='facebook' && !user.github.id && !user.google.id && !user.local.id) {
-			user.remove(function() {
-				console.log("removed user");
-			});
-			destroySessionAfterUnlink(user, res, req);
+			if(req.session.authToken) {
+				req.session.destroy(function(){
+					console.log('Last unlink, session data destroyed');
+				});
+			}
 			utils.sendJSONresponse(res, 200, {});
 		} else {
 			console.log("unlinking normal situation, without a remove....");
@@ -128,16 +116,8 @@ function unlinkFromDb(req, serviceName, res) {
 			user = removeServiceFromDb(serviceName, user);
 			user.save(function(err) {
 				if(!err) {
-					console.log("Unlinking...");
-					console.log("--------------------------------------------");
-					console.log(!user.github.id);
-					console.log(!user.facebook.id);
-					console.log(!user.google.id);
-					console.log(!user.local.id);
-					console.log("--------------------------------------------");
-
 					req.session.authToken = getAuthToken(user);
-					console.log("regenerate session token after unlink");
+					console.log("Unlinking, regenerate session token after unlink");
 					utils.sendJSONresponse(res, 200, {});
 				} else {
 					console.log("Impossible to remove userService from db");
@@ -145,11 +125,25 @@ function unlinkFromDb(req, serviceName, res) {
 				}
 			});
 		}
-
-		//it's a normal unlink
 	} else {
 		console.log("Impossible to unlink, req.user is null");
 		utils.sendJSONresponse(res, 404, null);
+	}
+}
+
+function checkIfLastUnlink(serviceName, user) {
+	switch(serviceName) {
+		case 'github':
+			return !user.facebook.id && !user.google.id && !user.local.id;
+		case 'google':
+			return !user.github.id && !user.facebook.id && !user.local.id;
+		case 'facebook':
+			return !user.github.id && !user.google.id && !user.local.id;
+		case 'local':
+			return !user.github.id && !user.google.id && !user.facebook.id;
+		default:
+			console.log('Service name not recognized in checkIfLastUnlink');
+			return false;
 	}
 }
 
@@ -179,17 +173,7 @@ function removeServiceFromDb(serviceName, user) {
 
 function redirectToProfile(user, res, req) {
 	req.session.authToken = getAuthToken(user);
-	console.log("redirecting to profile");
 	res.redirect('/profile');
-}
-
-function destroySessionAfterUnlink(user, res, req) {
-	if(req.session.authToken) {
-		req.session.destroy(function(){
-			console.log('Last unlink, session data destroyed');
-		});
-	}
-	//res.redirect('/profile');
 }
 
 function getAuthToken(user) {

@@ -22,115 +22,6 @@
 
     vm.currentPath = $location.path();
 
-    // if(!$window.sessionStorage.auth) {
-    //   $location.path('/login');
-    // }
-
-
-    vm.unlink3dAuth = function(serviceName) {
-      console.log("clicked - called in controller!!! YESSSSS with serviceName: " + serviceName);
-
-      switch(serviceName) {
-        case 'facebook':
-          console.log("facebook!!");
-          console.log("github: " + vm.github.name);
-          console.log("google: " + vm.google.name);
-          console.log("local: " + vm.local.name);
-
-          if(vm.github.name==='' && vm.google.name==='' && vm.local.name==='') {
-        
-              authentication.unlink3dAuth('facebook')
-              .then(function(result) {
-                console.log('Unlinked: ' + result);
-
-                authentication.logout()
-                .then(function(result) {
-                  console.log('Logged out: ' + result);
-                  $location.path('/home');
-                },function(reason) {
-                  console.log('Impossibile to logout: ' + reason);
-                  $location.path('/home');
-                });
-
-              },function(reason) {
-                console.log('Impossibile to unlink: ' + reason);
-              });
-            
-          } else {
-            authentication.unlink3dAuth('facebook')
-              .then(function(result) {
-                console.log('Unlinked: ' + result.data);
-                $location.url('/profile');
-              },function(reason) {
-                console.log('Impossibile to unlink: ' + reason);
-              });
-          }
-        break;
-        case 'github':
-          console.log('//////////////////////////////no');
-          if(vm.facebook.name==='' && vm.google.name==='' && vm.local.name==='') {
-            // authentication.logout()
-            // .then(function(result) {
-            //   console.log('Logged out: ' + result);
-              
-              authentication.unlink3dAuth('github')
-              .then(function(result) {
-                console.log('Unlinked: ' + result);
-                $location.url('/profile');
-                //$location.path()
-              },function(reason) {
-                console.log('Impossibile to unlink: ' + reason);
-              });
-
-            // },function(reason) {
-            //   console.log('Impossibile to logout: ' + reason);
-            // });
-          } else {
-            console.log('///////////////////unlinking...');
-            authentication.unlink3dAuth('github')
-              .then(function(result) {
-                console.log('github Unlinked: ' + result);
-                $location.url('/profile');
-              },function(reason) {
-                console.log('Impossibile to unlink: ' + reason);
-              });
-          }
-        break;
-        case 'google':
-          console.log('//////////////////////////////no');
-          if(vm.github.name==='' && vm.facebook.name==='' && vm.local.name==='') {
-            // authentication.logout()
-            // .then(function(result) {
-            //   console.log('Logged out: ' + result);
-              
-              authentication.unlink3dAuth('google')
-              .then(function(result) {
-                console.log('Unlinked: ' + result);
-                $location.url('/profile');
-              },function(reason) {
-                console.log('Impossibile to logout: ' + reason);
-              });
-
-            // },function(reason) {
-            //   console.log('Impossibile to logout: ' + reason);
-            // });
-          } else {
-            authentication.unlink3dAuth('google')
-              .then(function(result) {
-                console.log('Unlinked: ' + result);
-                $location.url('/profile');
-              },function(reason) {
-                console.log('Impossibile to unlink: ' + reason);
-              });
-          }
-        break;
-        default :
-          console.log('////////////////////////////// default case');
-          console.log("other unknown service");
-      }
-
-    };
-
     //----------------------------------------------------------
     //--------------------------3dauth--------------------------
     //----------------------------------------------------------
@@ -146,44 +37,71 @@
     vm.githubConnectOauthUrl = 'api/connect/github';
     vm.twitterConnectOauthUrl = 'api/connect/twitter';
     vm.linkedinConnectOauthUrl = 'api/connect/linkedin';
-    //unlink REST path
-    // vm.facebookUnlinkOauthUrl = 'api/unlink/facebook';
-    // vm.googleUnlinkOauthUrl = 'api/unlink/google';
-    // vm.githubUnlinkOauthUrl = 'api/unlink/github';
-    vm.twitterUnlinkOauthUrl = 'api/unlink/twitter';
-    vm.linkedinUnlinkOauthUrl = 'api/unlink/linkedin';
-
-
-    
-
+  
     //3dparty authentication
     authentication.getLoggedUser()
     .then(function(data) {
-      $log.info("[[[[[[[]]]]]] Profile called getLoggedUser");
+      $log.info("Profile called getLoggedUser");
       if(data) {
         console.log(data);
-        console.log("[[[[[[[]]]]]] Profile called data valid");
+        console.log("Profile called data valid");
         var user = JSON.parse(data);
-        console.log("[[[[[[[]]]]]] Profile called getLoggedUser user parsed");
+        console.log("Profile called getLoggedUser user parsed");
         console.log(user);
         if(user) {
-          console.log("[[[[[[[]]]]]] setting data.........................");
+          console.log("setting data.........................");
           setObjectValuesLocal(user.local, vm.local);
           setObjectValues(user.github, vm.github);
           setObjectValues(user.facebook, vm.facebook);
           setObjectValues(user.google, vm.google);
           setObjectValues(user.twitter, vm.twitter);
           setObjectValues(user.linkedin, vm.linkedin);
-          console.log("[[[[[[[]]]]]] ---------------setted----------------");
+          console.log("---------------setted----------------");
         }
       } else {
-        console.log("[[[[[[[]]]]]] Profile called getLoggedUser but data was null");
+        console.log("Profile called getLoggedUser but data was null");
       }
     }, function(error){
-      console.log("{{{{{{{{{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}}}}}}}}");
       console.log(error);
     });
 
+    //TODO add linkedin e twitter
+    // vm.twitterUnlinkOauthUrl = 'api/unlink/twitter';
+    // vm.linkedinUnlinkOauthUrl = 'api/unlink/linkedin';
+    vm.unlink3dAuth = function(serviceName) {
+      console.log("unlink3dAuth " + serviceName + " called");
+      if(checkIfLastUnlinkProfile(serviceName)) {
+        console.log('Last unlink - processing...');
+        authentication.unlink3dAuth(serviceName)
+        .then(function(result) {
+          console.log('Unlinked: ' + result);
+          authentication.logout()
+          .then(function(result) {
+            console.log('Logged out: ' + result);
+            $location.path('/home');
+          },function(reason) {
+            console.log('Impossibile to logout: ' + reason);
+            $location.path('/home');
+          });
+        },function(reason) {
+          console.log('Impossibile to unlink: ' + reason);
+        });
+      } else {
+        console.log('NOT last unlink - checking...');
+        if(serviceName==='facebook' || serviceName==='google' || serviceName==='github') {
+          console.log('NOT last unlink - but service recognized, processing...');
+          authentication.unlink3dAuth(serviceName)
+            .then(function(result) {
+              console.log(serviceName + ' Unlinked: ' + result);
+              $location.url('/profile');
+            },function(reason) {
+              console.log('Impossibile to unlink: ' + reason);
+            });
+        } else {
+          console.error("Unknown service. Abroting operation!");
+        }
+      }
+    };
 
     function buildJsonUserData() {
       return {
@@ -208,13 +126,27 @@
       }
     }
 
+    function checkIfLastUnlinkProfile(serviceName) {
+      switch(serviceName) {
+        case 'github':
+          return vm.facebook.name==='' && vm.google.name==='' && vm.local.name==='';
+        case 'google':
+          return vm.github.name==='' && vm.facebook.name==='' && vm.local.name==='';
+        case 'facebook':
+          return vm.github.name==='' && vm.google.name==='' && vm.local.name==='';
+        case 'local':
+          return vm.github.name==='' && vm.facebook.name==='' && vm.google.name==='';
+        default:
+          console.log('Service name not recognized in profile checkIfLastUnlink');
+          return false;
+      }
+    }
+
     //----------------------------------------------------------
     //------------------------local auth------------------------
     //----------------------------------------------------------
     vm.unlinkLocal = function() {
-
       //TODO check if there are other account. If not, call also logout!!!
-
       authentication.unlinkLocal()
       .then(function(data) {
         console.log('unlinklocal finished ');

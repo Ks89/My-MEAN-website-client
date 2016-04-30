@@ -89,12 +89,11 @@
         //TODO remove session logout
         deferred.reject(null);
       });
-
       return deferred.promise;
     };
 
     var unlink3dAuth = function(serviceName) {
-      console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Called unlink " + serviceName);
+      console.log("Called unlink " + serviceName);
       return $http.get('/api/unlink/' + serviceName);
     };
 
@@ -162,10 +161,9 @@
     };
 
     var logout = function() {
-      console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Called authentication logout");
+      console.log("Called authentication logout");
       removeToken('auth');
-      removeCookie('connect.sid');
-
+      
       //call REST service to remove session data from redis
       return $http.get('/api/logout');
     };
@@ -199,12 +197,10 @@
       return $http.get('/api/sessionToken'); 
     };
 
-
     var decodeJwtToken = function(jwtToken) {
       //TODO add an if(jwtToken) or something like that. But remember to use $q or similar here!
       return $http.get('/api/decodeToken/' + jwtToken);
     };
-
 
     var getLoggedUser = function() {
       var deferred = $q.defer();
@@ -313,24 +309,8 @@
         return decodeJwtToken();
       }
     }
-    function getUserByTokenExperimental(token) {
-      console.log("<<<<<<<getUserByTokenExperimental called method");
-      var sessionToken = getToken(key); 
-      if(sessionToken) {
-        console.log("<<<<<<<getUserByTokenExperimental sessionToken :" + sessionToken);
-        var tokenExp = sessionToken; //JSON.parse(sessionToken);
-        console.log("<<<<<<<getUserByTokenExperimental tokenExp ");
-        console.log(tokenExp);
-        return decodeJwtToken(tokenExp);
-      } else {
-        return decodeJwtToken();
-      }
-    }
     function removeToken(key) {
       $window.sessionStorage.removeItem(key);
-    }
-    function removeCookie(key) {
-      //$cookies.remove(key);
     }
     
     return {
