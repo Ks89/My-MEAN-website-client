@@ -80,11 +80,11 @@
             console.log('Logged out: ' + result);
             $location.path('/home');
           },function(reason) {
-            console.log('Impossibile to logout: ' + reason);
+            console.log('Impossible to logout: ' + reason);
             $location.path('/home');
           });
         },function(reason) {
-          console.log('Impossibile to unlink: ' + reason);
+          console.log('Impossible to unlink: ' + reason);
         });
       } else {
         console.log('NOT last unlink - checking...');
@@ -98,7 +98,7 @@
               $window.location.href = '/profile';
               console.log("redirected to profile");
             },function(reason) {
-              console.log('Impossibile to unlink: ' + reason);
+              console.log('Impossible to unlink: ' + reason);
               $location.path('/home');
             });
         } else {
