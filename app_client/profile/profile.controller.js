@@ -150,19 +150,49 @@
     //------------------------local auth------------------------
     //----------------------------------------------------------
     vm.unlinkLocal = function() {
-      //TODO check if there are other account. If not, call also logout!!!
-      authentication.unlinkLocal()
-      .then(function(data) {
-        console.log('unlinklocal finished ');
-        vm.local = {
-          name: '',
-          email: ''
-        };
-        //redirect to profile page
-        $location.url('/profile');
-      }, function(reason) {
-        console.log('unlinkLocal failed: ' + reason);
-      });
+      console.log("unlinkLocal called");
+      if(checkIfLastUnlinkProfile('local')) {
+        console.log('Last unlink - processing...');
+        authentication.unlinkLocal()
+        .then(function(result) {
+          console.log('Unlinked: ' + result);
+          authentication.logout()
+          .then(function(result) {
+            console.log('Logged out: ' + result);
+
+            vm.local = {
+                name: '',
+                email: ''
+            };
+
+            $location.path('/home');
+          },function(reason) {
+            console.log('Impossible to logout: ' + reason);
+            $location.path('/home');
+          });
+        },function(reason) {
+          console.log('Impossible to unlink: ' + reason);
+        });
+      } else {
+        console.log('NOT last unlink - checking...');
+        console.log('NOT last unlink - but service recognized, processing...');
+        authentication.unlinkLocal()
+          .then(function(result) {
+            console.log('Unlinked with result user: ');
+            console.log(result.data);
+
+            vm.local = {
+              name: '',
+              email: ''
+            };
+            
+            $window.location.href = '/profile';
+            console.log("redirected to profile");
+          },function(reason) {
+            console.log('Impossible to unlink: ' + reason);
+            $location.path('/home');
+          });
+      }
     };
   }
 })();
