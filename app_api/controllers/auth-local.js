@@ -6,6 +6,8 @@ var logger = require('../utils/logger.js');
 var Utils = require('../utils/util.js');
 var utils = new Utils();
 
+var jwt = require('jsonwebtoken');
+
 /* POST to register a local user */
 /* /api/register */
 module.exports.register = function(req, res) {
@@ -81,30 +83,6 @@ module.exports.login = function(req, res) {
 /* GET to unlink the local account by id*/
 /* /api/unlink/local/:id */
 module.exports.unlinkLocal = function(req, res) {
-  console.log("User found to unlink: ");
-  if (req.params && req.params.id) {
-    var id = req.params.id;
-    console.log("data received id: " + id);
-    User.findOne({ '_id': id }, function (err, user) {
-      if(err) {
-        utils.sendJSONresponse(res, 200, null);
-      }
-      user.local = undefined;
-      user.save(function(err) {
-        if(err) {
-          utils.sendJSONresponse(res, 200, null);
-        } 
-        req.session.authToken = regenerateJwtCookie(user);
-        utils.sendJSONresponse(res, 200, user);
-      });
-    });
-  }
-
-
-
-
-
-
   if(req.session.authToken) {
     console.log("X€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€");
     var tok = JSON.parse(req.session.authToken).token;
@@ -170,7 +148,7 @@ module.exports.unlinkLocal = function(req, res) {
                       user.local = undefined;
                       user.save(function(err) {
                         if(!err) {
-                          req.session.authToken = getAuthToken(user);
+                          req.session.authToken = regenerateJwtCookie(user);
                           console.log("Unlinking, regenerate session token after unlink");
                           utils.sendJSONresponse(res, 200, user);
                         } else {
@@ -197,25 +175,12 @@ module.exports.unlinkLocal = function(req, res) {
             utils.sendJSONresponse(res, 404, null);
           }
         });
-
-
       } else {
         utils.sendJSONresponse(res, 404, null);
       }
   } else {
     utils.sendJSONresponse(res, 404, null);
   }
-
-
-
-
-
-
-
-
-
-
-
 };
 
 
