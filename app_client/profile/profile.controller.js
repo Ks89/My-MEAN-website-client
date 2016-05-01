@@ -92,10 +92,13 @@
           console.log('NOT last unlink - but service recognized, processing...');
           authentication.unlink3dAuth(serviceName)
             .then(function(result) {
-              console.log(serviceName + ' Unlinked: ' + result);
-              $location.url('/profile');
+              console.log(serviceName + ' Unlinked with result user: ');
+              console.log(result.data);
+              $location.path('/nome');
+              console.log("redirected to profile");
             },function(reason) {
               console.log('Impossibile to unlink: ' + reason);
+              $location.path('/home');
             });
         } else {
           console.error("Unknown service. Abroting operation!");
