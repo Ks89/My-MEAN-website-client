@@ -4,8 +4,8 @@
   .module('mySiteApp')
   .controller('projectListCtrl', projectListCtrl);
 
-  projectListCtrl.$inject = ['$scope', 'projectsData','_'];
-  function projectListCtrl ($scope, projectsData, _) {
+  projectListCtrl.$inject = ['$scope', 'projectsData'];
+  function projectListCtrl ($scope, projectsData) {
     var vm = this;
     
     vm.pageHeader = {
