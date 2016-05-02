@@ -37,13 +37,7 @@
             });
     };
 
-
-    var unlinkLocal = function() {
-      console.log("Called unlink " + 'local');
-      return $http.get('/api/unlink/' + 'local');
-    };
-
-    var unlink3dAuth = function(serviceName) {
+    var unlink = function(serviceName) {
       console.log("Called unlink " + serviceName);
       return $http.get('/api/unlink/' + serviceName);
     };
@@ -267,8 +261,7 @@
     return {
       register : register,
       login : login,
-      unlinkLocal : unlinkLocal,
-      unlink3dAuth : unlink3dAuth,
+      unlink : unlink,
       getUserById : getUserById,
       logout : logout,
       getLoggedUser : getLoggedUser,

@@ -14,13 +14,16 @@
       content: "Profile page"
     };
     vm.message = "Profile page";
+   
+    vm.currentPath = $location.path();
 
+    //----------------------------------------------------------
+    //--------------------------local---------------------------
+    //----------------------------------------------------------
     vm.local = {
       name: '',
       email: ''
     };
-
-    vm.currentPath = $location.path();
 
     //----------------------------------------------------------
     //--------------------------3dauth--------------------------
@@ -37,7 +40,7 @@
     vm.githubConnectOauthUrl = 'api/connect/github';
     vm.twitterConnectOauthUrl = 'api/connect/twitter';
     vm.linkedinConnectOauthUrl = 'api/connect/linkedin';
-  
+
     //3dparty authentication
     authentication.getLoggedUser()
     .then(function(data) {
@@ -65,48 +68,6 @@
       console.log(error);
     });
 
-    //TODO add linkedin e twitter
-    // vm.twitterUnlinkOauthUrl = 'api/unlink/twitter';
-    // vm.linkedinUnlinkOauthUrl = 'api/unlink/linkedin';
-    vm.unlink3dAuth = function(serviceName) {
-      console.log("unlink3dAuth " + serviceName + " called");
-      if(checkIfLastUnlinkProfile(serviceName)) {
-        console.log('Last unlink - processing...');
-        authentication.unlink3dAuth(serviceName)
-        .then(function(result) {
-          console.log('Unlinked: ' + result);
-          authentication.logout()
-          .then(function(result) {
-            console.log('Logged out: ' + result);
-            $location.path('/home');
-          },function(reason) {
-            console.log('Impossible to logout: ' + reason);
-            $location.path('/home');
-          });
-        },function(reason) {
-          console.log('Impossible to unlink: ' + reason);
-        });
-      } else {
-        console.log('NOT last unlink - checking...');
-        if(serviceName==='facebook' || serviceName==='google' || serviceName==='github') {
-          console.log('NOT last unlink - but service recognized, processing...');
-          authentication.unlink3dAuth(serviceName)
-            .then(function(result) {
-              console.log(serviceName + ' Unlinked with result user: ');
-              console.log(result.data);
-              
-              $window.location.href = '/profile';
-              console.log("redirected to profile");
-            },function(reason) {
-              console.log('Impossible to unlink: ' + reason);
-              $location.path('/home');
-            });
-        } else {
-          console.error("Unknown service. Abroting operation!");
-        }
-      }
-    };
-
     function buildJsonUserData() {
       return {
         id : '',
@@ -129,42 +90,21 @@
         destData.name = originData.name;
       }
     }
-
-    function checkIfLastUnlinkProfile(serviceName) {
-      switch(serviceName) {
-        case 'github':
-          return vm.facebook.name==='' && vm.google.name==='' && vm.local.name==='';
-        case 'google':
-          return vm.github.name==='' && vm.facebook.name==='' && vm.local.name==='';
-        case 'facebook':
-          return vm.github.name==='' && vm.google.name==='' && vm.local.name==='';
-        case 'local':
-          return vm.github.name==='' && vm.facebook.name==='' && vm.google.name==='';
-        default:
-          console.log('Service name not recognized in profile checkIfLastUnlink');
-          return false;
-      }
-    }
+  
 
     //----------------------------------------------------------
-    //------------------------local auth------------------------
+    //------------------------- COMMON -------------------------
     //----------------------------------------------------------
-    vm.unlinkLocal = function() {
-      console.log("unlinkLocal called");
-      if(checkIfLastUnlinkProfile('local')) {
+    vm.unlink = function(serviceName) {
+      console.log("unlink " + serviceName + " called");
+      if(checkIfLastUnlinkProfile(serviceName)) {
         console.log('Last unlink - processing...');
-        authentication.unlinkLocal()
+        authentication.unlink(serviceName)
         .then(function(result) {
           console.log('Unlinked: ' + result);
           authentication.logout()
           .then(function(result) {
             console.log('Logged out: ' + result);
-
-            vm.local = {
-                name: '',
-                email: ''
-            };
-
             $location.path('/home');
           },function(reason) {
             console.log('Impossible to logout: ' + reason);
@@ -175,24 +115,38 @@
         });
       } else {
         console.log('NOT last unlink - checking...');
-        console.log('NOT last unlink - but service recognized, processing...');
-        authentication.unlinkLocal()
+        if(serviceName==='facebook' || serviceName==='google' || serviceName==='github' || serviceName==='local') {
+          console.log('NOT last unlink - but service recognized, processing...');
+          authentication.unlink(serviceName)
           .then(function(result) {
-            console.log('Unlinked with result user: ');
+            console.log(serviceName + ' Unlinked with result user: ');
             console.log(result.data);
-
-            vm.local = {
-              name: '',
-              email: ''
-            };
-            
             $window.location.href = '/profile';
             console.log("redirected to profile");
           },function(reason) {
             console.log('Impossible to unlink: ' + reason);
             $location.path('/home');
           });
+        } else {
+          console.error("Unknown service. Abroting operation!");
+        }
       }
     };
+
+    function checkIfLastUnlinkProfile(serviceName) {
+      switch(serviceName) {
+        case 'github':
+        return vm.facebook.name==='' && vm.google.name==='' && vm.local.name==='';
+        case 'google':
+        return vm.github.name==='' && vm.facebook.name==='' && vm.local.name==='';
+        case 'facebook':
+        return vm.github.name==='' && vm.google.name==='' && vm.local.name==='';
+        case 'local':
+        return vm.github.name==='' && vm.facebook.name==='' && vm.google.name==='';
+        default:
+        console.log('Service name not recognized in profile checkIfLastUnlink');
+        return false;
+      }
+    }
   }
 })();
