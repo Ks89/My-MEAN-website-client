@@ -17,13 +17,12 @@ module.exports.decodeToken = function(req, res) {
     // verify a token symmetric
     jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
       if(err) {
-        console.log("ERROR");
+        console.log("jwt.verify error");
         utils.sendJSONresponse(res, 404, null);
       } 
 
       if(decoded) {
         console.log("decoding...");
-        console.log(decoded);
         var convertedDate = new Date();
         convertedDate.setTime(decoded.exp);
         
@@ -55,8 +54,7 @@ module.exports.decodeToken = function(req, res) {
 /* GET to logout removing session data stored in Redis */
 /* /api/logout */
 module.exports.logout = function(req, res) {
-  console.log('logout called');
-  console.log('data available (authToken): ' + req.session.authToken);
+  console.log('logout called (authToken): ' + req.session.authToken);
   if(req.session.authToken) {
     req.session.destroy(function(){
       console.log('Session data destroyed');
@@ -79,4 +77,56 @@ module.exports.sessionToken = function(req, res) {
     console.log('Authtoken not available as session data in Redis, for instance you aren\'t logged');
     utils.sendJSONresponse(res, 404, null);
   }
+};
+
+module.exports.checkIfLastUnlink = function(serviceName, user) {
+  switch(serviceName) {
+    case 'github':
+      return !user.facebook.id && !user.google.id && !user.local.email;
+    case 'google':
+      return !user.github.id && !user.facebook.id && !user.local.email;
+    case 'facebook':
+      return !user.github.id && !user.google.id && !user.local.email;
+    case 'local':
+      return !user.github.id && !user.google.id && !user.facebook.id;
+    default:
+      console.log('Service name not recognized in checkIfLastUnlink');
+      return false;
+  }
+};
+
+module.exports.removeServiceFromDb = function(serviceName, user) {
+  switch(serviceName) {
+      case 'facebook': 
+        user.facebook = undefined;
+        break;
+      case 'github': 
+        user.github = undefined;
+        break;
+      case 'google': 
+        user.google = undefined;
+        break;
+      case 'twitter': 
+        user.twitter = undefined;
+        break;
+      case 'linkedin': 
+        user.linkedin = undefined;
+        break;
+      case 'local':
+        user.local = undefined;
+        break;
+      default:
+        console.log('Service name not recognized to unlink');
+        break;
+    }
+    return user;
+};
+
+module.exports.generateJwtCookie = function(user) {
+  var token3dauth = user.generateJwt(user);
+  var authToken = JSON.stringify({ 
+    'value': user._id,
+    'token': token3dauth
+  });
+  return authToken;
 };

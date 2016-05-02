@@ -48,11 +48,9 @@ module.exports.projectsReadOne = function(req, res) {
         utils.sendJSONresponse(res, 404, {
           "message": "projectid not found"
         });
-        return;
       } else if (err) {
         console.log(err);
         utils.sendJSONresponse(res, 404, err);
-        return;
       }
       console.log(project);
       utils.sendJSONresponse(res, 200, project);

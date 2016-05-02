@@ -2,8 +2,11 @@ var passport = require('passport');
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var logger = require('../utils/logger.js');
+
 var Utils = require('../utils/util.js');
 var utils = new Utils();
+
+var authCommon = require('./auth-common.js');
 var jwt = require('jsonwebtoken');
 
 //------------- INFORMATIONS -------------
@@ -149,7 +152,7 @@ function unlinkFromDb(req, serviceName, res) {
 				        if (user) { // if the user is found, then log them in
 				        	console.log("User found (usersReadOneById): " + user);
 					        
-				        	var lastUnlink = checkIfLastUnlink(serviceName, user);
+				        	var lastUnlink = authCommon.checkIfLastUnlink(serviceName, user);
 							console.log('check if last unlink: ' + lastUnlink);
 							if(lastUnlink) {
 								console.log("last unlink found - removing....");
@@ -165,10 +168,10 @@ function unlinkFromDb(req, serviceName, res) {
 							} else {
 								console.log("unlinking normal situation, without a remove....");
 								
-								user = removeServiceFromDb(serviceName, user);
+								user = authCommon.removeServiceFromDb(serviceName, user);
 								user.save(function(err) {
 									if(!err) {
-										req.session.authToken = getAuthToken(user);
+										req.session.authToken = authCommon.generateJwtCookie(user);
 										console.log("Unlinking, regenerate session token after unlink");
 										utils.sendJSONresponse(res, 200, user);
 									} else {
@@ -196,7 +199,6 @@ function unlinkFromDb(req, serviceName, res) {
 		      }
 		    });
 
-
 			} else {
 				utils.sendJSONresponse(res, 404, null);
 			}
@@ -205,56 +207,7 @@ function unlinkFromDb(req, serviceName, res) {
 	}
 }
 
-function checkIfLastUnlink(serviceName, user) {
-	switch(serviceName) {
-		case 'github':
-			return !user.facebook.id && !user.google.id && !user.local.email;
-		case 'google':
-			return !user.github.id && !user.facebook.id && !user.local.email;
-		case 'facebook':
-			return !user.github.id && !user.google.id && !user.local.email;
-		case 'local':
-			return !user.github.id && !user.google.id && !user.facebook.id;
-		default:
-			console.log('Service name not recognized in checkIfLastUnlink');
-			return false;
-	}
-}
-
-function removeServiceFromDb(serviceName, user) {
-	switch(serviceName) {
-			case 'facebook': 
-				user.facebook = undefined;
-				break;
-			case 'github': 
-				user.github = undefined;
-				break;
-			case 'google': 
-				user.google = undefined;
-				break;
-			case 'twitter': 
-				user.twitter = undefined;
-				break;
-			case 'linkedin': 
-				user.linkedin = undefined;
-				break;
-			default:
-				console.log('Service name not recognized to unlink');
-				break;
-		}
-		return user;
-}
-
 function redirectToProfile(user, res, req) {
-	req.session.authToken = getAuthToken(user);
+	req.session.authToken = authCommon.generateJwtCookie(user);
 	res.redirect('/profile');
-}
-
-function getAuthToken(user) {
-	var token3dauth = user.generateJwt(user);
-	var authToken = JSON.stringify({ 
-		'value': user._id,
-		'token': token3dauth
-	});
-	return authToken;
 }

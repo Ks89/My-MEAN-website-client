@@ -3,10 +3,11 @@ var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var logger = require('../utils/logger.js');
 
+var authCommon = require('./auth-common.js');
+var jwt = require('jsonwebtoken');
+
 var Utils = require('../utils/util.js');
 var utils = new Utils();
-
-var jwt = require('jsonwebtoken');
 
 /* POST to register a local user */
 /* /api/register */
@@ -14,13 +15,11 @@ module.exports.register = function(req, res) {
   console.log('called register server side');
   if(!req.body.name || !req.body.email || !req.body.password) {
     utils.sendJSONresponse(res, 400, "All fields required");
-    return;
   }
 
   User.findOne({ 'local.email': req.body.email }, function (err, user) {
     if (err || user) { 
       utils.sendJSONresponse(res, 400, "User already exists. Try to login.");
-      return;
     }
 
     var newUser = new User();
@@ -29,17 +28,15 @@ module.exports.register = function(req, res) {
     newUser.setPassword(req.body.password);
 
     newUser.save(function(err, savedUser) {
-      var token;
       if (err) {
         utils.sendJSONresponse(res, 404, err);
       } else {
         console.log("USER: "); 
         console.log(savedUser);
-        token = savedUser.generateJwt(savedUser);
+        const token = savedUser.generateJwt(savedUser);
 
         req.session.localUserId = savedUser._id;
-        
-        req.session.authToken = regenerateJwtCookie(savedUser);
+        req.session.authToken = authCommon.generateJwtCookie(savedUser);
 
         utils.sendJSONresponse(res, 200, { token: token });
       }
@@ -54,24 +51,21 @@ module.exports.login = function(req, res) {
     utils.sendJSONresponse(res, 400, {
       "message": "All fields required"
     });
-    return;
   }
   
   passport.authenticate('local', function(err, user, info){
-    var token;
     if (err) {
       utils.sendJSONresponse(res, 404, err);
-      return;
     }
     if(user){
 
       console.log("USER: "); 
       console.log(user);
-      token = user.generateJwt(user);
+      const token = user.generateJwt(user);
 
       req.session.localUserId = user._id;
 
-      req.session.authToken = regenerateJwtCookie(user);
+      req.session.authToken = authCommon.generateJwtCookie(user);
       
       utils.sendJSONresponse(res, 200, { token: token });
     } else {
@@ -80,9 +74,11 @@ module.exports.login = function(req, res) {
   })(req, res);
 };
 
-/* GET to unlink the local account by id*/
+/* GET to unlink the local account*/
+/* /api/unlink/local */
+/* GET to unlink the account by serviceName*/
 /* /api/unlink/local/:id */
-module.exports.unlinkLocal = function(req, res) {
+module.exports.unlinkLocal = function(req, res, serviceName) {
   if(req.session.authToken) {
     console.log("X€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€");
     var tok = JSON.parse(req.session.authToken).token;
@@ -129,7 +125,7 @@ module.exports.unlinkLocal = function(req, res) {
                       if (user) { // if the user is found, then log them in
                         console.log("User found (usersReadOneById): " + user);
                         
-                        var lastUnlink = checkIfLastUnlink('local', user);
+                        var lastUnlink = authCommon.checkIfLastUnlink('local', user);
                     console.log('check if last unlink: ' + lastUnlink);
                     if(lastUnlink) {
                       console.log("last unlink found - removing....");
@@ -145,10 +141,10 @@ module.exports.unlinkLocal = function(req, res) {
                     } else {
                       console.log("unlinking normal situation, without a remove....");
                       
-                      user.local = undefined;
+                      user = authCommon.removeServiceFromDb('local', user);
                       user.save(function(err) {
                         if(!err) {
-                          req.session.authToken = regenerateJwtCookie(user);
+                          req.session.authToken = authCommon.generateJwtCookie(user);
                           console.log("Unlinking, regenerate session token after unlink");
                           utils.sendJSONresponse(res, 200, user);
                         } else {
@@ -157,14 +153,11 @@ module.exports.unlinkLocal = function(req, res) {
                         }
                       });
                     }
-
                       } else { //otherwise, if there is no user found create them
                         console.log("User not found - cannot unlink (usersReadOneById)");
                           utils.sendJSONresponse(res, 404, null);
                       }
                 });
-
-
 
             } else {
               console.log('No data valid');
@@ -182,25 +175,3 @@ module.exports.unlinkLocal = function(req, res) {
     utils.sendJSONresponse(res, 404, null);
   }
 };
-
-
-
-function checkIfLastUnlink(serviceName, user) {
-  switch(serviceName) {
-    case 'local':
-      return !user.github.id && !user.google.id && !user.facebook.id;
-    default:
-      console.log('Service name not recognized in checkIfLastUnlink');
-      return false;
-  }
-}
-
-
-function regenerateJwtCookie(user) {
-  var token3dauth = user.generateJwt(user);
-  var authToken = JSON.stringify({ 
-    'value': user._id,
-    'token': token3dauth
-  });
-  return authToken;
-}
