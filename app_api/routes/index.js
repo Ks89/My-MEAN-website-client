@@ -64,7 +64,7 @@ router.get('/decodeToken/:token', ctrlAuthCommon.decodeToken);
 router.use(restAuthMiddleware.restAuthenticationMiddleware);
 
 //-------------------unlink routes-------------------
-router.get('/unlink/local/:id', ctrlAuthLocal.unlinkLocal);
+router.get('/unlink/local/:id', ctrlAuthCommon.unlinkLocal);
 router.get('/unlink/facebook', ctrlAuth3dParty.unlinkFacebook);
 router.get('/unlink/github', ctrlAuth3dParty.unlinkGithub);
 router.get('/unlink/google', ctrlAuth3dParty.unlinkGoogle);
