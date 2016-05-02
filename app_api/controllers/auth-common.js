@@ -11,7 +11,7 @@ var decodeToken = function(req, res) {
   console.log('decodetoken', req.params);
   if (req.params && req.params.token) {
 
-    var token = req.params.token;
+    const token = req.params.token;
     console.log("data received jwt: " + token);
 
     // verify a token symmetric
@@ -23,13 +23,13 @@ var decodeToken = function(req, res) {
 
       if(decoded) {
         console.log("decoding...");
-        var convertedDate = new Date();
+        let convertedDate = new Date();
         convertedDate.setTime(decoded.exp);
         
         console.log("date jwt: " + convertedDate.getTime() +
           ", formatted: " + utils.getTextFormattedDate(convertedDate));
         
-        var systemDate = new Date();
+        const systemDate = new Date();
         console.log("systemDate: " + systemDate.getTime() + 
           ", formatted: " + utils.getTextFormattedDate(systemDate));
 
@@ -123,8 +123,8 @@ var removeServiceFromDb = function(serviceName, user) {
 };
 
 var generateJwtCookie = function(user) {
-  var token3dauth = user.generateJwt(user);
-  var authToken = JSON.stringify({ 
+  const token3dauth = user.generateJwt(user);
+  const authToken = JSON.stringify({ 
     'value': user._id,
     'token': token3dauth
   });
@@ -132,110 +132,92 @@ var generateJwtCookie = function(user) {
 };
 
 
-var unlinkFromDb = function(req, serviceName, res) {
-  console.log("€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€");
-  console.log(req.session.authToken);
-  console.log("€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€");
-
+var unlinkServiceByName = function(req, serviceName, res) {
+  console.log("UnlinkServiceByName authToken: " + req.session.authToken);
   if(req.session.authToken) {
-    console.log("X€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€");
-
-    var tok = JSON.parse(req.session.authToken).token;
-    console.log(tok);
-    
-
-    if (tok) {
-
-        var token = tok;
-        console.log("data received jwt: " + token);
-
+    var token = JSON.parse(req.session.authToken).token;
+    console.log("Token is: " + token);  
+    if (token) {
         // verify a token symmetric
         jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
           if(err) {
-            console.log("ERROR");
+            console.error("Unknown error during jwt.verify");
             utils.sendJSONresponse(res, 404, null);
           } 
-          console.log('trying to decode');
+          console.log('Trying to decode jwt');
           if(decoded) {
-            console.log("decoding...");
             console.log(decoded);
-            var convertedDate = new Date();
+            let convertedDate = new Date();
             convertedDate.setTime(decoded.exp);
             
             console.log("date jwt: " + convertedDate.getTime() +
               ", formatted: " + utils.getTextFormattedDate(convertedDate));
             
-            var systemDate = new Date();
+            const systemDate = new Date();
             console.log("systemDate: " + systemDate.getTime() + 
               ", formatted: " + utils.getTextFormattedDate(systemDate));
 
             if( convertedDate.getTime() > systemDate.getTime() ) {
-              console.log("systemDate valid");
+              console.log("SystemDate valid");
 
-                var user = decoded.user;
-          console.log('check if user exist, serviceName=' + serviceName);
-          console.log("user is: ");
-          console.log(user);
+              var user = decoded.user;
+              console.log("User is: ");
+              console.log(user);
 
-
-          User.findById(user._id, function(err, user) {
-            console.log("User.findOne...");
-            if (err) { 
-              console.log('Error user not found (usersReadOneById)' + err);
-              utils.sendJSONresponse(res, 404, null);
-            }
+              User.findById(user._id, function(err, user) {
+                if (err) { 
+                  console.error('Error user not found (usersReadOneById)' + err);
+                  utils.sendJSONresponse(res, 404, null);
+                }
                 if (user) { // if the user is found, then log them in
                   console.log("User found (usersReadOneById): " + user);
-                  
                   var lastUnlink = checkIfLastUnlink(serviceName, user);
-              console.log('check if last unlink: ' + lastUnlink);
-              if(lastUnlink) {
-                console.log("last unlink found - removing....");
-                user.remove(function() {
-                  console.log("removed user");
-                });
-                if(req.session.authToken) {
-                  req.session.destroy(function(){
-                    console.log('Last unlink, session data destroyed');
-                  });
-                }
-                utils.sendJSONresponse(res, 200, {});
-              } else {
-                console.log("unlinking normal situation, without a remove....");
-                
-                user = removeServiceFromDb(serviceName, user);
-                user.save(function(err) {
-                  if(!err) {
-                    req.session.authToken = generateJwtCookie(user);
-                    console.log("Unlinking, regenerate session token after unlink");
-                    utils.sendJSONresponse(res, 200, user);
+                  console.log('Check if last unlink: ' + lastUnlink);
+                  if(lastUnlink) {
+                    console.log("Last unlink - removing from db....");
+                    user.remove(function() {
+                      console.log("User removed from DB");
+                    });
+                    if(token) {
+                      req.session.destroy(function(){
+                        console.log('Last unlink, session data destroyed');
+                      });
+                    }
+                    utils.sendJSONresponse(res, 200, {});
                   } else {
-                    console.log("Impossible to remove userService from db");
-                    utils.sendJSONresponse(res, 404, null);
+                    console.log("Unlinking normal situation, without a remove....");
+                    user = removeServiceFromDb(serviceName, user);
+                    user.save(function(err) {
+                      if(!err) {
+                        req.session.authToken = generateJwtCookie(user);
+                        console.log("Unlinking, regenerate session token after unlink");
+                        utils.sendJSONresponse(res, 200, user);
+                      } else {
+                        console.error("Impossible to remove userService from db");
+                        utils.sendJSONresponse(res, 404, null);
+                      }
+                    });
                   }
-                });
-              }
-
                 } else { //otherwise, if there is no user found create them
-                  console.log("User not found - cannot unlink (usersReadOneById)");
-                    utils.sendJSONresponse(res, 404, null);
+                  console.error("User not found - cannot unlink (usersReadOneById)");
+                  utils.sendJSONresponse(res, 404, null);
                 }
-          });
-
+              });
             } else {
-              console.log('No data valid');
+              console.error('No data valid');
               utils.sendJSONresponse(res, 404, null);
             }
           } else {
-            console.log("Impossible to decode: " + decoded);
+            console.error("Impossible to decode: " + decoded);
             utils.sendJSONresponse(res, 404, null);
           }
         });
-
       } else {
+        console.error("Token not found");
         utils.sendJSONresponse(res, 404, null);
       }
   } else {
+    console.error("req.session.authToken not available");
     utils.sendJSONresponse(res, 404, null);
   }
 };
@@ -247,5 +229,5 @@ module.exports = {
   checkIfLastUnlink: checkIfLastUnlink,
   removeServiceFromDb: removeServiceFromDb,
   generateJwtCookie: generateJwtCookie,
-  unlinkFromDb: unlinkFromDb,
+  unlinkServiceByName: unlinkServiceByName,
 };

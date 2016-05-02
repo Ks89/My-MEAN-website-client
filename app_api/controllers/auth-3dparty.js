@@ -82,17 +82,17 @@ function redirectToProfile(user, res, req) {
 //GET to unlink a 3dauth user
 //All of these have this form: /unlink/****serviceName****
 module.exports.unlinkFacebook = function(req, res) {
-	authCommon.unlinkFromDb(req, 'facebook', res);
+	authCommon.unlinkServiceByName(req, 'facebook', res);
 };
 module.exports.unlinkGithub = function(req, res) {
-	authCommon.unlinkFromDb(req, 'github', res);
+	authCommon.unlinkServiceByName(req, 'github', res);
 };
 module.exports.unlinkGoogle = function(req, res) {
-	authCommon.unlinkFromDb(req, 'google', res);
+	authCommon.unlinkServiceByName(req, 'google', res);
 };
 module.exports.unlinkTwitter = function(req, res) {
-	authCommon.unlinkFromDb(req, 'twitter', res);
+	authCommon.unlinkServiceByName(req, 'twitter', res);
 };
 module.exports.unlinkLinkedin = function(req, res) {
-	authCommon.unlinkFromDb(req, 'linkedin', res);
+	authCommon.unlinkServiceByName(req, 'linkedin', res);
 };

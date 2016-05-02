@@ -1,3 +1,4 @@
+'user strict';
 (function() {
 
   angular
