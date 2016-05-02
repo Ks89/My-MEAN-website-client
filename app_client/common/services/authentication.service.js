@@ -39,57 +39,8 @@
 
 
     var unlinkLocal = function() {
-      console.log("unlinkLocal: ");
-      var deferred = $q.defer();
-
-      getUserByToken('auth')
-      .success(function(data) {
-        console.log('unlink user ');
-
-        if(data !== null && data === 'invalid-data') {
-          removeToken('auth');
-          //TODO call logout to remove sessio data from redis
-          deferred.reject(null);
-        }
-
-        //var userData = JSON.parse(data);
-        console.log('********************************************************');
-        console.log('******************************************************** unlinkLocal user:');
-        console.log('********************************************************');
-        console.log(data);
-        if(data) {
-          var userData = JSON.parse(data);
-          console.log(userData);
-          var user = userData.user;
-          console.log(user);
-
-          if(user._id) {
-
-            $http.get('/api/unlink/local/' + user._id)
-            .success(function (data) {
-              console.log("unlink");
-              console.log(data);
-              deferred.resolve(data);
-            })
-            .error(function(e) {
-              console.log(e);
-              deferred.reject(null);
-            });
-          }
-        } else {
-          removeToken('auth');
-            //TODO remove session logout
-            deferred.reject(null);
-        }
-        })
-      .error(function(e) {
-        console.log('getUserByToken error ');
-        console.log(e);
-        removeToken('auth');
-        //TODO remove session logout
-        deferred.reject(null);
-      });
-      return deferred.promise;
+      console.log("Called unlink " + 'local');
+      return $http.get('/api/unlink/' + 'local');
     };
 
     var unlink3dAuth = function(serviceName) {

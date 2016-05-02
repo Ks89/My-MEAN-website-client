@@ -70,3 +70,9 @@ module.exports.login = function(req, res) {
     }
   })(req, res);
 };
+
+/* GET to unlink the local account*/
+/* /api/unlink/local */
+module.exports.unlinkLocal = function(req, res) {
+  authCommon.unlinkFromDb(req, 'local', res);
+};
