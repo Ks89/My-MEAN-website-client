@@ -9,7 +9,7 @@ var prefix      = require('gulp-autoprefixer');
 var gutil       = require('gulp-util');
 
 var del         = require('del');
-var bSync       = require('browser-sync');
+var browserSync = require('browser-sync').create();
 var wiredep     = require('wiredep').stream;
 var mainBowerFiles = require('main-bower-files');
 
@@ -110,7 +110,7 @@ gulp.task('scripts',
 	);
 
 gulp.task('styles', function() {
-	return gulp.src('public/stylesheets/*')
+	return gulp.src('public/stylesheets/*' , { since: gulp.lastRun('styles') })
 	.pipe(minifyCSS())
 	.pipe(prefix())
 	.pipe(gulp.dest('dist/styles'));
@@ -120,48 +120,59 @@ gulp.task('clean', function(done) {
 	return del(['dist', 'public/angular']);
 });
 
-gulp.task('server', function () {
-	nodemon({
-		script: './bin/www',
-		ext: 'js html',
+
+gulp.task('nodemon', function (cb) {
+
+	var started = false;
+
+	return nodemon({
+		script: 'bin/www',
+		// watch core server file(s) that require server restart on change
+    	//watch: ['app.js']
+		// ext: 'js html',
 		env: { 'NODE_ENV': 'development' }
 	})
-})
+	.on('start', function () {
+		if(!started) {
+			cb();
+			started = true;
+		}
+		
+	})
+	.on('error', function(err) {
+     // Make sure failure causes gulp to exit
+     throw err;
+ })
+});
 
 
-// gulp.task('bsync', ['nodemon'], function() {
-// 	bSync.init(null, {
-// 		proxy: "http://localhost:3000",
-// 		files: ["**/*.*"],
-// 		browser: "google chrome",
-// 		port: 7000,
-// 	});
-// });
+gulp.task('server',
+	gulp.series('nodemon', function bSyncInternal() {
 
+	  // for more browser-sync config options: http://www.browsersync.io/docs/options/
+	  browserSync.init({
 
-// gulp.task('nodemon', function (cb) {
-// 	nodemon({
-// 		script: './bin/www',
-// 		ext: 'js html',
-// 		env: { 'NODE_ENV': 'development' }
-// 	})
-// 	.on('start', function () {
-// 		cb();
-// 	})
-// 	.on('error', function(err) {
-//      // Make sure failure causes gulp to exit
-//      throw err;
-//  })
-// });
+	    // informs browser-sync to proxy our expressjs app which would run at the following location
+	    proxy: 'http://localhost:3000',
+
+	    // informs browser-sync to use the following port for the proxied app
+	    // notice that the default port is 3000, which would clash with our expressjs
+	    port: 3001,
+
+	    // open the proxied app in chrome
+	    browser: ["google chrome"]
+	 })
+	})
+);
 
 // gulp.task('server', function(done) {
-//	if(!isprod) {	
+// 	if(!isprod) {	
 //      bSync({
 //           server: {
 //                baseDir: ['bin/www']
 //           }
 //      })
-//	}
+// 	}
 //  done();
 // });
 
@@ -173,18 +184,28 @@ gulp.task('deps', function() {
 
 gulp.task('default',
 	gulp.series('clean',
-		gulp.parallel('styles', 'scripts', 'deps'),
+		gulp.parallel('styles', 'scripts'),
 		'server',
+
 		function watcher(done) {
-			if(!isprod) {
-				var watcher = gulp.watch(['app_api/**/*.js',
-				'app_client/**/*.js',
-				'public/**/*.js',
-				'app.js',
-				], gulp.parallel('scripts'));
-				gulp.watch('public/stylesheets/*', gulp.parallel('styles'));
-				gulp.watch('dist/**/*', bSync.reload); //TODO remove this, i'm not using bsync anymore
-			}
-		}
-	)
+		    gulp.watch(['app_api/**/*.js', 'app_client/**/*.js', 'public/**/*.js', 'app.js'], 
+		    	gulp.parallel('scripts'));
+		    gulp.watch('public/stylesheets/**/*.css', gulp.parallel('styles'));
+		    gulp.watch('public/**/*.js', browserSync.reload);
+		  })
+
+		//function watcher() {
+			//gulp.watch('**/*.*', browserSync.reload
+			// if(!isprod) {
+			// 	var watcher = gulp.watch(['app_api/**/*.js',
+			// 	'app_client/**/*.js',
+			// 	'public/**/*.js',
+			// 	'app.js',
+			// 	], gulp.parallel('scripts'));
+			// 	gulp.watch('public/stylesheets/*', gulp.parallel('styles'));
+			// 	gulp.watch('**/*.*', browserSync.reload); //TODO remove this, i'm not using bsync anymore
+			// }
+			//)
+		//}
+	//)
 );
