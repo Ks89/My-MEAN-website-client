@@ -96,30 +96,12 @@ var checkIfLastUnlink = function(serviceName, user) {
 };
 
 var removeServiceFromDb = function(serviceName, user) {
-  switch(serviceName) {
-      case 'facebook': 
-        user.facebook = undefined;
-        break;
-      case 'github': 
-        user.github = undefined;
-        break;
-      case 'google': 
-        user.google = undefined;
-        break;
-      case 'twitter': 
-        user.twitter = undefined;
-        break;
-      case 'linkedin': 
-        user.linkedin = undefined;
-        break;
-      case 'local':
-        user.local = undefined;
-        break;
-      default:
-        console.log('Service name not recognized to unlink');
-        break;
-    }
-    return user;
+  if(serviceName) {
+    user[serviceName] = undefined;
+  } else {
+    console.log('Service name not recognized to unlink');
+  }
+  return user;
 };
 
 var generateJwtCookie = function(user) {
