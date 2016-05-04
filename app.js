@@ -34,8 +34,77 @@ require('./app_api/authentication/passport')(passport);
 var app = express();
 
 //[hemple] enable hemlet
+//this automatically add 7 of 10 security features
+/*
+  -contentSecurityPolicy for setting Content Security Policy
+  -dnsPrefetchControl controls browser DNS prefetching
+  -frameguard to prevent clickjacking
+  -hidePoweredBy to remove the X-Powered-By header
+  -hsts for HTTP Strict Transport Security
+  -ieNoOpen sets X-Download-Options for IE8+
+  -noCache to disable client-side caching
+  -noSniff to keep clients from sniffing the MIME type
+  -xssFilter adds some small XSS protections
+*/
+//The other features NOT included by default are:
+/*
+  -hpkp for HTTP Public Key Pinning 
+  -contentSecurityPolicy for setting Content Security Policy
+  -noCache to disable client-side caching => I don't want this for better performances
+*/
 var helmet = require('helmet');
 app.use(helmet());
+
+// [Public Key Pinning: hpkp] HTTPS certificates can be forged, allowing man-in-the middle attacks. 
+//                      HTTP Public Key Pinning aims to help that.
+var ninetyDaysInMilliseconds = 7776000000;
+app.use(helmet.hpkp({
+  maxAge: ninetyDaysInMilliseconds,
+  sha256s: ['AbCdEf123=', 'ZyXwVu456='],
+  includeSubdomains: true,         // optional
+  reportUri: 'http://example.com',  // optional
+  reportOnly: false,               // optional
+
+  // Set the header based on a condition.
+  // This is optional.
+  setIf: function (req, res) {
+    return req.secure;
+  }
+}));
+
+// [CSP - Content Security Policy] Trying to prevent: Injecting anything unintended into our page. 
+//                      That could cause XSS vulnerabilities, unintended tracking, malicious frames, and more.
+// app.use(helmet.contentSecurityPolicy({
+//   // Specify directives as normal.
+//   directives: {
+//     defaultSrc: ["'self'", 'default.com'],
+//     scriptSrc: ["'self'", 'maxcdn.bootstrapcdn.com', 
+//                 'ajax.googleapis.com', 'cdnjs.cloudflare.com', 
+//                 'code.jquery.com', 'www.google.com',
+//                 'www.gstatic.com'],
+//     styleSrc: ["'self'", 'ajax.googleapis.com', 'maxcdn.bootstrapcdn.com'],
+//     fontSrc: ['maxcdn.bootstrapcdn.com'],
+//     imgSrc: ['img.com', 'data:'],
+//     sandbox: ['allow-forms', 'allow-scripts'],
+//     reportUri: '/report-violation',
+//     objectSrc: [] // An empty array allows nothing through
+//   },
+
+//   // Set to true if you only want browsers to report errors, not block them
+//   reportOnly: false,
+
+//   // Set to true if you want to blindly set all headers: Content-Security-Policy,
+//   // X-WebKit-CSP, and X-Content-Security-Policy.
+//   setAllHeaders: false,
+
+//   // Set to true if you want to disable CSP on Android where it can be buggy.
+//   disableAndroid: false,
+
+//   // Set to false if you want to completely disable any user-agent sniffing.
+//   // This may make the headers less compatible but it will be much faster.
+//   // This defaults to 'true'.
+//   browserSniff: true
+// }));
 
 //[large payload attacks] this line enables the middleware for all routes
 app.use(contentLength.validateMax({max: MAX_CONTENT_LENGTH_ACCEPTED, status: 400, message: "stop it!"})); // max size accepted for the content-length
