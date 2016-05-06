@@ -47,15 +47,5 @@
         vm.formError = err.data;
       });
     };
-
-    vm.forgotPassword = function() {
-      authentication.forgotPassword(vm.credentials.email)
-      .then(function(){
-        console.log("forgot called");
-      }, function(err) {
-         console.log("forgot error");
-
-      });
-    };
   }
 })();

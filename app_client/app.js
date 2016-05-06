@@ -51,6 +51,11 @@
 				controller: 'resetPasswordCtrl',
 				controllerAs: 'vm'
 			})
+			.when('/forgot', {
+				templateUrl: '/auth/forgotPassword/forgotPassword.view.html',
+				controller: 'forgotPasswordCtrl',
+				controllerAs: 'vm'
+			})
 			//attention: '?' means "optional parameter". 
 			//You can call /profile and also /profile/uhfffg
 			//using the same route
