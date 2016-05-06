@@ -10,7 +10,11 @@ var userSchema = new mongoose.Schema({
   local: {
     email: String,
     name: String,
-    hash: String //hash contains the passqord with also the salt generated with bcrypt
+    hash: String, //hash contains the passqord with also the salt generated with bcrypt
+    activateAccountToken: String,
+    activateAccountExpires: Date,
+    resetPasswordToken: String,
+    resetPasswordExpires: Date
   },
   //other type os users based on the login's type
   facebook : {

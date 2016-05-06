@@ -46,6 +46,11 @@
           		controller: 'loginCtrl',
           		controllerAs: 'vm'
 			})
+			.when('/reset/:emailToken', {
+				templateUrl: '/auth/resetPassword/resetPassword.view.html',
+				controller: 'resetPasswordCtrl',
+				controllerAs: 'vm'
+			})
 			//attention: '?' means "optional parameter". 
 			//You can call /profile and also /profile/uhfffg
 			//using the same route

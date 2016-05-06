@@ -37,6 +37,31 @@
             });
     };
 
+    var resetPassword = function(emailToken, newPassword) {
+      console.log("Called resetEmailToken " + emailToken + ", new pwd: " + newPassword);
+      return $http.post('/api/resetNewPassword', 
+        { newPassword : newPassword, 
+          emailToken : emailToken
+        })
+        .success(function(data) {
+          console.log("resetPassword success");
+        })
+        .error(function (err) {
+                console.log('resetPassword - error');
+              });
+    };
+
+    var forgotPassword = function(email) {
+      console.log("Called forgotPassword " + email);
+      return $http.post('/api/reset', { email : email})
+        .success(function(data) {
+          console.log("forgotPassword success");
+        })
+        .error(function (err) {
+                console.log('forgotPassword - error');
+              });
+    };
+
     var unlink = function(serviceName) {
       console.log("Called unlink " + serviceName);
       return $http.get('/api/unlink/' + serviceName);
@@ -261,6 +286,8 @@
     return {
       register : register,
       login : login,
+      resetPassword : resetPassword,
+      forgotPassword : forgotPassword,
       unlink : unlink,
       getUserById : getUserById,
       logout : logout,
