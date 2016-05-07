@@ -10,7 +10,7 @@
     "npm": "~3.8.8"
   },
   "dependencies": {
-    "async": "^2.0.0-rc.3",
+    "async": "^2.0.0-rc.4",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.15.0",
     "connect-redis": "^3.0.2",
@@ -24,7 +24,6 @@
     "extend": "^3.0.0",
     "helmet": "^2.0.0",
     "hpp": "^0.2.1",
-    "jquery": "^2.2.3",
     "jsonwebtoken": "^6.2.0",
     "method-override": "^2.3.5",
     "mongoose": "^4.4.13",
@@ -40,7 +39,6 @@
     "redis": "^2.6.0-1",
     "request": "^2.72.0",
     "serve-favicon": "^2.3.0",
-    "uglify-js": "^2.6.2",
     "url": "^0.11.0",
     "winston": "^2.2.0"
   },

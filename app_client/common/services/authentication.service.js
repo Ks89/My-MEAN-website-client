@@ -51,6 +51,17 @@
               });
     };
 
+    var activateAccount = function(emailToken) {
+      console.log("Called activateAccount " + emailToken);
+      return $http.post('/api/activateAccount', { emailToken : emailToken })
+        .success(function(data) {
+          console.log("activateAccount success");
+        })
+        .error(function (err) {
+                console.log('activateAccount - error');
+        });
+    };
+
     var forgotPassword = function(email) {
       console.log("Called forgotPassword " + email);
       return $http.post('/api/reset', { email : email})
@@ -286,6 +297,7 @@
     return {
       register : register,
       login : login,
+      activateAccount : activateAccount,
       resetPassword : resetPassword,
       forgotPassword : forgotPassword,
       unlink : unlink,

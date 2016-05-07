@@ -28,7 +28,7 @@ router.post('/register', ctrlAuthLocal.register);
 router.post('/login', ctrlAuthLocal.login);
 router.post('/reset', ctrlAuthLocal.reset);
 router.post('/resetNewPassword', ctrlAuthLocal.resetPasswordFromEmail);
-//router.get('/activate/:randomToken', ctrlAuthLocal.activate);
+router.post('/activateAccount', ctrlAuthLocal.activateAccount);
 
 //------------------------------authenticate (first login)---------------------------------
 router.get('/auth/github', ctrlAuth3dParty.authGithub);

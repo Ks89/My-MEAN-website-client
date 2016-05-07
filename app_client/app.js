@@ -56,6 +56,11 @@
 				controller: 'forgotPasswordCtrl',
 				controllerAs: 'vm'
 			})
+			.when('/activate/:emailToken', {
+				templateUrl: '/auth/activateAccount/activateAccount.view.html',
+				controller: 'activateAccountCtrl',
+				controllerAs: 'vm'
+			})
 			//attention: '?' means "optional parameter". 
 			//You can call /profile and also /profile/uhfffg
 			//using the same route

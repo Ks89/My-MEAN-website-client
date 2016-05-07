@@ -31,30 +31,66 @@ module.exports.register = function(req, res) {
     utils.sendJSONresponse(res, 400, "All fields required");
   }
 
-  User.findOne({ 'local.email': req.body.email }, function (err, user) {
-    if (err || user) { 
-      utils.sendJSONresponse(res, 400, "User already exists. Try to login.");
+  async.waterfall([
+    function(done) {
+      crypto.randomBytes(20, function(err, buf) {
+        var token = buf.toString('hex');
+        done(err, token);
+      });
+    },
+    function(token, done) {
+      console.log("email in body: " + req.body.email);
+      User.findOne({ 'local.email': req.body.email }, function(err, user) {
+        if (err || user) { 
+          utils.sendJSONresponse(res, 400, "User already exists. Try to login.");
+        } 
+
+        var newUser = new User();
+        newUser.local.name = req.body.name;
+        newUser.local.email = req.body.email;
+        newUser.setPassword(req.body.password);
+        newUser.local.activateAccountToken = token;
+        newUser.local.activateAccountExpires = Date.now() + 3600000; // 1 hour
+
+        newUser.save(function(err, savedUser) {
+          if (!err) {
+            console.log("USER: "); 
+            console.log(savedUser);
+            //const tokenJwt = savedUser.generateJwt(savedUser);
+
+            // req.session.localUserId = savedUser._id;
+            // req.session.authToken = authCommon.generateJwtCookie(savedUser);
+
+            //utils.sendJSONresponse(res, 200, { token: tokenJwt });
+          }
+          done(err, token, savedUser);
+        });
+      });
+    },
+    function(token, user, done) {
+      var message = {
+        from: process.env.USER_EMAIL, 
+        to: req.body.email,
+        subject: 'Node.js Registratin',
+        html: 'You are receiving this because you (or someone else) have requested an account for this website.\n' +
+        'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+        'http://' + req.headers.host + '/activate/' + token + '\n\n' +
+        'If you did not request this, please ignore this email.\n', 
+        generateTextFromHtml: true
+      };
+
+      //this is an async call. You shouldn't use a "return" here.
+      //I'm using a callback function
+      mailTransport.sendMail(message, function(err) {
+        done(err, 'done');
+      });
     }
-
-    var newUser = new User();
-    newUser.local.name = req.body.name;
-    newUser.local.email = req.body.email;
-    newUser.setPassword(req.body.password);
-
-    newUser.save(function(err, savedUser) {
-      if (err) {
-        utils.sendJSONresponse(res, 404, err);
+    ], function(err) {
+      if (err) { 
+        return next(err);
       } else {
-        console.log("USER: "); 
-        console.log(savedUser);
-        const token = savedUser.generateJwt(savedUser);
-
-        req.session.localUserId = savedUser._id;
-        req.session.authToken = authCommon.generateJwtCookie(savedUser);
-
-        utils.sendJSONresponse(res, 200, { token: token });
+        utils.sendJSONresponse(res, 200, "Ok");      
       }
-    });
   });
 };
 
@@ -75,13 +111,18 @@ module.exports.login = function(req, res) {
 
       console.log("USER: "); 
       console.log(user);
-      const token = user.generateJwt(user);
 
-      req.session.localUserId = user._id;
+      if(!user.local.activateAccountToken && !user.local.activateAccountExpires) {
+        const token = user.generateJwt(user);
 
-      req.session.authToken = authCommon.generateJwtCookie(user);
-      
-      utils.sendJSONresponse(res, 200, { token: token });
+        req.session.localUserId = user._id;
+
+        req.session.authToken = authCommon.generateJwtCookie(user);
+        
+        utils.sendJSONresponse(res, 200, { token: token });
+      } else {
+        utils.sendJSONresponse(res, 401, info);
+      }
     } else {
       utils.sendJSONresponse(res, 401, info);
     }
@@ -129,9 +170,9 @@ module.exports.reset = function(req, res) {
         to: req.body.email,
         subject: 'Node.js Password Reset',
         html: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
-          'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-          'http://' + req.headers.host + '/reset/' + token + '\n\n' +
-          'If you did not request this, please ignore this email and your password will remain unchanged.\n', 
+        'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+        'http://' + req.headers.host + '/reset/' + token + '\n\n' +
+        'If you did not request this, please ignore this email and your password will remain unchanged.\n', 
         generateTextFromHtml: true
       };
 
@@ -141,10 +182,10 @@ module.exports.reset = function(req, res) {
         done(err, 'done');
       });
     }
-  ], function(err) {
-    if (err) return next(err);
+    ], function(err) {
+      if (err) return next(err);
       utils.sendJSONresponse(res, 200, 'An e-mail has been sent to ' + user.local.email + ' with further instructions.');
-  });
+    });
 };
 
 
@@ -192,23 +233,64 @@ module.exports.resetPasswordFromEmail = function(req, res) {
       });
 
     }
-  ], function(err) {
-    if (err) return next(err);
-       utils.sendJSONresponse(res, 200, 'An e-mail has been sent to ' + '' + ' with further instructions.');
+    ], function(err) {
+      if (err) { 
+        return next(err);
+      } else {
+        utils.sendJSONresponse(res, 200, 'An e-mail has been sent to ' + '' + ' with further instructions.');
+      }
        //utils.sendJSONresponse(res, 404, 'Error??');
-  });
+     });
 };
 
 /* GET to activate the local account, using
-    the token received on user's mailbox */
+the token received on user's mailbox */
 /* /api/activate/:randomToken */
-// module.exports.activate = function(req, res) {
-//   console.log('activate', req.params);
-//   if (req.params && req.params.randomToken) {
+module.exports.activateAccount = function(req, res) {
+  console.log('activateAccount', req.body.emailToken);
+  async.waterfall([
+    function(done) {
+      User.findOne({ 'local.activateAccountToken': req.body.emailToken , 'local.activateAccountExpires': { $gt: Date.now() }}, function(err, user) {
+      // User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function(err, user) {
+        if (!user) {
+          utils.sendJSONresponse(res, 404, 'No account with that token exists.');
 
-//     const userEmailToken = req.params.randomToken;
-//     console.log("Activating with userEmailToken: " + userEmailToken);
-//   }
-//   utils.sendJSONresponse(res, 404, null);
+        }
 
-// };
+        console.log('user found on db: ');
+        console.log(user);
+
+        //var newUser = new User();
+        user.local.name = user.local.name;
+        user.local.email = user.local.email;
+        user.local.hash = user.local.hash;
+        user.local.activateAccountToken = undefined;
+        user.local.activateAccountExpires = undefined;
+
+        user.save(function(err, savedUser) {
+          done(err, savedUser);
+        });
+      });
+    },
+    function(user, done) {
+
+      var message = {
+        from: process.env.USER_EMAIL, 
+        to: user.local.email,
+        subject: 'Node.js account activation confirmation',
+        html: 'This is a confirmation that your account ' + user.local.email + ' has just been activated.\n', 
+        generateTextFromHtml: true
+      };
+
+      //this is an async call. You shouldn't use a "return" here.
+      //I'm using a callback function
+      mailTransport.sendMail(message, function(err) {
+        done(err, 'done');
+      });
+
+    }], function(err) {
+      if (err) return next(err);
+      utils.sendJSONresponse(res, 200, 'An e-mail has been sent to ' + '' + ' with further instructions.');
+       //utils.sendJSONresponse(res, 404, 'Error??');
+     });
+};
