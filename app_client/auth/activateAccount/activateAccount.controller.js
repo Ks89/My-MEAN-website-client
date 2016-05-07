@@ -22,6 +22,7 @@
       console.log("authentication.activateAccount result :");
       console.log(result);
       vm.activationStatus = 'ACTIVATED!!!!';
+      $location.url('/login');
       // $location.search('page', null); 
       // $location.path(vm.returnPage);
     }, function(err) {

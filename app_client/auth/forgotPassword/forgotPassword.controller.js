@@ -18,6 +18,7 @@
       authentication.forgotPassword(vm.email)
       .then(function(){
         console.log("forgot called");
+        $location.url('/login');
       }, function(err) {
          console.log("forgot error");
       });

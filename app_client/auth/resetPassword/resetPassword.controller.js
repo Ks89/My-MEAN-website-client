@@ -25,6 +25,7 @@
         console.log("authentication.resetPassword result :");
         console.log(result);
         vm.resetPasswordResultMessage = '';
+        $location.url('/login');
         // $location.search('page', null); 
         // $location.path(vm.returnPage);
       }, function(err) {

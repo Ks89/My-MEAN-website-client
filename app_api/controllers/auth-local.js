@@ -183,8 +183,11 @@ module.exports.reset = function(req, res) {
       });
     }
     ], function(err) {
-      if (err) return next(err);
-      utils.sendJSONresponse(res, 200, 'An e-mail has been sent to ' + user.local.email + ' with further instructions.');
+      if (err) { 
+        return next(err); 
+      } else { 
+        utils.sendJSONresponse(res, 200, 'An e-mail has been sent to ' + 'user.local.email' + ' with further instructions.');
+      }
     });
 };
 

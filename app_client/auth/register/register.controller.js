@@ -37,7 +37,7 @@
         // $location.search('page', null); 
         // $location.path(vm.returnPage);
         //redirect to profile page
-        $location.url('/profile');
+        $location.url('/login');
       }, function(err) {
         vm.formError = err.data;
       });
