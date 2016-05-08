@@ -16,19 +16,24 @@
     vm.emailToken = $routeParams.emailToken;
     vm.newPassword = '';
 
-    vm.onSubmit = function() {
+    vm.status = 'success';
+    vm.message = '';
 
+    vm.onSubmit = function() {
       authentication.resetPassword($routeParams.emailToken, vm.newPassword)
       .then(function(result){
         // $location.search('page', null); 
         // $location.path(vm.returnPage);
         console.log("authentication.resetPassword result :");
         console.log(result);
-        vm.resetPasswordResultMessage = '';
-        $location.url('/login');
+        vm.status = 'success';
+        vm.message = 'Account updated! Please, go back to the login page to continue.';
+        //$location.url('/login');
         // $location.search('page', null); 
         // $location.path(vm.returnPage);
       }, function(err) {
+        vm.status = 'danger';
+        vm.message = err.data;
         console.log("Error authentication.resetPassword");
       });
    };

@@ -13,13 +13,19 @@
     };
 
     vm.email = '';
+    vm.status = 'success';
+    vm.message = '';
 
     vm.onSubmit = function() {
       authentication.forgotPassword(vm.email)
       .then(function(){
         console.log("forgot called");
-        $location.url('/login');
+        vm.status = 'success';
+        vm.message = 'An email with a link to reset password has been sent to your mailbox!';
+        //$location.url('/login');
       }, function(err) {
+         vm.status = 'danger';
+          vm.message = err.data;
          console.log("forgot error");
       });
    };

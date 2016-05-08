@@ -12,8 +12,10 @@
       title: 'Account activation'
     };
 
-    vm.activationStatus = '';
     vm.emailToken = $routeParams.emailToken;
+
+    vm.status = 'success';
+    vm.message = '';
 
     authentication.activateAccount($routeParams.emailToken)
     .then(function(result){
@@ -21,13 +23,15 @@
       // $location.path(vm.returnPage);
       console.log("authentication.activateAccount result :");
       console.log(result);
-      vm.activationStatus = 'ACTIVATED!!!!';
-      $location.url('/login');
+      vm.status = 'success';
+      vm.message = 'Account activated successfully!';
+      //$location.url('/login');
       // $location.search('page', null); 
       // $location.path(vm.returnPage);
     }, function(err) {
+      vm.status = 'danger';
+      vm.message = err.data;
       console.log("Error authentication.resetPassword");
-      vm.activationStatus = 'ERROR';
     });
    
 

@@ -33,16 +33,18 @@ module.exports.register = function(req, res) {
 
   async.waterfall([
     function(done) {
-      crypto.randomBytes(20, function(err, buf) {
+      crypto.randomBytes(20, (err, buf) => {
+        if (err) throw err;
         var token = buf.toString('hex');
         done(err, token);
       });
     },
     function(token, done) {
       console.log("email in body: " + req.body.email);
-      User.findOne({ 'local.email': req.body.email }, function(err, user) {
-        if (err || user) { 
+      User.findOne({ 'local.email': req.body.email }, (err, user) => {
+        if (err || user) {
           utils.sendJSONresponse(res, 400, "User already exists. Try to login.");
+          return;
         } 
 
         var newUser = new User();
@@ -52,8 +54,10 @@ module.exports.register = function(req, res) {
         newUser.local.activateAccountToken = token;
         newUser.local.activateAccountExpires = Date.now() + 3600000; // 1 hour
 
-        newUser.save(function(err, savedUser) {
-          if (!err) {
+        newUser.save((err, savedUser) => {
+          if (err) {
+            return; 
+          } else {
             console.log("USER: "); 
             console.log(savedUser);
             //const tokenJwt = savedUser.generateJwt(savedUser);
@@ -121,7 +125,7 @@ module.exports.login = function(req, res) {
         
         utils.sendJSONresponse(res, 200, { token: token });
       } else {
-        utils.sendJSONresponse(res, 401, info);
+        utils.sendJSONresponse(res, 400, "Incorrect username or password. Or this account is not activated, check your mailbox.");
       }
     } else {
       utils.sendJSONresponse(res, 401, info);
@@ -150,7 +154,7 @@ module.exports.reset = function(req, res) {
       User.findOne({ 'local.email': req.body.email }, function(err, user) {
         if (!user) {
           utils.sendJSONresponse(res, 404, 'No account with that email address exists.');
-          //return res.redirect('/forgot');
+          return;
         }
 
         user.local.name = user.local.name;
@@ -200,7 +204,7 @@ module.exports.resetPasswordFromEmail = function(req, res) {
       // User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function(err, user) {
         if (!user) {
           utils.sendJSONresponse(res, 404, 'No account with that token exists.');
-
+          return;
         }
 
         console.log('user found on db: ');
@@ -257,7 +261,7 @@ module.exports.activateAccount = function(req, res) {
       // User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function(err, user) {
         if (!user) {
           utils.sendJSONresponse(res, 404, 'No account with that token exists.');
-
+          return;
         }
 
         console.log('user found on db: ');

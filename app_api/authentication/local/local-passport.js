@@ -16,7 +16,7 @@ module.exports = function (userRef, passportRef) {
         }
 
         if (!user || !user.validPassword(password)) {
-          return done(null, false, 'Incorrect username or password.');
+          return done(null, false, 'Incorrect username or password. Or this account is not activated, check your mailbox.');
         }
 
         return done(null, user);
