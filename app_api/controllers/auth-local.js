@@ -25,21 +25,20 @@ var mailTransport = nodemailer.createTransport({
 
 /* POST to register a local user */
 /* /api/register */
-module.exports.register = function(req, res) {
+module.exports.register = (req, res) => {
   console.log('called register server side');
   if(!req.body.name || !req.body.email || !req.body.password) {
     utils.sendJSONresponse(res, 400, "All fields required");
   }
 
-  async.waterfall([
-    function(done) {
-      crypto.randomBytes(20, (err, buf) => {
+  async.waterfall([ 
+    done => {
+      crypto.randomBytes(128, (err, buf) => {
         if (err) throw err;
         var token = buf.toString('hex');
         done(err, token);
       });
-    },
-    function(token, done) {
+    }, (token, done) => {
       console.log("email in body: " + req.body.email);
       User.findOne({ 'local.email': req.body.email }, (err, user) => {
         if (err || user) {
@@ -56,7 +55,7 @@ module.exports.register = function(req, res) {
 
         newUser.save((err, savedUser) => {
           if (err) {
-            return; 
+            throw err;
           } else {
             console.log("USER: "); 
             console.log(savedUser);
@@ -70,8 +69,7 @@ module.exports.register = function(req, res) {
           done(err, token, savedUser);
         });
       });
-    },
-    function(token, user, done) {
+    }, (token, user, done) => {
       var message = {
         from: process.env.USER_EMAIL, 
         to: req.body.email,
@@ -85,29 +83,29 @@ module.exports.register = function(req, res) {
 
       //this is an async call. You shouldn't use a "return" here.
       //I'm using a callback function
-      mailTransport.sendMail(message, function(err) {
+      mailTransport.sendMail(message, err => {
         done(err, 'done');
       });
     }
-    ], function(err) {
+    ], err => {
       if (err) { 
         return next(err);
       } else {
         utils.sendJSONresponse(res, 200, "Ok");      
       }
-  });
+    });
 };
 
 /* POST to login as local user */
 /* /api/login */
-module.exports.login = function(req, res) {
+module.exports.login = (req, res) => {
   if(!req.body.email || !req.body.password) {
     utils.sendJSONresponse(res, 400, {
       "message": "All fields required"
     });
   }
   
-  passport.authenticate('local', function(err, user, info){
+  passport.authenticate('local', (err, user, info) => {
     if (err) {
       utils.sendJSONresponse(res, 404, err);
     }
@@ -135,23 +133,23 @@ module.exports.login = function(req, res) {
 
 /* GET to unlink the local account */
 /* /api/unlink/local */
-module.exports.unlinkLocal = function(req, res) {
+module.exports.unlinkLocal = (req, res) => {
   authCommon.unlinkServiceByName(req, 'local', res);
 };
 
 /* GET to reset the local password */
 /* /api/reset */
-module.exports.reset = function(req, res) {
+module.exports.reset = (req, res) => {
   async.waterfall([
-    function(done) {
-      crypto.randomBytes(20, function(err, buf) {
+    done => {
+      crypto.randomBytes(128, (err, buf) => {
         var token = buf.toString('hex');
         done(err, token);
       });
     },
-    function(token, done) {
+    (token, done) => {
       console.log("email in body: " + req.body.email);
-      User.findOne({ 'local.email': req.body.email }, function(err, user) {
+      User.findOne({ 'local.email': req.body.email }, (err, user) => {
         if (!user) {
           utils.sendJSONresponse(res, 404, 'No account with that email address exists.');
           return;
@@ -163,12 +161,12 @@ module.exports.reset = function(req, res) {
         user.local.resetPasswordToken = token;
         user.local.resetPasswordExpires = Date.now() + 3600000; // 1 hour
 
-        user.save(function(err, savedUser) {
+        user.save((err, savedUser) => {
           done(err, token, savedUser);
         });
       });
     },
-    function(token, user, done) {
+    (token, user, done) => {
       var message = {
         from: process.env.USER_EMAIL, 
         to: req.body.email,
@@ -182,11 +180,11 @@ module.exports.reset = function(req, res) {
 
       //this is an async call. You shouldn't use a "return" here.
       //I'm using a callback function
-      mailTransport.sendMail(message, function(err) {
+      mailTransport.sendMail(message, err => {
         done(err, 'done');
       });
     }
-    ], function(err) {
+    ], err => {
       if (err) { 
         return next(err); 
       } else { 
@@ -196,11 +194,12 @@ module.exports.reset = function(req, res) {
 };
 
 
-module.exports.resetPasswordFromEmail = function(req, res) {
+module.exports.resetPasswordFromEmail = (req, res) => {
   console.log("resetPasswordFromEmail api - new pwd " + req.body.newPassword + ", emailToken: " + req.body.emailToken);
   async.waterfall([
-    function(done) {
-      User.findOne({ 'local.resetPasswordToken': req.body.emailToken , 'local.resetPasswordExpires': { $gt: Date.now() }}, function(err, user) {
+    done => {
+      User.findOne({ 'local.resetPasswordToken': req.body.emailToken ,
+         'local.resetPasswordExpires': { $gt: Date.now() }}, (err, user) => {
       // User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function(err, user) {
         if (!user) {
           utils.sendJSONresponse(res, 404, 'No account with that token exists.');
@@ -217,12 +216,12 @@ module.exports.resetPasswordFromEmail = function(req, res) {
         user.local.resetPasswordToken = undefined;
         user.local.resetPasswordExpires = undefined;
 
-        user.save(function(err, savedUser) {
+        user.save((err, savedUser) => {
           done(err, savedUser);
         });
       });
     },
-    function(user, done) {
+    (user, done) => {
 
       var message = {
         from: process.env.USER_EMAIL, 
@@ -234,13 +233,13 @@ module.exports.resetPasswordFromEmail = function(req, res) {
 
       //this is an async call. You shouldn't use a "return" here.
       //I'm using a callback function
-      mailTransport.sendMail(message, function(err) {
+      mailTransport.sendMail(message, err => {
         //utils.sendJSONresponse(res, 200, 'An e-mail has been sent to ' + user.local.email + ' with further instructions.');
         done(err, 'done');
       });
 
     }
-    ], function(err) {
+    ], err => {
       if (err) { 
         return next(err);
       } else {
@@ -253,11 +252,12 @@ module.exports.resetPasswordFromEmail = function(req, res) {
 /* GET to activate the local account, using
 the token received on user's mailbox */
 /* /api/activate/:randomToken */
-module.exports.activateAccount = function(req, res) {
+module.exports.activateAccount = (req, res) => {
   console.log('activateAccount', req.body.emailToken);
   async.waterfall([
-    function(done) {
-      User.findOne({ 'local.activateAccountToken': req.body.emailToken , 'local.activateAccountExpires': { $gt: Date.now() }}, function(err, user) {
+    done => {
+      User.findOne({ 'local.activateAccountToken': req.body.emailToken ,
+         'local.activateAccountExpires': { $gt: Date.now() }}, (err, user) => {
       // User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function(err, user) {
         if (!user) {
           utils.sendJSONresponse(res, 404, 'No account with that token exists.');
@@ -274,12 +274,12 @@ module.exports.activateAccount = function(req, res) {
         user.local.activateAccountToken = undefined;
         user.local.activateAccountExpires = undefined;
 
-        user.save(function(err, savedUser) {
+        user.save((err, savedUser) => {
           done(err, savedUser);
         });
       });
     },
-    function(user, done) {
+    (user, done) => {
 
       var message = {
         from: process.env.USER_EMAIL, 
@@ -291,11 +291,11 @@ module.exports.activateAccount = function(req, res) {
 
       //this is an async call. You shouldn't use a "return" here.
       //I'm using a callback function
-      mailTransport.sendMail(message, function(err) {
+      mailTransport.sendMail(message, err => {
         done(err, 'done');
       });
 
-    }], function(err) {
+    }], err => {
       if (err) return next(err);
       utils.sendJSONresponse(res, 200, 'An e-mail has been sent to ' + '' + ' with further instructions.');
        //utils.sendJSONresponse(res, 404, 'Error??');
