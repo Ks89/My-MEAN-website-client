@@ -154,9 +154,6 @@ module.exports.reset = (req, res) => {
           return;
         }
 
-        user.local.name = user.local.name;
-        user.local.email = user.local.email;
-        user.local.hash = user.local.hash;
         user.local.resetPasswordToken = token;
         user.local.resetPasswordExpires = Date.now() + 3600000; // 1 hour
 
@@ -197,8 +194,6 @@ module.exports.resetPasswordFromEmail = (req, res) => {
         }
         console.log('Reset password called for user: ' + user);
         
-        user.local.name = user.local.name;
-        user.local.email = user.local.email;
         user.setPassword(req.body.newPassword);
         user.local.resetPasswordToken = undefined;
         user.local.resetPasswordExpires = undefined;
@@ -241,9 +236,6 @@ module.exports.activateAccount = (req, res) => {
 
         console.log('Activate account with user: ' + user);
 
-        user.local.name = user.local.name;
-        user.local.email = user.local.email;
-        user.local.hash = user.local.hash;
         user.local.activateAccountToken = undefined;
         user.local.activateAccountExpires = undefined;
 
