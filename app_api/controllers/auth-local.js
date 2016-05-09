@@ -33,6 +33,22 @@ function emailMsg(to, subject, htmlMessage) {
   };
 }
 
+//function passed to async.waterfall's arrays to send an email
+function sendEmail(user, message, done) {
+  mailTransport.sendMail(message, err => {
+    done(err, user);
+  });
+}
+
+//function passed to async.waterfall's arrays to create a random token
+function createRandomToken(done) {
+  crypto.randomBytes(64, (err, buf) => {
+    if (err) throw err;
+    var token = buf.toString('hex');
+    done(err, token);
+  });
+}
+
 /* POST to register a local user */
 /* /api/register */
 module.exports.register = (req, res) => {
@@ -42,14 +58,9 @@ module.exports.register = (req, res) => {
   }
 
   async.waterfall([
-    done => {
-      crypto.randomBytes(64, (err, buf) => {
-        if (err) throw err;
-        var token = buf.toString('hex');
-        done(err, token);
-      });
-    }, (token, done) => {
-      console.log("email in body: " + req.body.email);
+    createRandomToken, //first function defined below
+    (token, done) => {
+      const link = 'http://' + req.headers.host + '/activate/' + token;
       User.findOne({ 'local.email': req.body.email }, (err, user) => {
         if (err || user) {
           utils.sendJSONresponse(res, 400, "User already exists. Try to login.");
@@ -69,21 +80,19 @@ module.exports.register = (req, res) => {
           }
           console.log("Registered user: " + savedUser); 
           
-          done(err, token, savedUser);
+          //create message data
+          const msgText = 'You are receiving this because you (or someone else) have requested an account for this website.\n' +
+            'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+            link + '\n\n' +
+            'If you did not request this, please ignore this email.\n';
+          const message = emailMsg(req.body.email, 'Welcome to stefanocappa.it', msgText);
+
+          done(err, savedUser, message);
         });
       });
-    }, (token, user, done) => {
-      const link = 'http://' + req.headers.host + '/activate/' + token;
-      const msgText = 'You are receiving this because you (or someone else) have requested an account for this website.\n' +
-        'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-        link + '\n\n' +
-        'If you did not request this, please ignore this email.\n';
-      const message = emailMsg(req.body.email, 'Welcome to stefanocappa.it', msgText);
-    
-      mailTransport.sendMail(message, err => {
-        done(err, user);
-      });
-    }], (err, user) => {
+    }, 
+    sendEmail //function defined below
+    ], (err, user) => {
       console.log(err);
       if (err) { 
         console.log(err);
@@ -136,14 +145,9 @@ module.exports.unlinkLocal = (req, res) => {
 /* /api/reset */
 module.exports.reset = (req, res) => {
   async.waterfall([
-    done => {
-      crypto.randomBytes(64, (err, buf) => {
-        var token = buf.toString('hex');
-        done(err, token);
-      });
-    },
+    createRandomToken,
     (token, done) => {
-      console.log("email in body: " + req.body.email);
+      const link = 'http://' + req.headers.host + '/reset/' + token;
       User.findOne({ 'local.email': req.body.email }, (err, user) => {
         if (!user) {
           utils.sendJSONresponse(res, 404, 'No account with that email address exists.');
@@ -157,23 +161,20 @@ module.exports.reset = (req, res) => {
         user.local.resetPasswordExpires = Date.now() + 3600000; // 1 hour
 
         user.save((err, savedUser) => {
-          done(err, token, savedUser);
+
+          //create email data
+          const msgText = 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
+            'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+            link + '\n\n' +
+            'If you did not request this, please ignore this email and your password will remain unchanged.\n';
+          const message = emailMsg(req.body.email, 'Password reset for stefanocappa.it', msgText);
+
+          done(err, savedUser, message);
         });
       });
     },
-    (token, user, done) => {
-
-      const link = 'http://' + req.headers.host + '/reset/' + token;
-      const msgText = 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
-        'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-        link + '\n\n' +
-        'If you did not request this, please ignore this email and your password will remain unchanged.\n';
-      const message = emailMsg(req.body.email, 'Password reset for stefanocappa.it', msgText);
-
-      mailTransport.sendMail(message, err => {
-        done(err, user);
-      });
-    }], (err, user) => {
+    sendEmail //function defined below
+    ], (err, user) => {
       if (err) { 
         console.log(err);
         return next(err); 
@@ -203,21 +204,18 @@ module.exports.resetPasswordFromEmail = (req, res) => {
         user.local.resetPasswordExpires = undefined;
 
         user.save((err, savedUser) => {
-          done(err, savedUser);
+
+          //create email data
+          const msgText = 'This is a confirmation that the password for your account ' + 
+            user.local.email + ' has just been changed.\n';
+          const message = emailMsg(savedUser.local.email, 'Please confirm your account for stefanocappa.it', msgText);
+
+          done(err, savedUser, message);
         });
       });
     },
-    (user, done) => {
-
-      const msgText = 'This is a confirmation that the password for your account ' + 
-        user.local.email + ' has just been changed.\n';
-      const message = emailMsg(user.local.email, 'Please confirm your account for stefanocappa.it', msgText);
-
-      mailTransport.sendMail(message, err => {
-        console.log('Sending email to: ' + user.local.email);
-        done(err, user);
-      });
-    }], (err, user) => {
+    sendEmail //function defined below
+    ], (err, user) => {
       if (err) { 
         console.log(err);
         return next(err);
@@ -251,23 +249,17 @@ module.exports.activateAccount = (req, res) => {
 
         user.save((err, savedUser) => {
           console.log('Activated account with savedUser: ' + savedUser);
-          done(err, savedUser);
+
+          //create email data
+          const msgText = 'This is a confirmation that your account ' + user.local.email + ' has just been activated.\n';
+          const message = emailMsg(savedUser.local.email, 'Account activated for stefanocappa.it', msgText);
+
+          done(err, savedUser, message);
         });
       });
     },
-    (user, done) => {
-      
-      console.log('Send email to: ' + user.local.email);
-
-      const msgText = 'This is a confirmation that your account ' +
-        user.local.email + ' has just been activated.\n';
-      const message = emailMsg(user.local.email, 'Account activated for stefanocappa.it', msgText);
-
-      mailTransport.sendMail(message, err => {
-        console.log('Sending email to: ' + user.local.email);
-        done(err, user);
-      });
-    }], (err, user) => {
+    sendEmail //function defined below
+    ], (err, user) => {
       console.log('Finished');
       if (err) { 
         console.log(err);
