@@ -107,82 +107,81 @@ var generateJwtCookie = function(user) {
 
 var unlinkServiceByName = function(req, serviceName, res) {
   console.log("UnlinkServiceByName authToken: " + req.session.authToken);
-  if(req.session.authToken) {
-    var token = JSON.parse(req.session.authToken).token;
-    console.log("Token is: " + token);  
-    if (token) {
-        // verify a token symmetric
-        jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
-          if(err) {
-            console.error("Unknown error during jwt.verify");
-            utils.sendJSONresponse(res, 404, null);
-          } 
-          console.log('Trying to decode jwt');
-          if(decoded) {
-            console.log("decoded valid");
-            if(utils.isJwtValidDate(decoded)) {
-              console.log("SystemDate valid");
-
-              var user = decoded.user;
-              console.log("User is: ");
-              console.log(user);
-
-              User.findById(user._id, function(err, user) {
-                if (err) { 
-                  console.error('Error user not found (usersReadOneById)' + err);
-                  utils.sendJSONresponse(res, 404, null);
-                }
-                if (user) { // if the user is found, then log them in
-                  console.log("User found (usersReadOneById): " + user);
-                  var lastUnlink = checkIfLastUnlink(serviceName, user);
-                  console.log('Check if last unlink: ' + lastUnlink);
-                  if(lastUnlink) {
-                    console.log("Last unlink - removing from db....");
-                    user.remove(function() {
-                      console.log("User removed from DB");
-                    });
-                    if(token) {
-                      req.session.destroy(function(){
-                        console.log('Last unlink, session data destroyed');
-                      });
-                    }
-                    utils.sendJSONresponse(res, 200, {});
-                  } else {
-                    console.log("Unlinking normal situation, without a remove....");
-                    user = removeServiceFromDb(serviceName, user);
-                    user.save(function(err) {
-                      if(!err) {
-                        req.session.authToken = generateJwtCookie(user);
-                        console.log("Unlinking, regenerate session token after unlink");
-                        utils.sendJSONresponse(res, 200, user);
-                      } else {
-                        console.error("Impossible to remove userService from db");
-                        utils.sendJSONresponse(res, 404, null);
-                      }
-                    });
-                  }
-                } else { //otherwise, if there is no user found create them
-                  console.error("User not found - cannot unlink (usersReadOneById)");
-                  utils.sendJSONresponse(res, 404, null);
-                }
-              });
-            } else {
-              console.error('No data valid');
-              utils.sendJSONresponse(res, 404, null);
-            }
-          } else {
-            console.error("Impossible to decode: " + decoded);
-            utils.sendJSONresponse(res, 404, null);
-          }
-        });
-      } else {
-        console.error("Token not found");
-        utils.sendJSONresponse(res, 404, null);
-      }
-  } else {
+  if(!req.session.authToken) {
     console.error("req.session.authToken not available");
     utils.sendJSONresponse(res, 404, null);
   }
+
+  var token = JSON.parse(req.session.authToken).token;
+  console.log("Token is: " + token);  
+
+  if(!token) {
+    console.error("Token not found");
+    utils.sendJSONresponse(res, 404, null);
+  }
+
+  // verify a token symmetric
+  jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
+    if(err) {
+      console.error("Unknown error during jwt.verify");
+      utils.sendJSONresponse(res, 404, null);
+    } 
+    console.log('Trying to decode jwt');
+    if(!decoded) {
+      console.error("Impossible to decode: " + decoded);
+      utils.sendJSONresponse(res, 404, null);
+    }
+    console.log("decoded valid");
+    if(!utils.isJwtValidDate(decoded)) {
+      console.error('No data valid');
+      utils.sendJSONresponse(res, 404, null);
+    }
+    console.log("SystemDate valid");
+
+    var user = decoded.user;
+    console.log("User is: ");
+    console.log(user);
+
+    User.findById(user._id, function(err, user) {
+      if (err) { 
+        console.error('Error user not found (usersReadOneById)' + err);
+        utils.sendJSONresponse(res, 404, null);
+      }
+      if(!user) {
+        console.error("User not found - cannot unlink (usersReadOneById)");
+        utils.sendJSONresponse(res, 404, null);
+      }
+      // if the user is found, then log them in
+      console.log("User found (usersReadOneById): " + user);
+      var lastUnlink = checkIfLastUnlink(serviceName, user);
+      console.log('Check if last unlink: ' + lastUnlink);
+      if(lastUnlink) {
+        console.log("Last unlink - removing from db....");
+        user.remove(function() {
+          console.log("User removed from DB");
+        });
+        if(token) {
+          req.session.destroy(function(){
+            console.log('Last unlink, session data destroyed');
+          });
+        }
+        utils.sendJSONresponse(res, 200, {});
+      } else {
+        console.log("Unlinking normal situation, without a remove....");
+        user = removeServiceFromDb(serviceName, user);
+        user.save(function(err) {
+          if(err) {
+            console.error("Impossible to remove userService from db");
+            utils.sendJSONresponse(res, 404, null);
+          }
+          
+          req.session.authToken = generateJwtCookie(user);
+          console.log("Unlinking, regenerate session token after unlink");
+          utils.sendJSONresponse(res, 200, user);
+        });
+      }
+    });
+  });
 };
 
 module.exports = {
