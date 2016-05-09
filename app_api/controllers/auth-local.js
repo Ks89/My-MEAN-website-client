@@ -141,7 +141,7 @@ module.exports.unlinkLocal = (req, res) => {
   authCommon.unlinkServiceByName(req, 'local', res);
 };
 
-/* GET to reset the local password */
+/* POST to reset the local password */
 /* /api/reset */
 module.exports.reset = (req, res) => {
   async.waterfall([
@@ -181,7 +181,7 @@ module.exports.reset = (req, res) => {
     });
 };
 
-
+//TODO add doc
 module.exports.resetPasswordFromEmail = (req, res) => {
   console.log("resetPasswordFromEmail api - new pwd " + req.body.newPassword + ", emailToken: " + req.body.emailToken);
   async.waterfall([
@@ -220,7 +220,7 @@ module.exports.resetPasswordFromEmail = (req, res) => {
      });
 };
 
-/* GET to activate the local account, using
+/* POST to activate the local account, using
 the token received on user's mailbox */
 /* /api/activate/:randomToken */
 module.exports.activateAccount = (req, res) => {

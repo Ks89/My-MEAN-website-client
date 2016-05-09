@@ -21,6 +21,20 @@ Utils.prototype = {
       return day + "/" + month + "/" + year + " " + hour + ":" + min + ":" + sec;
    },
 
+   isJwtValidDate : function(decodedJwtToken) {
+     let convertedDate = new Date();
+     convertedDate.setTime(decodedJwtToken.exp);
+     
+     console.log("date jwt: " + convertedDate.getTime() +
+       ", formatted: " + this.getTextFormattedDate(convertedDate));
+     
+     const systemDate = new Date();
+     console.log("systemDate: " + systemDate.getTime() + 
+       ", formatted: " + this.getTextFormattedDate(systemDate));
+
+     return convertedDate.getTime() > systemDate.getTime();
+   },
+
    getFilteredUser : function(user) {
       var cloned = Object.create(user);
       if(user.local) {

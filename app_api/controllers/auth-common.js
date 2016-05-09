@@ -5,6 +5,7 @@ var jwt = require('jsonwebtoken');
 var Utils = require('../utils/util.js');
 var utils = new Utils();
 
+
 /* GET to decode a JWT passing the token itself*/
 /* /api/decodeToken/:token */
 var decodeToken = function(req, res) {
@@ -22,18 +23,8 @@ var decodeToken = function(req, res) {
       } 
 
       if(decoded) {
-        console.log("decoding...");
-        let convertedDate = new Date();
-        convertedDate.setTime(decoded.exp);
-        
-        console.log("date jwt: " + convertedDate.getTime() +
-          ", formatted: " + utils.getTextFormattedDate(convertedDate));
-        
-        const systemDate = new Date();
-        console.log("systemDate: " + systemDate.getTime() + 
-          ", formatted: " + utils.getTextFormattedDate(systemDate));
-
-        if( convertedDate.getTime() > systemDate.getTime() ) {
+        console.log("decoded valid");
+        if(utils.isJwtValidDate(decoded)) {
           console.log("systemDate valid");
           console.log("stringifying...");
           console.log(JSON.stringify(decoded));
@@ -128,18 +119,8 @@ var unlinkServiceByName = function(req, serviceName, res) {
           } 
           console.log('Trying to decode jwt');
           if(decoded) {
-            console.log(decoded);
-            let convertedDate = new Date();
-            convertedDate.setTime(decoded.exp);
-            
-            console.log("date jwt: " + convertedDate.getTime() +
-              ", formatted: " + utils.getTextFormattedDate(convertedDate));
-            
-            const systemDate = new Date();
-            console.log("systemDate: " + systemDate.getTime() + 
-              ", formatted: " + utils.getTextFormattedDate(systemDate));
-
-            if( convertedDate.getTime() > systemDate.getTime() ) {
+            console.log("decoded valid");
+            if(utils.isJwtValidDate(decoded)) {
               console.log("SystemDate valid");
 
               var user = decoded.user;

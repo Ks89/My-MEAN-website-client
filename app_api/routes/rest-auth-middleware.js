@@ -20,19 +20,8 @@ module.exports.restAuthenticationMiddleware = function(req, res, next) {
 				} 
 
 				if(decoded) {
-					logger.debug("decoded: " + decoded);
-
-					var convertedDate = new Date();
-					convertedDate.setTime(decoded.exp);
-
-					logger.silly("date jwt: " + convertedDate.getTime() +
-						", formatted: " + utils.getTextFormattedDate(convertedDate));
-
-					var systemDate = new Date();
-					logger.silly("systemDate: " + systemDate.getTime() + 
-						", formatted: " + utils.getTextFormattedDate(systemDate));
-
-					if( convertedDate.getTime() > systemDate.getTime() ) {
+			    console.log("decoded valid");
+			    if(utils.isJwtValidDate(decoded)) {
 						logger.debug("systemDate valid");
 						next();
 					} else {
