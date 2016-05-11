@@ -24,6 +24,9 @@ var hpp = require('hpp');
 var contentLength = require('express-content-length-validator');
 var MAX_CONTENT_LENGTH_ACCEPTED = 9999;
 
+//[CSRF]
+var csrf = require('csurf');
+
 var fs = require('fs');
 var passport = require('passport');
 
@@ -137,10 +140,11 @@ app.use(session({
     // }
 }));
 
-//app.use(express.csrf());
-
 app.use(passport.initialize());
 app.use(passport.session());
+
+//enable middleware CSRF by csurf package
+app.use(csrf());
 
 var routesApi = require('./app_api/routes/index');
 app.use('/api', routesApi);

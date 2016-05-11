@@ -98,6 +98,7 @@ module.exports.register = (req, res) => {
         console.log(err);
         return next(err);
       } else {
+        //TODO I'm registered, but now I must pass to the caller also the csrf token!!
         utils.sendJSONresponse(res, 200, "User with email " + user.local.email + " registered.");      
       }
     });
