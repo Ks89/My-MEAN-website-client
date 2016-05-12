@@ -69,7 +69,7 @@
 				controller: 'profileCtrl',
 				controllerAs: 'vm', 
 				resolve: {
-					returnedData: ['$q', '$location', 'authentication', function ($q, $location, authentication) {
+					returnedData: ['$location', 'authentication', function ($location, authentication) {
 						authentication.isLoggedIn()
 					    .then(function(result) {
 					      console.log('Profile resolve ------------------------ SUCCESS: ' + result);
