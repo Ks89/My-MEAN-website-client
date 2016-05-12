@@ -160,6 +160,18 @@ app.use(function(req, res) {
 });
 
 
+// catch bad csrf token
+app.use(function (err, req, res, next) {
+  if (err.code !== 'EBADCSRFTOKEN') {
+    return next(err);
+  }
+
+  // handle CSRF token errors here
+  res.status(403);
+  res.send('session has expired or form tampered with');
+});
+
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
