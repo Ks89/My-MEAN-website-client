@@ -11,66 +11,86 @@
     //--- local authentication ---
     //----------------------------
     var register = function(user) {
-      return $http.post('/api/register', user)
-      .success(function (data) {
+      var deferred = $q.defer();
+      $http.post('/api/register', user)
+      .success(function(data) {
         console.log('called register - success');
         console.log(data.token);
-        saveToken('auth', JSON.stringify(data.token));
+        saveToken('auth', data.token);
+        deferred.resolve(true);
       })
       .error(function (err) {
-              // Erase the token if the user fails to log in
-              console.log('called register - error');
-              removeToken('auth');
-            });
+        // Erase the token if the user fails to log in
+        console.log('called register - error');
+        removeToken('auth');
+        deferred.resolve(false);
+      });
+      return deferred.promise;
     };
 
 
     var login = function(user) {
-      return $http.post('/api/login', user)
+      var deferred = $q.defer();
+      $http.post('/api/login', user)
       .success(function(data) {
-        saveToken('auth', JSON.stringify(data.token));
+        saveToken('auth', data.token);
+        deferred.resolve(true);
       })
       .error(function (err) {
-              // Erase the token if the user fails to log in
-              console.log('called register - error');
-              removeToken('auth');
-            });
+        // Erase the token if the user fails to log in
+        console.log('called register - error');
+        removeToken('auth');
+        deferred.resolve(false);
+      });
+      return deferred.promise;
     };
 
     var resetPassword = function(emailToken, newPassword) {
       console.log("Called resetEmailToken " + emailToken + ", new pwd: " + newPassword);
-      return $http.post('/api/resetNewPassword', 
+      var deferred = $q.defer();
+      $http.post('/api/resetNewPassword', 
         { newPassword : newPassword, 
           emailToken : emailToken
         })
         .success(function(data) {
           console.log("resetPassword success");
+          deferred.resolve(true);
         })
         .error(function (err) {
-                console.log('resetPassword - error');
-              });
+          console.log('resetPassword - error');
+          deferred.resolve(false);
+        });
+        return deferred.promise;
     };
 
     var activateAccount = function(emailToken) {
       console.log("Called activateAccount " + emailToken);
-      return $http.post('/api/activateAccount', { emailToken : emailToken })
+      var deferred = $q.defer();
+      $http.post('/api/activateAccount', { emailToken : emailToken })
         .success(function(data) {
           console.log("activateAccount success");
+          deferred.resolve(true);
         })
         .error(function (err) {
-                console.log('activateAccount - error');
+          console.log('activateAccount - error');
+          deferred.resolve(false);
         });
+        return deferred.promise;
     };
 
     var forgotPassword = function(email) {
       console.log("Called forgotPassword " + email);
-      return $http.post('/api/reset', { email : email})
+      var deferred = $q.defer();
+      $http.post('/api/reset', { email : email})
         .success(function(data) {
           console.log("forgotPassword success");
+          deferred.resolve(true);
         })
         .error(function (err) {
-                console.log('forgotPassword - error');
-              });
+          console.log('forgotPassword - error');
+          deferred.resolve(false);
+        });
+        return deferred.promise;
     };
 
     var unlink = function(serviceName) {
@@ -78,13 +98,16 @@
       return $http.get('/api/unlink/' + serviceName);
     };
 
-    function isAuthLocalLoggedIn () {
-      console.log("reading token: ");
+    var isAuthLocalLoggedIn = function() {
+      console.log("isAuthLocalLoggedIn - reading token: ");
       var deferred = $q.defer();
 
       getUserByToken('auth')
       .success(function(data) {
-        console.log('isAuthLocalLoggedIn user ');
+        console.log("-------------------------------------------");
+        console.log('isAuthLocalLoggedIn user with data: ');
+        console.log(data);
+        console.log("-------------------------------------------");
         var user = JSON.parse(data);
         console.log('user:');
         console.log(user);
@@ -102,7 +125,7 @@
       });
 
       return deferred.promise;
-    }
+    };
 
     //-----------------------------
     //--- 3dauth authentication ---
@@ -159,18 +182,22 @@
         var r1 = results[1];
         console.log(r0);
         console.log(r1);
+        console.log('£££££££££££ isLoggedIn - r0: ' + r0 + ', r1: ' + r1 + '. Returning ' + r0 || r1);
         deferred.resolve(r0 || r1);
         //return false;
       }, function(error) {
+        console.log('£££££££££££ isLoggedIn error - returning false');
         deferred.resolve(false);
         //return false;
       }).catch(function(err){
+        console.log('£££££££££££ isLoggedIn exception catched - returning false');
         deferred.resolve(false);
       });
       return deferred.promise;
     };
 
     var saveToken = function (key, token) {
+      console.log('||||||||||||||||||||||||||||||||||saving token with key: ' + key);
       $window.sessionStorage[key] = token;
     };
 
@@ -304,6 +331,7 @@
       getUserById : getUserById,
       logout : logout,
       getLoggedUser : getLoggedUser,
+      isAuthLocalLoggedIn : isAuthLocalLoggedIn,
       isLoggedIn : isLoggedIn,
       saveToken : saveToken,
       getTokenRedis : getTokenRedis,

@@ -69,21 +69,25 @@
 				controller: 'profileCtrl',
 				controllerAs: 'vm', 
 				resolve: {
-					returnedData: ['$location', 'authentication', function ($location, authentication) {
-						authentication.isLoggedIn()
+					returnedData: ['$location', 'authentication', '$q', function ($location, authentication, $q) {
+						  var defer = $q.defer();
+						  authentication.isAuthLocalLoggedIn()
 					    .then(function(result) {
 					      console.log('Profile resolve ------------------------ SUCCESS: ' + result);
 					      if(!result) {
 					      	console.log("REDIRECTING.....");
-					      	$location.url('/login');
+					      	defer.reject(result); 
+					      	//$location.url('/login');
 					      } else {
 					      	console.log("OPEN PROFILE....");
+					      	defer.resolve(result); 
 					      }
-					      //vm.isLoggedIn =  result;
 					    },function(reason) {
 					      console.log('Profile resolve ------------------------ ERROR: ' + reason);
-					      $location.path('/login');
+					      //$location.path('/login');
+					      defer.reject(reason); 
 					    });
+					    return defer.promise;
 				    }]
 	      		}
 				
@@ -103,5 +107,31 @@
 
 	angular
 	.module('mySiteApp')
-	.config(['$routeProvider', '$locationProvider', '$httpProvider', config]);
+	.config(['$routeProvider', '$locationProvider', '$httpProvider', config])
+	.run(['$rootScope','$location', function($root, $location) {
+	  $root.$on('$routeChangeStart', function(e, curr, prev) {
+	    if (curr.$$route && curr.$$route.resolve) {
+	      // Show a loading message until promises aren't resolved
+	      console.log("run root on true -> STARTING");
+	      console.log("run start->e: ");
+	      console.log(e);
+	      $root.loadingView = true;
+	    }
+	  });
+	  $root.$on('$routeChangeSuccess', function(e, curr, prev) {
+	    // Hide loading message
+	    console.log("run success->e: ");
+	    console.log(e);
+	    console.log("run root on false -> SUCCESS");
+	    $root.loadingView = false;
+	  });
+	  $root.$on('$routeChangeError', function(e, curr, prev, rejection) {
+	    // Hide loading message
+	    console.log("run error->e: ");
+	    console.log(e);
+	    console.log("run routeChangeError -> ERROR " + rejection);
+	    $location.url('/login');
+	    $root.loadingView = true;
+	  });
+	}]);
 })();
