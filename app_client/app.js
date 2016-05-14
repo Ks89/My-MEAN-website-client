@@ -74,7 +74,10 @@
 					    .then(function(result) {
 					      console.log('Profile resolve ------------------------ SUCCESS: ' + result);
 					      if(!result) {
-					      	$location.path('/login');
+					      	console.log("REDIRECTING.....");
+					      	$location.url('/login');
+					      } else {
+					      	console.log("OPEN PROFILE....");
 					      }
 					      //vm.isLoggedIn =  result;
 					    },function(reason) {
