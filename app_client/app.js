@@ -71,16 +71,16 @@
 			resolve: {
 				returnedData: ['$location', 'authentication', '$q', function ($location, authentication, $q) {
 					var defer = $q.defer();
-					//I call getLoggedUser because, for 3dauth, I must ssave the auth token, before that I can
+					//I call post3dAuthAfterCallback because, for 3dauth, I must save the auth token, before that I can
 					//call isLoggedIn. 
-					//Obviously with local auht I can manage all the process by myself, but for 3dauth after the callback
+					//Obviously with local auth I can manage all the process by myself, but for 3dauth after the callback
 					//I haven't anything and I must call a method to finish this process.
-					//I embedded this login into getLoggedUser. 
-					authentication.getLoggedUser()
+					//I embedded this login into post3dAuthAfterCallback. 
+					authentication.post3dAuthAfterCallback()
 					.then(function(result) {
 						authentication.isLoggedIn()
 						.then(function(result) {
-							console.log('Profile resolve getLoggedUser, is3dauth? ------------------------ SUCCESS: ' + result);
+							console.log('Profile resolve post3dAuthAfterCallback, is3dauth? ------------------------ SUCCESS: ' + result);
 							if(!result) {
 								console.log("REDIRECTING.....");
 								defer.reject(result); 
@@ -95,7 +95,7 @@
 				      defer.reject(reason); 
 				    });
 					},function(reason) {
-			    	console.log('Profile resolve getLoggedUser ------------------------ ERROR: ' + reason);
+			    	console.log('Profile resolve post3dAuthAfterCallback ------------------------ ERROR: ' + reason);
 			      //$location.path('/login');
 			      defer.reject(reason); 
 			    });

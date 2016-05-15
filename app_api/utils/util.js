@@ -1,4 +1,3 @@
-// Constructor
 class Utils {
 
   constructor(){}

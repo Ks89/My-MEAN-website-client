@@ -209,6 +209,38 @@
       return $http.get('/api/decodeToken/' + jwtToken);
     };
 
+
+    //For 3dauth I must save the auth token, before that I can call isLoggedIn. 
+    //Obviously, with local auth I can manage all the process by myself, but for 3dauth after the callback
+    //I haven't anything and I must call this method to finish this process.
+    var post3dAuthAfterCallback = function() {
+      var deferred = $q.defer();
+      var thirdauthData = {};
+      console.log('<<<<<<< getLoggedUser');
+      getTokenRedis('auth')
+      .success(function(tokenData) {
+        console.log('<<<<<<< token obtained from redis');     
+        console.log("<<<<<<< sessionToken " + tokenData + " tokenData.data " + tokenData.data);
+        if(tokenData) {
+          console.log(tokenData);
+          var tokenObj = JSON.parse(tokenData);
+          console.log("<<<<<<< tokenobj: " + tokenObj);
+          if(tokenObj) {
+            var token = tokenObj.token;
+            console.log("<<<<<<< real token is: " + token);
+            saveToken('auth', token);
+            deferred.resolve(token);
+          }
+        }
+      })
+      .error(function(e) {
+        console.log('<<<<<<< ' + "ERROR experimental...");
+        deferred.reject(JSON.stringify({}));
+      });  
+
+      return deferred.promise;
+    };
+
     var getLoggedUser = function() {
       var deferred = $q.defer();
       var thirdauthData = {};
@@ -332,6 +364,7 @@
       unlink : unlink,
       getUserById : getUserById,
       logout : logout,
+      post3dAuthAfterCallback : post3dAuthAfterCallback,
       getLoggedUser : getLoggedUser,
       isLoggedIn : isLoggedIn,
       saveToken : saveToken,
