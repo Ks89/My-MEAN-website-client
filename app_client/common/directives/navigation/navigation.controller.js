@@ -13,14 +13,14 @@
 
     //used to show or hide links and buttons into the navigation bar
     
-    authentication.isLoggedIn()
-    .then(function(result) {
-      console.log('Nav isLoggedIn local  Success: ' + result);
-      vm.isLoggedIn =  result;
-    },function(reason) {
-      console.log('Nav isLoggedIn local  Failed: ' + reason);
-      vm.isLoggedIn =  false;
-    });
+    // authentication.isLoggedIn()
+    // .then(function(result) {
+    //   console.log('Nav isLoggedIn local  Success: ' + result);
+    //   vm.isLoggedIn =  result;
+    // },function(reason) {
+    //   console.log('Nav isLoggedIn local  Failed: ' + reason);
+    //   vm.isLoggedIn =  false;
+    // });
 
     vm.currentUser = {
       'name' : '' 
@@ -63,6 +63,14 @@
       }
     }, function(error){
       console.log(error);
+      authentication.isLoggedIn()
+      .then(function(result) {
+        console.log('Nav isLoggedIn local  Success: ' + result);
+        vm.isLoggedIn =  result;
+      },function(reason) {
+        console.log('Nav isLoggedIn local  Failed: ' + reason);
+        vm.isLoggedIn =  false;
+      });
     });
 
     function setCurrentUser(originData) {

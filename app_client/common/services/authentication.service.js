@@ -98,16 +98,12 @@
       return $http.get('/api/unlink/' + serviceName);
     };
 
-    var isAuthLocalLoggedIn = function() {
+    function isAuthLocalLoggedIn() {
       console.log("isAuthLocalLoggedIn - reading token: ");
       var deferred = $q.defer();
 
       getUserByToken('auth')
       .success(function(data) {
-        console.log("-------------------------------------------");
-        console.log('isAuthLocalLoggedIn user with data: ');
-        console.log(data);
-        console.log("-------------------------------------------");
         var user = JSON.parse(data);
         console.log('user:');
         console.log(user);
@@ -125,18 +121,21 @@
       });
 
       return deferred.promise;
-    };
+    }
 
     //-----------------------------
     //--- 3dauth authentication ---
     //-----------------------------
-    function isAuth3dLoggedIn () {
-      console.log("reading 3dauth: ");
+    function isAuth3dLoggedIn() {
+      console.log("isAuth3dLoggedIn - reading token: ");
       var deferred = $q.defer();
 
       getUserByToken('auth')
       .success(function(data) {
-        console.log('isAuth3dLoggedIn user ');
+        console.log("-------------------------------------------");
+        console.log('isAuth3dLoggedIn user with data: ');
+        console.log(data);
+        console.log("-------------------------------------------");
         var user = JSON.parse(data);
         console.log('user:');
         console.log(user);
@@ -306,14 +305,17 @@
     }
     function getUserByToken(key) {
       console.log("getUserByToken called method");
+      console.log("$window.sessionStorage: ");
+      console.log($window.sessionStorage);
       var sessionToken = getToken(key); 
       if(sessionToken) {
-        console.log("getUserByToken sessionToken :" + sessionToken);
+        console.log("getUserByToken sessionToken " + sessionToken);
         var token = sessionToken; //JSON.parse(sessionToken);
         console.log("getUserByToken token ");
         console.log(token);
         return decodeJwtToken(token);
       } else {
+        console.log("getUserByToken sessionToken null or empty");
         return decodeJwtToken();
       }
     }
@@ -331,7 +333,6 @@
       getUserById : getUserById,
       logout : logout,
       getLoggedUser : getLoggedUser,
-      isAuthLocalLoggedIn : isAuthLocalLoggedIn,
       isLoggedIn : isLoggedIn,
       saveToken : saveToken,
       getTokenRedis : getTokenRedis,
