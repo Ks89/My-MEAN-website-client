@@ -20,6 +20,8 @@
     //carousel slides
     $scope.myInterval = 3000;
     $scope.noWrapSlides = false;
+    $scope.active = 0;
+    var currIndex = 0;
 
     //variables for carousel, thumbnails and big thumbnails
     var slides = $scope.slides = [];
@@ -54,7 +56,8 @@
       slides.push({
         header: cHeader,
         image: cImagePath,
-        text: cText
+        text: cText,
+        id: currIndex++
       });
     };
     var addThumbs = function(tImagePath, tText, tHeader, tPath) {
