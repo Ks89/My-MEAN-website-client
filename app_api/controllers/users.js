@@ -3,7 +3,6 @@ var User = mongoose.model('User');
 var logger = require('../utils/logger.js');
 
 var Utils = require('../utils/util.js');
-var utils = new Utils();
 
 /* GET a user by id */
 /* /api/users/:id */
@@ -18,18 +17,18 @@ module.exports.usersReadOneById = function(req, res) {
 			console.log("User.findOne...");
 			if (err) { 
 				console.log('Error user not found (usersReadOneById)' + err);
-				utils.sendJSONresponse(res, 404, "");
+				Utils.sendJSONresponse(res, 404, "");
 			}
 	        if (user) { // if the user is found, then log them in
 	        	console.log("User found (usersReadOneById): " + user);
-		        utils.sendJSONresponse(res, 200, user);
+		        Utils.sendJSONresponse(res, 200, user);
 	        } else { //otherwise, if there is no user found create them
 	        	console.log("User not found (usersReadOneById)");
-	          	utils.sendJSONresponse(res, 404, "");
+	          	Utils.sendJSONresponse(res, 404, "");
 	        }
 	    });
 	} else {
-		utils.sendJSONresponse(res, 404, "");
+		Utils.sendJSONresponse(res, 404, "");
 	}
 };
 

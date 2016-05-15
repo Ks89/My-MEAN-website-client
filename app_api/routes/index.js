@@ -59,6 +59,7 @@ router.get('/connect/linkedin/callback', ctrlAuth3dParty.connectLinkedinCallback
 router.get('/logout', ctrlAuthCommon.logout);
 router.get('/sessionToken', ctrlAuthCommon.sessionToken);
 router.get('/decodeToken/:token', ctrlAuthCommon.decodeToken); 
+//router.get('/isLoggedIn', ctrlAuthCommon.isLoggedIn);
 
 // ----------------------------------------------------------------
 // route middleware to authenticate and check token

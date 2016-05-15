@@ -3,7 +3,6 @@ var User = mongoose.model('User');
 var logger = require('../utils/logger.js');
 var jwt = require('jsonwebtoken');
 var Utils = require('../utils/util.js');
-var utils = new Utils();
 var async = require('async');
 
 /* GET to decode a JWT passing the token itself*/
@@ -19,25 +18,25 @@ var decodeToken = function(req, res) {
     jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
       if(err) {
         console.log("jwt.verify error");
-        utils.sendJSONresponse(res, 404, null);
+        Utils.sendJSONresponse(res, 404, null);
       } 
 
       if(decoded) {
         console.log("decoded valid");
-        if(utils.isJwtValidDate(decoded)) {
+        if(Utils.isJwtValidDate(decoded)) {
           console.log("systemDate valid");
           console.log("stringifying...");
           console.log(JSON.stringify(decoded));
-          utils.sendJSONresponse(res, 200, JSON.stringify(decoded));
+          Utils.sendJSONresponse(res, 200, JSON.stringify(decoded));
         } else {
           console.log('No data valid');
-          utils.sendJSONresponse(res, 404, "invalid-data");
+          Utils.sendJSONresponse(res, 404, "invalid-data");
         }
       }
     });
   } else {
     console.log('No token found');
-    utils.sendJSONresponse(res, 404, null);
+    Utils.sendJSONresponse(res, 404, null);
   }
 };
 
@@ -49,11 +48,11 @@ var logout = function(req, res) {
   if(req.session.authToken) {
     req.session.destroy(function(){
       console.log('Session data destroyed');
-      utils.sendJSONresponse(res, 200, {});
+      Utils.sendJSONresponse(res, 200, {});
     });
   } else {
     console.log('Authtoken not available as session data in Redis, for instance you aren\'t logged');
-    utils.sendJSONresponse(res, 404, null);
+    Utils.sendJSONresponse(res, 404, null);
   }
 };
 
@@ -63,10 +62,10 @@ var sessionToken = function(req, res) {
   console.log('sessionToken called');
   console.log('data available (authToken): ' + req.session.authToken);
   if(req.session.authToken) {
-    utils.sendJSONresponse(res, 200, req.session.authToken);
+    Utils.sendJSONresponse(res, 200, req.session.authToken);
   } else {
     console.log('Authtoken not available as session data in Redis, for instance you aren\'t logged');
-    utils.sendJSONresponse(res, 404, null);
+    Utils.sendJSONresponse(res, 404, null);
   }
 };
 
@@ -109,7 +108,7 @@ var unlinkServiceByName = function(req, serviceName, res) {
   console.log("UnlinkServiceByName authToken: " + req.session.authToken);
   if(!req.session.authToken) {
     console.error("req.session.authToken not available");
-    utils.sendJSONresponse(res, 404, null);
+    Utils.sendJSONresponse(res, 404, null);
   }
 
   var token = JSON.parse(req.session.authToken).token;
@@ -117,7 +116,7 @@ var unlinkServiceByName = function(req, serviceName, res) {
 
   if(!token) {
     console.error("Token not found");
-    utils.sendJSONresponse(res, 404, null);
+    Utils.sendJSONresponse(res, 404, null);
   }
 
   async.waterfall([
@@ -131,7 +130,7 @@ var unlinkServiceByName = function(req, serviceName, res) {
           throw err;
         }
         console.log("decoded valid");
-        if(!utils.isJwtValidDate(decoded)) {
+        if(!Utils.isJwtValidDate(decoded)) {
           console.error('No data valid');
           throw err;
         }
@@ -148,12 +147,12 @@ var unlinkServiceByName = function(req, serviceName, res) {
         if (err) { 
           console.error('Error user not found (usersReadOneById)' + err);
           throw err;
-          //utils.sendJSONresponse(res, 404, null);
+          //Utils.sendJSONresponse(res, 404, null);
         }
         if(!user) {
           console.error("User not found - cannot unlink (usersReadOneById)");
           throw err;
-          //utils.sendJSONresponse(res, 404, null);
+          //Utils.sendJSONresponse(res, 404, null);
         }
         // if the user is found, then log them in
         console.log("User found (usersReadOneById): " + user);
@@ -174,7 +173,7 @@ var unlinkServiceByName = function(req, serviceName, res) {
           });
         }
         done(null, user);
-        //utils.sendJSONresponse(res, 200, {});
+        //Utils.sendJSONresponse(res, 200, {});
       } else {
         console.log("Unlinking normal situation, without a remove....");
         user = removeServiceFromDb(serviceName, user);
@@ -182,12 +181,12 @@ var unlinkServiceByName = function(req, serviceName, res) {
           if(err) {
             console.error("Impossible to remove userService from db");
             throw err;
-            //utils.sendJSONresponse(res, 404, null);
+            //Utils.sendJSONresponse(res, 404, null);
           }
           
           req.session.authToken = generateJwtCookie(user);
           console.log("Unlinking, regenerate session token after unlink");
-          //utils.sendJSONresponse(res, 200, user);
+          //Utils.sendJSONresponse(res, 200, user);
           done(err, user);
         });
       }
@@ -195,17 +194,66 @@ var unlinkServiceByName = function(req, serviceName, res) {
       console.log(err);
       if (err) { 
         console.log(err);
-        utils.sendJSONresponse(res, 404, null);
+        Utils.sendJSONresponse(res, 404, null);
         //return next(err);
       } else {
-        utils.sendJSONresponse(res, 200, "User unlinked correctly!");      
+        Utils.sendJSONresponse(res, 200, "User unlinked correctly!");      
       }
     });
 };
 
+// var isLoggedIn = function(req, res) {
+//   console.log('isLoggedIn called');
+//   console.log('isLoggedIn data available (authToken): ' + req.session.authToken);
+//   if(req.session.authToken) {
+
+
+//     // verify a token symmetric
+//     jwt.verify(req.session.authToken, process.env.JWT_SECRET, function(err, decoded) {
+//       if(err) {
+//         console.log("jwt.verify error");
+//         Utils.sendJSONresponse(res, 404, null);
+//       } 
+
+//       if(decoded) {
+//         console.log("decoded valid");
+//         if(Utils.isJwtValidDate(decoded)) {
+//           console.log("systemDate valid");
+//           console.log("stringifying...");
+//           console.log(JSON.stringify(decoded));
+//           var islogged = {
+//             thirdpartyauth: false,
+//             local: false
+//           };
+//           if(decoded.user) {
+//             if(decoded.user.local) {
+//               islogged.local = true;
+//             }
+//             if(decoded.user.github || decoded.user.facebook ||  decoded.user.google) {
+//               islogged.thirdpartyauth = true;
+//             }
+//           }
+//           Utils.sendJSONresponse(res, 200, JSON.stringify(islogged));
+//         } else {
+//           console.log('No data valid');
+//           Utils.sendJSONresponse(res, 404, "invalid-data");
+//         }
+//       }
+//     });
+
+
+//     Utils.sendJSONresponse(res, 200, req.session.authToken);
+//   } else {
+//     console.log('isLoggedIn: Authtoken not available as session data in Redis, for instance you aren\'t logged');
+//     Utils.sendJSONresponse(res, 404, null);
+//   }
+//   Utils.sendJSONresponse(res, 404, null);
+// };
+
 module.exports = {
   decodeToken: decodeToken,
   logout: logout,
+  //isLoggedIn: isLoggedIn,
   sessionToken: sessionToken,
   checkIfLastUnlink: checkIfLastUnlink,
   removeServiceFromDb: removeServiceFromDb,

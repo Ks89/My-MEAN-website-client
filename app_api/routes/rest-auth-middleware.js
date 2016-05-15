@@ -2,7 +2,6 @@ var jwt = require('jsonwebtoken');
 
 var logger = require('../utils/logger.js');
 var Utils = require('../utils/util.js');
-var utils = new Utils();
 
 module.exports.restAuthenticationMiddleware = function(req, res, next) {
 	logger.debug("route middleware to authenticate and check token: " + req.session.authToken);
@@ -16,17 +15,17 @@ module.exports.restAuthenticationMiddleware = function(req, res, next) {
 			jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
 				if(err) {
 					logger.error("jwt.verify error");
-					utils.sendJSONresponse(res, 404, null);
+					Utils.sendJSONresponse(res, 404, null);
 				} 
 
 				if(decoded) {
 			    console.log("decoded valid");
-			    if(utils.isJwtValidDate(decoded)) {
+			    if(Utils.isJwtValidDate(decoded)) {
 						logger.debug("systemDate valid");
 						next();
 					} else {
 						logger.error('No data valid');
-						utils.sendJSONresponse(res, 404, "invalid-data");
+						Utils.sendJSONresponse(res, 404, "invalid-data");
 					}
 				}
 			});

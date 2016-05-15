@@ -4,7 +4,6 @@ var jwt = require('jsonwebtoken');
 var logger = require('../utils/logger.js');
 
 var Utils = require('../utils/util.js');
-var utils = new Utils();
 
 var userSchema = new mongoose.Schema({
   local: {
@@ -68,7 +67,7 @@ userSchema.methods.generateJwt = function(user) {
     _id: this._id,
      //I don't want to expose private information here -> I filter 
      //the user object into a similar object without some fields
-    user: utils.getFilteredUser(user),
+    user: Utils.getFilteredUser(user),
     exp: parseFloat(expiry.getTime()),
   }, process.env.JWT_SECRET); // DO NOT KEEP YOUR SECRET IN THE CODE!
 };

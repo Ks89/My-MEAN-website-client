@@ -3,7 +3,6 @@ var Project = mongoose.model('Project');
 var logger = require('../utils/logger.js');
 
 var Utils = require('../utils/util.js');
-var utils = new Utils();
 
 /* GET list of projects */
 /* /api/projects */
@@ -12,9 +11,9 @@ module.exports.projectsList = function(req, res) {
   Project.find({}, function(err, results) {
     if (err) {
       console.log('projectsList error:', err);
-      utils.sendJSONresponse(res, 404, err);
+      Utils.sendJSONresponse(res, 404, err);
     } else {
-      utils.sendJSONresponse(res, 200, results);
+      Utils.sendJSONresponse(res, 200, results);
     }
   });
 };
@@ -29,9 +28,9 @@ module.exports.projectsListHomepage = function(req, res) {
     .lean().exec(function(err, results) {
       if (err) {
         console.log('projectsListHomepage error:', err);
-        utils.sendJSONresponse(res, 404, err);
+        Utils.sendJSONresponse(res, 404, err);
       } else {
-        utils.sendJSONresponse(res, 200, results);
+        Utils.sendJSONresponse(res, 200, results);
       }
     });
 };
@@ -45,19 +44,19 @@ module.exports.projectsReadOne = function(req, res) {
     .findById(req.params.projectid)
     .exec(function(err, project) {
       if (!project) {
-        utils.sendJSONresponse(res, 404, {
+        Utils.sendJSONresponse(res, 404, {
           "message": "projectid not found"
         });
       } else if (err) {
         console.log(err);
-        utils.sendJSONresponse(res, 404, err);
+        Utils.sendJSONresponse(res, 404, err);
       }
       console.log(project);
-      utils.sendJSONresponse(res, 200, project);
+      Utils.sendJSONresponse(res, 200, project);
     });
   } else {
     console.log('No projectid specified');
-    utils.sendJSONresponse(res, 404, {
+    Utils.sendJSONresponse(res, 404, {
       "message": "No projectid in request"
     });
   }

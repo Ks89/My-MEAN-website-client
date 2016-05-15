@@ -71,6 +71,11 @@
 			resolve: {
 				returnedData: ['$location', 'authentication', '$q', function ($location, authentication, $q) {
 					var defer = $q.defer();
+					//I call getLoggedUser because, for 3dauth, I must ssave the auth token, before that I can
+					//call isLoggedIn. 
+					//Obviously with local auht I can manage all the process by myself, but for 3dauth after the callback
+					//I haven't anything and I must call a method to finish this process.
+					//I embedded this login into getLoggedUser. 
 					authentication.getLoggedUser()
 					.then(function(result) {
 						authentication.isLoggedIn()
@@ -106,10 +111,6 @@
 				requireBase: true,
 				rewriteLinks: false
 			});
-
-		//configura XSRF/CSRF
-		// $httpProvider.defaults.xsrfCookieName = 'XSRF-TOKEN';
-  	// $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
   	}
 
   	angular

@@ -4,7 +4,6 @@ var User = mongoose.model('User');
 var logger = require('../utils/logger.js');
 var authCommon = require('./auth-common.js');
 var Utils = require('../utils/util.js');
-var utils = new Utils();
 var async = require('async');
 var crypto = require('crypto');
 
@@ -54,7 +53,7 @@ function createRandomToken(done) {
 module.exports.register = (req, res) => {
   console.log('called register server side');
   if(!req.body.name || !req.body.email || !req.body.password) {
-    utils.sendJSONresponse(res, 400, "All fields required");
+    Utils.sendJSONresponse(res, 400, "All fields required");
   }
 
   async.waterfall([
@@ -63,7 +62,7 @@ module.exports.register = (req, res) => {
       const link = 'http://' + req.headers.host + '/activate/' + token;
       User.findOne({ 'local.email': req.body.email }, (err, user) => {
         if (err || user) {
-          utils.sendJSONresponse(res, 400, "User already exists. Try to login.");
+          Utils.sendJSONresponse(res, 400, "User already exists. Try to login.");
           return;
         } 
 
@@ -99,7 +98,7 @@ module.exports.register = (req, res) => {
         return next(err);
       } else {
         //TODO I'm registered, but now I must pass to the caller also the csrf token!!
-        utils.sendJSONresponse(res, 200, "User with email " + user.local.email + " registered.");      
+        Utils.sendJSONresponse(res, 200, "User with email " + user.local.email + " registered.");      
       }
     });
 };
@@ -108,17 +107,17 @@ module.exports.register = (req, res) => {
 /* /api/login */
 module.exports.login = (req, res) => {
   if(!req.body.email || !req.body.password) {
-    utils.sendJSONresponse(res, 400, {
+    Utils.sendJSONresponse(res, 400, {
       "message": "All fields required"
     });
   }
   
   passport.authenticate('local', (err, user, info) => {
     if (err) {
-      utils.sendJSONresponse(res, 404, err);
+      Utils.sendJSONresponse(res, 404, err);
     }
     if (!user) {
-      utils.sendJSONresponse(res, 401, info);
+      Utils.sendJSONresponse(res, 401, info);
     } else {
       console.log("Registered user: " + user); 
 
@@ -128,9 +127,9 @@ module.exports.login = (req, res) => {
         req.session.localUserId = user._id;
         req.session.authToken = authCommon.generateJwtCookie(user);
         
-        utils.sendJSONresponse(res, 200, { token: token });
+        Utils.sendJSONresponse(res, 200, { token: token });
       } else {
-        utils.sendJSONresponse(res, 400, "Incorrect username or password. Or this account is not activated, check your mailbox.");
+        Utils.sendJSONresponse(res, 400, "Incorrect username or password. Or this account is not activated, check your mailbox.");
       }
     }
   })(req, res);
@@ -151,7 +150,7 @@ module.exports.reset = (req, res) => {
       const link = 'http://' + req.headers.host + '/reset/' + token;
       User.findOne({ 'local.email': req.body.email }, (err, user) => {
         if (!user) {
-          utils.sendJSONresponse(res, 404, 'No account with that email address exists.');
+          Utils.sendJSONresponse(res, 404, 'No account with that email address exists.');
           return;
         }
 
@@ -177,7 +176,7 @@ module.exports.reset = (req, res) => {
         console.log(err);
         return next(err); 
       } else { 
-        utils.sendJSONresponse(res, 200, 'An e-mail has been sent to ' + user.local.email + ' with further instructions.');
+        Utils.sendJSONresponse(res, 200, 'An e-mail has been sent to ' + user.local.email + ' with further instructions.');
       }
     });
 };
@@ -190,7 +189,7 @@ module.exports.resetPasswordFromEmail = (req, res) => {
       User.findOne({ 'local.resetPasswordToken': req.body.emailToken ,
          'local.resetPasswordExpires': { $gt: Date.now() }}, (err, user) => {
         if (!user) {
-          utils.sendJSONresponse(res, 404, 'No account with that token exists.');
+          Utils.sendJSONresponse(res, 404, 'No account with that token exists.');
           return;
         }
         console.log('Reset password called for user: ' + user);
@@ -216,7 +215,7 @@ module.exports.resetPasswordFromEmail = (req, res) => {
         console.log(err);
         return next(err);
       } else {
-        utils.sendJSONresponse(res, 200, 'An e-mail has been sent to ' + user.local.email + ' with further instructions.');
+        Utils.sendJSONresponse(res, 200, 'An e-mail has been sent to ' + user.local.email + ' with further instructions.');
       }
      });
 };
@@ -231,7 +230,7 @@ module.exports.activateAccount = (req, res) => {
       User.findOne({ 'local.activateAccountToken': req.body.emailToken ,
          'local.activateAccountExpires': { $gt: Date.now() }}, (err, user) => {
         if (!user) {
-          utils.sendJSONresponse(res, 404, 'No account with that token exists.');
+          Utils.sendJSONresponse(res, 404, 'No account with that token exists.');
           return;
         }
 
@@ -258,7 +257,7 @@ module.exports.activateAccount = (req, res) => {
         console.log(err);
         return next(err);
       } else {
-        utils.sendJSONresponse(res, 200, 'An e-mail has been sent to ' + user.local.email + ' with further instructions.');
+        Utils.sendJSONresponse(res, 200, 'An e-mail has been sent to ' + user.local.email + ' with further instructions.');
       }
      });
 };
