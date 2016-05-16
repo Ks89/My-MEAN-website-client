@@ -57,7 +57,6 @@ var testJs = ['app_api/**/*.js',
 		'app.js',
 		'!public/angular/*.js',
 		'public/javascripts/bs-docs-sidebar.js',
-		'public/javascripts/validation.js',
 		'!public/ngGallery/**/*'
 		];
 
@@ -101,6 +100,7 @@ gulp.task('scripts',
 			//only app_client files, because the generated file will be imported into app_client/index.html
 			app_clientJs , {	sourcemaps: true /*,
 				since: gulp.lastRun('test')*/} )
+          .pipe(sourcemaps.init())
           .pipe(dev(sourcemaps.init()))
           .pipe(cached('ugly'))
           .pipe(uglify().on('error', gutil.log))
@@ -118,9 +118,13 @@ gulp.task('styles', function() {
 	.pipe(gulp.dest('dist/styles'));
 });
 
-gulp.task('clean', function(done) {
-	return del(['dist', 'public/angular']);
-});
+function clean() {
+  // You can use multiple globbing patterns as you would with `gulp.src`,
+  // for example if you are using del 2.0 or above, return its promise
+  return del(['dist', 'public/angular']);
+}
+
+exports.clean = clean;
 
 
 gulp.task('nodemon', function (cb) {
@@ -135,6 +139,7 @@ gulp.task('nodemon', function (cb) {
 		env: { 'NODE_ENV': 'development' }
 	})
 	.on('start', function () {
+		browserSync.reload;
 		if(!started) {
 			cb();
 			started = true;
@@ -157,6 +162,8 @@ gulp.task('server',
 	    // informs browser-sync to proxy our expressjs app which would run at the following location
 	    proxy: 'http://localhost:3000',
 
+		//files: app_clientJs,
+
 	    // informs browser-sync to use the following port for the proxied app
 	    // notice that the default port is 3000, which would clash with our expressjs
 	    port: 3001,
@@ -178,14 +185,14 @@ gulp.task('server',
 //  done();
 // });
 
-gulp.task('deps', function() {
-	return gulp.src('public/html/**/*.html')
-        //.pipe(wiredep())
-        .pipe(gulp.dest('dist'));
-    });
+// gulp.task('deps', function() {
+// 	return gulp.src('public/html/**/*.html')
+//         //.pipe(wiredep())
+//         .pipe(gulp.dest('dist'));
+//     });
 
 gulp.task('default',
-	gulp.series('clean',
+	gulp.series(clean,
 		gulp.parallel('styles', 'scripts'),
 		'server',
 
