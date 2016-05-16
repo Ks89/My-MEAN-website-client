@@ -56,3 +56,9 @@
 .bs-docs-sidebar .nav>.active>ul.nav {
     display: block;           
 }
+
+@media screen and (max-width: 1000px){
+    .bs-docs-sidebar {
+        display:none
+    }
+}
