@@ -77,37 +77,42 @@ app.use(helmet.hpkp({
 
 // [CSP - Content Security Policy] Trying to prevent: Injecting anything unintended into our page. 
 //                      That could cause XSS vulnerabilities, unintended tracking, malicious frames, and more.
-// app.use(helmet.contentSecurityPolicy({
-//   // Specify directives as normal.
-//   directives: {
-//     defaultSrc: ["'self'", 'default.com'],
-//     scriptSrc: ["'self'", 'maxcdn.bootstrapcdn.com', 
-//                 'ajax.googleapis.com', 'cdnjs.cloudflare.com', 
-//                 'code.jquery.com', 'www.google.com',
-//                 'www.gstatic.com'],
-//     styleSrc: ["'self'", 'ajax.googleapis.com', 'maxcdn.bootstrapcdn.com'],
-//     fontSrc: ['maxcdn.bootstrapcdn.com'],
-//     imgSrc: ['img.com', 'data:'],
-//     sandbox: ['allow-forms', 'allow-scripts'],
-//     reportUri: '/report-violation',
-//     objectSrc: [] // An empty array allows nothing through
-//   },
+app.use(helmet.contentSecurityPolicy({
+  // Specify directives as normal.
+  directives: {
+    defaultSrc: ["'self'", 'localhost', 'www.google.com', 'www.youtube.com'],
+    scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", 'maxcdn.bootstrapcdn.com', 
+                'ajax.googleapis.com', 'cdnjs.cloudflare.com', 
+                'code.jquery.com', 'www.google.com',
+                'www.gstatic.com'],
+    styleSrc: ["'self'", 'ajax.googleapis.com', 'maxcdn.bootstrapcdn.com', "'unsafe-inline'"],
+    fontSrc: ['maxcdn.bootstrapcdn.com'],
+    imgSrc: ["'self'", 'placehold.it', 'placeholdit.imgix.net',  'data:'],
+    sandbox: ['allow-forms', 'allow-scripts', 'allow-same-origin', 'allow-popups'],
+    connectSrc: [
+        "'self'",
+        "ws://localhost:3000",
+        "ws://localhost:3001"
+    ],
+    reportUri: '/report-violation',
+    objectSrc: [] // An empty array allows nothing through
+  },
 
-//   // Set to true if you only want browsers to report errors, not block them
-//   reportOnly: false,
+  // Set to true if you only want browsers to report errors, not block them
+  reportOnly: false,
 
-//   // Set to true if you want to blindly set all headers: Content-Security-Policy,
-//   // X-WebKit-CSP, and X-Content-Security-Policy.
-//   setAllHeaders: false,
+  // Set to true if you want to blindly set all headers: Content-Security-Policy,
+  // X-WebKit-CSP, and X-Content-Security-Policy.
+  setAllHeaders: false,
 
-//   // Set to true if you want to disable CSP on Android where it can be buggy.
-//   disableAndroid: false,
+  // Set to true if you want to disable CSP on Android where it can be buggy.
+  disableAndroid: false,
 
-//   // Set to false if you want to completely disable any user-agent sniffing.
-//   // This may make the headers less compatible but it will be much faster.
-//   // This defaults to 'true'.
-//   browserSniff: true
-// }));
+  // Set to false if you want to completely disable any user-agent sniffing.
+  // This may make the headers less compatible but it will be much faster.
+  // This defaults to 'true'.
+  browserSniff: true
+}));
 
 //[large payload attacks] this line enables the middleware for all routes
 app.use(contentLength.validateMax({max: MAX_CONTENT_LENGTH_ACCEPTED, status: 400, message: "stop it!"})); // max size accepted for the content-length
