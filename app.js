@@ -80,16 +80,16 @@ app.use(helmet.hpkp({
 app.use(helmet.contentSecurityPolicy({
   // Specify directives as normal.
   directives: {
-    defaultSrc: ["'self'", 'localhost', 'www.google.com', 'www.youtube.com'],
+    defaultSrc: ["'self'", 'localhost:3000', 'localhost:3001', 'www.google.com', 'www.youtube.com'],
     scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", 'maxcdn.bootstrapcdn.com', 
                 'ajax.googleapis.com', 'cdnjs.cloudflare.com', 
                 'code.jquery.com', 'www.google.com',
                 'www.gstatic.com'],
     styleSrc: ["'self'", 'ajax.googleapis.com', 'maxcdn.bootstrapcdn.com', "'unsafe-inline'"],
     fontSrc: ['maxcdn.bootstrapcdn.com'],
-    imgSrc: ["'self'", 'localhost', 'placehold.it', 'placeholdit.imgix.net'],
+    imgSrc: ["'self'", 'localhost:3000', 'localhost:3001', 'placehold.it', 'placeholdit.imgix.net'],
     sandbox: ['allow-forms', 'allow-scripts', 'allow-same-origin', 'allow-popups'],
-    frameSrc : ["'self'", 'google.com'],
+    frameSrc : ["'self'", 'www.google.com'],
     connectSrc: [
         "'self'",
         "ws://localhost:3000",
