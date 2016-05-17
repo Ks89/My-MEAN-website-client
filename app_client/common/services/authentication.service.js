@@ -103,7 +103,7 @@
       var deferred = $q.defer();
 
       getUserByToken('auth')
-      .success(function(data) {
+      .then(function(data) {
         var user = JSON.parse(data);
         console.log('user:');
         console.log(user);
@@ -113,8 +113,7 @@
           } else {
             deferred.resolve(false);
           }
-        })
-      .error(function(e) {
+      },function(e) {
         console.log('isAuthLocalLoggedIn error ');
         console.log(e);
         deferred.resolve(false);
@@ -131,7 +130,7 @@
       var deferred = $q.defer();
 
       getUserByToken('auth')
-      .success(function(data) {
+      .then(function(data) {
         console.log("-------------------------------------------");
         console.log('isAuth3dLoggedIn user with data: ');
         console.log(data);
@@ -145,8 +144,7 @@
           } else {
             deferred.resolve(false);
           }
-        })
-      .error(function(e) {
+      },function(e) {
         console.log('isAuth3dLoggedIn error ');
         console.log(e);
         deferred.resolve(false);
@@ -261,7 +259,7 @@
             console.log("<<<<<<< reading token: ---------> " + token );
 
             getUserByToken('auth')
-            .success(function(data) {
+            .then(function(data) {
               console.log('<<<<<<< getUserByToken user ');
               console.log("<<<<<<< getUserByToken token: ---------> " + data );
 
@@ -307,8 +305,7 @@
                   //TODO remove logout
                   deferred.reject(JSON.stringify({}));
                 }  
-              })
-            .error(function(e) {
+            },function(e) {
               console.log('<<<<<<< ' + 'getUserByToken error ');
               console.log(e);
               removeToken('auth');
@@ -336,6 +333,7 @@
       return $window.sessionStorage[key];
     }
     function getUserByToken(key) {
+      var deferred = $q.defer();
       console.log("getUserByToken called method");
       console.log("$window.sessionStorage: ");
       console.log($window.sessionStorage);
@@ -345,12 +343,23 @@
         var token = sessionToken; //JSON.parse(sessionToken);
         console.log("getUserByToken token ");
         console.log(token);
-        return decodeJwtToken(token);
+
+        decodeJwtToken(token)
+        .success(function(data) {
+          deferred.resolve(data);
+        })
+        .error(function(e) {
+          deferred.reject(null);
+        });
+
       } else {
         console.log("getUserByToken sessionToken null or empty");
-        return decodeJwtToken();
+        deferred.reject(null);
       }
+
+      return deferred.promise;
     }
+
     function removeToken(key) {
       $window.sessionStorage.removeItem(key);
     }
