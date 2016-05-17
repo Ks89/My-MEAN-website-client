@@ -56,7 +56,7 @@
 			controller: 'forgotPasswordCtrl',
 			controllerAs: 'vm'
 		})
-		.when('/activate/:emailToken', {
+		.when('/activate/:emailToken/:userName', {
 			templateUrl: '/auth/activateAccount/activateAccount.view.html',
 			controller: 'activateAccountCtrl',
 			controllerAs: 'vm'

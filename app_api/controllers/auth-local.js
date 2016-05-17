@@ -59,7 +59,7 @@ module.exports.register = (req, res) => {
   async.waterfall([
     createRandomToken, //first function defined below
     (token, done) => {
-      const link = 'http://' + req.headers.host + '/activate/' + token;
+      const link = 'http://' + req.headers.host + '/activate/' + token + '/' + req.body.name;
       User.findOne({ 'local.email': req.body.email }, (err, user) => {
         if (err || user) {
           Utils.sendJSONresponse(res, 400, "User already exists. Try to login.");
@@ -224,10 +224,10 @@ module.exports.resetPasswordFromEmail = (req, res) => {
 the token received on user's mailbox */
 /* /api/activate/:randomToken */
 module.exports.activateAccount = (req, res) => {
-  console.log('activateAccount', req.body.emailToken);
+  console.log('activateAccount: ' +  req.body.emailToken + ', ' + req.body.userName);
   async.waterfall([
     done => {
-      User.findOne({ 'local.activateAccountToken': req.body.emailToken ,
+      User.findOne({ 'local.activateAccountToken': req.body.emailToken , 'local.name' : req.body.userName,
          'local.activateAccountExpires': { $gt: Date.now() }}, (err, user) => {
         if (!user) {
           Utils.sendJSONresponse(res, 404, 'No account with that token exists.');
@@ -243,7 +243,8 @@ module.exports.activateAccount = (req, res) => {
           console.log('Activated account with savedUser: ' + savedUser);
 
           //create email data
-          const msgText = 'This is a confirmation that your account ' + user.local.email + ' has just been activated.\n';
+          const msgText = 'This is a confirmation that your account ' + user.local.name + 
+                          'with email ' + user.local.email + ' has just been activated.\n';
           const message = emailMsg(savedUser.local.email, 'Account activated for stefanocappa.it', msgText);
 
           done(err, savedUser, message);

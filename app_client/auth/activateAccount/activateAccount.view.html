@@ -4,12 +4,14 @@
   <page-header content="vm.pageHeader"></page-header>
 
 <div class="row">
-  <div class="col-md-6 col-sm-8">
+  <div class="col-md-12 col-sm-12">
   	<p> Back to <a href="/#login">login</a></p>
     <br>
     <div role="alert" ng-show="vm.message" class="alert alert-{{vm.status}}">{{ vm.message }}</div>
     <br>
-    {{vm.emailToken}}
+    <br>
+    Welcome <h4>{{vm.userName}}</h4><br><br>
+    Your token is: {{vm.emailToken}}
   </div>
 </div>
 

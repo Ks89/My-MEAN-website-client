@@ -97,7 +97,6 @@ var removeServiceFromDb = function(serviceName, user) {
 var generateJwtCookie = function(user) {
   const token3dauth = user.generateJwt(user);
   const authToken = JSON.stringify({ 
-    'value': user._id,
     'token': token3dauth
   });
   return authToken;

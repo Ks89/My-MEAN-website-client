@@ -63,10 +63,10 @@
         return deferred.promise;
     };
 
-    var activateAccount = function(emailToken) {
-      console.log("Called activateAccount " + emailToken);
+    var activateAccount = function(emailToken, userName) {
+      console.log("Called activateAccount " + emailToken + ", " + userName);
       var deferred = $q.defer();
-      $http.post('/api/activateAccount', { emailToken : emailToken })
+      $http.post('/api/activateAccount', { emailToken : emailToken, userName : userName })
         .success(function(data) {
           console.log("activateAccount success");
           deferred.resolve(true);

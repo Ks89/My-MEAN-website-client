@@ -13,11 +13,11 @@
     };
 
     vm.emailToken = $routeParams.emailToken;
+    vm.userName = $routeParams.userName;
+    vm.status = 'warning';
+    vm.message = 'Activating, please wait...';
 
-    vm.status = 'success';
-    vm.message = '';
-
-    authentication.activateAccount($routeParams.emailToken)
+    authentication.activateAccount($routeParams.emailToken, $routeParams.userName)
     .then(function(result){
       // $location.search('page', null); 
       // $location.path(vm.returnPage);
