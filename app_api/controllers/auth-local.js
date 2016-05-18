@@ -59,7 +59,11 @@ module.exports.register = (req, res) => {
   async.waterfall([
     createRandomToken, //first function defined below
     (token, done) => {
-      const link = 'http://' + req.headers.host + '/activate/' + token + '/' + req.body.name;
+      
+      const encodedUserName = encodeURI(req.body.name);
+      console.log('Encoded userName: ' + encodedUserName);
+      
+      const link = 'http://' + req.headers.host + '/activate/' + token + '/' + encodedUserName;
       User.findOne({ 'local.email': req.body.email }, (err, user) => {
         if (err || user) {
           Utils.sendJSONresponse(res, 400, "User already exists. Try to login.");
@@ -225,9 +229,13 @@ the token received on user's mailbox */
 /* /api/activate/:randomToken */
 module.exports.activateAccount = (req, res) => {
   console.log('activateAccount: ' +  req.body.emailToken + ', ' + req.body.userName);
+  
+  const decodedUserName = decodeURI(req.body.userName);
+  console.log('Decoded userName: ' + decodedUserName);
+  
   async.waterfall([
     done => {
-      User.findOne({ 'local.activateAccountToken': req.body.emailToken , 'local.name' : req.body.userName,
+      User.findOne({ 'local.activateAccountToken': req.body.emailToken , 'local.name' : decodedUserName,
          'local.activateAccountExpires': { $gt: Date.now() }}, (err, user) => {
         if (!user) {
           Utils.sendJSONresponse(res, 404, 'No account with that token exists.');
