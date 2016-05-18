@@ -33,8 +33,10 @@
         // $location.path(vm.returnPage);
       }, function(err) {
         vm.status = 'danger';
-        vm.message = err.data;
         console.log("Error authentication.resetPassword");
+        if(err && err.message) {
+          vm.message = err.message;
+        }
       });
    };
 

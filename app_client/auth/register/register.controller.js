@@ -39,7 +39,9 @@
         //redirect to profile page
         $location.url('/login');
       }, function(err) {
-        vm.formError = err.data;
+        if(err && err.message) {
+          vm.formError = err.message;
+        }
       });
     };
   }

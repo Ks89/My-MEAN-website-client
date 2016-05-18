@@ -17,13 +17,13 @@
         console.log('called register - success');
         console.log(data.token);
         saveToken('auth', data.token);
-        deferred.resolve(true);
+        deferred.resolve(data);
       })
       .error(function (err) {
         // Erase the token if the user fails to log in
         console.log('called register - error');
         removeToken('auth');
-        deferred.resolve(false);
+        deferred.reject(err);
       });
       return deferred.promise;
     };
@@ -34,13 +34,13 @@
       $http.post('/api/login', user)
       .success(function(data) {
         saveToken('auth', data.token);
-        deferred.resolve(true);
+        deferred.resolve(data);
       })
       .error(function (err) {
         // Erase the token if the user fails to log in
         console.log('called register - error');
         removeToken('auth');
-        deferred.resolve(false);
+        deferred.reject(err);
       });
       return deferred.promise;
     };
@@ -54,11 +54,11 @@
         })
         .success(function(data) {
           console.log("resetPassword success");
-          deferred.resolve(true);
+          deferred.resolve(data);
         })
         .error(function (err) {
           console.log('resetPassword - error');
-          deferred.resolve(false);
+          deferred.reject(err);
         });
         return deferred.promise;
     };
@@ -69,11 +69,11 @@
       $http.post('/api/activateAccount', { emailToken : emailToken, userName : userName })
         .success(function(data) {
           console.log("activateAccount success");
-          deferred.resolve(true);
+          deferred.resolve(data);
         })
         .error(function (err) {
           console.log('activateAccount - error');
-          deferred.resolve(false);
+          deferred.reject(err);
         });
         return deferred.promise;
     };
@@ -84,11 +84,11 @@
       $http.post('/api/reset', { email : email})
         .success(function(data) {
           console.log("forgotPassword success");
-          deferred.resolve(true);
+          deferred.resolve(data);
         })
         .error(function (err) {
           console.log('forgotPassword - error');
-          deferred.resolve(false);
+          deferred.reject(err);
         });
         return deferred.promise;
     };
@@ -109,14 +109,14 @@
         console.log(user);
           //return getUserById(data.user._id);
           if(user) {
-            deferred.resolve(true);
+            deferred.resolve(user);
           } else {
-            deferred.resolve(false);
+            deferred.reject(null);
           }
-      },function(e) {
+      },function(err) {
         console.log('isAuthLocalLoggedIn error ');
-        console.log(e);
-        deferred.resolve(false);
+        console.log(err);
+        deferred.reject(err);
       });
 
       return deferred.promise;
@@ -140,14 +140,14 @@
         console.log(user);
           //return getUserById(data.user._id);
           if(user) {
-            deferred.resolve(true);
+            deferred.resolve(user);
           } else {
-            deferred.resolve(false);
+            deferred.reject(null);
           }
-      },function(e) {
+      },function(err) {
         console.log('isAuth3dLoggedIn error ');
-        console.log(e);
-        deferred.resolve(false);
+        console.log(err);
+        deferred.reject(err);
       });
 
       return deferred.promise;
@@ -182,13 +182,13 @@
         console.log('£££££££££££ isLoggedIn - r0: ' + r0 + ', r1: ' + r1 + '. Returning ' + r0 || r1);
         deferred.resolve(r0 || r1);
         //return false;
-      }, function(error) {
-        console.log('£££££££££££ isLoggedIn error - returning false');
-        deferred.resolve(false);
+      }, function(err) {
+        console.log('£££££££££££ isLoggedIn err - returning false');
+        deferred.reject(err);
         //return false;
       }).catch(function(err){
         console.log('£££££££££££ isLoggedIn exception catched - returning false');
-        deferred.resolve(false);
+        deferred.reject(err);
       });
       return deferred.promise;
     };
@@ -231,9 +231,9 @@
           }
         }
       })
-      .error(function(e) {
+      .error(function(err) {
         console.log('<<<<<<< ' + "ERROR experimental...");
-        deferred.reject(JSON.stringify({}));
+        deferred.reject(err);
       });  
 
       return deferred.promise;
@@ -303,23 +303,22 @@
               } else {
                 removeToken('auth');
                   //TODO remove logout
-                  deferred.reject(JSON.stringify({}));
+                  deferred.reject(null);
                 }  
-            },function(e) {
+            },function(err) {
               console.log('<<<<<<< ' + 'getUserByToken error ');
-              console.log(e);
+              console.log(err);
               removeToken('auth');
-              //TODO remove logout
-              deferred.reject(JSON.stringify({}));
+              deferred.reject(err);
             });
             console.log('<<<<<<< ' + "getUserByToken finished returning...");
             
           }
         }
       })
-      .error(function(e) {
+      .error(function(err) {
         console.log('<<<<<<< ' + "ERROR experimental...");
-        deferred.reject(JSON.stringify({}));
+        deferred.reject(err);
       });
       
       return deferred.promise;
@@ -348,13 +347,13 @@
         .success(function(data) {
           deferred.resolve(data);
         })
-        .error(function(e) {
-          deferred.reject(null);
+        .error(function(err) {
+          deferred.reject(err);
         });
 
       } else {
         console.log("getUserByToken sessionToken null or empty");
-        deferred.reject(null);
+        deferred.reject();
       }
 
       return deferred.promise;

@@ -1,8 +1,8 @@
 (function () {
 
   angular
-    .module('mySiteApp')
-    .controller('loginCtrl', loginCtrl);
+  .module('mySiteApp')
+  .controller('loginCtrl', loginCtrl);
 
   loginCtrl.$inject = ['$location','authentication'];
   function loginCtrl($location, authentication) {
@@ -36,15 +36,15 @@
     vm.doLogin = function() {
       vm.formError = "";
       authentication.login(vm.credentials)
-      .then(function(){
-        // $location.search('page', null); 
-        // $location.path(vm.returnPage);
+      .then(function(data){
         //redirect to profile page
         $location.url('/profile');
-        // $location.search('page', null); 
-        // $location.path(vm.returnPage);
       }, function(err) {
-        vm.formError = err.data;
+        console.log("LOGIN FAILED");
+        console.log(err);
+        if(err && err.message) {
+          vm.formError = err.message;
+        }
       });
     };
   }

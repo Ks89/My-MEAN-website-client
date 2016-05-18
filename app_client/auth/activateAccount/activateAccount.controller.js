@@ -30,8 +30,9 @@
       // $location.path(vm.returnPage);
     }, function(err) {
       vm.status = 'danger';
-      vm.message = err.data;
-      console.log("Error authentication.resetPassword");
+      console.log(err);
+      vm.message = err.message;
+      console.log("Error authentication.activateAccount");
     });
    
 

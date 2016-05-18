@@ -25,8 +25,10 @@
         //$location.url('/login');
       }, function(err) {
          vm.status = 'danger';
-          vm.message = err.data;
          console.log("forgot error");
+         if(err && err.message) {
+          vm.message = err.message;
+         }
       });
    };
 

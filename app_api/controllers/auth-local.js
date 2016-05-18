@@ -48,25 +48,30 @@ function createRandomToken(done) {
   });
 }
 
+function buildMessage(messageText) {
+  return {
+    "message": messageText
+  };
+}
+
 /* POST to register a local user */
 /* /api/register */
 module.exports.register = (req, res) => {
   console.log('called register server side');
   if(!req.body.name || !req.body.email || !req.body.password) {
-    Utils.sendJSONresponse(res, 400, "All fields required");
+    Utils.sendJSONresponse(res, 400, buildMessage("All fields required"));
   }
 
   async.waterfall([
     createRandomToken, //first function defined below
     (token, done) => {
-      
       const encodedUserName = encodeURI(req.body.name);
       console.log('Encoded userName: ' + encodedUserName);
-      
       const link = 'http://' + req.headers.host + '/activate/' + token + '/' + encodedUserName;
       User.findOne({ 'local.email': req.body.email }, (err, user) => {
         if (err || user) {
-          Utils.sendJSONresponse(res, 400, "User already exists. Try to login.");
+          console.log('User already exists');
+          Utils.sendJSONresponse(res, 400, buildMessage("User already exists. Try to login."));
           return;
         } 
 
@@ -98,11 +103,10 @@ module.exports.register = (req, res) => {
     ], (err, user) => {
       console.log(err);
       if (err) { 
-        console.log(err);
         return next(err);
       } else {
         //TODO I'm registered, but now I must pass to the caller also the csrf token!!
-        Utils.sendJSONresponse(res, 200, "User with email " + user.local.email + " registered.");      
+        Utils.sendJSONresponse(res, 200, buildMessage("User with email " + user.local.email + " registered."));      
       }
     });
 };
@@ -111,21 +115,24 @@ module.exports.register = (req, res) => {
 /* /api/login */
 module.exports.login = (req, res) => {
   if(!req.body.email || !req.body.password) {
-    Utils.sendJSONresponse(res, 400, {
-      "message": "All fields required"
-    });
+    Utils.sendJSONresponse(res, 400, buildMessage("All fields required"));
   }
   
   passport.authenticate('local', (err, user, info) => {
+    console.log("called login...");
     if (err) {
-      Utils.sendJSONresponse(res, 404, err);
+      console.log("Error...");
+      Utils.sendJSONresponse(res, 404, buildMessage("Unknown error"));
     }
     if (!user) {
-      Utils.sendJSONresponse(res, 401, info);
+      console.log("!user...");
+      Utils.sendJSONresponse(res, 401, buildMessage("Incorrect username or password. Or this account is not activated, check your mailbox."));
     } else {
+      console.log("user exists");
       console.log("Registered user: " + user); 
 
       if(!user.local.activateAccountToken && !user.local.activateAccountExpires) {
+        console.log("user enabled");
         const token = user.generateJwt(user);
 
         req.session.localUserId = user._id;
@@ -133,7 +140,8 @@ module.exports.login = (req, res) => {
         
         Utils.sendJSONresponse(res, 200, { token: token });
       } else {
-        Utils.sendJSONresponse(res, 400, "Incorrect username or password. Or this account is not activated, check your mailbox.");
+        console.log("user NOT enabled");
+        Utils.sendJSONresponse(res, 400, buildMessage("Incorrect username or password. Or this account is not activated, check your mailbox."));
       }
     }
   })(req, res);
@@ -154,7 +162,7 @@ module.exports.reset = (req, res) => {
       const link = 'http://' + req.headers.host + '/reset/' + token;
       User.findOne({ 'local.email': req.body.email }, (err, user) => {
         if (!user) {
-          Utils.sendJSONresponse(res, 404, 'No account with that email address exists.');
+          Utils.sendJSONresponse(res, 404, buildMessage('No account with that email address exists.'));
           return;
         }
 
@@ -180,7 +188,7 @@ module.exports.reset = (req, res) => {
         console.log(err);
         return next(err); 
       } else { 
-        Utils.sendJSONresponse(res, 200, 'An e-mail has been sent to ' + user.local.email + ' with further instructions.');
+        Utils.sendJSONresponse(res, 200, buildMessage('An e-mail has been sent to ' + user.local.email + ' with further instructions.'));
       }
     });
 };
@@ -193,7 +201,7 @@ module.exports.resetPasswordFromEmail = (req, res) => {
       User.findOne({ 'local.resetPasswordToken': req.body.emailToken ,
          'local.resetPasswordExpires': { $gt: Date.now() }}, (err, user) => {
         if (!user) {
-          Utils.sendJSONresponse(res, 404, 'No account with that token exists.');
+          Utils.sendJSONresponse(res, 404, buildMessage('No account with that token exists.'));
           return;
         }
         console.log('Reset password called for user: ' + user);
@@ -219,7 +227,7 @@ module.exports.resetPasswordFromEmail = (req, res) => {
         console.log(err);
         return next(err);
       } else {
-        Utils.sendJSONresponse(res, 200, 'An e-mail has been sent to ' + user.local.email + ' with further instructions.');
+        Utils.sendJSONresponse(res, 200, buildMessage('An e-mail has been sent to ' + user.local.email + ' with further instructions.'));
       }
      });
 };
@@ -238,7 +246,7 @@ module.exports.activateAccount = (req, res) => {
       User.findOne({ 'local.activateAccountToken': req.body.emailToken , 'local.name' : decodedUserName,
          'local.activateAccountExpires': { $gt: Date.now() }}, (err, user) => {
         if (!user) {
-          Utils.sendJSONresponse(res, 404, 'No account with that token exists.');
+          Utils.sendJSONresponse(res, 404, buildMessage('No account with that token exists or the activation link is expired.'));
           return;
         }
 
@@ -266,7 +274,7 @@ module.exports.activateAccount = (req, res) => {
         console.log(err);
         return next(err);
       } else {
-        Utils.sendJSONresponse(res, 200, 'An e-mail has been sent to ' + user.local.email + ' with further instructions.');
+        Utils.sendJSONresponse(res, 200, buildMessage('An e-mail has been sent to ' + user.local.email + ' with further instructions.'));
       }
      });
 };
