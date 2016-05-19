@@ -80,7 +80,7 @@ module.exports.register = (req, res) => {
         newUser.local.email = req.body.email;
         newUser.setPassword(req.body.password);
         newUser.local.activateAccountToken = token;
-        newUser.local.activateAccountExpires = Date.now() + 3600000; // 1 hour
+        newUser.local.activateAccountExpires =  new Date(Date.now() + 24*3600*1000); // 1 hour
 
         newUser.save((err, savedUser) => {
           if (err) {
@@ -243,10 +243,18 @@ module.exports.activateAccount = (req, res) => {
   
   async.waterfall([
     done => {
-      User.findOne({ 'local.activateAccountToken': req.body.emailToken , 'local.name' : decodedUserName,
-         'local.activateAccountExpires': { $gt: Date.now() }}, (err, user) => {
+      User.findOne({ 'local.activateAccountToken': req.body.emailToken , 'local.name' : decodedUserName},
+         /*,'local.activateAccountExpires': { $gt: Date.now() }},*/ (err, user) => {
         if (!user) {
-          Utils.sendJSONresponse(res, 404, buildMessage('No account with that token exists or the activation link is expired.'));
+          Utils.sendJSONresponse(res, 404, buildMessage('No account found with this link!'));
+          return;
+        }
+
+        console.log("user.activateAccountExpires: " + user.local.activateAccountExpires);
+        console.log("Date.now(): " + new Date(Date.now()));
+
+        if(user.local.activateAccountExpires < new Date(Date.now())) {
+          Utils.sendJSONresponse(res, 404, buildMessage('Link exprired! Your account is removed. Please, create another account, also with the same email address.'));
           return;
         }
 
