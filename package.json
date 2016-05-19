@@ -38,6 +38,7 @@
     "passport-linkedin-oauth2": "^1.4.0",
     "passport-local": "^1.0.0",
     "passport-twitter": "^1.0.4",
+    "please-wait": "0.0.5",
     "redis": "^2.6.0-1",
     "request": "^2.72.0",
     "serve-favicon": "^2.3.0",

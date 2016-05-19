@@ -116,7 +116,7 @@
   	angular
   	.module('mySiteApp')
   	.config(['$routeProvider', '$locationProvider', '$httpProvider', config])
-  	.run(['$rootScope','$location', function($root, $location) {
+  	.run(['$rootScope','$location', '$window', function($root, $location, $window) {
   		$root.$on('$routeChangeStart', function(e, curr, prev) {
   			if (curr.$$route && curr.$$route.resolve) {
 	      // Show a loading message until promises aren't resolved
@@ -132,6 +132,7 @@
 	    console.log(e);
 	    console.log("run root on false -> SUCCESS");
 	    $root.loadingView = false;
+	    $window.loading_screen.finish();
 	  });
   		$root.$on('$routeChangeError', function(e, curr, prev, rejection) {
 	    // Hide loading message
@@ -140,6 +141,7 @@
 	    console.log("run routeChangeError -> ERROR " + rejection);
 	    $location.url('/login');
 	    $root.loadingView = true;
+	    $window.loading_screen.finish();
 	  });
   }]);
  })();
