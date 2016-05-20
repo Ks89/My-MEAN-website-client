@@ -24,6 +24,9 @@ var through     = require('through2');
 var eslint 		= require('gulp-eslint');
 var babel 		= require('gulp-babel');
 
+var rev 		= require('gulp-rev');
+var revReplace 	= require('gulp-rev-replace');
+
 var arguments 	= require('yargs').argv;
 
 var isprod = (arguments.env === 'prod');
@@ -92,6 +95,15 @@ gulp.task('test', function() {
 });
 
 
+// gulp.task('revreplace', function() {
+//   var manifest = gulp.src("./public/angular/rev-manifest.json");
+
+//   return gulp.src("./app_client/index-1.html")
+//     .pipe(revReplace({manifest: manifest}))
+//     .pipe(gulp.dest("./app_client/index.html"));
+// });
+
+
 gulp.task('scripts',
 	gulp.series('test', function scriptsInternal() {
           // var glob = mainBowerFiles('*.js');
@@ -106,8 +118,11 @@ gulp.task('scripts',
           .pipe(uglify().on('error', gutil.log))
           .pipe(remember('ugly'))
           .pipe(concat('mysite.min.js'))
+          //.pipe(rev())
           //.pipe(dev(sourcemaps.write('.', {sourceRoot: 'js-source'})))
-          .pipe(gulp.dest('public/angular'));
+          .pipe(gulp.dest('public/angular')); //write mysite.min.js to build dir
+          //.pipe(rev.manifest())
+          //.pipe(gulp.dest('public/angular')); // write manifest to build dir
       })
 	);
 
@@ -115,7 +130,10 @@ gulp.task('styles', function() {
 	return gulp.src('public/stylesheets/*' , { since: gulp.lastRun('styles') })
 	.pipe(minifyCSS())
 	.pipe(prefix())
+	//.pipe(rev())
 	.pipe(gulp.dest('dist/styles'));
+    //.pipe(rev.manifest())
+    //.pipe(gulp.dest('dist/styles')); // write manifest to build dir
 });
 
 function clean() {
@@ -194,6 +212,7 @@ gulp.task('server',
 gulp.task('default',
 	gulp.series(clean,
 		gulp.parallel('styles', 'scripts'),
+		//'revreplace',
 		'server',
 
 		function watcher(done) {
