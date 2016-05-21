@@ -10,7 +10,6 @@ var crypto = require('crypto');
 var nodemailer = require('nodemailer');
 var url = require('url');
 var request = require('request');
-var logger = require('../utils/logger.js');
 
 var mailTransport = nodemailer.createTransport({
   host: 'mail.stefanocappa.it',
@@ -87,7 +86,7 @@ module.exports.register = (req, res) => {
             throw err;
           }
           console.log("Registered user: " + savedUser); 
-          
+                    
           //create message data
           const msgText = 'You are receiving this because you (or someone else) have requested an account for this website.\n' +
             'Please click on the following link, or paste this into your browser to complete the process:\n\n' +

@@ -3,6 +3,10 @@ module.exports = function (userRef, passportRef) {
   var thirdpartyConfig = require('./3dpartyconfig');
   var logger = require('../../utils/logger.js');
 
+  //----------experimental---
+  var authExperimentalFeatures = require('../../controllers/auth-experimental-collapse-db.js');
+  //-------------------------
+
   function updateUser (user, accessToken, profile) {
     user.facebook.id = profile.id;
     user.facebook.token = accessToken;
@@ -64,9 +68,15 @@ module.exports = function (userRef, passportRef) {
       } else { // user already exists and is logged in, we have to link accounts    
         // req.user pull the user out of the session
         // and finally update the user with the currecnt users credentials
-        var user = updateUser(req.user, accessToken, profile);
+        var user = updateUser(req.user, accessToken, profile);        
         user.save(function(err) {
           if (err) { throw err; }
+
+             //----------------- experimental ---------------
+            authExperimentalFeatures.collapseDb(user, "facebook");
+            //----------------------------------------------
+
+
           return done(null, user);
         });
       }
