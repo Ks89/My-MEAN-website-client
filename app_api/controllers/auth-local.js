@@ -132,7 +132,7 @@ module.exports.login = (req, res) => {
 
       if(!user.local.activateAccountToken && !user.local.activateAccountExpires) {
         console.log("user enabled");
-        const token = user.generateJwt(user);
+        const token = user.generateJwt();
 
         req.session.localUserId = user._id;
         req.session.authToken = authCommon.generateJwtCookie(user);

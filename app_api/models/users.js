@@ -57,9 +57,7 @@ userSchema.methods.validPassword = function(password) {
   return bcrypt.compareSync(password, this.local.hash);
 };
 
-userSchema.methods.generateJwt = function(user) {
-  logger.debug("data received to generate jwt: " + user);
-
+userSchema.methods.generateJwt = function() {
   var expiry = new Date();
   expiry.setTime(expiry.getTime() + 600000); //valid for 10 minutes (10*60*1000)
 
@@ -67,7 +65,7 @@ userSchema.methods.generateJwt = function(user) {
     _id: this._id,
      //I don't want to expose private information here -> I filter 
      //the user object into a similar object without some fields
-    user: Utils.getFilteredUser(user),
+    user: Utils.getFilteredUser(this),
     exp: parseFloat(expiry.getTime()),
   }, process.env.JWT_SECRET); // DO NOT KEEP YOUR SECRET IN THE CODE!
 };
