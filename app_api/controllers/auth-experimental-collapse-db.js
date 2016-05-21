@@ -8,6 +8,11 @@ var async = require('async');
 
 
 module.exports.collapseDb = (user, serviceName) => {
+
+	if(!user) {
+		console.err("impossibile to collapseDb becase user is null or undefined");
+	}
+
 	console.log("-----------------------------------------------------------------------------");
 	console.log("-----------------------------------------------------------------------------");
 	console.log("-----------------------------------------------------------------------------");
@@ -29,6 +34,10 @@ module.exports.collapseDb = (user, serviceName) => {
 	const query = {};
 	
 	query[key] = inputEmail;
+
+	query._id = {
+		'$ne' : user._id
+	};
 
 	console.log(query);
 
@@ -55,7 +64,7 @@ module.exports.collapseDb = (user, serviceName) => {
 				const iduser = user._id + '';
 				console.log("-----------------------------------------------------------------------------iUser._id: " + iUser._id);
 				console.log("-----------------------------------------------------------------------------user._id: " + user._id);
-				if (iUser && iUser[serviceName] && iUser[serviceName].email === inputEmail && idiUser !== iduser) {
+				if (iUser && iUser[serviceName] && iUser[serviceName].email === inputEmail/* && idiUser !== iduser*/) {
 					console.log('-----------------------------------------------------------------------------found a duplicated ' + serviceName + ' iUser:');
 					console.log(iUser[serviceName]);
 				} 
