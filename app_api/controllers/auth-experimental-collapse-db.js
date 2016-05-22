@@ -7,22 +7,27 @@ var Utils = require('../utils/util.js');
 var async = require('async');
 
 
-module.exports.collapseDb = (user, serviceName) => {
+module.exports.collapseDb = (userref, serviceName) => {
 
-	if(!user) {
+	if(!userref) {
 		console.err("impossibile to collapseDb becase user is null or undefined");
 	}
+
+	var extUser = Object.create(userref);
 
 	console.log("--------------------------******----");
 	console.log("--------------------------******----");
 	console.log("--------------------------******----");
 	console.log('called collapseDb');
-	console.log("INPUT user");
-	console.log(user);
+	console.log("INPUT extUser");
+	console.log(extUser);
 	console.log("serviceName: " + serviceName);
 
-	const inputEmail = user[serviceName] ? user[serviceName].email : null;
+	const inputEmail = extUser[serviceName] ? extUser[serviceName].email : null;
 	
+
+	console.log("1*****************************************");
+	console.log(extUser);
 
 	console.log("inputEmail " + inputEmail);
 
@@ -35,25 +40,48 @@ module.exports.collapseDb = (user, serviceName) => {
 	
 	query[key] = inputEmail;
 
-	query._id = {
-		'$ne' : user._id
-	};
+	// query._id = {
+	// 	'$ne' : extUser._id
+	// };
+
+	console.log("1bis*****************************************");
+	console.log(extUser);
 
 	console.log(query);
 
 	if(inputEmail) {
+		console.log("1tris*****************************************");
+			console.log(extUser);
+
+		const iduserOriginal = extUser._id + '';
+
+
+
 		User.find(query, (err, users) => {
+
 			if(err) {
 				console.log("--------------------------******---- Error - user not found!!!");
-
 			}
+
 			console.log("--------------------------******---- search");
 
 			console.log("--------------------------******---- users found");
 			console.log(users);
 			console.log("--------------------------******---- starting cycle");
 
+
+			var user = users.find(function (el) { 
+				if(el && el._id) {
+					console.log("---" + el);
+    			return el._id + '' === iduserOriginal + '';
+    		}	
+			});
+
 			let duplicatedUser = {};
+
+			console.log("2*****************************************");
+			console.log(user);
+			console.log("2*****************************************");
 
 			for(let iUser of users) {
 				console.log("--------------------------******---- iUser in for: ");
@@ -66,7 +94,7 @@ module.exports.collapseDb = (user, serviceName) => {
 				const iduser = user._id + '';
 				console.log("--------------------------******----iUser._id: " + iUser._id);
 				console.log("--------------------------******----user._id: " + user._id);
-				if (iUser && iUser[serviceName] && iUser[serviceName].email === inputEmail/* && idiUser !== iduser*/) {
+				if (iUser && iUser[serviceName] && iUser[serviceName].email === inputEmail && idiUser !== iduser) {
 					console.log('--------------------------******----found a duplicated ' + serviceName + ' iUser:');
 					console.log(iUser[serviceName]);
 					duplicatedUser = iUser;
@@ -74,39 +102,47 @@ module.exports.collapseDb = (user, serviceName) => {
 					//here I found one account with the same service
 					//I want to merge all infos in this account [not logged] with the new one [used to connect] (to prevent logout/login and session invalidation)
 				} 
+
+				console.log("3*****************************************");
+				console.log(user);
+				console.log("3*****************************************");
 				console.log('--------------------------******----cycle completed');
 			}
 
-			console.log("--------------------------******----preparing to collapse duplicated db's users");
+			console.log("**--------------------------******----preparing to collapse duplicated db's users");
 			console.log(user);
-			console.log("--------------------------******----");
+			console.log("**--------------------------******----");
 
 			let updated = false;
 
 			for(let s of ['google', 'github', 'facebook', 'local', 'linkedin', 'twitter']) {
-				console.log('--------------------------******----cycle s: ' + s + ', serviceName: ' + serviceName);
+				console.log('**--------------------------******----cycle s: ' + s + ', serviceName: ' + serviceName);
 				if(s !== serviceName) {
 					console.log('--------------------------******----user[s]: ' + user[s]);
 					console.log('--------------------------******----duplicatedUser[s]: ' + duplicatedUser[s]);
 					console.log('--------------------------******----!user[s]: ' + !user[s]);
 					console.log('--------------------------******----(!user[s] || !user[s].email): ' + (!user[s] || !user[s].email));
 					if((!user[s] || !user[s].email) && duplicatedUser[s]) {
-						console.log("--------------------------******---- merging service: " + s);
-						console.log("--------------------------******----  modified user in cycle: ");
+						console.log("**--------------------------******---- merging service: " + s);
+						console.log("**--------------------------******----  modified user in cycle (duplicatedUser): ");
 						console.log(duplicatedUser[s]);
-						console.log("--------------------------******----");
+						console.log("**--------------------------******----");
+						console.log("**--------------------------******----  user in cycle before changes: ");
+						console.log(user[s]);
+						console.log("**--------------------------******----");
+
 						user[s] = duplicatedUser[s];
 						updated=true;
-						console.log("--------------------------******----  modified user in cycle: ");
+						console.log("**--------------------------******----  modified user in cycle: ");
 						console.log(user[s]);
-						console.log("--------------------------******----");
+						console.log("**--------------------------******----");
 					}
 				}
 			}
 
-			console.log("--------------------------******---- modified user");
+			console.log("**--------------------------******---- modified user");
 			console.log(user);
-			console.log("--------------------------******---- saving this modified user");
+			console.log("**--------------------------******---- saving this modified user");
 
 			if(duplicatedUser && updated) {
 				user.save((err, savedUser) => {

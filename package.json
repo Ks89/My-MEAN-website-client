@@ -13,6 +13,7 @@
     "async": "^2.0.0-rc.5",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.15.1",
+    "cloneextend": "0.0.3",
     "connect-redis": "^3.0.2",
     "cookie-parser": "^1.4.1",
     "crypto": "0.0.3",
