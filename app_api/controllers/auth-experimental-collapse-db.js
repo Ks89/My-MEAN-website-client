@@ -81,6 +81,8 @@ module.exports.collapseDb = (user, serviceName) => {
 			console.log(user);
 			console.log("--------------------------******----");
 
+			let updated = false;
+
 			for(let s of ['google', 'github', 'facebook', 'local', 'linkedin', 'twitter']) {
 				console.log('--------------------------******----cycle s: ' + s + ', serviceName: ' + serviceName);
 				if(s !== serviceName) {
@@ -94,6 +96,7 @@ module.exports.collapseDb = (user, serviceName) => {
 						console.log(duplicatedUser[s]);
 						console.log("--------------------------******----");
 						user[s] = duplicatedUser[s];
+						updated=true;
 						console.log("--------------------------******----  modified user in cycle: ");
 						console.log(user[s]);
 						console.log("--------------------------******----");
@@ -105,22 +108,24 @@ module.exports.collapseDb = (user, serviceName) => {
 			console.log(user);
 			console.log("--------------------------******---- saving this modified user");
 
-			user.save((err, savedUser) => {
-	      if (err) {
-	      	console.log("Error while saving collapsed users");
-	        throw err;
-	      }
-	      console.log("Saved modified user: " + savedUser); 
-	  	});
+			if(duplicatedUser && updated) {
+				user.save((err, savedUser) => {
+		      if (err) {
+		      	console.log("Error while saving collapsed users");
+		        throw err;
+		      }
+		      console.log("Saved modified user: " + savedUser); 
+		  	});
 
-	  	console.log("--------------------------******---- removing duplicated user");
+		  	console.log("--------------------------******---- removing duplicated user");
 
-	  	User.findByIdAndRemove(duplicatedUser._id, function(err) {
-			  if (err) throw err;
+		  	User.findByIdAndRemove(duplicatedUser._id, function(err) {
+				  if (err) throw err;
 
-			  // we have deleted the user
-			  console.log('--------------------------******---- duplicated User deleted!');
-			});
+				  // we have deleted the user
+				  console.log('--------------------------******---- duplicated User deleted!');
+				});
+	  	}
 
 			console.log("--------------------------******---- search finished");
 		});
