@@ -3,6 +3,10 @@ module.exports = function (userRef, passportRef) {
 	var thirdpartyConfig = require('./3dpartyconfig');
 	var logger = require('../../utils/logger.js');
 
+  //----------experimental---
+  var authExperimentalFeatures = require('../../controllers/auth-experimental-collapse-db.js');
+  //-------------------------
+
 	function updateUser (user, accessToken, profile) {
 		user.google.id = profile.id;
 		user.google.token = accessToken;
@@ -64,6 +68,11 @@ module.exports = function (userRef, passportRef) {
 	          	var user = updateUser(req.user, accessToken, profile);
 	          	user.save(function(err) {
 	          		if (err) { throw err; }
+
+	          		//----------------- experimental ---------------
+            		authExperimentalFeatures.collapseDb(user, "google");
+            		//----------------------------------------------
+
 	          		return done(null, user);
 	          	});
 	          }

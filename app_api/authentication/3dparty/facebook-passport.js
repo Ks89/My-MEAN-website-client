@@ -72,7 +72,7 @@ module.exports = function (userRef, passportRef) {
         user.save(function(err) {
           if (err) { throw err; }
 
-             //----------------- experimental ---------------
+            //----------------- experimental ---------------
             authExperimentalFeatures.collapseDb(user, "facebook");
             //----------------------------------------------
 
