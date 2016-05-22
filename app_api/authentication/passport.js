@@ -18,10 +18,12 @@ module.exports = function (passportRef) {
   });
 
   //set the strategies
+  //local
   require('./local/local-passport')(User, passportRef);
-  require('./3dparty/facebook-passport')(User, passportRef);
-  require('./3dparty/google-passport')(User, passportRef);
-  require('./3dparty/github-passport')(User, passportRef);
+  //third parties, like fb, github, google and so on
+  require('./3dparty/3dparty-passport')(User, passportRef);
+
+  //other strategies still broken
   require('./3dparty/twitter-passport')(User, passportRef);
   require('./3dparty/linkedin-passport')(User, passportRef);
 
