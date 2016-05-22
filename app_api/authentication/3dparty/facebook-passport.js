@@ -34,6 +34,11 @@ module.exports = function (userRef, passportRef) {
           console.log("updated localuser with 3dpartyauth");
           userUpdated.save(function(err) {
             if (err) { throw err; }
+
+            //----------------- experimental ---------------
+            authExperimentalFeatures.collapseDb(user, "facebook");
+            //----------------------------------------------
+            
             return done(null, userUpdated);
           });
         });
