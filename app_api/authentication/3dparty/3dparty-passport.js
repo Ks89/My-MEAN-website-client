@@ -37,8 +37,8 @@ module.exports = function (userRef, passportRef) {
     console.log(serviceName + ' authentication called');
 
     process.nextTick(function () {
-      //check if the user is already logged in using the local authentication
       var sessionLocalUserId = req.session.localUserId;
+      //check if the user is already logged in using the LOCAL authentication
       if(sessionLocalUserId) {
         console.log("sessionLocalUserId found - managing 3dauth + local");
         //the user is already logged in
@@ -78,8 +78,8 @@ module.exports = function (userRef, passportRef) {
 
             if (user) { // if the user is found, then log them in
               console.log("User found");
-              // if there is a user id already but no token (user was linked at one point and then removed)
-              // just add our token and profile information
+              // if there is already a user id but no token (user was linked at one point and then removed)
+              // just add our token and profile informations
               var userUpdated = '';
               if (!user[serviceName].token) {
                 console.log("Id is ok, but not token, updating...");
@@ -91,8 +91,9 @@ module.exports = function (userRef, passportRef) {
                   return done(null, userUpdated);
                 });
               }
-              return done(null, user); // user found, return that user
-            } else { //otherwise, if there is no user found with that id, create them
+              return done(null, user);
+            } else { 
+              //otherwise, if there is no user found with that id, create them
               console.log("User not found with that id, creating a new one...");
               var newUser = updateUser(new userRef(), accessToken, profile, serviceName);
               console.log("New user created: " + newUser);
@@ -104,7 +105,8 @@ module.exports = function (userRef, passportRef) {
               });
             }
           });
-        } else { // user already exists and is logged in, we have to link accounts    
+        } else { 
+          // user already exists and is logged in, we have to link accounts    
           // req.user pull the user out of the session
           // and finally update the user with the currecnt users credentials
           console.log("User already exists but I'm not previously logged in");
