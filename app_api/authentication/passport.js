@@ -17,9 +17,10 @@ module.exports = function (passportRef) {
     });
   });
 
-  //set the strategies
+  //-------------------------set the strategies----------------------
   //local
   require('./local/local-passport')(User, passportRef);
+
   //third parties, like fb, github, google and so on
   require('./3dparty/3dparty-passport')(User, passportRef);
 
