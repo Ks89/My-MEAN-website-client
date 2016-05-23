@@ -50,7 +50,7 @@ userSchema.methods.setPassword = function(password) {
   //set password hashed with the salt integrated
   //like explained on stackoverflow:
   // The salt is incorporated into the hash (encoded in a base64-style format).
-  this.local.hash = bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+  this.local.hash = bcrypt.hashSync(password, bcrypt.genSaltSync(32), null);
 };
 
 userSchema.methods.validPassword = function(password) {
