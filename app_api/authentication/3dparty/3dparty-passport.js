@@ -10,27 +10,23 @@ module.exports = function (userRef, passportRef) {
   //-------------------------
 
   function updateUser (user, accessToken, profile, serviceName) {
+    //common
+    user[serviceName].id = profile.id;
+    user[serviceName].token = accessToken;
+    user[serviceName].email = profile.emails[0].value; //get the first email
+    //other cases
     switch(serviceName) {
       case 'facebook':
-        user[serviceName].id = profile.id;
-        user[serviceName].token = accessToken;
         user[serviceName].name  = profile.name.givenName + ' ' + profile.name.familyName;
-        user[serviceName].email = profile.emails[0].value; //get the first email
         user[serviceName].profileUrl = profile.profileUrl;
         return user;
       case 'github':
-        user[serviceName].id = profile.id;
-        user[serviceName].token = accessToken;
         user[serviceName].name  = profile.displayName;
-        user[serviceName].email = profile.emails[0].value; //get the first email
         user[serviceName].username = profile.username;
         user[serviceName].profileUrl = profile.profileUrl;
         return user;
       case 'google':
-        user[serviceName].id = profile.id;
-        user[serviceName].token = accessToken;
         user[serviceName].name  = profile.displayName;
-        user[serviceName].email = profile.emails[0].value; //get the first email
         return user;
     }    
     return user;
@@ -38,33 +34,47 @@ module.exports = function (userRef, passportRef) {
 
   function authenticate(req, accessToken, refreshToken, profile, done, serviceName) {
 
-    logger.debug(serviceName + ' authentication called');
+    console.log(serviceName + ' authentication called');
 
     process.nextTick(function () {
-        //check if the user is already logged in using the local authentication
-        var sessionLocalUserId = req.session.localUserId;
-        if(sessionLocalUserId) {
-          //the user is already logged in
-          userRef.findOne({ '_id': sessionLocalUserId }, function (err, user) {
-            if (err) { throw err; }
-            var userUpdated = updateUser(user, accessToken, profile, serviceName);
-            console.log("updated localuser with 3dpartyauth");
-            userUpdated.save(function(err) {
-              if (err) { throw err; }
+      //check if the user is already logged in using the local authentication
+      var sessionLocalUserId = req.session.localUserId;
+      if(sessionLocalUserId) {
+        console.log("sessionLocalUserId found - managing 3dauth + local");
+        //the user is already logged in
+        userRef.findOne({ '_id': sessionLocalUserId }, (err, user) => {
+          if (err) { 
+            throw err; 
+          }
+          console.log("User found - saving");
+          var userUpdated = updateUser(user, accessToken, profile, serviceName);
+          console.log("updated localuser with 3dpartyauth");
+          userUpdated.save(err => {
+            if (err) { 
+              throw err; 
+            }
 
-              //----------------- experimental ---------------
-              authExperimentalFeatures.collapseDb(user, serviceName);
-              //----------------------------------------------
-              
-              return done(null, userUpdated);
-            });
+            //----------------- experimental ---------------
+            authExperimentalFeatures.collapseDb(user, serviceName);
+            //----------------------------------------------
+            
+            return done(null, userUpdated);
           });
-        } else {
+        });
+      } else {
+        console.log("Only 3dauth");
         if (!req.user) { //if the user is NOT already logged in
+          console.log("User not already logged in");
           const serviceNameId = serviceName + '.id';    
-          userRef.findOne({ serviceNameId: profile.id }, function (err, user) {
+
+          const query = {};
+          query[serviceNameId] = profile.id;
+
+          userRef.findOne(query, (err, user) => {
             console.log("User.findOne...");
-            if (err) { return done(err); }
+            if (err) { 
+              return done(err); 
+            }
 
             if (user) { // if the user is found, then log them in
               console.log("User found");
@@ -72,18 +82,24 @@ module.exports = function (userRef, passportRef) {
               // just add our token and profile information
               var userUpdated = '';
               if (!user[serviceName].token) {
+                console.log("Id is ok, but not token, updating...");
                 userUpdated = updateUser(user, accessToken, profile, serviceName);
-                userUpdated.save(function(err) {
-                  if (err) { throw err; }
+                userUpdated.save( err => {
+                  if (err) { 
+                    throw err; 
+                  }
                   return done(null, userUpdated);
                 });
               }
               return done(null, user); // user found, return that user
             } else { //otherwise, if there is no user found with that id, create them
+              console.log("User not found with that id, creating a new one...");
               var newUser = updateUser(new userRef(), accessToken, profile, serviceName);
               console.log("New user created: " + newUser);
-              newUser.save(function(err) {
-                if (err) { throw err; }
+              newUser.save( err => {
+                if (err) { 
+                  throw err; 
+                }
                 return done(null, newUser);
               });
             }
@@ -91,45 +107,44 @@ module.exports = function (userRef, passportRef) {
         } else { // user already exists and is logged in, we have to link accounts    
           // req.user pull the user out of the session
           // and finally update the user with the currecnt users credentials
+          console.log("User already exists but I'm not previously logged in");
           var user = updateUser(req.user, accessToken, profile, serviceName);        
-          user.save(function(err) {
-            if (err) { throw err; }
+          user.save( err => {
+            if (err) { 
+              throw err; 
+            }
 
-              //----------------- experimental ---------------
-              authExperimentalFeatures.collapseDb(user, serviceName);
-              //----------------------------------------------
+            console.log("Saving already existing user.");
+
+            //----------------- experimental ---------------
+            authExperimentalFeatures.collapseDb(user, serviceName);
+            //----------------------------------------------
 
 
-              return done(null, user);
-            });
+            return done(null, user);
+          });
         }
       }
     });
   }
 
-  
-  function facebookAuthenticate(serviceName) {
-   return new FacebookStrategy( thirdpartyConfig.facebook,
-    function(req, accessToken, refreshToken, profile, done) {
-      authenticate(req, accessToken, refreshToken, profile, done, serviceName);        
-    });
-  }
-  function githubAuthenticate(serviceName) {
-   return new GitHubStrategy( thirdpartyConfig.github,
-    function(req, accessToken, refreshToken, profile, done) {
-      authenticate(req, accessToken, refreshToken, profile, done, serviceName);        
-    });
-  }
-  function googleAuthenticate(serviceName) {
-   return new GoogleStrategy( thirdpartyConfig.google,
-    function(req, accessToken, refreshToken, profile, done) {
-      authenticate(req, accessToken, refreshToken, profile, done, serviceName);        
-    });
-  }
 
-  passportRef.use(facebookAuthenticate('facebook'));
-  passportRef.use(githubAuthenticate('github'));
-  passportRef.use(googleAuthenticate('google'));
+  function buildStrategy(serviceName) {
+    switch(serviceName) {
+      case 'facebook':
+        return new FacebookStrategy( thirdpartyConfig[serviceName],
+          (req, accessToken, refreshToken, profile, done) => { authenticate(req, accessToken, refreshToken, profile, done, serviceName);});
+      case 'github': 
+        return new GitHubStrategy( thirdpartyConfig[serviceName],
+          (req, accessToken, refreshToken, profile, done) => { authenticate(req, accessToken, refreshToken, profile, done, serviceName);});
+      case 'google':
+        return new GoogleStrategy( thirdpartyConfig[serviceName],
+          (req, accessToken, refreshToken, profile, done) => { authenticate(req, accessToken, refreshToken, profile, done, serviceName);});
+    }
+  }
+  passportRef.use(buildStrategy('facebook'));
+  passportRef.use(buildStrategy('github'));
+  passportRef.use(buildStrategy('google'));
 
   return module;
 };
