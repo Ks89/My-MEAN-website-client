@@ -27,10 +27,6 @@ module.exports.collapseDb = (loggedUser, serviceName) => {
 		return;
 	}
 
-	console.log("--------------------------******----");
-	console.log("--------------------------******----");
-	console.log("--------------------------******----");
-
 	const key =  serviceName + '.email';
 	const query = {};
 	
@@ -39,10 +35,6 @@ module.exports.collapseDb = (loggedUser, serviceName) => {
 	// query._id = {
 	// 	'$ne' : loggedUser._id
 	// };
-
-	console.log(query);
-
-	const idLoggedUser = loggedUser._id + '';
 
 	User.find(query, (err, users) => {
 
@@ -56,7 +48,7 @@ module.exports.collapseDb = (loggedUser, serviceName) => {
 
 		var user = users.find(function (el) { 
 			if(el && el._id) {
-				return el._id + '' === idLoggedUser + '';
+				return el._id + '' === loggedUser._id + '';
 			}	
 		});
 
@@ -65,34 +57,22 @@ module.exports.collapseDb = (loggedUser, serviceName) => {
 			return;		
 		}
 
-		let duplicatedUser = {};
-
 		console.log("2*****************************************");
 		console.log(user);
 		console.log("2*****************************************");
-		const idUser = user._id + '';
 
-		for(let dbUser of users) {
-			console.log("--------------------------******---- dbUser in for: ");
-			console.log(dbUser);
-			console.log("--------------------------******---- if condition");
-			console.log("--------------------------******----dbUser[serviceName]: ");
-			console.log((dbUser ? dbUser[serviceName] : 'not found'));
+		let duplicatedUser = users.filter(dbUser => {
+			if (dbUser && dbUser[serviceName] && dbUser[serviceName].email === inputEmail && (dbUser._id + '') !== (user._id + '') ) {
+				return dbUser;
+			}
+		});
 
-			const iddbUser = dbUser._id + '';
-
-			console.log("--------------------------******----dbUser._id: " + iddbUser);
-			console.log("--------------------------******----user._id: " + idUser);
-			if (dbUser && dbUser[serviceName] && dbUser[serviceName].email === inputEmail && iddbUser !== idUser) {
-				console.log('--------------------------******----found a duplicated ' + serviceName + ' dbUser:');
-				console.log(dbUser[serviceName]);
-				duplicatedUser = dbUser;
-				break;
-					//here I found one account with the same service
-					//I want to merge all infos in this account [not logged] with the new one [used to connect] (to prevent logout/login and session invalidation)
-				}
-				console.log('--------------------------******----cycle completed');
+		if(!duplicatedUser || !duplicatedUser[0]) {
+			console.log("No duplicated user found");
+			return;
 		}
+
+		duplicatedUser = duplicatedUser[0];
 
 		console.log("**--------------------------******----preparing to collapse duplicated db's users");
 		console.log(user);
@@ -102,23 +82,10 @@ module.exports.collapseDb = (loggedUser, serviceName) => {
 
 		for(let s of ['google', 'github', 'facebook', 'local', 'linkedin', 'twitter']) {
 			console.log('**--------------------------******----cycle s: ' + s + ', serviceName: ' + serviceName);
-			if(s !== serviceName) {
-				// console.log('--------------------------******----user[s]: ' + user[s]);
-				// console.log('--------------------------******----duplicatedUser[s]: ' + duplicatedUser[s]);
-				// console.log('--------------------------******----!user[s]: ' + !user[s]);
-				// console.log('--------------------------******----(!user[s] || !user[s].email): ' + (!user[s] || !user[s].email));
-				if((!user[s] || !user[s].email) && duplicatedUser[s]) {
-					console.log("**--------------------------******---- merging service: " + s);
-					// console.log("**--------------------------******----  modified user in cycle (duplicatedUser): ");
-					// console.log(duplicatedUser[s]);
-					// console.log("**--------------------------******----");
-					// console.log("**--------------------------******----  user in cycle before changes: ");
-					// console.log(user[s]);
-					// console.log("**--------------------------******----");
-
-					user[s] = duplicatedUser[s];
-					updated=true;
-				}
+			if(s !== serviceName && (!user[s] || !user[s].email) && duplicatedUser[s]) {
+				console.log("**--------------------------******---- merging service: " + s);
+				user[s] = duplicatedUser[s];
+				updated = true;
 			}
 		}
 
@@ -141,14 +108,12 @@ module.exports.collapseDb = (loggedUser, serviceName) => {
 				if (err) {
 					throw err;
 				}
-
 			  // we have deleted the user
 			  console.log('--------------------------******---- duplicated User deleted! [OK]');
 			});
 		} else {
 			console.log("I can't do anything because there isn't a duplicated users! [OK]");
 		}
-
-		console.log("--------------------------******---- search finished");
+		console.log("--------------------------******---- collapse function finished");
 	});
 };
