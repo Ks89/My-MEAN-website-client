@@ -1,5 +1,5 @@
 (function () {
-	angular.module('mySiteApp', ['ngRoute', 'ngSanitize', 'ui.bootstrap', 'jkuri.gallery']);
+	angular.module('mySiteApp', ['ngRoute', 'ngSanitize', 'ui.bootstrap', 'jkuri.gallery','angular-ladda']);
 
 	function config ($routeProvider, $locationProvider, $httpProvider) {
 		$routeProvider
@@ -112,6 +112,15 @@
 				rewriteLinks: false
 			});
   	}
+
+
+		// angular
+	 //  .module('mySiteApp')
+	 //  .provider("$exceptionHandler", {
+		// 	$get: function( errorLogService ) {
+		// 		return( errorLogService );
+		// 	}
+		// });
 
   	angular
   	.module('mySiteApp')

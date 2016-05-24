@@ -17,9 +17,11 @@
     vm.message = '';
     vm.btnStyleEnable = '';
     vm.formDisable = false;
+    vm.isWaiting = false;
 
 
     vm.onSubmit = function() {
+      vm.isWaiting = true;
       authentication.resetPassword($routeParams.emailToken, vm.newPassword)
       .then(function(result){
         // $location.search('page', null); 
@@ -30,11 +32,13 @@
         vm.message = 'Account updated! Please, go back to the login page to continue.';
         vm.btnStyleEnable = 'disabled';
         vm.formDisable = true;
+        vm.isWaiting = false;
         //$location.url('/login');
         // $location.search('page', null); 
         // $location.path(vm.returnPage);
       }, function(err) {
         vm.status = 'danger';
+        vm.isWaiting = false;
         console.log("Error authentication.resetPassword");
         if(err && err.message) {
           vm.message = err.message;

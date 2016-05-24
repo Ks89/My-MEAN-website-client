@@ -29,11 +29,11 @@
         vm.formError = "All fields required, please try again";
         return false;
       } else {
-        vm.doLogin();
+        doLogin();
       }
     };
 
-    vm.doLogin = function() {
+    function doLogin() {
       vm.formError = "";
       authentication.login(vm.credentials)
       .then(function(data){
@@ -46,6 +46,6 @@
           vm.formError = err.message;
         }
       });
-    };
+    }
   }
 })();

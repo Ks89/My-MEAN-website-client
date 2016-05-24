@@ -10,6 +10,7 @@
     "npm": "~3.8.8"
   },
   "dependencies": {
+    "angular-ladda": "^0.3.3",
     "async": "^2.0.0-rc.5",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.15.1",
@@ -28,6 +29,7 @@
     "helmet": "^2.0.0",
     "hpp": "^0.2.1",
     "jsonwebtoken": "^6.2.0",
+    "ladda-angular": "^1.0.1",
     "method-override": "^2.3.5",
     "mongoose": "^4.4.17",
     "morgan": "^1.7.0",
@@ -43,6 +45,7 @@
     "redis": "^2.6.0-1",
     "request": "^2.72.0",
     "serve-favicon": "^2.3.0",
+    "stacktrace-js": "^1.1.3",
     "url": "^0.11.0",
     "winston": "^2.2.0"
   },
