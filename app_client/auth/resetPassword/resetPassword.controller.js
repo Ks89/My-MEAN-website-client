@@ -12,12 +12,12 @@
       title: 'Password reset'
     };
 
-    vm.resetPasswordResultMessage = '';
-    vm.emailToken = $routeParams.emailToken;
     vm.newPassword = '';
-
     vm.status = 'success';
     vm.message = '';
+    vm.btnStyleEnable = '';
+    vm.formDisable = false;
+
 
     vm.onSubmit = function() {
       authentication.resetPassword($routeParams.emailToken, vm.newPassword)
@@ -28,6 +28,8 @@
         console.log(result);
         vm.status = 'success';
         vm.message = 'Account updated! Please, go back to the login page to continue.';
+        vm.btnStyleEnable = 'disabled';
+        vm.formDisable = true;
         //$location.url('/login');
         // $location.search('page', null); 
         // $location.path(vm.returnPage);

@@ -24,7 +24,7 @@
       console.log("authentication.activateAccount result :");
       console.log(result);
       vm.status = 'success';
-      vm.message = 'Account activated successfully!';
+      vm.message = 'Your account has been activated! Go back to login.';
       //$location.url('/login');
       // $location.search('page', null); 
       // $location.path(vm.returnPage);
