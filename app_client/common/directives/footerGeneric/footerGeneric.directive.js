@@ -7,8 +7,11 @@
 
   function footerGeneric () {
     return {
-      restrict: 'EA',
-      templateUrl: '/common/directives/footerGeneric/footerGeneric.template.html'
+    	restrict: 'EA',
+	    templateUrl: '/common/directives/footerGeneric/footerGeneric.template.html',
+	    scope: true,
+	    transclude : false
+	    //controller: 'FooterController'
     };
   }
 

@@ -77,14 +77,18 @@ var app_clientJs = ['app_client/app.js',
 			'app_client/auth/forgotPassword/forgotPassword.controller.js',
 			'app_client/auth/activateAccount/activateAccount.controller.js',
 			'app_client/common/factories/underscore.factory.js',
+			'app_client/common/factories/stacktracejs.factory.js',
+			'app_client/common/providers/stacktrace.provider.js',
 			'app_client/common/services/authentication.service.js',
 			'app_client/common/services/contactData.service.js',
 			'app_client/common/services/projectsData.service.js',
+			'app_client/common/services/errorLogService.service.js',
 			'app_client/common/filters/addHtmlLineBreaks.filter.js',
 			'app_client/common/directives/navigation/navigation.controller.js',
 			'app_client/common/directives/navigation/navigation.controller.js',
 			'app_client/common/directives/navigation/navigation.directive.js',
-			'app_client/common/directives/pageHeader/pageHeader.directive.js'
+			'app_client/common/directives/pageHeader/pageHeader.directive.js',
+			'app_client/common/directives/footerGeneric/footerGeneric.directive.js'
 			];
 
 gulp.task('test', function() {
