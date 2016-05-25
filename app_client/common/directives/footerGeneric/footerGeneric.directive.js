@@ -10,8 +10,8 @@
     	restrict: 'EA',
 	    templateUrl: '/common/directives/footerGeneric/footerGeneric.template.html',
 	    scope: true,
-	    transclude : false
-	    //controller: 'FooterController'
+	    transclude : false,
+	    controller: 'footerGenericController as foovm'
     };
   }
 
