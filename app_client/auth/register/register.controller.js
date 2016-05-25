@@ -18,13 +18,16 @@
       password : ""
     };
 
+    vm.isWaiting = false;
+
     // vm.returnPage = $location.search().page || '/';
 
     vm.onSubmit = function () {
+      vm.isWaiting = true;
       vm.formError = "";
       if (!vm.credentials.name || !vm.credentials.email || !vm.credentials.password) {
         vm.formError = "All fields required, please try again";
-        return false;
+        vm.isWaiting = false;
       } else {
         vm.doRegister();
       }
@@ -38,7 +41,9 @@
         // $location.path(vm.returnPage);
         //redirect to profile page
         $location.url('/login');
+        vm.isWaiting = false;
       }, function(err) {
+        vm.isWaiting = false;
         if(err && err.message) {
           vm.formError = err.message;
         }

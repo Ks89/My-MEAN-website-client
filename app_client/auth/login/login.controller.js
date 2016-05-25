@@ -17,6 +17,8 @@
       password : ""
     };
 
+    vm.isWaiting = false;
+
     vm.facebookOauthUrl = 'api/auth/facebook';
     vm.googleOauthUrl = 'api/auth/google';
     vm.githubOauthUrl = 'api/auth/github';
@@ -24,9 +26,11 @@
     //vm.returnPage = $location.search().page || '/';
 
     vm.onSubmit = function () {
+      vm.isWaiting = true;
       vm.formError = "";
       if (!vm.credentials.email || !vm.credentials.password) {
         vm.formError = "All fields required, please try again";
+        vm.isWaiting = false;
         return false;
       } else {
         doLogin();
@@ -38,8 +42,10 @@
       authentication.login(vm.credentials)
       .then(function(data){
         //redirect to profile page
+        vm.isWaiting = false;
         $location.url('/profile');
       }, function(err) {
+        vm.isWaiting = false;
         console.log("LOGIN FAILED");
         console.log(err);
         if(err && err.message) {
