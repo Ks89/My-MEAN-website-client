@@ -42,6 +42,25 @@ router.get('/auth/twitter/callback', ctrlAuth3dParty.authTwitterCallback, ctrlAu
 router.get('/auth/linkedin', ctrlAuth3dParty.authLinkedin);
 router.get('/auth/linkedin/callback', ctrlAuth3dParty.authLinkedinCallback, ctrlAuth3dParty.callbackRedirectLinkedin);
 
+//--------------------COMMON-------------------------
+router.get('/logout', ctrlAuthCommon.logout);
+router.get('/sessionToken', ctrlAuthCommon.sessionToken);
+router.get('/decodeToken/:token', ctrlAuthCommon.decodeToken); 
+//router.get('/isLoggedIn', ctrlAuthCommon.isLoggedIn);
+
+
+
+
+// -----------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------
+// 					    route middleware to authenticate and check token
+// 				 all routes defined BELOW will be protected by the following code
+// -----------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------
+router.use(restAuthMiddleware.restAuthenticationMiddleware);
+
 //-------------------authorize (already logged in/connecting other social account)-------------------
 router.get('/connect/github', ctrlAuth3dParty.connectGithub);
 router.get('/connect/github/callback', ctrlAuth3dParty.connectGithubCallback);
@@ -53,19 +72,6 @@ router.get('/connect/twitter', ctrlAuth3dParty.connectTwitter);
 router.get('/connect/twitter/callback', ctrlAuth3dParty.connectTwitterCallback);
 router.get('/connect/linkedin', ctrlAuth3dParty.connectLinkedin);
 router.get('/connect/linkedin/callback', ctrlAuth3dParty.connectLinkedinCallback);
-
-
-//--------------------COMMON-------------------------
-router.get('/logout', ctrlAuthCommon.logout);
-router.get('/sessionToken', ctrlAuthCommon.sessionToken);
-router.get('/decodeToken/:token', ctrlAuthCommon.decodeToken); 
-//router.get('/isLoggedIn', ctrlAuthCommon.isLoggedIn);
-
-// ----------------------------------------------------------------
-// route middleware to authenticate and check token
-// all routes defined below will be protected by the following code
-// ----------------------------------------------------------------
-router.use(restAuthMiddleware.restAuthenticationMiddleware);
 
 //-------------------unlink routes-------------------
 router.get('/unlink/local', ctrlAuthLocal.unlinkLocal);
