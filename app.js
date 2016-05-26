@@ -89,7 +89,7 @@ app.use(helmet.contentSecurityPolicy({
     fontSrc: ['maxcdn.bootstrapcdn.com'],
     imgSrc: ["'self'", 'localhost:3000', 'localhost:3001', 'placehold.it', 'placeholdit.imgix.net'],
     sandbox: ['allow-forms', 'allow-scripts', 'allow-same-origin', 'allow-popups'],
-    frameSrc : ["'self'", 'www.google.com'],
+    frameSrc : ["'self'", 'www.google.com', 'www.youtube.com'],
     connectSrc: [
         "'self'",
         "ws://localhost:3000",
