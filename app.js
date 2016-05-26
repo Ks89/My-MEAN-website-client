@@ -87,7 +87,7 @@ app.use(helmet.contentSecurityPolicy({
                 'www.gstatic.com'],
     styleSrc: ["'self'", 'ajax.googleapis.com', 'maxcdn.bootstrapcdn.com', 'cdnjs.cloudflare.com', "'unsafe-inline'"],
     fontSrc: ['maxcdn.bootstrapcdn.com'],
-    imgSrc: ["'self'", 'localhost:3000', 'localhost:3001', 'placehold.it', 'placeholdit.imgix.net'],
+    imgSrc: ["'self'", 'localhost:3000', 'localhost:3001', 'placehold.it', 'placeholdit.imgix.net', 'camo.githubusercontent.com', 's3.amazonaws.com'],
     sandbox: ['allow-forms', 'allow-scripts', 'allow-same-origin', 'allow-popups'],
     frameSrc : ["'self'", 'www.google.com', 'www.youtube.com'],
     connectSrc: [
