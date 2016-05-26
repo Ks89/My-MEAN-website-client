@@ -12,7 +12,7 @@
       </div>
 
       <div class="error">{{ vm.message }}</div>
-      <div ng-repeat="project in vm.data.projects | filter:search:strict" ng-switch on="project.visible">
+      <div ng-repeat="project in vm.projects | filter:search:strict" ng-switch on="project.visible">
         <span ng-switch-when="true">
           <div class="media well">
             <div class="media-left media-middle">
