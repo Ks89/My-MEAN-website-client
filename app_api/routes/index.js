@@ -10,27 +10,30 @@ var ctrlAuthCommon = require('../controllers/auth-common');
 var ctrlProjects = require('../controllers/projects');
 var ctrlContact = require('../controllers/contact');
 var ctrlUser = require('../controllers/users');
+var ctrlLogger = require('../controllers/logger');
 
-//--------------------------------normal routes-----------------------------------
 // projects
 router.get('/projects', ctrlProjects.projectsList);
 router.get('/projecthome', ctrlProjects.projectsListHomepage);
 router.get('/projects/:projectid', ctrlProjects.projectsReadOne);
-
 //contacts
 router.post('/email', ctrlContact.sendEmailWithRecaptcha);
-
 //users for authentication
 router.get('/users/:id', ctrlUser.usersReadOneById);
+//front-end logging
+router.get('/logError/:message', ctrlLogger.logError);
+router.post('/logDebug', ctrlLogger.logDebug);
 
-//local authentication
+//-----------------------------------------------------------------------------------------
+//-----------------------------------authentication----------------------------------------
+//-----------------------------------------------------------------------------------------
+//local
 router.post('/register', ctrlAuthLocal.register);
 router.post('/login', ctrlAuthLocal.login);
 router.post('/reset', ctrlAuthLocal.reset);
 router.post('/resetNewPassword', ctrlAuthLocal.resetPasswordFromEmail);
 router.post('/activateAccount', ctrlAuthLocal.activateAccount);
-
-//------------------------------authenticate (first login)---------------------------------
+//3dparty - first login
 router.get('/auth/github', ctrlAuth3dParty.authGithub);
 router.get('/auth/github/callback', ctrlAuth3dParty.authGithubCallback, ctrlAuth3dParty.callbackRedirectGithub);
 router.get('/auth/google', ctrlAuth3dParty.authGoogle);
@@ -41,14 +44,10 @@ router.get('/auth/twitter', ctrlAuth3dParty.authTwitter);
 router.get('/auth/twitter/callback', ctrlAuth3dParty.authTwitterCallback, ctrlAuth3dParty.callbackRedirectTwitter);
 router.get('/auth/linkedin', ctrlAuth3dParty.authLinkedin);
 router.get('/auth/linkedin/callback', ctrlAuth3dParty.authLinkedinCallback, ctrlAuth3dParty.callbackRedirectLinkedin);
-
-//--------------------COMMON-------------------------
+//common - 3dparty + local
 router.get('/logout', ctrlAuthCommon.logout);
 router.get('/sessionToken', ctrlAuthCommon.sessionToken);
 router.get('/decodeToken/:token', ctrlAuthCommon.decodeToken); 
-//router.get('/isLoggedIn', ctrlAuthCommon.isLoggedIn);
-
-
 
 
 // -----------------------------------------------------------------------------------------
@@ -61,7 +60,7 @@ router.get('/decodeToken/:token', ctrlAuthCommon.decodeToken);
 // -----------------------------------------------------------------------------------------
 router.use(restAuthMiddleware.restAuthenticationMiddleware);
 
-//-------------------authorize (already logged in/connecting other social account)-------------------
+//3dparty auth - authorize (already logged in/connecting other social account)
 router.get('/connect/github', ctrlAuth3dParty.connectGithub);
 router.get('/connect/github/callback', ctrlAuth3dParty.connectGithubCallback);
 router.get('/connect/google', ctrlAuth3dParty.connectGoogle);
@@ -72,8 +71,7 @@ router.get('/connect/twitter', ctrlAuth3dParty.connectTwitter);
 router.get('/connect/twitter/callback', ctrlAuth3dParty.connectTwitterCallback);
 router.get('/connect/linkedin', ctrlAuth3dParty.connectLinkedin);
 router.get('/connect/linkedin/callback', ctrlAuth3dParty.connectLinkedinCallback);
-
-//-------------------unlink routes-------------------
+//3dparty auth - unlink routes
 router.get('/unlink/local', ctrlAuthLocal.unlinkLocal);
 router.get('/unlink/facebook', ctrlAuth3dParty.unlinkFacebook);
 router.get('/unlink/github', ctrlAuth3dParty.unlinkGithub);

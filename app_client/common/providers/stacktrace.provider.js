@@ -1,20 +1,20 @@
-'user strict';
-(function() {
+// 'user strict';
+// (function() {
 
-  angular
-    .module('mySiteApp')
-    .service('errProvider', errProvider);
+//   angular
+//     .module('mySiteApp')
+//     .provider('$exceptionHandler', $exceptionHandler);
 
-  errProvider.$inject = ['$exceptionHandler'];
-  function errProvider ($exceptionHandler) {
+//   $exceptionHandler.$inject = [];
+//   function $exceptionHandler () {
 
-    return {
-        $get: function( errorLogService ) {
-          return( errorLogService );
-        }
-      };
+//     return {
+//         $get: function(errorLogService) {
+//           return (errorLogService);
+//         }
+//       };
 
-  }
+//   }
 
-})();
+// })();
 

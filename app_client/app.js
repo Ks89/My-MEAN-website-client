@@ -1,7 +1,7 @@
 (function () {
 	angular.module('mySiteApp', ['ngRoute', 'ngSanitize', 'ui.bootstrap', 'jkuri.gallery','angular-ladda']);
 
-	function config ($routeProvider, $locationProvider, $httpProvider) {
+	function config ($routeProvider, $locationProvider, $httpProvider, $provide) {
 		$routeProvider
 		.when('/', {
 			redirectTo: '/home'
@@ -103,28 +103,38 @@
 				}]
 			}
 				
-			})
-			.otherwise({redirectTo: '/'});
+		})
+		.otherwise({redirectTo: '/'});
 
-			$locationProvider.html5Mode({
-				enabled: true,
-				requireBase: true,
-				rewriteLinks: false
-			});
-  	}
+		$locationProvider.html5Mode({
+			enabled: true,
+			requireBase: true,
+			rewriteLinks: false
+		});
+
+		$provide.decorator("$exceptionHandler", ['$delegate', 'errorLogService', function($delegate, errorLogService) {
+			return function(exception, cause) {
+				$delegate(exception, cause);
+				console.log("fdfdsjfsdf");
+				errorLogService.log("dsdsds", "cfsdfsdf");
+			};
+		}]);
+  }
 
 
-		// angular
-	 //  .module('mySiteApp')
-	 //  .provider("$exceptionHandler", {
-		// 	$get: function( errorLogService ) {
-		// 		return( errorLogService );
-		// 	}
-		// });
+  	// angular
+  	// .module('mySiteApp')
+  	// .provider("$exceptionHandler", {
+  	// 	$get: function( errorLogService ) {
+  	// 		return( errorLogService );
+  	// 	}
+  	// });
+
+
 
   	angular
   	.module('mySiteApp')
-  	.config(['$routeProvider', '$locationProvider', '$httpProvider', config])
+  	.config(['$routeProvider', '$locationProvider', '$httpProvider', '$provide', config])
   	.run(['$rootScope','$location', '$window', function($root, $location, $window) {
   		$root.$on('$routeChangeStart', function(e, curr, prev) {
   			if (curr.$$route && curr.$$route.resolve) {
