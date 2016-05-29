@@ -10,7 +10,7 @@ var ctrlAuthCommon = require('../controllers/auth-common');
 var ctrlProjects = require('../controllers/projects');
 var ctrlContact = require('../controllers/contact');
 var ctrlUser = require('../controllers/users');
-var ctrlLogger = require('../controllers/logger');
+// var ctrlLogger = require('../controllers/logger');
 
 // projects
 router.get('/projects', ctrlProjects.projectsList);
@@ -21,8 +21,8 @@ router.post('/email', ctrlContact.sendEmailWithRecaptcha);
 //users for authentication
 router.get('/users/:id', ctrlUser.usersReadOneById);
 //front-end logging
-router.get('/logError/:message', ctrlLogger.logError);
-router.post('/logDebug', ctrlLogger.logDebug);
+// router.get('/logError/:message', ctrlLogger.logError);
+// router.post('/logDebug', ctrlLogger.logDebug);
 
 //-----------------------------------------------------------------------------------------
 //-----------------------------------authentication----------------------------------------

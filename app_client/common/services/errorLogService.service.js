@@ -28,8 +28,8 @@
       try {
 
         console.log("CALLEDDDDD");
-console.log("0");
-        var url = '/api/logDebug';
+        console.log("0");
+        var url = '/api/log/logDebug';
         var errorMessage = exception.toString();
 
         console.log("1");

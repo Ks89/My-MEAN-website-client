@@ -150,14 +150,18 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+
+var loggerApi = require('./app_api/routes/log-api');
+app.use('/api/log', loggerApi);
+
 //enable middleware CSRF by csurf package
 //before app.use('/api', routesApi);, but after session and/or cookie initialization
-// app.use(csrf());
-// app.use(function (req, res, next) {
-//   res.cookie('XSRF-TOKEN', req.csrfToken());
-//   res.locals.csrftoken = req.csrfToken();
-//   next();
-// });
+app.use(csrf());
+app.use(function (req, res, next) {
+  res.cookie('XSRF-TOKEN', req.csrfToken());
+  res.locals.csrftoken = req.csrfToken();
+  next();
+});
 
 var routesApi = require('./app_api/routes/index');
 app.use('/api', routesApi);
