@@ -115,7 +115,7 @@
         });
       } else {
         console.log('NOT last unlink - checking...');
-        if(serviceName==='facebook' || serviceName==='google' || serviceName==='github' || serviceName==='local') {
+        if(serviceName==='facebook' || serviceName==='google' || serviceName==='github' || serviceName==='local' || serviceName==='linkedin') {
           console.log('NOT last unlink - but service recognized, processing...');
           authentication.unlink(serviceName)
           .then(function(result) {
@@ -136,16 +136,18 @@
     function checkIfLastUnlinkProfile(serviceName) {
       switch(serviceName) {
         case 'github':
-        return vm.facebook.name==='' && vm.google.name==='' && vm.local.name==='';
+          return vm.facebook.name==='' && vm.google.name==='' && vm.local.name==='' && vm.linkedin.name==='';
         case 'google':
-        return vm.github.name==='' && vm.facebook.name==='' && vm.local.name==='';
+          return vm.github.name==='' && vm.facebook.name==='' && vm.local.name==='' && vm.linkedin.name==='';
         case 'facebook':
-        return vm.github.name==='' && vm.google.name==='' && vm.local.name==='';
+          return vm.github.name==='' && vm.google.name==='' && vm.local.name==='' && vm.linkedin.name==='';
         case 'local':
-        return vm.github.name==='' && vm.facebook.name==='' && vm.google.name==='';
+          return vm.github.name==='' && vm.facebook.name==='' && vm.google.name==='' && vm.linkedin.name==='';
+        case 'linkedin':
+          return vm.facebook.name==='' && vm.google.name==='' && vm.local.name==='' && vm.github.name==='';
         default:
-        console.log('Service name not recognized in profile checkIfLastUnlink');
-        return false;
+          console.log('Service name not recognized in profile checkIfLastUnlink');
+          return false;
       }
     }
   }

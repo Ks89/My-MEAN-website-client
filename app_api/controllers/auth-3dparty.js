@@ -43,9 +43,9 @@ module.exports.connectGithub = passport.authorize('github', { scope: [ 'user:ema
 module.exports.connectGithubCallback = passport.authorize('github', connectRedirect);
 
 
-module.exports.authLinkedin = passport.authenticate('linkedin', { scope: ['r_basicprofile', 'r_emailaddress'] });
+module.exports.authLinkedin = passport.authenticate('linkedin', { scope: ['r_emailaddress', 'r_basicprofile'] });
 module.exports.authLinkedinCallback = passport.authenticate('linkedin', redirectFailure);
-module.exports.connectLinkedin = passport.authorize('linkedin', { scope: ['r_basicprofile', 'r_emailaddress'] });
+module.exports.connectLinkedin = passport.authorize('linkedin', { scope: ['r_emailaddress', 'r_basicprofile'] });
 module.exports.connectLinkedinCallback = passport.authorize('linkedin', connectRedirect);
 
 

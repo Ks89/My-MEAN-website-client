@@ -22,6 +22,8 @@
     vm.facebookOauthUrl = 'api/auth/facebook';
     vm.googleOauthUrl = 'api/auth/google';
     vm.githubOauthUrl = 'api/auth/github';
+    vm.linkedinOauthUrl = 'api/auth/linkedin';
+    vm.twitterOauthUrl = 'api/auth/twitter';
 
     //vm.returnPage = $location.search().page || '/';
 

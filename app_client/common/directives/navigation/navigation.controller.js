@@ -47,6 +47,8 @@
             setCurrentUser(user.google);
           } else if(user.twitter) {
             setCurrentUser(user.twitter);
+          } else if(user.linkedin) {
+            setCurrentUser(user.linkedin);
           }
         }
 

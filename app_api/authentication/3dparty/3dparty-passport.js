@@ -3,6 +3,7 @@ module.exports = function (userRef, passportRef) {
   var FacebookStrategy = require('passport-facebook').Strategy;
   var GitHubStrategy = require('passport-github2').Strategy;
   var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+  var LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
   var logger = require('../../utils/logger.js');
 
   //----------experimental---
@@ -10,6 +11,8 @@ module.exports = function (userRef, passportRef) {
   //-------------------------
 
   function updateUser (user, accessToken, profile, serviceName) {
+    // warning: if you are not able to set a value in user[serviceName]
+    // go to models/users.js and add the missing property there.
     //common
     user[serviceName].id = profile.id;
     user[serviceName].token = accessToken;
@@ -28,6 +31,10 @@ module.exports = function (userRef, passportRef) {
       case 'google':
         user[serviceName].name  = profile.displayName;
         return user;
+      case 'linkedin':
+        user[serviceName].name  = profile.name.givenName + ' ' + profile.name.familyName;
+        //user[serviceName].profileUrl = profile.profileUrl;
+        return user;
     }    
     return user;
   }
@@ -35,6 +42,9 @@ module.exports = function (userRef, passportRef) {
   function authenticate(req, accessToken, refreshToken, profile, done, serviceName) {
 
     console.log(serviceName + ' authentication called');
+
+    console.log(profile);
+    console.log(accessToken);
 
     process.nextTick(function () {
       var sessionLocalUserId = req.session.localUserId;
@@ -142,11 +152,15 @@ module.exports = function (userRef, passportRef) {
       case 'google':
         return new GoogleStrategy( thirdpartyConfig[serviceName],
           (req, accessToken, refreshToken, profile, done) => { authenticate(req, accessToken, refreshToken, profile, done, serviceName);});
+      case 'linkedin':
+        return new LinkedInStrategy( thirdpartyConfig[serviceName],
+          (req, accessToken, refreshToken, profile, done) => { authenticate(req, accessToken, refreshToken, profile, done, serviceName);});
     }
   }
   passportRef.use(buildStrategy('facebook'));
   passportRef.use(buildStrategy('github'));
   passportRef.use(buildStrategy('google'));
+  passportRef.use(buildStrategy('linkedin'));
 
   return module;
 };

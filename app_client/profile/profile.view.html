@@ -105,15 +105,15 @@
 			<div class="well"> 
 				<h3 class="text-primary"><span class="fa fa-linkedin"></span> Linkedin</h3>
 
-				<div ng-if="vm.twitter.email.length > 0">
+				<div ng-if="vm.linkedin.email.length > 0">
 					<p>
-						<strong>name</strong>: <br>
-						<strong>email</strong>: <br>
-						<strong>id</strong>: <br>
+						<strong>name</strong>: {{ vm.linkedin.name }}<br>
+						<strong>email</strong>: {{ vm.linkedin.email }}<br>
+						<strong>id</strong>: {{vm.linkedin.id }}<br>
 					</p>
-					<a class="btn btn-primary" ng-click="vm.unlink('linkedin')">Unlink Linkedin</a>&nbsp;&nbsp;  
+					<a class="btn btn-primary" ng-click="vm.unlink('linkedin')">Unlink Linkedin</a>&nbsp;&nbsp;
 				</div>
-				<div ng-if="vm.twitter.email.length === 0">
+				<div ng-if="vm.linkedin.email.length === 0">
 					<a class="btn btn-primary" ng-href="{{vm.linkedinConnectOauthUrl}}">Connect Linkedin</a>&nbsp;&nbsp;  		
 				</div>
 			</div>
