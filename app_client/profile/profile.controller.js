@@ -115,7 +115,9 @@
         });
       } else {
         console.log('NOT last unlink - checking...');
-        if(serviceName==='facebook' || serviceName==='google' || serviceName==='github' || serviceName==='local' || serviceName==='linkedin') {
+        if(serviceName==='facebook' || serviceName==='google' || 
+            serviceName==='github' || serviceName==='local' || 
+            serviceName==='linkedin' || serviceName==='twitter') {
           console.log('NOT last unlink - but service recognized, processing...');
           authentication.unlink(serviceName)
           .then(function(result) {
@@ -136,15 +138,17 @@
     function checkIfLastUnlinkProfile(serviceName) {
       switch(serviceName) {
         case 'github':
-          return vm.facebook.name==='' && vm.google.name==='' && vm.local.name==='' && vm.linkedin.name==='';
+          return vm.facebook.name==='' && vm.google.name==='' && vm.local.name==='' && vm.linkedin.name==='' && vm.twitter.name==='';
         case 'google':
-          return vm.github.name==='' && vm.facebook.name==='' && vm.local.name==='' && vm.linkedin.name==='';
+          return vm.github.name==='' && vm.facebook.name==='' && vm.local.name==='' && vm.linkedin.name==='' && vm.twitter.name==='';
         case 'facebook':
-          return vm.github.name==='' && vm.google.name==='' && vm.local.name==='' && vm.linkedin.name==='';
+          return vm.github.name==='' && vm.google.name==='' && vm.local.name==='' && vm.linkedin.name==='' && vm.twitter.name==='';
         case 'local':
-          return vm.github.name==='' && vm.facebook.name==='' && vm.google.name==='' && vm.linkedin.name==='';
+          return vm.github.name==='' && vm.facebook.name==='' && vm.google.name==='' && vm.linkedin.name==='' && vm.twitter.name==='';
         case 'linkedin':
-          return vm.facebook.name==='' && vm.google.name==='' && vm.local.name==='' && vm.github.name==='';
+          return vm.facebook.name==='' && vm.google.name==='' && vm.local.name==='' && vm.github.name==='' && vm.twitter.name==='';
+        case 'twitter':
+          return vm.facebook.name==='' && vm.google.name==='' && vm.local.name==='' && vm.github.name==='' && vm.linkedin.name==='';
         default:
           console.log('Service name not recognized in profile checkIfLastUnlink');
           return false;

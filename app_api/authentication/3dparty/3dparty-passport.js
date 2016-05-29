@@ -33,7 +33,6 @@ module.exports = function (userRef, passportRef) {
         return user;
       case 'linkedin':
         user[serviceName].name  = profile.name.givenName + ' ' + profile.name.familyName;
-        //user[serviceName].profileUrl = profile.profileUrl;
         return user;
     }    
     return user;

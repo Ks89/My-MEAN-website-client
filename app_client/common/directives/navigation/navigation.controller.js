@@ -11,17 +11,6 @@
 
     vm.currentPath = $location.path();
 
-    //used to show or hide links and buttons into the navigation bar
-    
-    // authentication.isLoggedIn()
-    // .then(function(result) {
-    //   console.log('Nav isLoggedIn local  Success: ' + result);
-    //   vm.isLoggedIn =  result;
-    // },function(reason) {
-    //   console.log('Nav isLoggedIn local  Failed: ' + reason);
-    //   vm.isLoggedIn =  false;
-    // });
-
     vm.currentUser = {
       'name' : '' 
     };

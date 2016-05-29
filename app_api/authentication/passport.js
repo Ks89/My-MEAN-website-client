@@ -25,7 +25,7 @@ module.exports = function (passportRef) {
   require('./3dparty/3dparty-passport')(User, passportRef);
 
   //other strategies still broken
-  // require('./3dparty/linkedin-passport')(User, passportRef);
+  require('./3dparty/twitter-passport')(User, passportRef);
 
 
   return module;

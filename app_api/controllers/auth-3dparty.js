@@ -27,9 +27,9 @@ module.exports.authFacebookCallback = passport.authenticate('facebook', redirect
 module.exports.connectFacebook = passport.authorize('facebook', { scope : 'email' });
 module.exports.connectFacebookCallback = passport.authorize('facebook', connectRedirect);
 
-module.exports.authTwitter = passport.authenticate('twitter', { scope : 'email' });
+module.exports.authTwitter = passport.authenticate('twitter');
 module.exports.authTwitterCallback = passport.authenticate('twitter', redirectFailure);
-module.exports.connectTwitter = passport.authorize('twitter', { scope : 'email' });
+module.exports.connectTwitter = passport.authorize('twitter');
 module.exports.connectTwitterCallback = passport.authorize('twitter', connectRedirect);
 
 module.exports.authGoogle = passport.authenticate('google', { scope: ['email', 'https://www.googleapis.com/auth/plus.login'] });
@@ -41,7 +41,6 @@ module.exports.authGithub = passport.authenticate('github', { scope: [ 'user:ema
 module.exports.authGithubCallback = passport.authenticate('github', redirectFailure);
 module.exports.connectGithub = passport.authorize('github', { scope: [ 'user:email' ] });
 module.exports.connectGithubCallback = passport.authorize('github', connectRedirect);
-
 
 module.exports.authLinkedin = passport.authenticate('linkedin', { scope: ['r_emailaddress', 'r_basicprofile'] });
 module.exports.authLinkedinCallback = passport.authenticate('linkedin', redirectFailure);
