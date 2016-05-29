@@ -4,7 +4,8 @@ var Utils = require('../utils/util.js');
 /* POST to log a debug message */
 /* /api/logDebug */
 module.exports.logDebug = (req, res) => {
-  console.log('called logDebug ' + req.body);
+  console.log('called logDebug = ');
+  console.log(req.body);
   if(req.body) {
     Utils.sendJSONresponse(res, 200, "Debug logged on server: " + req.body);
   }

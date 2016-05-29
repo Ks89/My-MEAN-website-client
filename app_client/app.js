@@ -115,8 +115,8 @@
 		$provide.decorator("$exceptionHandler", ['$delegate', 'errorLogService', function($delegate, errorLogService) {
 			return function(exception, cause) {
 				$delegate(exception, cause);
-				console.log("fdfdsjfsdf");
-				errorLogService.log("dsdsds", "cfsdfsdf");
+				console.log("Provider decorator OK - calling errorLogService");
+				errorLogService.log(exception, cause);
 			};
 		}]);
   }

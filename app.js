@@ -36,7 +36,7 @@ require('./app_api/authentication/passport')(passport);
 
 var app = express();
 
-//[hemple] enable hemlet
+//[hemlet] enable hemlet
 //this automatically add 7 of 10 security features
 /*
   -contentSecurityPolicy for setting Content Security Policy
@@ -92,6 +92,7 @@ app.use(helmet.contentSecurityPolicy({
     frameSrc : ["'self'", 'www.google.com', 'www.youtube.com'],
     connectSrc: [
         "'self'",
+        "ajax.googleapis.com",
         "ws://localhost:3000",
         "ws://localhost:3001"
     ],
@@ -151,12 +152,12 @@ app.use(passport.session());
 
 //enable middleware CSRF by csurf package
 //before app.use('/api', routesApi);, but after session and/or cookie initialization
-app.use(csrf());
-app.use(function (req, res, next) {
-  res.cookie('XSRF-TOKEN', req.csrfToken());
-  res.locals.csrftoken = req.csrfToken();
-  next();
-});
+// app.use(csrf());
+// app.use(function (req, res, next) {
+//   res.cookie('XSRF-TOKEN', req.csrfToken());
+//   res.locals.csrftoken = req.csrfToken();
+//   next();
+// });
 
 var routesApi = require('./app_api/routes/index');
 app.use('/api', routesApi);
