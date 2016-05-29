@@ -2,7 +2,6 @@
 // handling ability of AngularJS. Notice that we pass off to
 // the native "$log" method and then handle our additional
 // server-side logging.
-
 'user strict';
 (function() {
 
@@ -26,99 +25,47 @@
       // logging the same error over and over again! All
       // that would do is add noise to the log.
       try {
+        console.log("Called errorLogService");
 
-        console.log("CALLEDDDDD");
-        console.log("0");
-        var url = '/api/log/logDebug';
-        var errorMessage = exception.toString();
+        const url = '/api/log/logError';
+        const errorMessage = exception.toString();
 
-        console.log("1");
-        //var stackframes = [new StackFrame('fn', undefined, 'file.js', 32, 1)];
+        StackTrace.get()
+        .then(function(stackframes) {
+          const stringifiedStack = stackframes.map(function(sf) {
+            return sf.toString();
+          }).join('\n');
 
+          const dataToSend = {
+            errorUrl: $window.location.href,
+            errorMessage: errorMessage,
+            //stackTrace: stackTrace,
+            cause: ( cause || "" )
+          };
 
-        var callback = function(stackframes) {
-          console.log("2");
-            var stringifiedStack = stackframes.map(function(sf) {
-                return sf.toString();
-            }).join('\n');
-            console.log("3");
-            console.log(stringifiedStack);
-            StackTrace.report(stackframes, url, errorMessage)
-            .then(function (data) {
-              console.log("data: " + data);
-            })
-            .catch(function(response) {
-              console.log("response: " + response);
-            });
+          const dataToSendString = JSON.stringify(dataToSend);
 
-        };
+          console.log("dataToSendString: " + dataToSendString);
 
-        var errback = function(err) { 
-          console.log("4");
+          StackTrace.report(stackframes, url, dataToSendString)
+          .then(function (data) {
+            console.log("data: " + data);
+          })
+          .catch(function(response) {
+            console.log("response: " + response);
+          });
+        })
+        .catch(function(err) { 
+          console.log("Stacktrace error on report.");
           console.log(err.message); 
-        };
+        });
 
-        StackTrace.get().then(callback).catch(errback);
-
-        // StackTrace.get()
-        // .then( function(data) {
-        //   console.log("2");
-        //   console.log("###########################");
-        //   console.log(data);
-        //   // var stackframes = StackTrace.get();
-        // })
-        // .catch( function(reason) {
-        //   console.log("3");
-        //     console.log('('+reason+')');
-        // });
-
-        
-        console.log("5");
-        // StackTrace.report(stackframes, url, errorMessage).then(callback, done.fail)['catch'](done.fail);
-
-        // var postRequest = jasmine.Ajax.requests.mostRecent();
-        // postRequest.respondWith({status: 201, contentType: 'text/plain', responseText: 'OK'});
-
-        // function callback() {
-        //     expect(postRequest.data()).toEqual({message: errorMessage, stack: stackframes});
-        //     expect(postRequest.method).toBe('post');
-        //     expect(postRequest.url).toBe(url);
-        //     done();
-        // }
-
-        // console.log("errorMessage: " + errorMessage);
-        // var stackTrace = stacktraceService.print({ e: exception });
-        // console.log("stackTrace: " + stackTrace);
-        // var data = {
-        //   errorUrl: $window.location.href,
-        //   errorMessage: errorMessage,
-        //   stackTrace: stackTrace,
-        //   cause: ( cause || "" )
-        // };
-          // Log the JavaScript error to the server.
-          // --
-          // NOTE: In this demo, the POST URL doesn't
-          // exists and will simply return a 404.
-          // $.ajax({
-          //   type: "POST",
-          //   url: "/api/logError",
-          //   contentType: "application/json",
-          //   data: angular.toJson({
-          //     errorUrl: $window.location.href,
-          //     errorMessage: errorMessage,
-          //     stackTrace: stackTrace,
-          //     cause: ( cause || "" )
-          //   })
-          // });
-          // console.error("data is:");
-          // console.error(JSON.stringify(data));
-          // $.get( "/api/logError/message=" + JSON.stringify(data), function( data ) {
-          //   console.log("result logdebug: " + JSON.stringify(data));
-          // });
-        } catch ( loggingError ) {
+        console.log("errorLogService finished!");
+  
+        } catch (loggingError) {
           // For Developers - log the log-failure.
           $log.warn( "Error logging failed" );
-          $log.log( loggingError );
+          $log.log(loggingError);
         }
     };
 

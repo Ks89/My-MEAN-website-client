@@ -4,8 +4,8 @@ module.exports = function (express) {
 
 	var ctrlLogger = require('../controllers/logger');
 
-	router.get('/logError/:message', ctrlLogger.logError);
-	router.post('/logDebug', ctrlLogger.logDebug);
+	router.post('/logDebug', ctrlLogger.logError);
+	router.post('/logError', ctrlLogger.logDebug);
 
 	module.exports = router;
 	return router;

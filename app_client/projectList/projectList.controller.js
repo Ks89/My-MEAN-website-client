@@ -13,8 +13,6 @@
       strapline: ''
     };
     
-console.lo("sasa");
-
     //init the timeline into the sidebar
     vm.sidebarTitle = "What can you do?";
     vm.sidebar = {

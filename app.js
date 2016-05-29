@@ -90,6 +90,7 @@ app.use(helmet.contentSecurityPolicy({
     frameSrc : ["'self'", 'www.google.com', 'www.youtube.com'],
     connectSrc: [
         "'self'",
+        "cdnjs.cloudflare.com",
         "ajax.googleapis.com",
         "ws://localhost:3000",
         "ws://localhost:3001"
@@ -144,6 +145,9 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+// compress all requests using gzip
+app.use(compression());
 
 // --------------------------------------- ROUTES ---------------------------------------
 // dedicated routes for angular logging with stacktracejs
