@@ -2,16 +2,14 @@ require('dotenv').config(); //to read info from .env file
 //attention: i'm using "dotenv" 2.0 and for this reason I must call "config()".
 
 var express = require('express');
+var compression = require('compression');
 var path = require('path');
 var favicon = require('serve-favicon');
 var morgan = require('morgan');
-//var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var bodyParser = require('body-parser');
 //logger created with winston
 var logger = require("./app_api/utils/logger");
-
-// var staticAsset = require('static-asset');
 
 var redis   = require("redis"); //it's really useful?
 var RedisStore = require('connect-redis')(session);
@@ -76,7 +74,7 @@ app.use(helmet.hpkp({
 }));
 
 // [CSP - Content Security Policy] Trying to prevent: Injecting anything unintended into our page. 
-//                      That could cause XSS vulnerabilities, unintended tracking, malicious frames, and more.
+//                   That could cause XSS vulnerabilities, unintended tracking, malicious frames, and more.
 app.use(helmet.contentSecurityPolicy({
   // Specify directives as normal.
   directives: {
@@ -122,11 +120,8 @@ app.use(contentLength.validateMax({max: MAX_CONTENT_LENGTH_ACCEPTED, status: 400
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(morgan({ "stream": logger.stream }));
-// app.use(staticAsset(path.join(__dirname, 'public')));
-// app.use(staticAsset(path.join(__dirname, 'app_client')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'app_client')));
-//app.use(cookieParser('keyboard cat'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -150,12 +145,15 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-
-var loggerApi = require('./app_api/routes/log-api');
+// --------------------------------------- ROUTES ---------------------------------------
+// dedicated routes for angular logging with stacktracejs
+// these router aren't protected with csrf, because declared before app.use(csrf()).
+var loggerApi = require('./app_api/routes/log-api')(express);
 app.use('/api/log', loggerApi);
 
-//enable middleware CSRF by csurf package
-//before app.use('/api', routesApi);, but after session and/or cookie initialization
+// enable middleware CSRF by csurf package
+// before app.use('/api', routesApi); to protect their, 
+// but after session and/or cookie initialization
 app.use(csrf());
 app.use(function (req, res, next) {
   res.cookie('XSRF-TOKEN', req.csrfToken());
@@ -163,20 +161,21 @@ app.use(function (req, res, next) {
   next();
 });
 
-var routesApi = require('./app_api/routes/index');
+// APIs for all route protected with CSRF (all routes except for angular log's service)
+var routesApi = require('./app_api/routes/index')(express);
 app.use('/api', routesApi);
+// --------------------------------------------------------------------------------------
+
 
 app.use(function(req, res) {
   res.sendFile(path.join(__dirname, 'app_client', 'index.html'));
 });
-
 
 // catch bad csrf token
 app.use(function (err, req, res, next) {
   if (err.code !== 'EBADCSRFTOKEN') {
     return next(err);
   }
-
   // handle CSRF token errors here
   res.status(403);
   res.send('session has expired or form tampered with');
