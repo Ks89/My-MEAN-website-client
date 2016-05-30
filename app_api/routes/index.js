@@ -40,11 +40,6 @@ module.exports = function (express) {
 	router.get('/auth/twitter/callback', ctrlAuth3dParty.authTwitterCallback, ctrlAuth3dParty.callbackRedirectTwitter);
 	router.get('/auth/linkedin', ctrlAuth3dParty.authLinkedin);
 	router.get('/auth/linkedin/callback', ctrlAuth3dParty.authLinkedinCallback, ctrlAuth3dParty.callbackRedirectLinkedin);
-	//common - 3dparty + local
-	router.get('/logout', ctrlAuthCommon.logout);
-	router.get('/sessionToken', ctrlAuthCommon.sessionToken);
-	router.get('/decodeToken/:token', ctrlAuthCommon.decodeToken); 
-
 
 	// -----------------------------------------------------------------------------------------
 	// -----------------------------------------------------------------------------------------
@@ -55,6 +50,11 @@ module.exports = function (express) {
 	// -----------------------------------------------------------------------------------------
 	// -----------------------------------------------------------------------------------------
 	router.use(restAuthMiddleware.restAuthenticationMiddleware);
+
+	//common - 3dparty + local
+	router.get('/logout', ctrlAuthCommon.logout);
+	router.get('/sessionToken', ctrlAuthCommon.sessionToken);
+	router.get('/decodeToken/:token', ctrlAuthCommon.decodeToken); 
 
 	//3dparty auth - authorize (already logged in/connecting other social account)
 	router.get('/connect/github', ctrlAuth3dParty.connectGithub);
