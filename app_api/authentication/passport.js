@@ -21,12 +21,8 @@ module.exports = function (passportRef) {
   //local
   require('./local/local-passport')(User, passportRef);
 
-  //third parties, like fb, github, google, linkedin and so on
+  //third parties, like fb, github, google, linkedin, twitter and so on
   require('./3dparty/3dparty-passport')(User, passportRef);
-
-  //other strategies still broken
-  require('./3dparty/twitter-passport')(User, passportRef);
-
 
   return module;
 };

@@ -86,15 +86,15 @@
 			<div class="well"> 
 				<h3 class="text-primary"><span class="fa fa-twitter"></span> Twitter</h3>
 
-				<div ng-if="vm.twitter.email.length > 0">
+				<div ng-if="vm.twitter.name.length > 0">
 					<p>
 						<strong>name</strong>: {{ vm.twitter.name }}<br>
-						<strong>email</strong>: {{ vm.twitter.email }}<br>
+						<strong>email</strong>: Not provider by Twitter<br>
 						<strong>id</strong>: {{vm.twitter.id }}<br>
 					</p>
 					<a class="btn btn-primary" ng-click="vm.unlink('twitter')">Unlink Twitter</a>&nbsp;&nbsp;  
 				</div>
-				<div ng-if="vm.twitter.email.length === 0">
+				<div ng-if="vm.twitter.name.length === 0">
 					<a class="btn btn-primary" ng-href="{{vm.twitterConnectOauthUrl}}">Connect Twitter</a>&nbsp;&nbsp;  		
 				</div>
 			</div>

@@ -80,7 +80,7 @@
       if(originData) {
         destData.id = originData.id;
         destData.email = originData.email;
-        destData.name = originData.name;
+        destData.name = originData.name ? originData.name : originData.username;
         destData.token = originData.token;
       }
     }

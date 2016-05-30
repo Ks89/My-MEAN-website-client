@@ -72,13 +72,17 @@ var sessionToken = function(req, res) {
 var checkIfLastUnlink = function(serviceName, user) {
   switch(serviceName) {
     case 'github':
-      return !user.facebook.id && !user.google.id && !user.local.email;
+      return !user.facebook.id && !user.google.id && !user.local.email && !user.twitter.id && !user.linkedin.id;
     case 'google':
-      return !user.github.id && !user.facebook.id && !user.local.email;
+      return !user.github.id && !user.facebook.id && !user.local.email && !user.twitter.id && !user.linkedin.id;
     case 'facebook':
-      return !user.github.id && !user.google.id && !user.local.email;
+      return !user.github.id && !user.google.id && !user.local.email && !user.twitter.id && !user.linkedin.id;
     case 'local':
-      return !user.github.id && !user.google.id && !user.facebook.id;
+      return !user.github.id && !user.google.id && !user.facebook.id && !user.twitter.id && !user.linkedin.id;
+    case 'twitter':
+      return !user.github.id && !user.google.id && !user.facebook.id && !user.local.email && !user.linkedin.id;
+    case 'linkedin':
+      return !user.github.id && !user.google.id && !user.facebook.id && !user.local.email && !user.twitter.id;
     default:
       console.log('Service name not recognized in checkIfLastUnlink');
       return false;

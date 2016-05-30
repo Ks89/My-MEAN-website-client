@@ -4,6 +4,7 @@ module.exports = function (userRef, passportRef) {
   var GitHubStrategy = require('passport-github2').Strategy;
   var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
   var LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
+  var TwitterStrategy = require('passport-twitter').Strategy;
   var logger = require('../../utils/logger.js');
 
   //----------experimental---
@@ -16,23 +17,31 @@ module.exports = function (userRef, passportRef) {
     //common
     user[serviceName].id = profile.id;
     user[serviceName].token = accessToken;
-    user[serviceName].email = profile.emails[0].value; //get the first email
     //other cases
     switch(serviceName) {
       case 'facebook':
         user[serviceName].name  = profile.name.givenName + ' ' + profile.name.familyName;
         user[serviceName].profileUrl = profile.profileUrl;
+        user[serviceName].email = profile.emails[0].value; //get the first email
         return user;
       case 'github':
         user[serviceName].name  = profile.displayName;
         user[serviceName].username = profile.username;
         user[serviceName].profileUrl = profile.profileUrl;
+        user[serviceName].email = profile.emails[0].value; //get the first email
         return user;
       case 'google':
         user[serviceName].name  = profile.displayName;
+        user[serviceName].email = profile.emails[0].value; //get the first email
         return user;
       case 'linkedin':
         user[serviceName].name  = profile.name.givenName + ' ' + profile.name.familyName;
+        user[serviceName].email = profile.emails[0].value; //get the first email
+        return user;
+      case 'twitter':
+        user[serviceName].name  = profile.displayName ? profile.displayName : profile.username;
+        user[serviceName].username  = profile.username;
+        //twitter doesn't provide profile.email's field
         return user;
     }    
     return user;
@@ -154,12 +163,16 @@ module.exports = function (userRef, passportRef) {
       case 'linkedin':
         return new LinkedInStrategy( thirdpartyConfig[serviceName],
           (req, accessToken, refreshToken, profile, done) => { authenticate(req, accessToken, refreshToken, profile, done, serviceName);});
+      case 'twitter':
+        return new TwitterStrategy( thirdpartyConfig[serviceName],
+          (req, accessToken, refreshToken, profile, done) => { authenticate(req, accessToken, refreshToken, profile, done, serviceName);});
     }
   }
   passportRef.use(buildStrategy('facebook'));
   passportRef.use(buildStrategy('github'));
   passportRef.use(buildStrategy('google'));
   passportRef.use(buildStrategy('linkedin'));
+  passportRef.use(buildStrategy('twitter'));
 
   return module;
 };
