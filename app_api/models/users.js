@@ -26,13 +26,12 @@ var userSchema = new mongoose.Schema({
   twitter : {
     id : String,
     token : String,
-    displayName : String,
+    name : String,
     username : String
   },
   linkedin : {
     id : String,
     token : String,
-    displayName : String,
     email : String,
     name : String
   },
