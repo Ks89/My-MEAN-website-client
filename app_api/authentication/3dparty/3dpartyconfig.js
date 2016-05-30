@@ -10,7 +10,6 @@ module.exports = {
     consumerKey: process.env.TWITTER_CONSUMER_KEY,
     consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
     callbackURL: "http://127.0.0.1:3000/api/auth/twitter/callback",
-    //profileFields: ['id', 'name', 'email-address'],
     userProfileURL: "https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true",
     passReqToCallback : true
   },

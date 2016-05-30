@@ -18,19 +18,19 @@ module.exports.collapseDb = (loggedUser, serviceName) => {
 	console.log(loggedUser);
 	console.log("serviceName: " + serviceName);
 
-	const inputEmail = loggedUser[serviceName] ? loggedUser[serviceName].email : null;
+	const inputId = loggedUser[serviceName] ? loggedUser[serviceName].id : null;
 	
-	console.log("inputEmail " + inputEmail);
+	console.log("inputId " + inputId);
 
-	if(!inputEmail) {
-		console.err("inputEmail is not valid");
+	if(!inputId) {
+		console.err("inputId is not valid");
 		return;
 	}
 
-	const key =  serviceName + '.email';
+	const key =  serviceName + '.id';
 	const query = {};
 	
-	query[key] = inputEmail;
+	query[key] = inputId;
 
 	// query._id = {
 	// 	'$ne' : loggedUser._id
@@ -46,6 +46,7 @@ module.exports.collapseDb = (loggedUser, serviceName) => {
 		console.log("--------------------------******---- users found");
 		console.log(users);
 
+		//retrive the logged user from the db using his _id (id of mongodb's object)
 		var user = users.find(function (el) { 
 			if(el && el._id) {
 				return el._id + '' === loggedUser._id + '';
@@ -62,7 +63,7 @@ module.exports.collapseDb = (loggedUser, serviceName) => {
 		console.log("2*****************************************");
 
 		let duplicatedUser = users.filter(dbUser => {
-			if (dbUser && dbUser[serviceName] && dbUser[serviceName].email === inputEmail && (dbUser._id + '') !== (user._id + '') ) {
+			if (dbUser && dbUser[serviceName] && dbUser[serviceName].id === inputId && (dbUser._id + '') !== (user._id + '') ) {
 				return dbUser;
 			}
 		});
@@ -82,7 +83,7 @@ module.exports.collapseDb = (loggedUser, serviceName) => {
 
 		for(let s of ['google', 'github', 'facebook', 'local', 'linkedin', 'twitter']) {
 			console.log('**--------------------------******----cycle s: ' + s + ', serviceName: ' + serviceName);
-			if(s !== serviceName && (!user[s] || !user[s].email) && duplicatedUser[s]) {
+			if(s !== serviceName && (!user[s] || !user[s].id) && duplicatedUser[s]) {
 				console.log("**--------------------------******---- merging service: " + s);
 				user[s] = duplicatedUser[s];
 				updated = true;
