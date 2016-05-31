@@ -41,7 +41,12 @@ module.exports = function (userRef, passportRef) {
       case 'twitter':
         user[serviceName].name  = profile.displayName ? profile.displayName : profile.username;
         user[serviceName].username  = profile.username;
-        //twitter doesn't provide profile.email's field
+        if(profile.emails && profile.emails[0] && profile.emails[0].value) {
+          //twitter doesn't provide profile.email's field by default. You must 
+          //request the permission to twitter to ask email to users.
+          //To be sure, I decided to check if email's field is available.
+          user[serviceName].email = profile.emails[0].value; //get the first email
+        }
         return user;
     }    
     return user;
