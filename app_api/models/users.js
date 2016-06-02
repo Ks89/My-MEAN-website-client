@@ -3,8 +3,8 @@ var bcrypt   = require('bcrypt-nodejs');
 var jwt = require('jsonwebtoken');
 var logger = require('../utils/logger.js');
 
-var Utils = require('../utils/util.js');
-
+//REMEMBER that if you want to add other properties, you shuld check 
+//this fcuntion -> getFilteredUser in this file
 var userSchema = new mongoose.Schema({
   local: {
     email: String,
@@ -72,9 +72,40 @@ userSchema.methods.generateJwt = function() {
     _id: this._id,
      //I don't want to expose private information here -> I filter 
      //the user object into a similar object without some fields
-    user: Utils.getFilteredUser(this),
+    user: getFilteredUser(this),
     exp: parseFloat(expiry.getTime()),
   }, process.env.JWT_SECRET); // DO NOT KEEP YOUR SECRET IN THE CODE!
 };
+
+function getFilteredUser(user) {
+  //use toObject to get data from mongoose object received as parameter
+  const dbData = user.toObject();
+
+  //clone the user - necessary
+  let cloned = Object.create(user);
+
+  //because this is an utility function used everywhere,
+  //I decided to use ...=undefined, instead of delete ... to achieve 
+  //better performances, as explained here: 
+  //http://stackoverflow.com/questions/208105/how-do-i-remove-a-property-from-a-javascript-object?rq=1
+  for(let prop in dbData) {
+    if(dbData.hasOwnProperty(prop) && prop !== '_id' && prop !== '__v') {
+      //console.log("2-obj." + prop + " = " + dbData[prop]);
+      for(let innerProp in dbData[prop]) {
+        //console.log("3-obj." + innerProp + " = " + dbData[prop][innerProp]);
+        if(innerProp==='profileUrl' || 
+            innerProp==='token' ||
+            innerProp==='username' ||
+            innerProp==='activateAccountToken' ||
+            innerProp==='activateAccountExpires' ||
+            innerProp==='resetPasswordToken' ||
+            innerProp==='resetPasswordExpires') {
+          cloned[prop][innerProp] = undefined;
+        }
+      }
+    } 
+  }
+  return cloned;
+}
 
 mongoose.model('User', userSchema);

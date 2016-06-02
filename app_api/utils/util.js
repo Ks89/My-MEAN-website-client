@@ -32,27 +32,6 @@ class Utils {
 
     return convertedDate.getTime() > systemDate.getTime();
   }
-
-  static getFilteredUser(user) {
-    var cloned = Object.create(user);
-    if(user.local) {
-      cloned.local.hash = undefined; //important => remove the hashed password
-    } 
-    if(user.github) {
-      cloned.github.profileUrl = undefined;
-      cloned.github.token = undefined;
-      cloned.github.username = undefined;
-    }
-    if(user.facebook) {
-      cloned.facebook.profileUrl = undefined;
-      cloned.facebook.token = undefined;
-    }
-    if(user.google) {
-      cloned.google.token = undefined;
-    }
-    //add other services
-    return cloned;
-  }
 }
 
 module.exports = Utils;
