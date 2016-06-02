@@ -14,11 +14,7 @@
 
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/Ladda/0.9.8/ladda-themeless.min.css">
 
-    <style>
-    .sk-cube-grid .sk-cube {
-        background-color: #ffffff !important; 
-    }
-    </style>
+    <link rel="stylesheet" href="/stylesheets/page-loading-sk-cube.css">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
@@ -37,15 +33,10 @@
 
     <div ng-view ng-cloak></div>
     
+    <!-- page loading start -->
     <script src="javascripts/please-wait.min.js"></script>
-    <script type="text/javascript">
-      window.loading_screen = window.pleaseWait({
-        //logo: "/images/home/1.png",
-        backgroundColor: '#123456',
-        loadingHtml: "<div class='sk-cube-grid'><div class='sk-cube sk-cube1'></div><div class='sk-cube sk-cube2'></div><div class='sk-cube sk-cube3'></div><div class='sk-cube sk-cube4'></div><div class='sk-cube sk-cube5'></div><div class='sk-cube sk-cube6'></div><div class='sk-cube sk-cube7'></div><div class='sk-cube sk-cube8'></div><div class='sk-cube sk-cube9'></div></div>"
-      });
-    </script>
-
+    <script src="javascripts/page-loading-sk-cube.js"></script>
+    <!--  page loading end  -->
 
     <!-- Google ReCaptcha -->
     <script src='https://www.google.com/recaptcha/api.js'></script>
@@ -77,10 +68,7 @@
     <script src="/javascripts/stacktrace.min.js"></script>   
 
     <!-- Begin Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent -->
-    <script type="text/javascript">
-        window.cookieconsent_options = {"message":"This website uses cookies to ensure you get the best experience on our website","dismiss":"Got it!","learnMore":"More info","link":null,"theme":"dark-bottom"};
-    </script>
-
+    <script src="/javascripts/cookie-consent-banner.js"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js"></script>
     <!-- End Cookie Consent plugin -->
 
