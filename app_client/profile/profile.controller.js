@@ -101,6 +101,9 @@
       console.log("unlink " + serviceName + " called");
       if(checkIfLastUnlinkProfile(serviceName)) {
         console.log('Last unlink - processing...');
+        
+        //TODO If you remove also this account, 
+        //you'll lose all your accounts and data!
         authentication.unlink(serviceName)
         .then(function(result) {
           console.log('Unlinked: ' + result);
