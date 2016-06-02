@@ -54,6 +54,9 @@ module.exports = function (userRef, passportRef) {
 
   function authenticate(req, accessToken, refreshToken, profile, done, serviceName) {
     console.log(serviceName + ' authentication called');
+    
+    console.log(profile);
+
     process.nextTick(function () {
       var sessionLocalUserId = req.session.localUserId;
       //check if the user is already logged in using the LOCAL authentication
