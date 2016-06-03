@@ -11,9 +11,9 @@
       strapline: ' Welcome'
     };
     vm.sidebar = {
-      content: "Profile page"
+      title: 'Other services',
+      strapline: ' '
     };
-    vm.message = "Profile page";
    
     vm.currentPath = $location.path();
 

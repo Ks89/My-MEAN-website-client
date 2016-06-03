@@ -126,9 +126,7 @@
 
 
 		<div class="col-xs-12 col-sm-3 col-md-2 col-lg-2">
-			<h3>
-				Other services
-			</h3>
+			<page-header content="vm.sidebar"></page-header>
 			<h6>
 				Connect this account with other services!
 				You'll be able to access to the same account with many services.
@@ -152,6 +150,32 @@
 			</div>
 			<div ng-if="vm.linkedin.email.length === 0">
 				<a class="btn btn-primary" ng-href="{{vm.linkedinConnectOauthUrl}}"> <span class="fa fa-linkedin fa-lg"></span> connect</a>  	
+				<br><br>
+			</div>
+			<br><br>
+			<h6>
+				Unlink a service from this account!
+				You won't be able to login anymore with that service.
+			</h6>
+
+			<div ng-if="vm.facebook.email.length > 0">
+				<a class="btn btn-primary" ng-click="vm.unlink('facebook')"> <span class="fa fa-facebook fa-lg"></span> unlink</a> 
+				<br><br>
+			</div>
+			<div ng-if="vm.github.email.length > 0">
+				<a class="btn btn-primary" ng-click="vm.unlink('github')"> <span class="fa fa-github fa-lg"></span> unlink</a> 
+				<br><br>
+			</div>
+			<div ng-if="vm.google.email.length > 0">
+				<a class="btn btn-primary" ng-click="vm.unlink('google')"> <span class="fa fa-google fa-lg"></span> unlink</a>
+				<br><br>
+			</div>
+			<div ng-if="vm.twitter.name.length > 0 && vm.twitter.email.length > 0">
+				<a class="btn btn-primary" ng-click="vm.unlink('twitter')"> <span class="fa fa-twitter fa-lg"></span> unlink</a>  	
+				<br><br>
+			</div>
+			<div ng-if="vm.linkedin.email.length > 0">
+				<a class="btn btn-primary" ng-click="vm.unlink('linkedin')"> <span class="fa fa-linkedin fa-lg"></span> unlink</a>  	
 				<br><br>
 			</div>
 
