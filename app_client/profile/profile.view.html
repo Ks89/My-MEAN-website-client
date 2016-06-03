@@ -1,5 +1,19 @@
 <navigation></navigation>
 
+<script type="text/ng-template" id="myModalContent.html">
+	<div class="modal-header">
+		<h3 class="modal-title">Whould you really destroy your account?</h3>
+	</div>
+	<div class="modal-body">
+		If you unlink tha last service, <strong>you won't be able to login again</strong> to this account.<br>
+		All your saved data will be quicky destroyed.
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" type="button" ng-click="vm.modalDialogOk()">OK</button>
+		<button class="btn btn-warning" type="button" ng-click="vm.modalDialogCancel()">Cancel</button>
+	</div>
+</script>
+
 <div class="container">
 	<page-header content="vm.pageHeader"></page-header>
 
@@ -178,10 +192,7 @@
 				<a class="btn btn-primary" ng-click="vm.unlink('linkedin')"> <span class="fa fa-linkedin fa-lg"></span> unlink</a>  	
 				<br><br>
 			</div>
-
 		</div>
-
-
 	</div>
 </div>
 

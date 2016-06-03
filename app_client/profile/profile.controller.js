@@ -3,8 +3,8 @@
   .module('mySiteApp')
   .controller('profileCtrl', profileCtrl);
 
-  profileCtrl.$inject = ['$location', '$routeParams','authentication', '$window', '$log', '$scope'];
-  function profileCtrl($location, $routeParams, authentication, $window, $log, $scope) {
+  profileCtrl.$inject = ['$location','authentication', '$window', '$log', '$uibModal'];
+  function profileCtrl($location, authentication, $window, $log, $uibModal) {
     var vm = this;
     vm.pageHeader = {
       title: 'Profile',
@@ -99,41 +99,55 @@
     //----------------------------------------------------------
     vm.unlink = function(serviceName) {
       console.log("unlink " + serviceName + " called");
+      
+
       if(checkIfLastUnlinkProfile(serviceName)) {
         console.log('Last unlink - processing...');
+
+        var modalInstance = $uibModal.open({
+          animation: true,
+          templateUrl: 'myModalContent.html',
+          controller: 'ModalInstanceCtrl as vm',
+          size: 'lg'
+        });
         
-        //TODO If you remove also this account, 
-        //you'll lose all your accounts and data!
-        authentication.unlink(serviceName)
-        .then(function(result) {
-          console.log('Unlinked: ' + result);
-          authentication.logout()
+        modalInstance.result.then(function (data) {
+          console.log("Modal clicked on OK button");
+          //TODO If you remove also this account, 
+          //you'll lose all your accounts and data!
+          authentication.unlink(serviceName)
           .then(function(result) {
-            console.log('Logged out: ' + result);
-            $location.path('/home');
+            console.log('Unlinked: ' + result);
+            authentication.logout()
+            .then(function(result) {
+              console.log('Logged out: ' + result);
+              $location.path('/home');
+            },function(reason) {
+              console.log('Impossible to logout: ' + reason);
+              $location.path('/home');
+            });
           },function(reason) {
-            console.log('Impossible to logout: ' + reason);
-            $location.path('/home');
+            console.log('Impossible to unlink: ' + reason);
           });
-        },function(reason) {
-          console.log('Impossible to unlink: ' + reason);
+        }, function (data) {
+          $log.info('Modal dismissed');
         });
       } else {
         console.log('NOT last unlink - checking...');
         if(serviceName==='facebook' || serviceName==='google' || 
-            serviceName==='github' || serviceName==='local' || 
-            serviceName==='linkedin' || serviceName==='twitter') {
-          console.log('NOT last unlink - but service recognized, processing...');
-          authentication.unlink(serviceName)
-          .then(function(result) {
-            console.log(serviceName + ' Unlinked with result user: ');
-            console.log(result.data);
-            $window.location.href = '/profile';
-            console.log("redirected to profile");
-          },function(reason) {
-            console.log('Impossible to unlink: ' + reason);
-            $location.path('/home');
-          });
+          serviceName==='github' || serviceName==='local' || 
+          serviceName==='linkedin' || serviceName==='twitter') {
+            console.log('NOT last unlink - but service recognized, processing...');
+            authentication.unlink(serviceName)
+            .then(function(result) {
+              console.log(serviceName + ' Unlinked with result user: ');
+              console.log(result.data);
+              $window.location.href = '/profile';
+              console.log("redirected to profile");
+            },function(reason) {
+              console.log('Impossible to unlink: ' + reason);
+              $location.path('/home');
+            });
         } else {
           console.error("Unknown service. Abroting operation!");
         }
@@ -159,5 +173,28 @@
           return false;
       }
     }
+  }
+})();
+
+
+
+(function () {
+  angular
+  .module('mySiteApp')
+  .controller('ModalInstanceCtrl', ModalInstanceCtrl);
+
+  ModalInstanceCtrl.$inject = ['$uibModalInstance'];
+  function ModalInstanceCtrl($uibModalInstance) {
+    var vm = this;
+
+    vm.modalDialogOk = function () {
+      $uibModalInstance.close('ok');
+      console.log("OK-----------------------");
+    };
+
+    vm.modalDialogCancel = function () {
+      $uibModalInstance.dismiss('cancel');
+      console.log("CANCEL-----------------------");
+    };
   }
 })();
