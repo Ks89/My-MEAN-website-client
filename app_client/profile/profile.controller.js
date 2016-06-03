@@ -149,7 +149,7 @@
               $location.path('/home');
             });
         } else {
-          console.error("Unknown service. Abroting operation!");
+          console.error("Unknown service. Aborting operation!");
         }
       }
     };
@@ -176,8 +176,7 @@
   }
 })();
 
-
-
+// -------------------- Modal dialog ----------------------
 (function () {
   angular
   .module('mySiteApp')
@@ -186,15 +185,11 @@
   ModalInstanceCtrl.$inject = ['$uibModalInstance'];
   function ModalInstanceCtrl($uibModalInstance) {
     var vm = this;
-
     vm.modalDialogOk = function () {
       $uibModalInstance.close('ok');
-      console.log("OK-----------------------");
     };
-
     vm.modalDialogCancel = function () {
       $uibModalInstance.dismiss('cancel');
-      console.log("CANCEL-----------------------");
     };
   }
 })();
