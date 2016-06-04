@@ -14,6 +14,14 @@
       title: 'Other services',
       strapline: ' '
     };
+
+    vm.credentials = {
+      name : "",
+      email : "",
+      password : ""
+    };
+
+    vm.isWaiting = false;
    
     vm.currentPath = $location.path();
 
@@ -93,6 +101,30 @@
       }
     }
   
+    vm.onSubmit = function () {
+      vm.isWaiting = true;
+      vm.formError = "";
+      if (!vm.credentials.email || !vm.credentials.nickname) {
+        vm.formError = "Email and nickname are required";
+        vm.isWaiting = false;
+      } else {
+        updateProfile();
+      }
+    };
+
+    function updateProfile() {
+      vm.formError = "";
+      // authentication.register(vm.credentials)
+      // .then(function(){
+        vm.isWaiting = false;
+      // }, function(err) {
+        vm.isWaiting = false;
+      //   if(err && err.message) {
+      //     vm.formError = err.message;
+      //   }
+      // });
+    }
+
 
     //----------------------------------------------------------
     //------------------------- COMMON -------------------------

@@ -12,16 +12,16 @@
 
     <div id="navbar-main" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li><a href="/#projects">Projects</a></li>
+        <li ng-class="{ active: navvm.isActive('/projects')}"><a href="/#projects">Projects</a></li>
       </ul>
       <ul class="nav navbar-nav">
-        <li><a href="/#cv">CV</a></li>
+        <li ng-class="{ active: navvm.isActive('/cv')}"><a href="/#cv">CV</a></li>
       </ul>
       <ul class="nav navbar-nav">
-        <li><a href="/#contact">Contact</a></li>
+        <li ng-class="{ active: navvm.isActive('/contact')}"><a href="/#contact">Contact</a></li>
       </ul>
       <ul class="nav navbar-nav">
-        <li><a href="/#about">About</a></li>
+        <li ng-class="{ active: navvm.isActive('/about')}"><a href="/#about">About</a></li>
       </ul>
       <ul class="nav navbar-nav">
         <li ng-show="navvm.isLoggedIn"><a href="/#profile">Profile</a></li>

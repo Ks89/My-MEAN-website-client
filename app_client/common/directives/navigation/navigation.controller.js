@@ -7,12 +7,16 @@
 
   navigationCtrl.$inject = ['$location', 'authentication'];
   function navigationCtrl($location, authentication) {
-    var vm = this;
+    var navvm = this;
 
-    vm.currentPath = $location.path();
+    navvm.currentPath = $location.path();
 
-    vm.currentUser = {
+    navvm.currentUser = {
       'name' : '' 
+    };
+
+    navvm.isActive = function (viewLocation) { 
+        return viewLocation === navvm.currentPath;
     };
 
     authentication.getLoggedUser()
@@ -44,10 +48,10 @@
         authentication.isLoggedIn()
         .then(function(result) {
           console.log('Nav isLoggedIn local  Success: ' + result);
-          vm.isLoggedIn =  result;
+          navvm.isLoggedIn =  result;
         },function(reason) {
           console.log('Nav isLoggedIn local  Failed: ' + reason);
-          vm.isLoggedIn =  false;
+          navvm.isLoggedIn =  false;
         });
       } else {
         console.log("navigation called getLoggedUser but data was null");
@@ -57,29 +61,29 @@
       authentication.isLoggedIn()
       .then(function(result) {
         console.log('Nav isLoggedIn local  Success: ' + result);
-        vm.isLoggedIn =  result;
+        navvm.isLoggedIn =  result;
       },function(reason) {
         console.log('Nav isLoggedIn local  Failed: ' + reason);
-        vm.isLoggedIn =  false;
+        navvm.isLoggedIn =  false;
       });
     });
 
     function setCurrentUser(originData) {
       if(originData) {
-        vm.currentUser = {
+        navvm.currentUser = {
           name : originData.name
         };
       }
     }
 
-    vm.logout = function() {
+    navvm.logout = function() {
       authentication.logout()
       .then(function(result) {
         console.log('Logged out: ' + result);
-        vm.isLoggedIn =  false;
+        navvm.isLoggedIn =  false;
       },function(reason) {
         console.log('Impossibile to logout: ' + reason);
-        vm.isLoggedIn =  false; //FIXME, Choose the value, I don't know, but I suppose "false"
+        navvm.isLoggedIn =  false; //FIXME, Choose the value, I don't know, but I suppose "false"
       });
       $location.path('/');
     };
