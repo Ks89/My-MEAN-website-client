@@ -179,22 +179,22 @@
         var r1 = results[1];
         console.log(r0);
         console.log(r1);
-        console.log('£££££££££££ isLoggedIn - r0: ' + r0 + ', r1: ' + r1 + '. Returning ' + r0 || r1);
+        console.log('isLoggedIn - r0: ' + r0 + ', r1: ' + r1 + '. Returning ' + r0 || r1);
         deferred.resolve(r0 || r1);
         //return false;
       }, function(err) {
-        console.log('£££££££££££ isLoggedIn err - returning false');
+        console.log('isLoggedIn err - returning false');
         deferred.reject(err);
         //return false;
       }).catch(function(err){
-        console.log('£££££££££££ isLoggedIn exception catched - returning false');
+        console.log('isLoggedIn exception catched - returning false');
         deferred.reject(err);
       });
       return deferred.promise;
     };
 
     var saveToken = function (key, token) {
-      console.log('||||||||||||||||||||||||||||||||||saving token with key: ' + key);
+      console.log('saving token with key: ' + key);
       $window.sessionStorage[key] = token;
     };
 
@@ -214,25 +214,25 @@
     var post3dAuthAfterCallback = function() {
       var deferred = $q.defer();
       var thirdauthData = {};
-      console.log('<<<<<<< getLoggedUser');
+      console.log('getLoggedUser');
       getTokenRedis('auth')
       .success(function(tokenData) {
-        console.log('<<<<<<< token obtained from redis');     
-        console.log("<<<<<<< sessionToken " + tokenData + " tokenData.data " + tokenData.data);
+        console.log('token obtained from redis');     
+        console.log("sessionToken " + tokenData + " tokenData.data " + tokenData.data);
         if(tokenData) {
           console.log(tokenData);
           var tokenObj = JSON.parse(tokenData);
-          console.log("<<<<<<< tokenobj: " + tokenObj);
+          console.log("tokenobj: " + tokenObj);
           if(tokenObj) {
             var token = tokenObj.token;
-            console.log("<<<<<<< real token is: " + token);
+            console.log("real token is: " + token);
             saveToken('auth', token);
             deferred.resolve(token);
           }
         }
       })
       .error(function(err) {
-        console.log('<<<<<<< ' + "ERROR experimental...");
+        console.log("ERROR experimental...");
         deferred.reject(err);
       });  
 
@@ -242,61 +242,59 @@
     var getLoggedUser = function() {
       var deferred = $q.defer();
       var thirdauthData = {};
-      console.log('<<<<<<< getLoggedUser');
+      console.log('getLoggedUser');
       getTokenRedis('auth')
       .success(function(tokenData) {
-        console.log('<<<<<<< token obtained from redis');     
-        console.log("<<<<<<< sessionToken " + tokenData + " tokenData.data " + tokenData.data);
+        console.log('token obtained from redis');     
+        console.log("sessionToken " + tokenData + " tokenData.data " + tokenData.data);
         if(tokenData) {
           console.log(tokenData);
           var tokenObj = JSON.parse(tokenData);
-          console.log("<<<<<<< tokenobj: " + tokenObj);
+          console.log("tokenobj: " + tokenObj);
           if(tokenObj) {
             var token = tokenObj.token;
-            console.log("<<<<<<< real token is: " + token);
+            console.log("real token is: " + token);
             saveToken('auth', token);
 
-            console.log("<<<<<<< reading token: ---------> " + token );
+            console.log("reading token: ---------> " + token );
 
             getUserByToken('auth')
             .then(function(data) {
-              console.log('<<<<<<< getUserByToken user ');
-              console.log("<<<<<<< getUserByToken token: ---------> " + data );
+              console.log('getUserByToken user ');
+              console.log("getUserByToken token: ---------> " + data );
 
 
               if(data !== null && data === 'invalid-data') {
                 removeToken('auth');
                 //TODO remove session data with logout
-                console.log('<<<<<<< INVALID DATA !!!!');
+                console.log('INVALID DATA !!!!');
                 deferred.reject(null);
               }
 
               //var userData = JSON.parse(data);
-              console.log('<<<<<<< ');
-              console.log('<<<<<<<  user');
-              console.log('<<<<<<< ');
-              console.log('<<<<<<< ' + data);
+              console.log('user');
+              console.log(data);
               if(data) {
                 var userData = JSON.parse(data);
-                console.log('<<<<<<< ' + userData);
+                console.log(userData);
                 var user = userData.user;
-                console.log('<<<<<<< ' + user);
+                console.log(user);
 
                 if(user._id) {
                   getUserById(user._id)
                   .success(function(data) {
-                    console.log('<<<<<<< ' + "Obtained user by its id");
-                    console.log('<<<<<<< ' + "getUserByToken finished with local user");
-                    console.log('<<<<<<< ' + data);
+                    console.log("Obtained user by its id");
+                    console.log("getUserByToken finished with local user");
+                    console.log(data);
 
-                    console.log('<<<<<<< ' + "updated user with local infos:");
-                    console.log('<<<<<<< ' + user);
+                    console.log("updated user with local infos:");
+                    console.log(user);
 
                     deferred.resolve(JSON.stringify(user));
                   })
                   .error(function(e) {
-                    console.log('<<<<<<< ' + "Impossible to retrieve user by its id");
-                    console.log('<<<<<<< ' + "getUserByToken finished without local user");
+                    console.log("Impossible to retrieve user by its id");
+                    console.log("getUserByToken finished without local user");
                     deferred.resolve(JSON.stringify(user));
                   });
                 }
@@ -306,18 +304,18 @@
                   deferred.reject(null);
                 }  
             },function(err) {
-              console.log('<<<<<<< ' + 'getUserByToken error ');
+              console.log('getUserByToken error ');
               console.log(err);
               removeToken('auth');
               deferred.reject(err);
             });
-            console.log('<<<<<<< ' + "getUserByToken finished returning...");
+            console.log("getUserByToken finished returning...");
             
           }
         }
       })
       .error(function(err) {
-        console.log('<<<<<<< ' + "ERROR experimental...");
+        console.log("ERROR experimental...");
         deferred.reject(err);
       });
       

@@ -256,7 +256,6 @@ var unlinkServiceByName = function(req, serviceName, res) {
 module.exports = {
   decodeToken: decodeToken,
   logout: logout,
-  //isLoggedIn: isLoggedIn,
   sessionToken: sessionToken,
   checkIfLastUnlink: checkIfLastUnlink,
   removeServiceFromDb: removeServiceFromDb,
