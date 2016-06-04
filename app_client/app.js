@@ -89,20 +89,20 @@
 					      	console.log("OPEN PROFILE....");
 					      	defer.resolve(result); 
 					      }
-				    },function(reason) {
-				    	console.log('Profile resolve ------------------------ ERROR: ' + reason);
+					  },function(reason) {
+					  	console.log('Profile resolve ------------------------ ERROR: ' + reason);
 				      //$location.path('/login');
 				      defer.reject(reason); 
-				    });
+				  });
 					},function(reason) {
-			    	console.log('Profile resolve post3dAuthAfterCallback ------------------------ ERROR: ' + reason);
+						console.log('Profile resolve post3dAuthAfterCallback ------------------------ ERROR: ' + reason);
 			      //$location.path('/login');
 			      defer.reject(reason); 
-			    });
+			  });
 					return defer.promise;
 				}]
 			}
-				
+			
 		})
 		.otherwise({redirectTo: '/'});
 
@@ -112,48 +112,37 @@
 			rewriteLinks: false
 		});
 
-		$provide.decorator("$exceptionHandler", ['$delegate', 'errorLogService', function($delegate, errorLogService) {
+		$provide.decorator("$exceptionHandler", ['$delegate', 'logServer', function($delegate, logServer) {
 			return function(exception, cause) {
 				$delegate(exception, cause);
-				console.log("Provider decorator OK - calling errorLogService");
-				errorLogService.log(exception, cause);
+				console.log("Provider decorator OK - calling logServer");
+				logServer.error(exception, cause);
 			};
 		}]);
-  }
+	}
 
-
-  	// angular
-  	// .module('mySiteApp')
-  	// .provider("$exceptionHandler", {
-  	// 	$get: function( errorLogService ) {
-  	// 		return( errorLogService );
-  	// 	}
-  	// });
-
-
-
-  	angular
-  	.module('mySiteApp')
-  	.config(['$routeProvider', '$locationProvider', '$httpProvider', '$provide', config])
-  	.run(['$rootScope','$location', '$window', function($root, $location, $window) {
-  		$root.$on('$routeChangeStart', function(e, curr, prev) {
-  			if (curr.$$route && curr.$$route.resolve) {
+	angular
+	.module('mySiteApp')
+	.config(['$routeProvider', '$locationProvider', '$httpProvider', '$provide', config])
+	.run(['$rootScope','$location', '$window', function($root, $location, $window) {
+		$root.$on('$routeChangeStart', function(e, curr, prev) {
+			if (curr.$$route && curr.$$route.resolve) {
 	      // Show a loading message until promises aren't resolved
 	      console.log("run root on true -> STARTING");
 	      console.log("run start->e: ");
 	      console.log(e);
 	      $root.loadingView = true;
-	    }
-	  });
-  		$root.$on('$routeChangeSuccess', function(e, curr, prev) {
+	  }
+	});
+		$root.$on('$routeChangeSuccess', function(e, curr, prev) {
 	    // Hide loading message
 	    console.log("run success->e: ");
 	    console.log(e);
 	    console.log("run root on false -> SUCCESS");
 	    $root.loadingView = false;
 	    $window.loading_screen.finish();
-	  });
-  		$root.$on('$routeChangeError', function(e, curr, prev, rejection) {
+	});
+		$root.$on('$routeChangeError', function(e, curr, prev, rejection) {
 	    // Hide loading message
 	    console.log("run error->e: ");
 	    console.log(e);
@@ -161,6 +150,6 @@
 	    $location.url('/login');
 	    $root.loadingView = true;
 	    $window.loading_screen.finish();
-	  });
-  }]);
- })();
+	});
+	}]);
+})();

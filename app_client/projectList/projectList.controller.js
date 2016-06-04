@@ -4,8 +4,8 @@
   .module('mySiteApp')
   .controller('projectListCtrl', projectListCtrl);
 
-  projectListCtrl.$inject = ['projectsData'];
-  function projectListCtrl (projectsData) {
+  projectListCtrl.$inject = ['projectsData', 'logServer'];
+  function projectListCtrl (projectsData, logServer) {
     var vm = this;
     
     vm.pageHeader = {
@@ -13,6 +13,10 @@
       strapline: ''
     };
     
+    
+    logServer.debug("Debug errore");
+
+
     //init the timeline into the sidebar
     vm.sidebarTitle = "What can you do?";
     vm.sidebar = {

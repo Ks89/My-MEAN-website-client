@@ -7,12 +7,12 @@
 
   angular
   .module('mySiteApp')
-  .service('errorLogService', errorLogService);
+  .service('logServer', logServer);
 
-  errorLogService.$inject = ['$log', '$window'];
-  function errorLogService ($log, $window) {
+  logServer.$inject = ['$log', '$window'];
+  function logServer ($log, $window) {
 
-    var log = function( exception, cause ) {
+    var error = function( exception, cause ) {
       // Pass off the error to the default error handler
       // on the AngualrJS logger. This will output the
       // error to the console (and let the application
@@ -25,7 +25,7 @@
       // logging the same error over and over again! All
       // that would do is add noise to the log.
       try {
-        console.log("Called errorLogService");
+        console.log("Called logServer");
 
         const url = '/api/log/logError';
         const errorMessage = exception.toString();
@@ -60,7 +60,43 @@
           console.log(err.message); 
         });
 
-        console.log("errorLogService finished!");
+        console.log("logServer finished!");
+  
+        } catch (loggingError) {
+          // For Developers - log the log-failure.
+          $log.warn( "Error logging failed" );
+          $log.log(loggingError);
+        }
+    };
+
+    var debug = function( exceptionMsg ) {
+      try {
+        console.log("Called logServer");
+
+        const url = '/api/log/logDebug';
+        const error = new Error(exceptionMsg);
+        const errorMessage = error.toString();
+
+
+        StackTrace.fromError(error)
+        .then(function() {
+          
+          console.log("errorMessage: " + errorMessage);
+
+          StackTrace.report(null, url, errorMessage)
+          .then(function (data) {
+            console.log("data: " + data);
+          })
+          .catch(function(response) {
+            console.log("response: " + response);
+          });
+        })
+        .catch(function(err) { 
+          console.log("Stacktrace error on report.");
+          console.log(err); 
+        });
+
+        console.log("logServer finished!");
   
         } catch (loggingError) {
           // For Developers - log the log-failure.
@@ -71,7 +107,8 @@
 
     // Return the logging function.
     return {
-      log: log
+      error: error,
+      debug: debug
     };  
   }
 })();
