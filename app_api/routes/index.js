@@ -10,7 +10,8 @@ module.exports = function (express) {
 	var ctrlProjects = require('../controllers/projects');
 	var ctrlContact = require('../controllers/contact');
 	var ctrlUser = require('../controllers/users');
-
+	var ctrlProfile = require('../controllers/profile');
+	
 	// projects
 	router.get('/projects', ctrlProjects.projectsList);
 	router.get('/projecthome', ctrlProjects.projectsListHomepage);
@@ -50,6 +51,8 @@ module.exports = function (express) {
 	// -----------------------------------------------------------------------------------------
 	// -----------------------------------------------------------------------------------------
 	router.use(restAuthMiddleware.restAuthenticationMiddleware);
+	//profile
+	router.post('/profile', ctrlProfile.update);
 
 	//common - 3dparty + local
 	router.get('/logout', ctrlAuthCommon.logout);

@@ -36,7 +36,6 @@
 				</div>
 			</div>
 
-
 			<br>
 
 			<div class="col-md-6 col-sm-12">
@@ -62,105 +61,7 @@
 		      <button type="button" ng-click="vm.onSubmit()" ladda="vm.isWaiting" data-style="slide-right" data-spinner-color="Azure" class="btn btn-primary ladda-button"><span class="ladda-label">Update!</span></button>
 		    </form>
 		  </div>
-
-			<!-- <br>
-
-			<div class="row">
-				<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" ng-if="vm.local.email.length > 0">
-					<div class="well"> 
-						<h3 class="text-primary"><span class="fa fa-user"></span> Local</h3>
-
-						<div ng-if="vm.local.email.length > 0">
-							<p>
-								<strong>name</strong>: {{ vm.local.name }}<br>
-								<strong>email</strong>: {{ vm.local.email }}<br>
-							</p>
-							<a class="btn btn-primary" href="" ng-click="vm.unlink('local')">Unlink Local</a>&nbsp;&nbsp;  
-						</div>
-						<div ng-if="vm.local.email.length === 0">
-							You are logged using a third-party service. You cannot link a local account!
-							&nbsp;&nbsp;  		
-						</div>
-					</div>
-				</div>
-
-				<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" ng-if="vm.facebook.email.length > 0">
-					<div class="well"> 
-						<h3 class="text-primary"><span class="fa fa-facebook"></span> Facebook</h3>
-
-						<div>
-							<p>
-								<strong>name</strong>: {{ vm.facebook.name }}<br>
-								<strong>email</strong>: {{ vm.facebook.email }}<br>
-								<strong>id</strong>: {{vm.facebook.id }}
-							</p>
-							<a class="btn btn-primary" ng-click="vm.unlink('facebook')">Unlink Facebook</a>&nbsp;&nbsp;  
-						</div>
-					</div>
-				</div>
-
-				<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" ng-if="vm.github.email.length > 0">
-					<div class="well"> 
-						<h3 class="text-primary"><span class="fa fa-github"></span> Github</h3>
-
-						<div>
-							<p>
-								<strong>name</strong>: {{ vm.github.name }}<br>
-								<strong>email</strong>: {{ vm.github.email }}<br>
-								<strong>id</strong>: {{vm.github.id }}<br>
-							</p>
-							<a class="btn btn-primary" ng-click="vm.unlink('github')">Unlink Github</a>&nbsp;&nbsp;
-						</div>
-					</div>
-				</div>
-
-				<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" ng-if="vm.google.email.length > 0">
-					<div class="well"> 
-						<h3 class="text-primary"><span class="fa fa-google"></span> Google</h3>
-
-						<div>
-							<p>
-								<strong>name</strong>: {{ vm.google.name }}<br>
-								<strong>email</strong>: {{ vm.google.email }}<br>
-								<strong>id</strong>: {{vm.google.id }}<br>
-							</p>
-							<a class="btn btn-primary" ng-click="vm.unlink('google')">Unlink Google</a>&nbsp;&nbsp;
-						</div>
-					</div>
-				</div>
-
-				<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" ng-if="vm.twitter.name.length > 0 || vm.twitter.email.length > 0">
-					<div class="well"> 
-						<h3 class="text-primary"><span class="fa fa-twitter"></span> Twitter</h3>
-
-						<div>
-							<p>
-								<strong>name</strong>: {{ vm.twitter.name }}<br>
-								<strong>email</strong>: {{ vm.twitter.email }}<br>
-								<strong>id</strong>: {{vm.twitter.id }}<br>
-							</p>
-							<a class="btn btn-primary" ng-click="vm.unlink('twitter')">Unlink Twitter</a>&nbsp;&nbsp;  
-						</div>
-					</div>
-				</div>
-
-				<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" ng-if="vm.linkedin.email.length > 0">
-					<div class="well"> 
-						<h3 class="text-primary"><span class="fa fa-linkedin"></span> Linkedin</h3>
-
-						<div>
-							<p>
-								<strong>name</strong>: {{ vm.linkedin.name }}<br>
-								<strong>email</strong>: {{ vm.linkedin.email }}<br>
-								<strong>id</strong>: {{vm.linkedin.id }}<br>
-							</p>
-							<a class="btn btn-primary" ng-click="vm.unlink('linkedin')">Unlink Linkedin</a>&nbsp;&nbsp;
-						</div>
-					</div>
-				</div>
-			</div> -->
 		</div>
-
 
 		<div class="col-xs-12 col-sm-3 col-md-2 col-lg-2">
 			<page-header content="vm.sidebar"></page-header>

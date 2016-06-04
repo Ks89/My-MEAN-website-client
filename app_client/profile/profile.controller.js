@@ -3,8 +3,8 @@
   .module('mySiteApp')
   .controller('profileCtrl', profileCtrl);
 
-  profileCtrl.$inject = ['$location','authentication', '$window', '$log', '$uibModal'];
-  function profileCtrl($location, authentication, $window, $log, $uibModal) {
+  profileCtrl.$inject = ['$location','authentication', 'profileData', '$window', '$log', '$uibModal'];
+  function profileCtrl($location, authentication, profileData, $window, $log, $uibModal) {
     var vm = this;
     vm.pageHeader = {
       title: 'Profile',
@@ -16,9 +16,12 @@
     };
 
     vm.credentials = {
+      id: "",
+      serviceName: "",
       name : "",
-      email : "",
-      password : ""
+      surname: "",
+      nickname: "",
+      email : ""
     };
 
     vm.isWaiting = false;
@@ -69,6 +72,9 @@
           setObjectValues(user.google, vm.google);
           setObjectValues(user.twitter, vm.twitter);
           setObjectValues(user.linkedin, vm.linkedin);
+          if(user.profile) {
+            vm.credentials = user.profile;
+          }
           console.log("---------------setted----------------");
         }
       } else {
@@ -104,25 +110,45 @@
     vm.onSubmit = function () {
       vm.isWaiting = true;
       vm.formError = "";
-      if (!vm.credentials.email || !vm.credentials.nickname) {
-        vm.formError = "Email and nickname are required";
-        vm.isWaiting = false;
-      } else {
+      // if (!vm.credentials.email || !vm.credentials.nickname) {
+      //   vm.formError = "Email and nickname are required";
+      //   vm.isWaiting = false;
+      // } else {
         updateProfile();
-      }
+      //}
     };
 
     function updateProfile() {
       vm.formError = "";
-      // authentication.register(vm.credentials)
-      // .then(function(){
+      console.log("vm.credentials:");
+      console.log(vm.credentials);
+
+      if(vm.facebook.id) {
+        vm.credentials.id = vm.facebook.id;
+        vm.credentials.serviceName = 'facebook';
+      } else if(vm.google.id) {
+        vm.credentials.id = vm.google.id;
+        vm.credentials.serviceName = 'google';
+      } else if(vm.github.id) {
+        vm.credentials.id = vm.github.id;
+        vm.credentials.serviceName = 'github';
+      } else if(vm.linkedin.id) {
+        vm.credentials.id = vm.linkedin.id;
+        vm.credentials.serviceName = 'linkedin';
+      } else if(vm.twitter.id) {
+        vm.credentials.id = vm.twitter.id;
+        vm.credentials.serviceName = 'twitter';
+      }
+
+      profileData.update(vm.credentials)
+      .then(function(data){
         vm.isWaiting = false;
-      // }, function(err) {
+      }, function(err) {
         vm.isWaiting = false;
-      //   if(err && err.message) {
-      //     vm.formError = err.message;
-      //   }
-      // });
+        if(err && err.message) {
+          vm.formError = err.message;
+        }
+      });
     }
 
 

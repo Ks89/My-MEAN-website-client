@@ -3,6 +3,20 @@ var bcrypt   = require('bcrypt-nodejs');
 var jwt = require('jsonwebtoken');
 var logger = require('../utils/logger.js');
 
+//profileSchema with profile infos not related to authentication
+//These are info used only into the view
+var profileSchema = new mongoose.Schema({
+  name: String,
+  surname: String,
+  nickname: String,
+  email: String,
+  updated: Date,
+  visible: {
+    type: Boolean,
+    required: true 
+  }
+});
+
 //REMEMBER that if you want to add other properties, you shuld check 
 //this fcuntion -> getFilteredUser in this file
 var userSchema = new mongoose.Schema({
@@ -49,8 +63,8 @@ var userSchema = new mongoose.Schema({
     name : String,
     username: String,
     profileUrl: String
-  }
-
+  },
+  profile: profileSchema
 });
 
 userSchema.methods.setPassword = function(password) {
@@ -105,6 +119,7 @@ function getFilteredUser(user) {
       }
     } 
   }
+  console.log("Cloned user data:" + cloned);
   return cloned;
 }
 
