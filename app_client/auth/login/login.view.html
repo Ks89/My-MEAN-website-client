@@ -3,17 +3,8 @@
 <div class="container">
   <page-header content="vm.pageHeader"></page-header>
 
-  <a class="btn btn-primary" ng-href="{{vm.facebookOauthUrl}}">Login with Facebook</a>
-  <a class="btn btn-success" ng-href="{{vm.githubOauthUrl}}">Login with Github</a>
-  <a class="btn btn-danger" ng-href="{{vm.googleOauthUrl}}">Login with Google</a>
-  <br><br>
-  <a class="btn btn-default" ng-href="{{vm.linkedinOauthUrl}}">Login with Linkedin</a>
-  <a class="btn btn-info" ng-href="{{vm.twitterOauthUrl}}">Login with Twitter</a>
-
-  </br>
-
   <div class="row">
-    <div class="col-md-6 col-sm-8">
+    <div class="col-xs-12 col-sm-8 col-md-6 col-lg-6 vertical-divider-right">
       <p class="lead">Not a member? Please <a href="/#register">register</a> first.</p>
       <form>
         <div role="alert" ng-show="vm.formError" class="alert alert-danger">{{ vm.formError }}</div>
@@ -30,6 +21,17 @@
 
         <a href="/#forgot">Forgot password?</a>
       </form>
+    </div>
+    <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 vertical-divider-left">
+      <a class="btn btn-primary" ng-href="{{vm.facebookOauthUrl}}"> <span class="fa fa-facebook fa-lg"></span> Login with facebook</a>
+      <br><br>
+      <a class="btn btn-success" ng-href="{{vm.githubOauthUrl}}"> <span class="fa fa-github fa-lg"></span> Login with github</a>
+      <br><br>
+      <a class="btn btn-danger" ng-href="{{vm.googleOauthUrl}}"> <span class="fa fa-google fa-lg"></span> Login with google</a>
+      <br><br>
+      <a class="btn btn-default" ng-href="{{vm.linkedinOauthUrl}}"> <span class="fa fa-linkedin fa-lg"></span> Login with linkedin</a>
+      <br><br>
+      <a class="btn btn-info" ng-href="{{vm.twitterOauthUrl}}"> <span class="fa fa-twitter fa-lg"></span> Login with twitter</a>
     </div>
   </div>
 </div>
