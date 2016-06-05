@@ -76,7 +76,14 @@ module.exports = function (userRef, passportRef) {
             }
 
             //----------------- experimental ---------------
-            userUpdated = authExperimentalFeatures.collapseDb(user, serviceName, req);
+            authExperimentalFeatures.collapseDb(user, serviceName, req);
+            .then(function(result) {
+              console.log("collapseDb promise: " + result);
+              return done(null, result);
+            }, function(reason) {
+              console.log("ERROR collapseDb promise");
+              return done(null, user);
+            });
             //----------------------------------------------
             
             return done(null, userUpdated);
@@ -140,12 +147,16 @@ module.exports = function (userRef, passportRef) {
             console.log("Saving already existing user.");
 
             //----------------- experimental ---------------
-            authExperimentalFeatures.collapseDb(savedUser, serviceName, req, done);
+            authExperimentalFeatures.collapseDb(savedUser, serviceName, req)
+            .then(function(result) {
+              console.log("collapseDb promise: " + result);
+              return done(null, result);
+            }, function(reason) {
+              console.log("ERROR collapseDb promise");
+              return done(null, savedUser);
+            });
             //----------------------------------------------
-
-            console.log("after auth-experimental-collapse-db with savedUser:" + savedUser);
-
-            //return done(null, savedUser);
+            
           });
         }
       }
