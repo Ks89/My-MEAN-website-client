@@ -26,6 +26,8 @@
 
     vm.isWaiting = false;
     vm.formStatus = 'danger';
+    vm.formDisable = false;
+
     vm.currentPath = $location.path();
 
     vm.bigProfileImage = '../images/profile/bigProfile.png';
@@ -119,7 +121,8 @@
     };
 
     function updateProfile() {
-      vm.formMessage = "";
+      vm.formDisable = true;
+      vm.formDisable = true;
       console.log("vm.credentials:");
       console.log(vm.credentials);
 
@@ -145,13 +148,14 @@
         vm.isWaiting = false;
         vm.formMessage = data;
         vm.formStatus = 'success';
+        vm.formDisable = false;
       }, function(err) {
         vm.isWaiting = false;
         vm.formMessage = err;
         vm.formStatus = 'danger';
+        vm.formDisable = false;
       });
     }
-
 
     //----------------------------------------------------------
     //------------------------- COMMON -------------------------
