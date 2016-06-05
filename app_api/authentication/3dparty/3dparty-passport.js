@@ -76,7 +76,7 @@ module.exports = function (userRef, passportRef) {
             }
 
             //----------------- experimental ---------------
-            authExperimentalFeatures.collapseDb(user, serviceName, req);
+            authExperimentalFeatures.collapseDb(user, serviceName, req)
             .then(function(result) {
               console.log("collapseDb promise: " + result);
               return done(null, result);
