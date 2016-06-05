@@ -35,9 +35,7 @@ module.exports.update = function(req, res) {
       Utils.sendJSONresponse(res, 404, 'Cannot update your profile.' +
                              'Please try to logout and login again.');
     }
-
-    user.profile = profileObj;
-
+    user.profile = profileObj; //update profile
     user.save((err, savedUser) => {
       if (err) { 
         Utils.sendJSONresponse(res, 404, 'Error while updating your profile. Please retry.');
