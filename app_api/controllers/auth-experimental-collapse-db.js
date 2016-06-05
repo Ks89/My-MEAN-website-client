@@ -2,12 +2,12 @@ var passport = require('passport');
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var logger = require('../utils/logger.js');
-
+var authCommon = require('./auth-common.js');
 var Utils = require('../utils/util.js');
 var async = require('async');
 
 
-module.exports.collapseDb = (loggedUser, serviceName) => {
+module.exports.collapseDb = (loggedUser, serviceName, req, done) => {
 
 	if(!loggedUser || !serviceName) {
 		console.err("impossibile to collapseDb becase either loggedUser or serviceName are null or undefined.");
@@ -79,6 +79,11 @@ module.exports.collapseDb = (loggedUser, serviceName) => {
 		console.log(user);
 		console.log("**--------------------------******----");
 
+
+		console.log("3*****************************************");
+		console.log(duplicatedUser);
+		console.log("3*****************************************");
+
 		let updated = false;
 
 		//ATTENTION: at the moment I decided to manage profile infos as services.
@@ -101,18 +106,26 @@ module.exports.collapseDb = (loggedUser, serviceName) => {
 				if (err) {
 					console.log("Error while saving collapsed users");
 					throw err;
-				}
-				console.log("Saved modified user: " + savedUser); 
-			});
+				} else {
+					console.log("Saved modified user: " + savedUser); 
+          console.log("updating auth token with user infos");
+          req.session.authToken = authCommon.generateJwtCookie(savedUser);
+          console.log('req.session.authToken finished collapse with: ' + req.session.authToken);
 
-			console.log("--------------------------******---- removing duplicated user [OK]");
+          console.log("--------------------------******---- removing duplicated user [OK]");
 
-			User.findByIdAndRemove(duplicatedUser._id, err => {
-				if (err) {
-					throw err;
-				}
-			  // we have deleted the user
-			  console.log('--------------------------******---- duplicated User deleted! [OK]');
+					User.findByIdAndRemove(duplicatedUser._id, err => {
+						if (err) {
+							throw err;
+						} else {
+							// we have deleted the user
+					  	console.log('--------------------------******---- duplicated User deleted! [OK]');
+					  	console.log("savedUser: " + savedUser);
+					  	return done(null, savedUser);
+							
+						}	  
+					}); 
+        }
 			});
 		} else {
 			console.log("I can't do anything because there isn't a duplicated users! [OK]");

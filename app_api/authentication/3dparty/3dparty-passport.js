@@ -76,7 +76,7 @@ module.exports = function (userRef, passportRef) {
             }
 
             //----------------- experimental ---------------
-            authExperimentalFeatures.collapseDb(user, serviceName);
+            userUpdated = authExperimentalFeatures.collapseDb(user, serviceName, req);
             //----------------------------------------------
             
             return done(null, userUpdated);
@@ -132,7 +132,7 @@ module.exports = function (userRef, passportRef) {
           // and finally update the user with the currecnt users credentials
           console.log("User already exists but I'm not previously logged in");
           var user = updateUser(req.user, accessToken, profile, serviceName);        
-          user.save( err => {
+          user.save( (err, savedUser) => {
             if (err) { 
               throw err; 
             }
@@ -140,11 +140,12 @@ module.exports = function (userRef, passportRef) {
             console.log("Saving already existing user.");
 
             //----------------- experimental ---------------
-            authExperimentalFeatures.collapseDb(user, serviceName);
+            authExperimentalFeatures.collapseDb(savedUser, serviceName, req, done);
             //----------------------------------------------
 
+            console.log("after auth-experimental-collapse-db with savedUser:" + savedUser);
 
-            return done(null, user);
+            //return done(null, savedUser);
           });
         }
       }
