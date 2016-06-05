@@ -81,7 +81,9 @@ module.exports.collapseDb = (loggedUser, serviceName) => {
 
 		let updated = false;
 
-		for(let s of ['google', 'github', 'facebook', 'local', 'linkedin', 'twitter']) {
+		//ATTENTION: at the moment I decided to manage profile infos as services.
+		//I'll remove this logic splitting profile logic from authentication logic.
+		for(let s of ['google', 'github', 'facebook', 'local', 'linkedin', 'twitter', 'profile']) {
 			console.log('**--------------------------******----cycle s: ' + s + ', serviceName: ' + serviceName);
 			if(s !== serviceName && (!user[s] || !user[s].id) && duplicatedUser[s]) {
 				console.log("**--------------------------******---- merging service: " + s);

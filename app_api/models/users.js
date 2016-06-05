@@ -113,7 +113,10 @@ function getFilteredUser(user) {
             innerProp==='activateAccountToken' ||
             innerProp==='activateAccountExpires' ||
             innerProp==='resetPasswordToken' ||
-            innerProp==='resetPasswordExpires') {
+            innerProp==='resetPasswordExpires' ||
+            innerProp==='_id' || //to remove '_id', '__v' and 'updated' into user.profile
+            innerProp==='__v' ||
+            innerProp==='updated') {
           cloned[prop][innerProp] = undefined;
         }
       }

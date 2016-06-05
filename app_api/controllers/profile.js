@@ -33,9 +33,9 @@ module.exports.update = function(req, res) {
     console.log("update");
     console.log(user);
     if (err) { 
-      Utils.sendJSONresponse(res, 404, err);
+      Utils.sendJSONresponse(res, 404, 'Error while updating your profile. Please retry.');
     } else {
-      Utils.sendJSONresponse(res, 200, user);
+      Utils.sendJSONresponse(res, 200, 'Profile updated successfully!');
     } 
   });
 };

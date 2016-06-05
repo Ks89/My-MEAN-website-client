@@ -41,7 +41,7 @@
 			<div class="col-md-6 col-sm-12">
 		  	<p class="lead">Update your profile</p>
 		    <form>
-		      <div role="alert" ng-show="vm.formError" class="alert alert-danger">{{ vm.formError }}</div>
+		      <div role="alert" ng-show="vm.formMessage" class="alert alert-{{vm.formStatus}}">{{ vm.formMessage}}</div>
 		      <div class="form-group">
 		        <label for="name">Name</label>
 		        <input type="text" class="form-control" id="name" placeholder="Enter your name" ng-model="vm.credentials.name">

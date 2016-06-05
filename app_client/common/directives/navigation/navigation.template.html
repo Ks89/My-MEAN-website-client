@@ -24,7 +24,7 @@
         <li ng-class="{ active: navvm.isActive('/about')}"><a href="/#about">About</a></li>
       </ul>
       <ul class="nav navbar-nav">
-        <li ng-show="navvm.isLoggedIn"><a href="/#profile">Profile</a></li>
+        <li ng-show="navvm.isLoggedIn" ng-class="{ active: navvm.isActive('/profile')}"><a href="/#profile">Profile</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li ng-hide="navvm.isLoggedIn"><a href="/#login/?page={{ navvm.currentPath }}">Sign in</a></li>

@@ -25,7 +25,7 @@
     };
 
     vm.isWaiting = false;
-   
+    vm.formStatus = 'danger';
     vm.currentPath = $location.path();
 
     vm.bigProfileImage = '../images/profile/bigProfile.png';
@@ -109,9 +109,9 @@
   
     vm.onSubmit = function () {
       vm.isWaiting = true;
-      vm.formError = "";
+      vm.formMessage = "";
       // if (!vm.credentials.email || !vm.credentials.nickname) {
-      //   vm.formError = "Email and nickname are required";
+      //   vm.formMessage = "Email and nickname are required";
       //   vm.isWaiting = false;
       // } else {
         updateProfile();
@@ -119,7 +119,7 @@
     };
 
     function updateProfile() {
-      vm.formError = "";
+      vm.formMessage = "";
       console.log("vm.credentials:");
       console.log(vm.credentials);
 
@@ -143,11 +143,12 @@
       profileData.update(vm.credentials)
       .then(function(data){
         vm.isWaiting = false;
+        vm.formMessage = data;
+        vm.formStatus = 'success';
       }, function(err) {
         vm.isWaiting = false;
-        if(err && err.message) {
-          vm.formError = err.message;
-        }
+        vm.formMessage = err;
+        vm.formStatus = 'danger';
       });
     }
 
