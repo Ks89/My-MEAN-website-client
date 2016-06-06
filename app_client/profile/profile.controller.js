@@ -16,6 +16,7 @@
     };
 
     vm.credentials = {
+      localUserEmail: "",
       id: "",
       serviceName: "",
       name : "",
@@ -126,7 +127,10 @@
       console.log("vm.credentials:");
       console.log(vm.credentials);
 
-      if(vm.facebook.id) {
+      if(vm.local.email) {
+        vm.credentials.localUserEmail = vm.local.email;
+        vm.credentials.serviceName = 'local';
+      } else if(vm.facebook.id) {
         vm.credentials.id = vm.facebook.id;
         vm.credentials.serviceName = 'facebook';
       } else if(vm.google.id) {

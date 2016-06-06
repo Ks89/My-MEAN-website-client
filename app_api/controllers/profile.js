@@ -15,26 +15,36 @@ module.exports.update = function(req, res) {
 
   console.log("profile is:");
   console.log(req.body);
-
   var query = {};
-  query[req.body.serviceName + '.id'] = req.body.id;
 
-  console.log(query);
+  if(req.body.serviceName !== 'local') {
+    query[req.body.serviceName + '.id'] = req.body.id;
+    console.log(query);
+  } else {
+    //local authentication    
+    query[req.body.serviceName + '.email'] = req.body.localUserEmail;
+    console.log(query);
+  }
 
   var profileObj = {
-    name : req.body.name,
-    surname : req.body.surname,
-    nickname : req.body.nickname,
-    email : req.body.email,
-    updated : new Date(),
-    visible : true
-  };
+      name : req.body.name,
+      surname : req.body.surname,
+      nickname : req.body.nickname,
+      email : req.body.email,
+      updated : new Date(),
+      visible : true
+    };
+    
+  console.log(profileObj);
 
   User.findOne(query, (err, user) => {
     if (err) {
       Utils.sendJSONresponse(res, 404, 'Cannot update your profile.' +
                              'Please try to logout and login again.');
     }
+
+    console.log("user profile to update: " + user);
+
     user.profile = profileObj; //update profile
     user.save((err, savedUser) => {
       if (err) { 
