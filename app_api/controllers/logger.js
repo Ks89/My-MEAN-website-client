@@ -2,27 +2,37 @@ var logger = require('../utils/logger.js');
 var Utils = require('../utils/util.js');
 
 /* POST to log a debug message */
-/* /api/logDebug */
-module.exports.logDebug = (req, res) => {
-	console.log('Called logDebug = ');
-	console.log(req.body);
-	logger.debug('Called logDebug: ' + JSON.stringify(req.body.message));
-	if(req.body) {
-		Utils.sendJSONresponse(res, 200, "Debug logged on server: " + req.body);
-	} else {
-		Utils.sendJSONresponse(res, 404, "Impossible to log debug on server, body is empty");
-	}
+/* /api/error */
+module.exports.error = (req, res) => {
+	log(req, res, "error");
+};
+
+/* POST to log a debug message */
+/* /api/debug */
+module.exports.debug = (req, res) => {
+	log(req, res, "debug");
 };
 
 /* POST to log an error message */
-/* /api/logError */
-module.exports.logError = (req, res) => {
-	console.error("Called logError = ");
+/* /api/exception */
+module.exports.exception = (req, res) => {
+	console.error("Called log-exception = ");
 	console.error(req.body);
-	logger.error('Called logError: ' + JSON.stringify(req.body));
+	logger.error('Called log-exception: ' + JSON.stringify(req.body));
 	if(req.body) {
-		Utils.sendJSONresponse(res, 200, "Error logged on server: " + req.body);
+		Utils.sendJSONresponse(res, 200, "Exception logged on server: " + req.body);
 	} else {
-		Utils.sendJSONresponse(res, 404, "Impossible to log error on server, body is empty");
+		Utils.sendJSONresponse(res, 404, "Impossible to log exception on server, body is empty");
 	}
 };
+
+function log(req, res, type) {
+	console.log('Called log-' + type + ' = ');
+	console.log(req.body);
+	logger.error('Called log-' + type + ': ' + JSON.stringify(req.body.message));
+	if(req.body) {
+		Utils.sendJSONresponse(res, 200, type + "logged on server: " + req.body);
+	} else {
+		Utils.sendJSONresponse(res, 404, "Impossible to log" + type + " on server, body is empty");
+	}
+}

@@ -3,8 +3,8 @@
   .module('mySiteApp')
   .controller('profileCtrl', profileCtrl);
 
-  profileCtrl.$inject = ['$location','authentication', 'profileData', '$window', '$log', '$uibModal'];
-  function profileCtrl($location, authentication, profileData, $window, $log, $uibModal) {
+  profileCtrl.$inject = ['$location','authentication', 'profileData', 'logServer', '$window', '$log', '$uibModal'];
+  function profileCtrl($location, authentication, profileData, logServer, $window, $log, $uibModal) {
     var vm = this;
     vm.pageHeader = {
       title: 'Profile',
@@ -81,9 +81,11 @@
           console.log("---------------setted----------------");
         }
       } else {
+        logServer.error("Profile called getLoggedUser but data was null");
         console.log("Profile called getLoggedUser but data was null");
       }
     }, function(error){
+      logServer.error("profile getLoggedUser",error);
       console.log(error);
     });
 
@@ -154,6 +156,7 @@
         vm.formStatus = 'success';
         vm.formDisable = false;
       }, function(err) {
+        logServer.error("profile update", err);
         vm.isWaiting = false;
         vm.formMessage = err;
         vm.formStatus = 'danger';
@@ -166,7 +169,7 @@
     //----------------------------------------------------------
     vm.unlink = function(serviceName) {
       console.log("unlink " + serviceName + " called");
-      
+      logServer.debug("unlink " + serviceName + " called");
 
       if(checkIfLastUnlinkProfile(serviceName)) {
         console.log('Last unlink - processing...');
@@ -190,10 +193,12 @@
               console.log('Logged out: ' + result);
               $location.path('/home');
             },function(reason) {
+              logServer.error("profile impossible to logout", reason);
               console.log('Impossible to logout: ' + reason);
               $location.path('/home');
             });
           },function(reason) {
+            logServer.error("profile error unlink", reason);
             console.log('Impossible to unlink: ' + reason);
           });
         }, function (data) {
@@ -212,10 +217,12 @@
               $window.location.href = '/profile';
               console.log("redirected to profile");
             },function(reason) {
+              logServer.error("profile impossible to unlink", reason);
               console.log('Impossible to unlink: ' + reason);
               $location.path('/home');
             });
         } else {
+          logServer.error("Unknown service. Aborting operation!");
           console.error("Unknown service. Aborting operation!");
         }
       }
@@ -236,6 +243,7 @@
         case 'twitter':
           return vm.facebook.name==='' && vm.google.name==='' && vm.local.name==='' && vm.github.name==='' && vm.linkedin.name==='';
         default:
+          logServer.error("Service name not recognized in profile checkIfLastUnlink");
           console.log('Service name not recognized in profile checkIfLastUnlink');
           return false;
       }

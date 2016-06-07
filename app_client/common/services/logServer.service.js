@@ -12,7 +12,7 @@
   logServer.$inject = ['$log', '$window'];
   function logServer ($log, $window) {
 
-    var error = function( exception, cause ) {
+    var exception = function( exception, cause ) {
       // Pass off the error to the default error handler
       // on the AngualrJS logger. This will output the
       // error to the console (and let the application
@@ -27,7 +27,7 @@
       try {
         console.log("Called logServer");
 
-        const url = '/api/log/logError';
+        const url = '/api/log/exception';
         const errorMessage = exception.toString();
 
         StackTrace.get()
@@ -49,7 +49,7 @@
 
           StackTrace.report(stackframes, url, dataToSendString)
           .then(function (data) {
-            console.log("data: " + data);
+            console.log("logserver exception res: " + data);
           })
           .catch(function(response) {
             console.log("response: " + response);
@@ -69,46 +69,49 @@
         }
     };
 
-    var debug = function( exceptionMsg ) {
+    var error = function(message, object) {
+      if(object) {
+        log('/api/log/error', message);
+      } else {
+        log('/api/log/error', message + " - " + object);
+      }
+      
+    };
+
+    var debug = function(message, object) {
+      if(object) {
+        log('/api/log/debug', message);
+      } else {
+        log('/api/log/debug', message + " - " + object);
+      }
+    };
+
+    function log(url, message) {
       try {
         console.log("Called logServer");
 
-        const url = '/api/log/logDebug';
-        const error = new Error(exceptionMsg);
-        const errorMessage = error.toString();
+        console.log("message: " + message);
 
-
-        StackTrace.fromError(error)
-        .then(function() {
-          
-          console.log("errorMessage: " + errorMessage);
-
-          StackTrace.report(null, url, errorMessage)
-          .then(function (data) {
-            console.log("data: " + data);
-          })
-          .catch(function(response) {
-            console.log("response: " + response);
-          });
+        StackTrace.report(null, url, message)
+        .then(function (data) {
+          console.log("logserver res: " + data);
         })
-        .catch(function(err) { 
-          console.log("Stacktrace error on report.");
-          console.log(err); 
+        .catch(function(response) {
+          console.log("response: " + response);
         });
 
-        console.log("logServer finished!");
-  
-        } catch (loggingError) {
-          // For Developers - log the log-failure.
-          $log.warn( "Error logging failed" );
-          $log.log(loggingError);
-        }
-    };
+      } catch (loggingError) {
+        // For Developers - log the log-failure.
+        $log.warn( "Error logging failed" );
+        $log.log(loggingError);
+      }
+    }
 
     // Return the logging function.
     return {
-      error: error,
-      debug: debug
+      exception: exception,
+      debug: debug,
+      error: error
     };  
   }
 })();

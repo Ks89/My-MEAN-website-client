@@ -116,7 +116,7 @@
 			return function(exception, cause) {
 				$delegate(exception, cause);
 				console.log("Provider decorator OK - calling logServer");
-				logServer.error(exception, cause);
+				logServer.exception(exception, cause);
 			};
 		}]);
 	}
