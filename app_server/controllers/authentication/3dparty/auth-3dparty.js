@@ -1,6 +1,6 @@
 var passport = require('passport');
-var authCommon = require('./auth-common.js');
-var logger = require('../utils/logger.js');
+var authCommon = require('../common/auth-common.js');
+var logger = require('../../../utils/logger.js');
 
 //------------- INFORMATIONS -------------
 // GET /auth/****

@@ -9,7 +9,7 @@ var morgan = require('morgan');
 var session = require('express-session');
 var bodyParser = require('body-parser');
 //logger created with winston
-var logger = require("./app_api/utils/logger");
+var logger = require("./app_server/utils/logger");
 
 var redis   = require("redis"); //it's really useful?
 var RedisStore = require('connect-redis')(session);
@@ -29,8 +29,8 @@ var fs = require('fs');
 var passport = require('passport');
 
 //require for mongo
-require('./app_api/models/db');
-require('./app_api/authentication/passport')(passport);
+require('./app_server/models/db');
+require('./app_server/controllers/authentication/passport')(passport);
 
 var app = express();
 
@@ -154,7 +154,7 @@ app.use(compression());
 // --------------------------------------- ROUTES ---------------------------------------
 // dedicated routes for angular logging with stacktracejs
 // these router aren't protected with csrf, because declared before app.use(csrf()).
-var loggerApi = require('./app_api/routes/log-api')(express);
+var loggerApi = require('./app_server/routes/log-api')(express);
 app.use('/api/log', loggerApi);
 
 // enable middleware CSRF by csurf package
@@ -168,7 +168,7 @@ app.use(function (req, res, next) {
 });
 
 // APIs for all route protected with CSRF (all routes except for angular log's service)
-var routesApi = require('./app_api/routes/index')(express);
+var routesApi = require('./app_server/routes/index')(express);
 app.use('/api', routesApi);
 // --------------------------------------------------------------------------------------
 

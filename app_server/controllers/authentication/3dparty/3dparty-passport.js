@@ -5,10 +5,10 @@ module.exports = function (userRef, passportRef) {
   var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
   var LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
   var TwitterStrategy = require('passport-twitter').Strategy;
-  var logger = require('../../utils/logger.js');
+  var logger = require('../../../utils/logger.js');
 
   //----------experimental---
-  var authExperimentalFeatures = require('../../controllers/auth-experimental-collapse-db.js');
+  var authExperimentalFeatures = require('../common/auth-experimental-collapse-db.js');
   //-------------------------
 
   function updateUser (user, accessToken, profile, serviceName) {

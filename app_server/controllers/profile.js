@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var Utils = require('../utils/util.js');
 var logger = require('../utils/logger.js');
-var authCommon = require('./auth-common.js');
+var authCommon = require('./authentication/common/auth-common.js');
 
 /* POST to updated the profile */
 /* /api/profile */

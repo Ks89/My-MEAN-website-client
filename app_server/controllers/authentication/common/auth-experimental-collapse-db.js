@@ -1,9 +1,9 @@
 var passport = require('passport');
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
-var logger = require('../utils/logger.js');
+var logger = require('../../../utils/logger.js');
 var authCommon = require('./auth-common.js');
-var Utils = require('../utils/util.js');
+var Utils = require('../../../utils/util.js');
 var async = require('async');
 
 

@@ -4,9 +4,9 @@ module.exports = function (express) {
 
 	var restAuthMiddleware = require('./rest-auth-middleware');
 
-	var ctrlAuthLocal = require('../controllers/auth-local');
-	var ctrlAuth3dParty = require('../controllers/auth-3dparty');
-	var ctrlAuthCommon = require('../controllers/auth-common');
+	var ctrlAuthLocal = require('../controllers/authentication/local/auth-local');
+	var ctrlAuth3dParty = require('../controllers/authentication/3dparty/auth-3dparty');
+	var ctrlAuthCommon = require('../controllers/authentication/common/auth-common');
 	var ctrlProjects = require('../controllers/projects');
 	var ctrlContact = require('../controllers/contact');
 	var ctrlUser = require('../controllers/users');

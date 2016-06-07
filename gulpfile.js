@@ -45,7 +45,7 @@ var prod = function(task) {
 
 // var mainBowerFiles = require('main-bower-files');
 
-var testJs = ['app_api/**/*.js',
+var testJs = ['app_server/**/*.js',
 		'!app_client/lib/*.js',
 		'app_client/about/**/*.js',
 		'app_client/auth/**/*.js',
@@ -220,7 +220,7 @@ gulp.task('default',
 		'server',
 
 		function watcher(done) {
-		    gulp.watch(['app_api/**/*.js', 'app_client/**/*.js', 'public/**/*.js', 'app.js'], 
+		    gulp.watch(['app_server/**/*.js', 'app_client/**/*.js', 'public/**/*.js', 'app.js'], 
 		    	gulp.parallel('scripts'));
 		    gulp.watch('public/stylesheets/**/*.css', gulp.parallel('styles'));
 		    gulp.watch('public/**/*.js', browserSync.reload);
@@ -229,7 +229,7 @@ gulp.task('default',
 		//function watcher() {
 			//gulp.watch('**/*.*', browserSync.reload
 			// if(!isprod) {
-			// 	var watcher = gulp.watch(['app_api/**/*.js',
+			// 	var watcher = gulp.watch(['app_server/**/*.js',
 			// 	'app_client/**/*.js',
 			// 	'public/**/*.js',
 			// 	'app.js',

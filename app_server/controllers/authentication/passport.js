@@ -2,7 +2,7 @@
 module.exports = function (passportRef) {
   var mongoose = require('mongoose');
   var User = mongoose.model('User');
-  var logger = require('../utils/logger.js');
+  var logger = require('../../utils/logger.js');
   
   //set this to serialize and deserialize informations like the user
   passportRef.serializeUser(function(user, done) {

@@ -1,8 +1,8 @@
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
-var logger = require('../utils/logger.js');
+var logger = require('../../../utils/logger');
 var jwt = require('jsonwebtoken');
-var Utils = require('../utils/util.js');
+var Utils = require('../../../utils/util');
 var async = require('async');
 
 /* GET to decode a JWT passing the token itself*/
