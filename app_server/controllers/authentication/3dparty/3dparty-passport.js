@@ -78,15 +78,15 @@ module.exports = function (userRef, passportRef) {
             //----------------- experimental ---------------
             authExperimentalFeatures.collapseDb(user, serviceName, req)
             .then(function(result) {
-              console.log("collapseDb promise: " + result);
+              console.log("collapseDb localuser with 3dpartyauth promise: " + result);
               return done(null, result);
             }, function(reason) {
-              console.log("ERROR collapseDb promise");
+              console.log("ERROR collapseDb localuser with 3dpartyauth promise");
               return done(null, user);
             });
             //----------------------------------------------
             
-            return done(null, userUpdated);
+            //return done(null, userUpdated);
           });
         });
       } else {
