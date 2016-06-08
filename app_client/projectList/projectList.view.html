@@ -22,7 +22,7 @@
             <div class="media-body">
               <!-- <div class="row">
                 <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">  -->
-                  <h4 class="media-heading"><a ng-href="/#/projects/{{ project._id }}">{{ project.name }}</a></h4>
+                  <h4 class="media-heading"><a href="{{project.url}}"> <span class="fa fa-github" style="color:ligthblue"></span></a>&nbsp;&nbsp;&nbsp;<a ng-href="/#/projects/{{ project._id }}">{{ project.name }}</a></h4>
                   <p class="name">{{ project.shortDescription }}</p>
                   <p>
                     <span class="label label-warning label-facility" ng-repeat="tag in project.tags">
@@ -65,30 +65,6 @@
             </div>
           </div>
         </li>
-        <!-- <li>
-          <div class="timeline-badge info"><i class="glyphicon glyphicon-floppy-disk"></i></div>
-          <div class="timeline-panel">
-            <div class="timeline-heading">
-              <h4 class="timeline-title">Be curious</h4>
-              <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> 11 hours ago via Twitter</small></p>
-            </div>
-            <div class="timeline-body">
-              <p>Send me an email for more information</p>
-              <hr>
-              <div class="btn-group">
-                <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-                  <i class="glyphicon glyphicon-cog"></i> <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                  <li><a href="#">Action</a></li>
-                  <li><a href="#">Another action</a></li>
-                  <li class="divider"></li>
-                  <li><a href="#">Separated link</a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </li> -->
       </ul>
     </div>
   </div>

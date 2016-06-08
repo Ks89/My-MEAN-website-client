@@ -85,8 +85,6 @@ module.exports = function (userRef, passportRef) {
               return done(null, user);
             });
             //----------------------------------------------
-            
-            //return done(null, userUpdated);
           });
         });
       } else {
