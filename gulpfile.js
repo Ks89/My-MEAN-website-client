@@ -1,6 +1,7 @@
 var gulp        = require('gulp');
 var jshint      = require('gulp-jshint');
 var uglify      = require('gulp-uglify');
+const mocha 	= require('gulp-mocha');
 var concat      = require('gulp-concat');
 // var less        = require('gulp-less');
 var minifyCSS   = require('gulp-minify-css');
@@ -45,58 +46,40 @@ var prod = function(task) {
 
 // var mainBowerFiles = require('main-bower-files');
 
-var testJs = ['app_server/**/*.js',
-		'!app_client/lib/*.js',
-		'app_client/about/**/*.js',
-		'app_client/auth/**/*.js',
-		'app_client/common/**/*.js',
-		'app_client/contact/**/*.js',
-		'app_client/cv/**/*.js',
-		'app_client/home/**/*.js',
-		'app_client/profile/**/*.js',
-		'app_client/projectDetail/**/*.js',
-		'app_client/projectList/**/*.js',
-		'app_client/app.js',
+var test = ['unit-test-server/**/*.js'];
+
+var testHintJs = ['app_server/**/*.js',
+		'app_client/**/*.js',
 		'app.js',
+		'public/javascripts/*.js',
+		'!public/javascripts/stacktrace.min.js',
+		'!public/javascripts/please-wait.min.js',
 		'!public/angular/*.js',
-		'public/javascripts/bs-docs-sidebar.js',
+		'!public/angular-ladda/*.js',
 		'!public/ngGallery/**/*'
 		];
 
-var app_clientJs = ['app_client/app.js',
-			'app_client/home/home.controller.js',
-			'app_client/projectList/projectList.controller.js',
-			'app_client/projectDetail/projectDetail.controller.js',
-			'app_client/cv/cv.controller.js',
-			'app_client/contact/contact.controller.js',
-			'app_client/about/about.controller.js',
-			'app_client/profile/profile.controller.js',
-			'app_client/auth/login/login.controller.js',
-			'app_client/auth/register/register.controller.js',
-			'app_client/auth/resetPassword/resetPassword.controller.js',
-			'app_client/auth/forgotPassword/forgotPassword.controller.js',
-			'app_client/auth/activateAccount/activateAccount.controller.js',
-			'app_client/common/factories/underscore.factory.js',
-			'app_client/common/services/authentication.service.js',
-			'app_client/common/services/contactData.service.js',
-			'app_client/common/services/projectsData.service.js',
-			'app_client/common/services/profileData.service.js',
-			'app_client/common/services/logServer.service.js',
-			'app_client/common/filters/addHtmlLineBreaks.filter.js',
-			'app_client/common/directives/navigation/navigation.controller.js',
-			'app_client/common/directives/navigation/navigation.controller.js',
-			'app_client/common/directives/navigation/navigation.directive.js',
-			'app_client/common/directives/pageHeader/pageHeader.directive.js',
-			'app_client/common/directives/footerGeneric/footerGeneric.directive.js',
-			'app_client/common/directives/footerGeneric/footerGeneric.controller.js'
-			];
+var app_clientJs = ['app_client/**/*.js'];
 
-gulp.task('test', function() {
-	return gulp.src(testJs /*, {since: gulp.lastRun('test')}*/)
+gulp.task('hint', function() {
+	return gulp.src(testHintJs /*, {since: gulp.lastRun('hint')}*/)
 	.pipe(jshint())
 	.pipe(jshint.reporter('default'))
 	.pipe(jshint.reporter('fail'));
 });
+
+gulp.task('test', function() {
+	return gulp.src(test, { read: false })
+    .pipe(mocha({
+      reporter: 'spec'
+    }))
+    .on('error', gutil.log);
+});
+
+
+// gulp.task('watch-mocha', function() {
+//     gulp.watch(['lib/**', 'test/**'], ['test']);
+// });
 
 
 // gulp.task('revreplace', function() {
@@ -109,13 +92,13 @@ gulp.task('test', function() {
 
 
 gulp.task('scripts',
-	gulp.series('test', function scriptsInternal() {
+	gulp.series('hint', function scriptsInternal() {
           // var glob = mainBowerFiles('*.js');
           // glob.push('app/scripts/**/*.js');
           return gulp.src(/*glob*/ 
 			//only app_client files, because the generated file will be imported into app_client/index.html
 			app_clientJs , {	sourcemaps: true /*,
-				since: gulp.lastRun('test')*/} )
+				since: gulp.lastRun('hint')*/} )
           .pipe(sourcemaps.init())
           .pipe(dev(sourcemaps.init()))
           .pipe(cached('ugly'))
