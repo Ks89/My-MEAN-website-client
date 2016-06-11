@@ -5,22 +5,33 @@ module.exports = function(config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: '',
+    basePath: './',
 
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['jasmine', 'requirejs'],
-
+    frameworks: ['jasmine'],
 
     // list of files / patterns to load in the browser
-    files: [
-      {pattern: 'app_client/*.js', included: false},
-      {pattern: 'test/*.js', included: false},
-      {pattern: 'unit-test/*.js', included: false},
-      {pattern: 'e2e-test/*.js', included: false}
+     files: [
+      'node_modules/jquery/dist/jquery.js',
+      'node_modules/angular/angular.js',
+      'node_modules/angular-route/angular-route.js',
+      'node_modules/angular-sanitize/angular-sanitize.js',
+      'node_modules/ladda/dist/spin.min.js',
+      'node_modules/ladda/dist/ladda.min.js',
+      'node_modules/angular-mocks/angular-mocks.js',
+      'node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js',
+      'node_modules/underscore/underscore.js',
+      'public/angular-ladda/angular-ladda.min.js',
+      'public/javascripts/please-wait.min.js', //before the other please-wait js
+      'public/javascripts/*.js',
+      'public/ngGallery/src/js/ngGallery.js',
+      'app_client/app.js',
+      'app_client/**/*.js',
+      'test-client-unit/**/*.js',
+      'test-client-integration/**/*.js',
     ],
-
 
     // list of files to exclude
     exclude: [
@@ -58,7 +69,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome'],
+    browsers: ['Chrome', 'Firefox'],
 
 
     // Continuous Integration mode
@@ -68,6 +79,13 @@ module.exports = function(config) {
     // Concurrency level
     // how many browser should be started simultaneous
     concurrency: Infinity,
+
+    plugins: [
+      'karma-chrome-launcher',
+      'karma-firefox-launcher',
+      'karma-jasmine',
+      'karma-junit-reporter'
+    ],
 
     junitReporter: {
       outputFile: 'test_out/unit.xml',
