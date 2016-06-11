@@ -5,8 +5,8 @@
 
   <div class="row">
     <div class="col-xs-12 col-md-12 col-lg-12">
-      <uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides">
-        <uib-slide ng-repeat="slide in slides track by slide.id" index="slide.id">
+      <uib-carousel active="vm.active" interval="vm.myInterval" no-wrap="vm.noWrapSlides">
+        <uib-slide ng-repeat="slide in vm.slides track by slide.id" index="slide.id">
           <img ng-src="{{slide.image}}" style="margin:auto;">
           <div class="carousel-caption">
            <h4>{{slide.header}}</h4>
@@ -18,7 +18,7 @@
 
     <div class="container marketing">
       <div class="row">
-        <div ng-repeat="thumb in thumbs">
+        <div ng-repeat="thumb in vm.thumbs">
           <div class="col-lg-4">
             <img class="img-thumbnail" ng-src="{{thumb.image}}" alt="Generic placeholder image" width="140" height="140">
             <h2>{{thumb.header}}</h2>
@@ -30,7 +30,7 @@
 
       <hr class="featurette-divider"> <!-- initial divider --> 
 
-      <div ng-repeat="bigThumb in bigThumbs">
+      <div ng-repeat="bigThumb in vm.bigThumbs">
         <div class="row featurette">
           <div class="col-md-7 {{$index%2==0 ? '' : 'col-md-push-5'}}">
             <h2 class="featurette-heading">{{bigThumb.header}} <span class="text-muted">It'll blow your mind.</span></h2>

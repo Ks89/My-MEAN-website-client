@@ -4,8 +4,8 @@
   .module('mySiteApp')
   .controller('homeCtrl', homeCtrl);
 
-  homeCtrl.$inject = ['$scope', 'projectsData'];
-  function homeCtrl ($scope, projectsData) {
+  homeCtrl.$inject = ['projectsData'];
+  function homeCtrl (projectsData) {
     var vm = this;
 
     vm.pageHeader = {
@@ -18,15 +18,15 @@
     vm.message = "Welcome to my website";
     
     //carousel slides
-    $scope.myInterval = 3000;
-    $scope.noWrapSlides = false;
-    $scope.active = 0;
+    vm.myInterval = 3000;
+    vm.noWrapSlides = false;
+    vm.active = 0;
     var currIndex = 0;
 
     //variables for carousel, thumbnails and big thumbnails
-    var slides = $scope.slides = [];
-    var thumbs = $scope.thumbs = [];
-    var bigThumbs = $scope.bigThumbs = [];
+    var slides = vm.slides = [];
+    var thumbs = vm.thumbs = [];
+    var bigThumbs = vm.bigThumbs = [];
 
     projectsData.projectListForHomepage()
     .success(function(data) {
