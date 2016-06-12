@@ -86,6 +86,7 @@
     "karma-firefox-launcher": "^1.0.0",
     "karma-jasmine": "^1.0.2",
     "karma-junit-reporter": "^1.0.0",
+    "karma-phantomjs-launcher": "^1.0.0",
     "karma-requirejs": "^1.0.0",
     "main-bower-files": "^2.13.0",
     "merge2": "^1.0.2",
