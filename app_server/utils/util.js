@@ -11,6 +11,7 @@ class Utils {
   }
 
   static getTextFormattedDate(date) {
+    console.log("getTextFormattedDate " + date);
     if(!_und.isDate(date)) {
       throw "Not a valid date";
     }
@@ -25,6 +26,7 @@ class Utils {
   }
 
   static isJwtValidDate(decodedJwtToken) {
+    console.log("isJwtValidDate " + decodedJwtToken);
 
     //isObject: JavaScript arrays and functions 
     //          are objects, while (normal) strings and numbers are not.
@@ -41,9 +43,13 @@ class Utils {
       throw "Expire date not found";
     }
 
-    if(!_und.isDate(decodedJwtToken.exp)) {
-      throw "Not a valid date";
+    //decodedJwtToken.exp is a Float that represents the exp date
+    //it must be a float, and not a Date 
+    if(_und.isDate(decodedJwtToken.exp)) {
+      throw "Not a float expiration date";
     }
+
+    //TODO FIXME add a check to be sure that decodedJwtToken.exp can be converted into a date
 
     let convertedDate = new Date();
     convertedDate.setTime(decodedJwtToken.exp);

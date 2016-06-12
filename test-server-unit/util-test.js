@@ -11,6 +11,7 @@ describe('util', () => {
   const NOT_VALID_DATE = 'Not a valid date';
   const NOT_VALID_DECODEDJWT = 'Not a valid decodedJwtToken';
   const EXPIRE_DATE_NOT_FOUND = 'Expire date not found';
+  const NOT_FLOAT_EXP_DATE = 'Not a float expiration date';
  
   describe('#getTextFormattedDate()', () => {
     describe('---YES---', () => {
@@ -62,7 +63,7 @@ describe('util', () => {
   });
 
   describe('#isJwtValidDate()', () => {
-    var mockJwt;
+    var mockJwt, mockJwtNotFloat;
     var mockLocalUser;
     var dateExpire = new Date();
 
@@ -80,8 +81,13 @@ describe('util', () => {
       };
     });
 
-    function getUpdatedJwtMock (date) {
-      mockJwt.exp = date;
+    function getJwtMockWithFloatDate (date) {
+      mockJwt.exp = parseFloat(date.getTime()); //float date
+      return mockJwt;
+    }
+
+    function getJwtMockNoFloatDate (date) {
+      mockJwt.exp = date; //real date object, not a float
       return mockJwt;
     }
 
@@ -89,7 +95,7 @@ describe('util', () => {
       it('should return true, becase jwt is valid', function () {
         //valid for 10 minutes (10*60*1000)
         dateExpire.setTime(dateExpire.getTime() + 600000); 
-        expect(util.isJwtValidDate(getUpdatedJwtMock(dateExpire))).to.equal(true);
+        expect(util.isJwtValidDate(getJwtMockWithFloatDate(dateExpire))).to.equal(true);
       });
     });
 
@@ -97,20 +103,23 @@ describe('util', () => {
       it('should return false, becase jwt is expired', function () {
         //invalid because expired 10 minutes ago (10*60*1000)
         dateExpire.setTime(dateExpire.getTime() - 600000); 
-        expect(util.isJwtValidDate(getUpdatedJwtMock(dateExpire))).to.equal(false);
+        expect(util.isJwtValidDate(getJwtMockWithFloatDate(dateExpire))).to.equal(false);
       });
 
       it('should return false, becase jwt is expired exactly in this moment', function () {
         //invalid because expired 0 seconds ago
         dateExpire.setTime(dateExpire.getTime()); 
-        expect(util.isJwtValidDate(getUpdatedJwtMock(dateExpire))).to.equal(false);
+        expect(util.isJwtValidDate(getJwtMockWithFloatDate(dateExpire))).to.equal(false);
       });
     });
 
     describe('---ERRORS---', () => {
-      it('should catch -not a valid date- exception', function () {
-        //invalid date (previously tested with many values)
-        expect(() => util.isJwtValidDate(getUpdatedJwtMock(undefined))).to.throw(NOT_VALID_DATE);
+      it('should catch -not a float expiration date- exception', function () {
+        //date must be a float into the jwt token and not a Date's object
+        expect(() => util.isJwtValidDate(getJwtMockNoFloatDate(dateExpire))).to.throw(NOT_FLOAT_EXP_DATE);
+        //TODO FIXME improve adding other test, to be sure that it will work also 
+        //passing null, undefined and so on :) 
+        //I know that it won't work :( -> update util.js
       });
 
       it('should catch -not a valid decodedJwtToken- exception', function () {
