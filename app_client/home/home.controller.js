@@ -24,13 +24,13 @@
     var currIndex = 0;
 
     //variables for carousel, thumbnails and big thumbnails
-    var slides = vm.slides = [];
-    var thumbs = vm.thumbs = [];
-    var bigThumbs = vm.bigThumbs = [];
+    vm.slides = [];
+    vm.thumbs = [];
+    vm.bigThumbs = [];
 
     projectsData.projectListForHomepage()
     .success(function(data) {
-      for (var key in data) {
+      for (var key in data) {       
         if (data.hasOwnProperty(key)) {
           addSlide(
             data[key].projectHomeView.carouselImagePath, 
@@ -53,7 +53,7 @@
     });
 
     var addSlide = function(cImagePath, cText, cHeader) {
-      slides.push({
+      vm.slides.push({
         header: cHeader,
         image: cImagePath,
         text: cText,
@@ -61,7 +61,7 @@
       });
     };
     var addThumbs = function(tImagePath, tText, tHeader, tPath) {
-      thumbs.push({
+      vm.thumbs.push({
         header: tHeader,
         image: tImagePath,
         text: tText,
@@ -69,7 +69,7 @@
       });
     };
     var addBigThumbs = function(tbImagePath, tbText, tbHeader) {
-      bigThumbs.push({
+      vm.bigThumbs.push({
         header: tbHeader,
         image: tbImagePath,
         text: tbText
