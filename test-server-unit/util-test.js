@@ -15,7 +15,7 @@ describe('util', () => {
  
   describe('#getTextFormattedDate()', () => {
     describe('---YES---', () => {
-      it('should return the current formatted date as string', function () {
+      it('should return the current formatted date as string', () => {
         const date = new Date();
         const day = date.getDay();
         const month = date.getMonth();
@@ -28,7 +28,7 @@ describe('util', () => {
         expect(util.getTextFormattedDate(date)).to.be.equal(expected);
       });
 
-      it('should return the formatted date also for 1970', function () {
+      it('should return the formatted date also for 1970', () => {
         const date = new Date(0);
         const day = date.getDay();
         const month = date.getMonth();
@@ -43,7 +43,7 @@ describe('util', () => {
     });
 
     describe('---ERRORS---', () => {
-      it('should catch -not a valid date- exception', function () {    
+      it('should catch -not a valid date- exception', () => {    
 
         expect(() => util.getTextFormattedDate("not a date")).to.throw(NOT_VALID_DATE);
         expect(() => util.getTextFormattedDate(undefined)).to.throw(NOT_VALID_DATE);
@@ -92,7 +92,7 @@ describe('util', () => {
     }
 
     describe('---YES---', () => {
-      it('should return true, becase jwt is valid', function () {
+      it('should return true, becase jwt is valid', () => {
         //valid for 10 minutes (10*60*1000)
         dateExpire.setTime(dateExpire.getTime() + 600000); 
         expect(util.isJwtValidDate(getJwtMockWithFloatDate(dateExpire))).to.equal(true);
@@ -100,13 +100,13 @@ describe('util', () => {
     });
 
     describe('---NO---', () => {
-      it('should return false, becase jwt is expired', function () {
+      it('should return false, becase jwt is expired', () => {
         //invalid because expired 10 minutes ago (10*60*1000)
         dateExpire.setTime(dateExpire.getTime() - 600000); 
         expect(util.isJwtValidDate(getJwtMockWithFloatDate(dateExpire))).to.equal(false);
       });
 
-      it('should return false, becase jwt is expired exactly in this moment', function () {
+      it('should return false, becase jwt is expired exactly in this moment', () => {
         //invalid because expired 0 seconds ago
         dateExpire.setTime(dateExpire.getTime()); 
         expect(util.isJwtValidDate(getJwtMockWithFloatDate(dateExpire))).to.equal(false);
@@ -114,7 +114,7 @@ describe('util', () => {
     });
 
     describe('---ERRORS---', () => {
-      it('should catch -not a float expiration date- exception', function () {
+      it('should catch -not a float expiration date- exception', () => {
         //date must be a float into the jwt token and not a Date's object
         expect(() => util.isJwtValidDate(getJwtMockNoFloatDate(dateExpire))).to.throw(NOT_FLOAT_EXP_DATE);
         //TODO FIXME improve adding other test, to be sure that it will work also 
@@ -122,16 +122,16 @@ describe('util', () => {
         //I know that it won't work :( -> update util.js
       });
 
-      it('should catch -not a valid decodedJwtToken- exception', function () {
+      it('should catch -not a valid decodedJwtToken- exception', () => {
         //invalid token
         expect(() => util.isJwtValidDate(undefined)).to.throw(NOT_VALID_DECODEDJWT);
         expect(() => util.isJwtValidDate(null)).to.throw(NOT_VALID_DECODEDJWT);
-        expect(() => util.isJwtValidDate(0)).to.throw(NOT_VALID_DECODEDJWT);
-        expect(() => util.isJwtValidDate(-1)).to.throw(NOT_VALID_DECODEDJWT);
-        expect(() => util.isJwtValidDate(1)).to.throw(NOT_VALID_DECODEDJWT);
-        expect(() => util.isJwtValidDate(-0)).to.throw(NOT_VALID_DECODEDJWT);
-        expect(() => util.isJwtValidDate(2)).to.throw(NOT_VALID_DECODEDJWT);
         expect(() => util.isJwtValidDate(-5)).to.throw(NOT_VALID_DECODEDJWT);
+        expect(() => util.isJwtValidDate(-1)).to.throw(NOT_VALID_DECODEDJWT);
+        expect(() => util.isJwtValidDate(-0)).to.throw(NOT_VALID_DECODEDJWT);
+        expect(() => util.isJwtValidDate(0)).to.throw(NOT_VALID_DECODEDJWT);
+        expect(() => util.isJwtValidDate(1)).to.throw(NOT_VALID_DECODEDJWT);
+        expect(() => util.isJwtValidDate(2)).to.throw(NOT_VALID_DECODEDJWT);
         expect(() => util.isJwtValidDate("")).to.throw(NOT_VALID_DECODEDJWT);
         expect(() => util.isJwtValidDate("undefined")).to.throw(NOT_VALID_DECODEDJWT);
         expect(() => util.isJwtValidDate("null")).to.throw(NOT_VALID_DECODEDJWT);
@@ -143,7 +143,7 @@ describe('util', () => {
         expect(() => util.isJwtValidDate(new RegExp('/fooRegex/','i'))).to.throw(NOT_VALID_DECODEDJWT);
       });
 
-      it('should catch -expire date not found- exceptions', function () {
+      it('should catch -expire date not found- exceptions', () => {
         //expire date not found into decodedJwtToken
         delete mockJwt.exp;
         expect(() => util.isJwtValidDate(mockJwt)).to.throw(EXPIRE_DATE_NOT_FOUND);
