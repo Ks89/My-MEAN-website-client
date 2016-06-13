@@ -1,9 +1,14 @@
 'use strict';
 
+//to be able to use generateJwt I must import 
+//dotenv (otherwise I cannot read process.env with the encryption key)
+require('dotenv').config();
+
 var chai = require('chai');
 var assert = chai.assert;
 var expect = chai.expect;
 var _und = require('underscore');
+var jwt = require('jsonwebtoken');
 
 var User;
 var mongoose = require('mongoose');
@@ -11,7 +16,7 @@ require('../app_server/models/users');
 
 before(done => {
 	// Connecting to a local test database or creating it on the fly
-	mongoose.connect('mongodb://localhost/user_test');
+	mongoose.connect('mongodb://localhost/test-db');
 	User = mongoose.model('User');
 	done();
 });
@@ -40,7 +45,6 @@ describe('users model', () => {
 				newUser.setPassword(PASSWORD);
 				newUser.save((err, savedUser) => {
 					expect(err).to.be.null;
-					console.log(savedUser.validPassword(PASSWORD));
 					expect(savedUser.validPassword(PASSWORD)).to.be.true;
 					done(err);
 				});
@@ -97,16 +101,84 @@ describe('users model', () => {
 
 	describe('#generateJwt()', () => {
 		describe('---YES---', () => {
-			it('should generate a JWT', done => {
+			it('should generate a valid JWT', done => {
 				var newUser = getCorrectNewUser();
-				//newUser
-				done()
+				const jasonWebToken = newUser.generateJwt();
+				expect(jasonWebToken).is.not.null;
+				jwt.verify(jasonWebToken, process.env.JWT_SECRET, (err, decoded) => {
+		      expect(err).is.null;
+		      expect(decoded).is.not.null;
+		  		expect(decoded.user).is.not.null;
+		  		expect(decoded.user.local).is.not.null;
+		  		expect(decoded.user.local.name).to.be.equals(USERNAME);
+		  		expect(decoded.user.local.email).to.be.equals(EMAIL);
+		  		done(err)
+		    });
+			});
+
+			it('should generate a valid JWT with the correct filtered user', done => {
+				var newUser = new User();
+				newUser.local.name = USERNAME;
+				newUser.local.email = EMAIL;
+				newUser.setPassword(PASSWORD);
+				newUser.local.activateAccountToken = 'TOKEN';
+        newUser.local.activateAccountExpires =  new Date(Date.now() + 24*3600*1000); // 1 hour
+				newUser.local.resetPasswordToken = 'TOKEN';
+        newUser.local.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+        newUser.github.id = '1231232';
+        newUser.github.token = 'TOKEN';
+        newUser.github.email = EMAIL;
+        newUser.github.name = USERNAME;
+        newUser.github.username = USERNAME;
+        newUser.github.profileUrl = 'http://fakeprofileurl.com/myprofile';
+        newUser.profile = {
+					name : USERNAME,
+			    surname : USERNAME,
+			    nickname : USERNAME,
+			    email : EMAIL,
+			    updated : new Date(),
+			    visible : true
+        }
+        
+				const jasonWebToken = newUser.generateJwt();
+				expect(jasonWebToken).to.be.not.null;
+				jwt.verify(jasonWebToken, process.env.JWT_SECRET, (err, decoded) => {
+		      expect(err).to.be.null;
+		      expect(decoded).to.be.not.null;
+		  		expect(decoded.user).to.be.not.null;
+		  		expect(decoded.user._id).to.be.equals(newUser._id+'');
+		  		expect(decoded.user.__v).to.be.undefined;
+		  		expect(decoded.user.local).to.be.not.null;
+		  		expect(decoded.user.local.name).to.be.equals(USERNAME);
+		  		expect(decoded.user.local.email).to.be.equals(EMAIL);
+		  		expect(decoded.user.local.hash).to.be.not.undefined;
+		  		expect(decoded.user.local.activateAccountToken).to.be.undefined;
+		  		expect(decoded.user.local.activateAccountExpires).to.be.undefined;
+		  		expect(decoded.user.local.resetPasswordToken).to.be.undefined;
+		  		expect(decoded.user.local.resetPasswordExpires).to.be.undefined;
+
+		  		expect(decoded.user.github.id).to.be.equals('1231232');
+          expect(decoded.user.github.token).to.be.undefined;
+          expect(decoded.user.github.email).to.be.equals(EMAIL);
+          expect(decoded.user.github.name).to.be.equals(USERNAME);
+          expect(decoded.user.github.username).to.be.undefined;
+          expect(decoded.user.github.profileUrl).to.be.undefined;
+
+          expect(decoded.user.profile.name).to.be.equals(USERNAME);
+          expect(decoded.user.profile.surname).to.be.equals(USERNAME);
+          expect(decoded.user.profile.nickname).to.be.equals(USERNAME);
+          expect(decoded.user.profile.email).to.be.equals(EMAIL);
+          expect(decoded.user.profile.updated).to.be.undefined;
+          expect(decoded.user.profile.visible).to.be.true;
+
+		  		done(err)
+		    });
 			});
 		});
 	});
 
 	after(done => {
-		User.remove({}, function(err) { 
+		User.remove({}, err => { 
 			console.log('collection removed') 
 			done(err);
 		});
