@@ -5,7 +5,6 @@
 require('dotenv').config();
 
 var chai = require('chai');
-var assert = chai.assert;
 var expect = chai.expect;
 var _und = require('underscore');
 var jwt = require('jsonwebtoken');
@@ -140,9 +139,9 @@ describe('users model', () => {
 			    visible : true
         }
         
-				const jasonWebToken = newUser.generateJwt();
-				expect(jasonWebToken).to.be.not.null;
-				jwt.verify(jasonWebToken, process.env.JWT_SECRET, (err, decoded) => {
+				const jsonWebToken = newUser.generateJwt();
+				expect(jsonWebToken).to.be.not.null;
+				jwt.verify(jsonWebToken, process.env.JWT_SECRET, (err, decoded) => {
 		      expect(err).to.be.null;
 		      expect(decoded).to.be.not.null;
 		  		expect(decoded.user).to.be.not.null;
