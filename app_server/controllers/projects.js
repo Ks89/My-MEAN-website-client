@@ -45,7 +45,7 @@ module.exports.projectsReadOne = function(req, res) {
     .exec(function(err, project) {
       if (!project) {
         Utils.sendJSONresponse(res, 404, {
-          "message": "projectid not found"
+          message: "Project not found"
         });
       } else if (err) {
         console.log(err);
@@ -58,7 +58,7 @@ module.exports.projectsReadOne = function(req, res) {
   } else {
     console.log('No projectid specified');
     Utils.sendJSONresponse(res, 404, {
-      "message": "No projectid in request"
+      message: "No projectid in request"
     });
   }
 };

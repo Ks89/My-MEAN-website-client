@@ -265,7 +265,7 @@ describe('projects', () => {
 	    	} else {
 	    		expect(res.body).to.be.not.null;
 	    		expect(res.body).to.be.not.undefined;
-	    		expect(res.body.message).to.be.equals('projectid not found');
+	    		expect(res.body.message).to.be.equals('Project not found');
 	    		done();
 	    	}
 	    });

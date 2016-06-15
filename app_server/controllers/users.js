@@ -9,26 +9,22 @@ var Utils = require('../utils/util.js');
 module.exports.usersReadOneById = function(req, res) {
 	console.log('Finding a User', req.params);
 	if (req.params && req.params.id) {
-		//build the query from req.params values
-		// var query = {};
-		// query[req.params.service+'.id'] = req.params.id;
 
 		User.findById(req.params.id, function(err, user) {
 			console.log("User.findOne...");
 			if (err) { 
 				console.log('Error user not found (usersReadOneById)' + err);
-				Utils.sendJSONresponse(res, 404, "");
-			}
-	        if (user) { // if the user is found, then log them in
+				Utils.sendJSONresponse(res, 404, { message: "User not found"});
+			} else if (user) { // if the user is found, then log them in
 	        	console.log("User found (usersReadOneById): " + user);
 		        Utils.sendJSONresponse(res, 200, user);
 	        } else { //otherwise, if there is no user found create them
 	        	console.log("User not found (usersReadOneById)");
-	          	Utils.sendJSONresponse(res, 404, "");
+	          	Utils.sendJSONresponse(res, 404, { message: "User not found"});
 	        }
 	    });
 	} else {
-		Utils.sendJSONresponse(res, 404, "");
+		Utils.sendJSONresponse(res, 404, { message: "No userid in request"});
 	}
 };
 
