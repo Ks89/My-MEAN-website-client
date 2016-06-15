@@ -65,7 +65,7 @@ var projectSchema = new mongoose.Schema({
   lastUpdate: {
     type: Date,
     "default": Date.now
-}
+  }
 });
 
 mongoose.model('Project', projectSchema);

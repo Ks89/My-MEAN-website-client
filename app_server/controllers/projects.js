@@ -50,9 +50,10 @@ module.exports.projectsReadOne = function(req, res) {
       } else if (err) {
         console.log(err);
         Utils.sendJSONresponse(res, 404, err);
+      } else {
+        console.log(project);
+        Utils.sendJSONresponse(res, 200, project);
       }
-      console.log(project);
-      Utils.sendJSONresponse(res, 200, project);
     });
   } else {
     console.log('No projectid specified');
