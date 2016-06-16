@@ -4,10 +4,45 @@ class Utils {
 
   constructor(){}
 
+  //@deprecated
   static sendJSONresponse(res, status, content) {
 		res.status(status);
 		res.contentType('application/json');
 		res.json(content);
+  }
+
+  static sendJSONres(res, status, content) {
+    let contentToReturn;
+
+    //check status param
+    if(!_und.isNumber(status) || _und.isNaN(status) || status < 100 || status >= 600) {
+      throw "Status must be a valid http status code  number";
+    }
+
+    //check content param
+    //because content can be only String, Array, Object (but no all of the others)
+    if((!_und.isString(content) && !_und.isArray(content) && !_und.isObject(content)) ||
+      _und.isRegExp(content) || _und.isFunction(content) || _und.isDate(content) ||
+      _und.isBoolean(content) || _und.isError(content) || _und.isNull(content) ||
+      _und.isUndefined(content) || _und.isNaN(content) || _und.isNumber(content)) {
+      throw "Content must be either String, or Array, or Object (no Error, RegExp, and so on )";
+    }
+
+    res.status(status);
+    res.contentType('application/json');
+    
+    if(status >= 400 && status < 500) {
+      if(_und.isString(content) || _und.isArray(content)) {
+        contentToReturn = { 
+          message : content
+        };
+      } else {
+        contentToReturn = content;
+      }
+    } else {
+      contentToReturn = content;
+    }
+    res.json(contentToReturn);
   }
 
   static getTextFormattedDate(date) {
@@ -30,7 +65,6 @@ class Utils {
 
     //isObject: JavaScript arrays and functions 
     //          are objects, while (normal) strings and numbers are not.
-
     if(!decodedJwtToken || 
         !_und.isObject(decodedJwtToken) ||
         _und.isArray(decodedJwtToken) || 

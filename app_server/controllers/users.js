@@ -14,17 +14,17 @@ module.exports.usersReadOneById = function(req, res) {
 			console.log("User.findOne...");
 			if (err) { 
 				console.log('Error user not found (usersReadOneById)' + err);
-				Utils.sendJSONresponse(res, 404, { message: "User not found"});
+				Utils.sendJSONres(res, 404, "User not found");
 			} else if (user) { // if the user is found, then log them in
 	        	console.log("User found (usersReadOneById): " + user);
-		        Utils.sendJSONresponse(res, 200, user);
+		        Utils.sendJSONres(res, 200, user);
 	        } else { //otherwise, if there is no user found create them
 	        	console.log("User not found (usersReadOneById)");
-	          	Utils.sendJSONresponse(res, 404, { message: "User not found"});
+	          	Utils.sendJSONres(res, 404, "User not found");
 	        }
 	    });
 	} else {
-		Utils.sendJSONresponse(res, 404, { message: "No userid in request"});
+		Utils.sendJSONres(res, 404, "No userid in request");
 	}
 };
 

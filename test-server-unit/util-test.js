@@ -5,6 +5,8 @@ var assert = chai.assert;
 var expect = chai.expect;
 var _und = require('underscore');
 var util = require('../app_server/utils/util');
+var MockedRes = require('./mocked-res-class');
+var mockedRes = new MockedRes();
 
 describe('util', () => {
 
@@ -13,6 +15,125 @@ describe('util', () => {
   const EXPIRE_DATE_NOT_FOUND = 'Expire date not found';
   const NOT_FLOAT_EXP_DATE = 'Not a float expiration date';
  
+ describe('#sendJSONres()', () => {
+    
+    describe('---YES---', () => {
+      it('should send a JSON response with content object and status 200', () => {
+        const mockedObjContent = {
+          prop1 : 'prop1',
+          date1 : new Date(),
+          obj1 : {
+            message : 'random message'
+          }
+        };
+        util.sendJSONres(mockedRes, 200, mockedObjContent);
+        expect(mockedRes).to.be.not.null;
+        expect(mockedRes).to.be.not.undefined;
+        expect(mockedRes.getContentType()).to.be.equals('application/json');
+        expect(mockedRes.getStatus()).to.be.equals(200);
+        expect(mockedRes.getJson()).to.be.equals(mockedObjContent);
+      });
+
+      it('should send a JSON response with content object and status 200', () => {
+        const mockedStringContent = 'string content';
+        util.sendJSONres(mockedRes, 200, mockedStringContent);
+        expect(mockedRes).to.be.not.null;
+        expect(mockedRes).to.be.not.undefined;
+        expect(mockedRes.getContentType()).to.be.equals('application/json');
+        expect(mockedRes.getStatus()).to.be.equals(200);
+        expect(mockedRes.getJson()).to.be.equals(mockedStringContent);
+      });
+
+      it('should send a JSON response with content object and status 300', () => {
+        const mockedObjContent = {
+          prop1 : 'prop1',
+          date1 : new Date(),
+          obj1 : {
+            message : 'random message'
+          }
+        };
+        util.sendJSONres(mockedRes, 300, mockedObjContent);
+        expect(mockedRes).to.be.not.null;
+        expect(mockedRes).to.be.not.undefined;
+        expect(mockedRes.getContentType()).to.be.equals('application/json');
+        expect(mockedRes.getStatus()).to.be.equals(300);
+        expect(mockedRes.getJson()).to.be.equals(mockedObjContent);
+      });
+
+      it('should send a JSON response with content object and status 403', () => {
+        const mockedObjContent = {
+          prop1 : 'prop1',
+          date1 : new Date(),
+          obj1 : {
+            message : 'random message'
+          }
+        };
+        util.sendJSONres(mockedRes, 403, mockedObjContent);
+        expect(mockedRes).to.be.not.null;
+        expect(mockedRes).to.be.not.undefined;
+        expect(mockedRes.getContentType()).to.be.equals('application/json');
+        expect(mockedRes.getStatus()).to.be.equals(403);
+        expect(mockedRes.getJson()).to.be.equals(mockedObjContent);
+      });
+
+      it('should send a JSON response with content object and status 403', () => {
+        const mockedStringContent = 'string content';
+        util.sendJSONres(mockedRes, 403, mockedStringContent);
+        expect(mockedRes).to.be.not.null;
+        expect(mockedRes).to.be.not.undefined;
+        expect(mockedRes.getContentType()).to.be.equals('application/json');
+        expect(mockedRes.getStatus()).to.be.equals(403);        
+        expect(mockedRes.getJson().message).to.be.equals(mockedStringContent);
+      });
+
+      it('should send a JSON response with content Array and status 403', () => {
+        const mockedStringArrayContent = ['string content', 'string content2'];
+        util.sendJSONres(mockedRes, 403, mockedStringArrayContent);
+        expect(mockedRes).to.be.not.null;
+        expect(mockedRes).to.be.not.undefined;
+        expect(mockedRes.getContentType()).to.be.equals('application/json');
+        expect(mockedRes.getStatus()).to.be.equals(403);        
+        expect(mockedRes.getJson().message).to.be.equals(mockedStringArrayContent);
+      });
+    });
+    describe('---ERROR---', () => {
+      it('should catch -status must be a valid and positive number-', () => {
+        const mockedStringContent = 'string content';
+        const STATUS_NUMBER = 'Status must be a valid http status code  number';
+        expect(()=>util.sendJSONres(mockedRes, "not a num", mockedStringContent)).to.throw(STATUS_NUMBER);
+        expect(()=>util.sendJSONres(mockedRes, undefined, mockedStringContent)).to.throw(STATUS_NUMBER);
+        expect(()=>util.sendJSONres(mockedRes, null, mockedStringContent)).to.throw(STATUS_NUMBER);
+        expect(()=>util.sendJSONres(mockedRes, -1, mockedStringContent)).to.throw(STATUS_NUMBER);
+        expect(()=>util.sendJSONres(mockedRes, 5, mockedStringContent)).to.throw(STATUS_NUMBER);
+        expect(()=>util.sendJSONres(mockedRes, 99, mockedStringContent)).to.throw(STATUS_NUMBER);
+        expect(()=>util.sendJSONres(mockedRes, 600, mockedStringContent)).to.throw(STATUS_NUMBER);
+        expect(()=>util.sendJSONres(mockedRes, " ", mockedStringContent)).to.throw(STATUS_NUMBER);
+        expect(()=>util.sendJSONres(mockedRes, function(){}, mockedStringContent)).to.throw(STATUS_NUMBER);
+        expect(()=>util.sendJSONres(mockedRes, ()=>{}, mockedStringContent)).to.throw(STATUS_NUMBER);
+        expect(()=>util.sendJSONres(mockedRes, /fooRegex/i, mockedStringContent)).to.throw(STATUS_NUMBER);
+        expect(()=>util.sendJSONres(mockedRes, [], mockedStringContent)).to.throw(STATUS_NUMBER);
+        expect(()=>util.sendJSONres(mockedRes, new RegExp(/fooRegex/,'i'), mockedStringContent)).to.throw(STATUS_NUMBER);
+        expect(()=>util.sendJSONres(mockedRes, new RegExp('/fooRegex/','i'), mockedStringContent)).to.throw(STATUS_NUMBER);
+        expect(()=>util.sendJSONres(mockedRes, new Error(), mockedStringContent)).to.throw(STATUS_NUMBER);
+      });
+
+      it('should catch -content must be either String, or Array, or Object-', () => {
+        const CONTENT_CHECK = 'Content must be either String, or Array, or Object (no Error, RegExp, and so on )';
+        expect(()=>util.sendJSONres(mockedRes, 200, undefined)).to.throw(CONTENT_CHECK);
+        expect(()=>util.sendJSONres(mockedRes, 200, null)).to.throw(CONTENT_CHECK);
+        expect(()=>util.sendJSONres(mockedRes, 200, -1)).to.throw(CONTENT_CHECK);
+        expect(()=>util.sendJSONres(mockedRes, 200, 5)).to.throw(CONTENT_CHECK);
+        expect(()=>util.sendJSONres(mockedRes, 200, function(){})).to.throw(CONTENT_CHECK);
+        expect(()=>util.sendJSONres(mockedRes, 200, ()=>{})).to.throw(CONTENT_CHECK);
+        expect(()=>util.sendJSONres(mockedRes, 200, /fooRegex/i)).to.throw(CONTENT_CHECK);
+        expect(()=>util.sendJSONres(mockedRes, 200, new RegExp(/fooRegex/,'i'))).to.throw(CONTENT_CHECK);
+        expect(()=>util.sendJSONres(mockedRes, 200, new RegExp('/fooRegex/','i'))).to.throw(CONTENT_CHECK);
+        expect(()=>util.sendJSONres(mockedRes, 200, new Error())).to.throw(CONTENT_CHECK);
+      });
+    });
+  });
+
+
   describe('#getTextFormattedDate()', () => {
     describe('---YES---', () => {
       it('should return the current formatted date as string', () => {
