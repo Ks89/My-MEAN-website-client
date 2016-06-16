@@ -1,3 +1,4 @@
+'user strict';
 var statusVar = null;
 var contentTypeVar = null;
 var contentVal = null;
