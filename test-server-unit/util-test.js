@@ -177,6 +177,8 @@ describe('util', () => {
         expect(() => util.getTextFormattedDate(function(){})).to.throw(NOT_VALID_DATE);
         expect(() => util.getTextFormattedDate(()=>{})).to.throw(NOT_VALID_DATE);
         expect(() => util.getTextFormattedDate(/fooRegex/i)).to.throw(NOT_VALID_DATE);
+        expect(() => util.getTextFormattedDate([])).to.throw(NOT_VALID_DATE);
+        expect(() => util.getTextFormattedDate(new Error())).to.throw(NOT_VALID_DATE);
         expect(() => util.getTextFormattedDate(new RegExp(/fooRegex/,'i'))).to.throw(NOT_VALID_DATE);
         expect(() => util.getTextFormattedDate(new RegExp('/fooRegex/','i'))).to.throw(NOT_VALID_DATE);
       });
@@ -259,6 +261,8 @@ describe('util', () => {
         expect(() => util.isJwtValidDate(" ")).to.throw(NOT_VALID_DECODEDJWT);
         expect(() => util.isJwtValidDate(function(){})).to.throw(NOT_VALID_DECODEDJWT);
         expect(() => util.isJwtValidDate(()=>{})).to.throw(NOT_VALID_DECODEDJWT);
+        expect(() => util.isJwtValidDate([])).to.throw(NOT_VALID_DECODEDJWT);
+        expect(() => util.isJwtValidDate(new Error())).to.throw(NOT_VALID_DECODEDJWT);
         expect(() => util.isJwtValidDate(/fooRegex/i)).to.throw(NOT_VALID_DECODEDJWT);
         expect(() => util.isJwtValidDate(new RegExp(/fooRegex/,'i'))).to.throw(NOT_VALID_DECODEDJWT);
         expect(() => util.isJwtValidDate(new RegExp('/fooRegex/','i'))).to.throw(NOT_VALID_DECODEDJWT);

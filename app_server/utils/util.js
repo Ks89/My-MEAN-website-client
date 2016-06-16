@@ -66,10 +66,10 @@ class Utils {
     //isObject: JavaScript arrays and functions 
     //          are objects, while (normal) strings and numbers are not.
     if(!decodedJwtToken || 
-        !_und.isObject(decodedJwtToken) ||
-        _und.isArray(decodedJwtToken) || 
-        _und.isFunction(decodedJwtToken) ||
-        _und.isRegExp(decodedJwtToken)) {
+        !_und.isObject(decodedJwtToken) || _und.isArray(decodedJwtToken) || 
+        _und.isFunction(decodedJwtToken) || _und.isRegExp(decodedJwtToken) ||
+        _und.isError(decodedJwtToken) || _und.isNull(decodedJwtToken) ||
+        _und.isUndefined(decodedJwtToken) || _und.isNaN(decodedJwtToken)) {
       throw "Not a valid decodedJwtToken";
     }
 
@@ -79,11 +79,10 @@ class Utils {
 
     //decodedJwtToken.exp is a Float that represents the exp date
     //it must be a float, and not a Date 
-    if(_und.isDate(decodedJwtToken.exp)) {
+    //NB: parseFloat returns NaN if it can't parse a value
+    if(_und.isDate(decodedJwtToken.exp) || _und.isNaN(parseFloat(decodedJwtToken.exp))) {
       throw "Not a float expiration date";
     }
-
-    //TODO FIXME add a check to be sure that decodedJwtToken.exp can be converted into a date
 
     let convertedDate = new Date();
     convertedDate.setTime(decodedJwtToken.exp);
