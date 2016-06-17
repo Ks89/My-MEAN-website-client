@@ -59,6 +59,7 @@ module.exports.register = (req, res) => {
   console.log('called register server side');
   if(!req.body.name || !req.body.email || !req.body.password) {
     Utils.sendJSONresponse(res, 400, buildMessage("All fields required"));
+    return;
   }
 
   async.waterfall([
@@ -104,7 +105,6 @@ module.exports.register = (req, res) => {
       if (err) { 
         return next(err);
       } else {
-        //TODO I'm registered, but now I must pass to the caller also the csrf token!!
         Utils.sendJSONresponse(res, 200, buildMessage("User with email " + user.local.email + " registered."));      
       }
     });
@@ -114,18 +114,20 @@ module.exports.register = (req, res) => {
 /* /api/login */
 module.exports.login = (req, res) => {
   if(!req.body.email || !req.body.password) {
-    Utils.sendJSONresponse(res, 400, buildMessage("All fields required"));
+    Utils.sendJSONres(res, 400, "All fields required");
+    return;
   }
   
   passport.authenticate('local', (err, user, info) => {
     console.log("called login...");
     if (err) {
       console.log("Error...");
-      Utils.sendJSONresponse(res, 404, buildMessage("Unknown error"));
+      Utils.sendJSONres(res, 500, "Unknown error");
+      return;
     }
     if (!user) {
       console.log("!user...");
-      Utils.sendJSONresponse(res, 401, buildMessage("Incorrect username or password. Or this account is not activated, check your mailbox."));
+      Utils.sendJSONres(res, 401, "Incorrect username or password. Or this account is not activated, check your mailbox.");
     } else {
       console.log("user exists");
       console.log("Registered user: " + user); 
@@ -137,10 +139,10 @@ module.exports.login = (req, res) => {
         req.session.localUserId = user._id;
         req.session.authToken = authCommon.generateJwtCookie(user);
         
-        Utils.sendJSONresponse(res, 200, { token: token });
+        Utils.sendJSONres(res, 200, { token: token });
       } else {
         console.log("user NOT enabled");
-        Utils.sendJSONresponse(res, 400, buildMessage("Incorrect username or password. Or this account is not activated, check your mailbox."));
+        Utils.sendJSONres(res, 401, "Incorrect username or password. Or this account is not activated, check your mailbox.");
       }
     }
   })(req, res);

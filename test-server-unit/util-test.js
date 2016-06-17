@@ -1,4 +1,5 @@
 'use strict';
+process.env.NODE_ENV = 'test'; //before every other instruction
 
 var chai = require('chai');
 var assert = chai.assert;

@@ -3,9 +3,13 @@ var logger = require('../utils/logger.js');
 
 var gracefulShutdown;
 var dbURI = 'mongodb://localhost/KS';
+
 if (process.env.NODE_ENV === 'production') {
 	console.log("production mode enabled!");
 	dbURI = process.env.MONGOLAB_URI; //you can set this using heroku config:set MONGOLAB_URI=path
+} else if (process.env.NODE_ENV === 'test') {
+	console.log("testing mode enabled!");
+	dbURI = 'mongodb://localhost/test-db';
 }
 mongoose.connect(dbURI);
 

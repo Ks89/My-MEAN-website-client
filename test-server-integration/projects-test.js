@@ -1,4 +1,6 @@
 'user strict';
+process.env.NODE_ENV = 'test'; //before every other instruction
+
 var expect = require('chai').expect;
 var app = require('../app');
 var agent = require('supertest').agent(app);

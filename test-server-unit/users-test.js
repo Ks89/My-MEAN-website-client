@@ -1,4 +1,5 @@
 'use strict';
+process.env.NODE_ENV = 'test'; //before every other instruction
 
 //to be able to use generateJwt I must import 
 //dotenv (otherwise I cannot read process.env with the encryption key)
