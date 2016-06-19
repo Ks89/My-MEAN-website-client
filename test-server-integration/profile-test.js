@@ -106,7 +106,6 @@ describe('profile', () => {
 					email: user.profile.email
 				};
 
-
 				async.waterfall([
 					asyncDone => {
 						getPartialPostRequest('/api/login')
@@ -125,7 +124,7 @@ describe('profile', () => {
 						.send(mockedProfilePost)
 						.expect(200)
 						.end((err, res) => {
-							expect(res.body).to.be.equals("Profile updated successfully!");
+							expect(res.body.message).to.be.equals("Profile updated successfully!");
 							asyncDone(err);
 						});
 					},
@@ -148,6 +147,116 @@ describe('profile', () => {
 			});
 
 			afterEach(done => dropUserCollectionTestDb(done));
+		});
+
+		describe('---NO - Missing params or not accepted combination of them---', () => {
+
+			before(done => insertUserTestDb(done));
+
+			const missingServiceNameParams = [
+				{localUserEmail: 'fake_email', name:'a',surname:'b',nickname:'c',email:'d'},
+				{localUserEmail: 'fake_email', id: 'fake_id', name:'a',surname:'b',nickname:'c',email:'d'},
+				{}
+			];
+			const missingLocalParams = [
+				{id: 'fake_id', serviceName: "local", name:'a',surname:'b',nickname:'c',email:'d'},
+				{serviceName: "local", name:'a',surname:'b',nickname:'c',email:'d'}
+			];
+			const missing3dAuthParams = [
+				{localUserEmail: 'fake_email', serviceName: "github", name:'a',surname:'b',nickname:'c',email:'d'},
+				{localUserEmail: 'fake_email', serviceName: "github", name:'a'}
+			];
+			const missingProfileParams = [
+				{localUserEmail: 'fake_email', serviceName: "local", name:'a',surname:'b',email:'d'},
+				{localUserEmail: 'fake_email', serviceName: "local", id: 'fake_id', email:'d'},
+				{id: 'fake_id', serviceName: "github",surname:'b',nickname:'c',email:'d'},
+				{id: 'fake_id', serviceName: "github", name:'a',surname:'b',nickname:'c'},
+				{localUserEmail: 'fake_email', serviceName: "local", id:'fake_id', name:'a',surname:'b'},
+				{serviceName: "github", id:'fake_id'}
+			];
+
+			const testAggregator = [
+				{test: missingServiceNameParams, resultMsg: 'ServiceName is required'},
+				{test: missingLocalParams, resultMsg: 'LocalUserEmail is required if you pass serviceName = local'}, 
+				{test: missing3dAuthParams, resultMsg: 'id is required if you pass serviceName != local'}, 
+				{test: missingProfileParams, resultMsg: 'All profile params are mandatory'}
+			];
+
+			//these are multiple tests that I'm execting for all cobinations of wrong params 
+			//(two fors because testAggregator contains test with the real array of tests)
+			for(let i = 0; i<testAggregator.length; i++) {
+				for(let j = 0; j<testAggregator[i].test.length; j++) {
+					console.log(testAggregator[i].test[j]);
+					it('should get 400 BAD REQUEST,' + testAggregator[i].resultMsg + '. Test i=' + i + ', j=' + j, done => {
+						getPartialPostRequest('/api/profile')
+						.set('XSRF-TOKEN', csrftoken)
+						.send(testAggregator[i].test[j])
+						.expect(400)
+						.end((err, res) => {
+							if (err) {
+								return done(err);
+							} else {
+								console.log(res.body);
+								expect(res.body.message).to.be.equals(testAggregator[i].resultMsg);
+								done();
+							}
+						});
+					});
+				}
+			}
+
+			after(done => dropUserCollectionTestDb(done));
+			
+		});
+
+
+		describe('---NO - Wrong params---', () => {
+
+			before(done => insertUserTestDb(done));
+
+			const wrongLocalProfileMock = {
+				localUserEmail: 'WRONG_EMAIL',
+				serviceName: "local",
+				name: "random_name",
+				surname: "random_surname",
+				nickname: "random_nickname",
+				email: "random_email"
+			};
+
+			const wrong3dAuthProfileMock = {
+				id: 'WRONG_ID',
+				serviceName: "github",
+				name: "random_name",
+				surname: "random_surname",
+				nickname: "random_nickname",
+				email: "random_email"
+			};
+
+			const wrongParamProfileUpdate = [ wrongLocalProfileMock, wrong3dAuthProfileMock ];
+
+			//these are multiple tests that I'm execting for all cobinations 
+			//of wrong params 
+			for(let i = 0; i<wrongParamProfileUpdate.length; i++) {
+				console.log(wrongParamProfileUpdate[i]);
+				it('should get 401 UNAUTHORIZED, because you must pass correct the email/id', done => {
+					getPartialPostRequest('/api/profile')
+					.set('XSRF-TOKEN', csrftoken)
+					.send(wrongParamProfileUpdate[i])
+					.expect(401)
+					.end((err, res) => {
+						if (err) {
+							return done(err);
+						} else {
+							console.log(res.body);
+							expect(res.body.message).to.be.equals('Cannot update your profile. Please try to logout and login again.');
+							done();
+						}
+					});
+				});
+			}
+
+			after(done => dropUserCollectionTestDb(done));
+			
 		});
 	});
 
