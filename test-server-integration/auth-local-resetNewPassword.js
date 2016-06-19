@@ -62,7 +62,7 @@ describe('users', () => {
 			},
 			asyncDone => {
 				getPartialPostRequest('/api/reset')
-				.set('XSRF-TOKEN', csrftoken) //MANDATORY
+				.set('XSRF-TOKEN', csrftoken)
 				.send(resetMock)
 				.expect(200)
 				.end((err, res) => {
@@ -70,22 +70,18 @@ describe('users', () => {
 						return asyncDone(err);
 					} else {
 						expect(res.body.message).to.be.equals('An e-mail has been sent to ' + USER_EMAIL + ' with further instructions.');
-						if(err) {
-							asyncDone(err);
-						} else {
-							User.findOne({ 'local.email': resetMock.email }, (err1, usr) => {
-								expect(usr.local.name).to.be.equals(USER_NAME);
-								expect(usr.local.email).to.be.equals(USER_EMAIL);
-						       	expect(usr.validPassword(USER_PASSWORD));
-								expect(usr.local.resetPasswordExpires).to.be.not.undefined;
-								expect(usr.local.resetPasswordToken).to.be.not.undefined;
-								
-								user.local.resetPasswordToken = usr.local.resetPasswordToken;
-								user.local.resetPasswordExpires = usr.local.resetPasswordExpires;
-								
-								asyncDone(err1);
-						    });
-						}
+						User.findOne({ 'local.email': resetMock.email }, (err1, usr) => {
+							expect(usr.local.name).to.be.equals(USER_NAME);
+							expect(usr.local.email).to.be.equals(USER_EMAIL);
+							expect(usr.validPassword(USER_PASSWORD));
+							expect(usr.local.resetPasswordExpires).to.be.not.undefined;
+							expect(usr.local.resetPasswordToken).to.be.not.undefined;
+							
+							user.local.resetPasswordToken = usr.local.resetPasswordToken;
+							user.local.resetPasswordExpires = usr.local.resetPasswordExpires;
+							
+							asyncDone(err1);
+					    });
 					}
 				});
 			}
@@ -126,7 +122,7 @@ describe('users', () => {
 				};
 
 				getPartialPostRequest('/api/resetNewPassword')
-				.set('XSRF-TOKEN', csrftoken) //MANDATORY
+				.set('XSRF-TOKEN', csrftoken)
 				.send(updateResetPwdMock)
 				.expect(200)
 				.end((err, res) => {
@@ -135,21 +131,17 @@ describe('users', () => {
 					} else {
 						console.log(res.body.message);
 						expect(res.body.message).to.be.equals('An e-mail has been sent to ' + USER_EMAIL + ' with further instructions.');
-						if(err) {
-							done(err);
-						} else {
-							User.findOne({ 'local.email': resetMock.email }, (err1, usr) => {
-								expect(usr.local.name).to.be.equals(USER_NAME);
-								expect(usr.local.email).to.be.equals(USER_EMAIL);
-								expect(usr.local.resetPasswordExpires).to.be.undefined;
-								expect(usr.local.resetPasswordToken).to.be.undefined;
+						User.findOne({ 'local.email': resetMock.email }, (err1, usr) => {
+							expect(usr.local.name).to.be.equals(USER_NAME);
+							expect(usr.local.email).to.be.equals(USER_EMAIL);
+							expect(usr.local.resetPasswordExpires).to.be.undefined;
+							expect(usr.local.resetPasswordToken).to.be.undefined;
 
-								expect(usr.validPassword(NEW_PASSWORD)).to.be.true;
-								expect(usr.validPassword(USER_PASSWORD)).to.be.false;
+							expect(usr.validPassword(NEW_PASSWORD)).to.be.true;
+							expect(usr.validPassword(USER_PASSWORD)).to.be.false;
 
-								done(err1);
-						    });
-						}
+							done(err1);
+						});
 					}
 				});
 			});
@@ -177,7 +169,7 @@ describe('users', () => {
 						}
 
 						getPartialPostRequest('/api/resetNewPassword')
-						.set('XSRF-TOKEN', csrftoken) //MANDATORY
+						.set('XSRF-TOKEN', csrftoken)
 						.send(updateResetPwdMock)
 						.expect(404)
 						.end((err, res) => {
@@ -209,7 +201,7 @@ describe('users', () => {
 						}
 						
 						getPartialPostRequest('/api/resetNewPassword')
-						.set('XSRF-TOKEN', csrftoken) //MANDATORY
+						.set('XSRF-TOKEN', csrftoken)
 						.send(updateResetPwdMock)
 						.expect(404)
 						.end((err, res) => {
@@ -242,7 +234,7 @@ describe('users', () => {
 				console.log(missingUpdatePwdMocks[i]);
 				it('should get 400 BAD REQUEST, because password and emailToken are mandatory. Test i=' + i, done => {
 					getPartialPostRequest('/api/resetNewPassword')
-					.set('XSRF-TOKEN', csrftoken) //MANDATORY
+					.set('XSRF-TOKEN', csrftoken)
 					.send(missingUpdatePwdMocks[i])
 					.expect(400)
 					.end((err, res) => {
