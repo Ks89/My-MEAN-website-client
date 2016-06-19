@@ -6,10 +6,8 @@ var app = require('../app');
 var agent = require('supertest').agent(app);
 var async = require('async');
 
-var mongoose = require('mongoose');
 require('../app_server/models/users');
-
-mongoose.connect('mongodb://localhost/test-db');
+var mongoose = require('mongoose');
 var User = mongoose.model('User');
 
 var user;
@@ -36,10 +34,7 @@ describe('users', () => {
 				console.log("Error while calling login page");
 				done(err1);
 			} else {
-				console.log(res1.headers['set-cookie']);
-
 				csrftoken = (res1.headers['set-cookie']).filter(value =>{
-					console.log(value);
 					return value.includes('XSRF-TOKEN');
 				})[0];
 				connectionSid = (res1.headers['set-cookie']).filter(value =>{
@@ -62,7 +57,6 @@ describe('users', () => {
 				done(err);
 			}
 			user._id = usr._id;
-			console.log("saved with id: " + user._id);
 			updateCookiesAndTokens(done); //pass done, it's important!
 		});
 	}
@@ -79,7 +73,6 @@ describe('users', () => {
 
 	function dropUserCollectionTestDb(done) {
 		User.remove({}, err => { 
-			console.log('collection removed') 
 			done(err);
 		});
 	}
@@ -152,6 +145,13 @@ describe('users', () => {
 					}
 				});
 			});
+
+			afterEach(done => dropUserCollectionTestDb(done));
+		});
+			
+
+		describe('---NO - Wrong/Missing params---', () => {
+			beforeEach(done => updateCookiesAndTokens(done));
 			
 			const wrongRegisterMocks = [
 				{name: NEW_NAME, email : NEW_EMAIL},

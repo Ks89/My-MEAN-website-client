@@ -5,9 +5,9 @@ var expect = require('chai').expect;
 var app = require('../app');
 var agent = require('supertest').agent(app);
 
-var User;
-var mongoose = require('mongoose');
 require('../app_server/models/users');
+var mongoose = require('mongoose');
+var User = mongoose.model('User');
 
 var user;
 
@@ -15,11 +15,6 @@ describe('users', () => {
 	describe('---YES---', () => {
 
 		beforeEach(done => {
-			// Connecting to a local test database or creating it on the fly
-			mongoose.connect('mongodb://localhost/test-db');
-			User = mongoose.model('User');
-
-			//fill db with some test data
 			user = new User();
 			user.local.name = 'username';
 			user.local.email = 'email@email.it';

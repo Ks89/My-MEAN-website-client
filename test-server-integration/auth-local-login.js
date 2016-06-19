@@ -5,10 +5,8 @@ var expect = require('chai').expect;
 var app = require('../app');
 var agent = require('supertest').agent(app);
 
-var mongoose = require('mongoose');
 require('../app_server/models/users');
-
-mongoose.connect('mongodb://localhost/test-db');
+var mongoose = require('mongoose');
 var User = mongoose.model('User');
 
 var user;
@@ -41,10 +39,7 @@ describe('users', () => {
 			if(err1) {
 				throw "Error while calling login page";
 			} else {
-				console.log(res1.headers['set-cookie']);
-
 				csrftoken = (res1.headers['set-cookie']).filter(value =>{
-					console.log(value);
 					return value.includes('XSRF-TOKEN');
 				})[0];
 				connectionSid = (res1.headers['set-cookie']).filter(value =>{
@@ -67,7 +62,6 @@ describe('users', () => {
 				done(err);
 			}
 			user._id = usr._id;
-			console.log("saved with id: " + user._id);
 			updateCookiesAndTokens(done); //pass done, it's important!
 		});
 	}
@@ -84,7 +78,6 @@ describe('users', () => {
 
 	function dropUserCollectionTestDb(done) {
 		User.remove({}, err => { 
-			console.log('collection removed') 
 			done(err);
 		});
 	}
@@ -105,7 +98,6 @@ describe('users', () => {
 					} else {
 						expect(res.body.token).to.be.not.null;
 						expect(res.body.token).to.be.not.undefined;
-						console.log("token: " + res.body.token);
 						done(err);
 					}
 				});
@@ -114,7 +106,7 @@ describe('users', () => {
 			afterEach(done => dropUserCollectionTestDb(done));
 		});
 
-		describe('---NO---', () => {
+		describe('---NO - Wrong params---', () => {
 			before(done => insertUserTestDb(done));
 
 			const wrongLoginMocks = [
@@ -144,21 +136,27 @@ describe('users', () => {
 			}
 
 			it('should get 400 BAD REQUEST, because the correct input params are wrong ' + 
-					'(passed name and blabla insted of emailand password).', done => {
-					getPartialPostRequest('/api/login')
-					.set('XSRF-TOKEN', csrftoken) //MANDATORY
-					.send({name: 'wrong_name_param', blabla: 'wrong_name_param', })
-					.expect(400)
-					.end((err, res) => {
-						if (err) {
-							return done(err);
-						} else {
-							expect(res.body.message).to.be.equals("All fields required");
-							done(err);
-						}
-					});
-				});
+				'(passed name and blabla insted of emailand password).', done => {
 
+				getPartialPostRequest('/api/login')
+				.set('XSRF-TOKEN', csrftoken) //MANDATORY
+				.send({name: 'wrong_name_param', blabla: 'wrong_name_param', })
+				.expect(400)
+				.end((err, res) => {
+					if (err) {
+						return done(err);
+					} else {
+						expect(res.body.message).to.be.equals("All fields required");
+						done(err);
+					}
+				});
+			});
+
+			after(done => dropUserCollectionTestDb(done));	
+		});
+
+		describe('---NO - MISSING params---', () => {
+			before(done => insertUserTestDb(done));
 
 			const missingLoginMocks = [
 				{email: USER_EMAIL},
@@ -187,6 +185,12 @@ describe('users', () => {
 				});
 			}
 
+			after(done => dropUserCollectionTestDb(done));	
+		});
+
+		describe('---NO - NOT ACTIVATED---', () => {
+			before(done => insertUserTestDb(done));
+
 			const activateCombinations = [
 				{token : 'FAKE_TOKEN', expires : new Date()},
 				{token : 'FAKE_TOKEN', expires : undefined},
@@ -211,7 +215,6 @@ describe('users', () => {
 								done(err);
 							}
 							user._id = usr._id;
-							console.log("saved with id: " + user._id);
 							updateCookiesAndTokens(done); //pass done, it's important!
 						});
 					});
@@ -231,7 +234,7 @@ describe('users', () => {
 				});
 				
 				after(done => dropUserCollectionTestDb(done));	
-			}	
+			}
 		});
 		
 		describe('---ERRORS---', () => {
