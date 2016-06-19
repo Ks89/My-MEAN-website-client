@@ -95,21 +95,17 @@ describe('users', () => {
 						return done(err);
 					} else {
 						expect(res.body.message).to.be.equals("User with email "  + registerMock.email + " registered.");
-						
-						if(err) {
-							done(err);
-						} else {
-							User.findOne({ 'local.email': registerMock.email }, (err1, user) => {
-						        expect(user.local.name).to.be.equals(registerMock.name);
-						        expect(user.local.email).to.be.equals(registerMock.email);
-						       	expect(user.validPassword(registerMock.password));
-						        expect(user.local.activateAccountExpires).to.be.not.null;
-						        expect(user.local.activateAccountToken).to.be.not.null;
-						        expect(user.local.activateAccountExpires).to.be.not.undefined;
-						        expect(user.local.activateAccountToken).to.be.not.undefined;
-						        done(err1);
-						    });
-						}
+
+						User.findOne({ 'local.email': registerMock.email }, (err1, user) => {
+							expect(user.local.name).to.be.equals(registerMock.name);
+							expect(user.local.email).to.be.equals(registerMock.email);
+					       	expect(user.validPassword(registerMock.password));
+							expect(user.local.activateAccountExpires).to.be.not.null;
+							expect(user.local.activateAccountToken).to.be.not.null;
+							expect(user.local.activateAccountExpires).to.be.not.undefined;
+							expect(user.local.activateAccountToken).to.be.not.undefined;
+							done(err1);
+					    });	
 					}
 				});
 			});
@@ -132,15 +128,15 @@ describe('users', () => {
 							if (err) {
 								asyncDone(err, null);
 							} else {
-								asyncDone(err, res.body);
+								asyncDone(err, res);
 							}
 						});
 					}
-				], (err, response) => {
+				], (err, res) => {
 					if (err) { 
 						done(err);
 					} else {
-						expect(response.message).to.be.equals("User already exists. Try to login.");
+						expect(res.body.message).to.be.equals("User already exists. Try to login.");
 						done();
 					}
 				});
