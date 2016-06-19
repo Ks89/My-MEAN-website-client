@@ -1,17 +1,22 @@
+var stubTransport = require('nodemailer-stub-transport');
 var nodemailer = require('nodemailer');
 var url = require('url');
 var request = require('request');
 var logger = require('../utils/logger.js');
 
-var mailTransport = nodemailer.createTransport({
-	host: 'mail.stefanocappa.it',
-	port: '25',
-	debug: true, //this!!!
-	auth: {
-		user: process.env.USER_EMAIL, //secret data
-		pass: process.env.PASS_EMAIL //secret data
-	}
-});
+if(process.env.NODE_ENV === 'test') {
+	mailTransport = nodemailer.createTransport(stubTransport());
+} else {
+	mailTransport = nodemailer.createTransport({
+		host: 'mail.stefanocappa.it',
+		port: '25',
+		debug: true, //this!!!
+		auth: {
+			user: process.env.USER_EMAIL, //secret data
+			pass: process.env.PASS_EMAIL //secret data
+		}
+	});
+}
 
 function send(formEmail, callback) {
 	console.log('Sending an email from ' + process.env.USER_EMAIL + ' to: ' + formEmail.email);

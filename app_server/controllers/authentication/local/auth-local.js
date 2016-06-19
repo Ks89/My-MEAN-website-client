@@ -7,19 +7,25 @@ var Utils = require('../../../utils/util.js');
 var async = require('async');
 var crypto = require('crypto');
 
+var stubTransport = require('nodemailer-stub-transport');
 var nodemailer = require('nodemailer');
 var url = require('url');
 var request = require('request');
+var mailTransport;
 
-var mailTransport = nodemailer.createTransport({
-  host: 'mail.stefanocappa.it',
-  port: '25',
-  debug: true, //this!!!
-  auth: {
-    user: process.env.USER_EMAIL, //secret data
-    pass: process.env.PASS_EMAIL //secret data
-  }
-});
+if(process.env.NODE_ENV === 'test') {
+  mailTransport = nodemailer.createTransport(stubTransport());
+} else {
+  mailTransport = nodemailer.createTransport({
+    host: 'mail.stefanocappa.it',
+    port: '25',
+    debug: true, //this!!!
+    auth: {
+      user: process.env.USER_EMAIL, //secret data
+      pass: process.env.PASS_EMAIL //secret data
+    }
+  });
+}
 
 function emailMsg(to, subject, htmlMessage) {
   return {
