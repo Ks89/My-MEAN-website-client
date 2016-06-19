@@ -133,7 +133,6 @@ module.exports.login = (req, res) => {
   passport.authenticate('local', (err, user, info) => {
     console.log("called login...");
     if (!user || err) {
-      console.log("!user...");
       Utils.sendJSONres(res, 401, "Incorrect username or password. Or this account is not activated, check your mailbox.");
       return;
     }
