@@ -75,7 +75,13 @@ module.exports.register = (req, res) => {
       console.log('Encoded userName: ' + encodedUserName);
       const link = 'http://' + req.headers.host + '/activate/' + token + '/' + encodedUserName;
       User.findOne({ 'local.email': req.body.email }, (err, user) => {
-        if (err || user) {
+        if (err) {
+          console.log('Internal error');
+          Utils.sendJSONresponse(res, 500, buildMessage("Unknown error while registering..."));
+          return;
+        }
+
+        if (user) {
           console.log('User already exists');
           Utils.sendJSONresponse(res, 400, buildMessage("User already exists. Try to login."));
           return;
@@ -126,30 +132,26 @@ module.exports.login = (req, res) => {
   
   passport.authenticate('local', (err, user, info) => {
     console.log("called login...");
-    if (err) {
-      console.log("Error...");
-      Utils.sendJSONres(res, 500, "Unknown error");
-      return;
-    }
-    if (!user) {
+    if (!user || err) {
       console.log("!user...");
       Utils.sendJSONres(res, 401, "Incorrect username or password. Or this account is not activated, check your mailbox.");
+      return;
+    }
+
+    console.log("user exists");
+    console.log("Registered user: " + user); 
+
+    if(!user.local.activateAccountToken && !user.local.activateAccountExpires) {
+      console.log("user enabled");
+      const token = user.generateJwt();
+
+      req.session.localUserId = user._id;
+      req.session.authToken = authCommon.generateJwtCookie(user);
+      
+      Utils.sendJSONres(res, 200, { token: token });
     } else {
-      console.log("user exists");
-      console.log("Registered user: " + user); 
-
-      if(!user.local.activateAccountToken && !user.local.activateAccountExpires) {
-        console.log("user enabled");
-        const token = user.generateJwt();
-
-        req.session.localUserId = user._id;
-        req.session.authToken = authCommon.generateJwtCookie(user);
-        
-        Utils.sendJSONres(res, 200, { token: token });
-      } else {
-        console.log("user NOT enabled");
-        Utils.sendJSONres(res, 401, "Incorrect username or password. Or this account is not activated, check your mailbox.");
-      }
+      console.log("user NOT enabled");
+      Utils.sendJSONres(res, 401, "Incorrect username or password. Or this account is not activated, check your mailbox.");
     }
   })(req, res);
 };
@@ -173,7 +175,7 @@ module.exports.reset = (req, res) => {
     (token, done) => {
       const link = 'http://' + req.headers.host + '/reset/' + token;
       User.findOne({ 'local.email': req.body.email }, (err, user) => {
-        if (!user) {
+        if (!user || err) {
           Utils.sendJSONresponse(res, 404, buildMessage('No account with that email address exists.'));
           return;
         }
@@ -217,7 +219,7 @@ module.exports.resetPasswordFromEmail = (req, res) => {
     done => {
       User.findOne({ 'local.resetPasswordToken': req.body.emailToken ,
          'local.resetPasswordExpires': { $gt: Date.now() }}, (err, user) => {
-        if (!user) {
+        if (!user || err) {
           Utils.sendJSONresponse(res, 404, buildMessage('No account with that token exists.'));
           return;
         }
@@ -265,7 +267,7 @@ module.exports.activateAccount = (req, res) => {
     done => {
       User.findOne({ 'local.activateAccountToken': req.body.emailToken , 'local.name' : decodedUserName},
          /*,'local.activateAccountExpires': { $gt: Date.now() }},*/ (err, user) => {
-        if (!user) {
+        if (!user || err) {
           Utils.sendJSONresponse(res, 404, buildMessage('No account with that token exists.'));
           return;
         }

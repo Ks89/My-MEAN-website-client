@@ -29,15 +29,14 @@ describe('users', () => {
 	function updateCookiesAndTokens(done) {
 		agent
 		.get('/login')
-		.end((err1, res1) => {
-			if(err1) {
-				console.log("Error while calling login page");
+		.end((err, res) => {
+			if(err) {
 				done(err1);
 			} else {
-				csrftoken = (res1.headers['set-cookie']).filter(value =>{
+				csrftoken = (res.headers['set-cookie']).filter(value =>{
 					return value.includes('XSRF-TOKEN');
 				})[0];
-				connectionSid = (res1.headers['set-cookie']).filter(value =>{
+				connectionSid = (res.headers['set-cookie']).filter(value =>{
 					return value.includes('connect.sid');
 				})[0];
 				csrftoken = csrftoken ? csrftoken.split(';')[0].replace('XSRF-TOKEN=','') : '';

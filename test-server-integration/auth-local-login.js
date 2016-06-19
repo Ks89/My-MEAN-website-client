@@ -35,21 +35,21 @@ describe('users', () => {
 	function updateCookiesAndTokens(done) {
 		agent
 		.get('/login')
-		.end((err1, res1) => {
-			if(err1) {
-				throw "Error while calling login page";
+		.end((err, res) => {
+			if(err) {
+				done(err);
 			} else {
-				csrftoken = (res1.headers['set-cookie']).filter(value =>{
+				csrftoken = (res.headers['set-cookie']).filter(value =>{
 					return value.includes('XSRF-TOKEN');
 				})[0];
-				connectionSid = (res1.headers['set-cookie']).filter(value =>{
+				connectionSid = (res.headers['set-cookie']).filter(value =>{
 					return value.includes('connect.sid');
 				})[0];
-	 	csrftoken = csrftoken ? csrftoken.split(';')[0].replace('XSRF-TOKEN=','') : '';
-	 	connectionSid = connectionSid ? connectionSid.split(';')[0].replace('connect.sid=','') : '';
-      	done();
-      }
-    });
+				csrftoken = csrftoken ? csrftoken.split(';')[0].replace('XSRF-TOKEN=','') : '';
+				connectionSid = connectionSid ? connectionSid.split(';')[0].replace('connect.sid=','') : '';
+				done();
+			}
+		});
 	}
 
 	function insertUserTestDb(done) {
