@@ -157,6 +157,11 @@ module.exports.unlinkLocal = (req, res) => {
 /* POST to reset the local password */
 /* /api/reset */
 module.exports.reset = (req, res) => {
+  if(!req.body.email) {
+    Utils.sendJSONres(res, 400, "Email fields is required.");
+    return;
+  }
+
   async.waterfall([
     createRandomToken,
     (token, done) => {
@@ -194,9 +199,14 @@ module.exports.reset = (req, res) => {
     });
 };
 
-//TODO add doc
+/* POST to reset the local password */
+/* /api/resetNewPassword */
 module.exports.resetPasswordFromEmail = (req, res) => {
-  console.log("resetPasswordFromEmail api - new pwd " + req.body.newPassword + ", emailToken: " + req.body.emailToken);
+  if(!req.body.newPassword || !req.body.emailToken) {
+    Utils.sendJSONres(res, 400, "Password and emailToken fields are required.");
+    return;
+  }
+
   async.waterfall([
     done => {
       User.findOne({ 'local.resetPasswordToken': req.body.emailToken ,
@@ -216,7 +226,7 @@ module.exports.resetPasswordFromEmail = (req, res) => {
           //create email data
           const msgText = 'This is a confirmation that the password for your account ' + 
             user.local.email + ' has just been changed.\n';
-          const message = emailMsg(savedUser.local.email, 'Please confirm your account for stefanocappa.it', msgText);
+          const message = emailMsg(savedUser.local.email, 'Password for stefanocappa.it updated', msgText);
 
           done(err, savedUser, message);
         });
