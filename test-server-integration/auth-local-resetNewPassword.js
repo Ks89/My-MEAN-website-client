@@ -158,7 +158,7 @@ describe('users', () => {
 		});
 
 
-		describe('---NO - ?????---', () => {
+		describe('---NO - token expired or not valid---', () => {
 			beforeEach(done => registerUserTestDb(done));
 
 			it('should catch 404 NOT FOUND, because the token is exprired', done => {
@@ -170,19 +170,12 @@ describe('users', () => {
 				User.findOne({ 'local.email': resetMock.email }, (err1, usr) => {
 					expect(usr.local.resetPasswordToken).to.be.not.undefined;
 
-					console.log("token " + usr.local.resetPasswordToken);
-					console.log("exprires: " + usr.local.resetPasswordExpires);
-
 					usr.local.resetPasswordExpires =  Date.now() - 3600000; // - 1 hour
-					
-					console.log("exprires: " + usr.local.resetPasswordExpires);
-
 					usr.save((err, savedUser) => {
 						if(err) {
 							done(err);
 						}
-						console.log("saved exprires: " + usr.local.resetPasswordExpires);
-						console.log(savedUser);
+
 						getPartialPostRequest('/api/resetNewPassword')
 						.set('XSRF-TOKEN', csrftoken) //MANDATORY
 						.send(updateResetPwdMock)
@@ -191,7 +184,6 @@ describe('users', () => {
 							if (err) {
 								return done(err);
 							} else {
-								console.log(res.body.message);
 								expect(res.body.message).to.be.equals('No account with that token exists.');
 								done();
 							}
@@ -210,19 +202,12 @@ describe('users', () => {
 				User.findOne({ 'local.email': resetMock.email }, (err1, usr) => {
 					expect(usr.local.resetPasswordToken).to.be.not.undefined;
 
-					console.log("token " + usr.local.resetPasswordToken);
-					console.log("exprires: " + usr.local.resetPasswordExpires);
-
 					usr.local.resetPasswordToken = 'random_wrong_token';
-					
-					console.log("token: " + usr.local.resetPasswordToken);
-
 					usr.save((err, savedUser) => {
 						if(err) {
 							done(err);
 						}
-						console.log("saved token: " + usr.local.resetPasswordToken);
-						console.log(savedUser);
+						
 						getPartialPostRequest('/api/resetNewPassword')
 						.set('XSRF-TOKEN', csrftoken) //MANDATORY
 						.send(updateResetPwdMock)
@@ -231,7 +216,6 @@ describe('users', () => {
 							if (err) {
 								return done(err);
 							} else {
-								console.log(res.body.message);
 								expect(res.body.message).to.be.equals('No account with that token exists.');
 								done();
 							}

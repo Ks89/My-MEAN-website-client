@@ -89,7 +89,7 @@ describe('users', () => {
 
 			it('should correctly login', done => {
 				getPartialPostRequest('/api/login')
-				.set('XSRF-TOKEN', csrftoken) //MANDATORY
+				.set('XSRF-TOKEN', csrftoken)
 				.send(loginMock)
 				.expect(200)
 				.end((err, res) => {
@@ -121,7 +121,7 @@ describe('users', () => {
 				console.log(wrongLoginMocks[i]);
 				it('should get 401 UNAUTHORIZED, because the correct input params are wrong. Test i= ' + i, done => {
 					getPartialPostRequest('/api/login')
-					.set('XSRF-TOKEN', csrftoken) //MANDATORY
+					.set('XSRF-TOKEN', csrftoken)
 					.send(wrongLoginMocks[i])
 					.expect(401)
 					.end((err, res) => {
@@ -139,7 +139,7 @@ describe('users', () => {
 				'(passed name and blabla insted of emailand password).', done => {
 
 				getPartialPostRequest('/api/login')
-				.set('XSRF-TOKEN', csrftoken) //MANDATORY
+				.set('XSRF-TOKEN', csrftoken)
 				.send({name: 'wrong_name_param', blabla: 'wrong_name_param', })
 				.expect(400)
 				.end((err, res) => {
@@ -171,7 +171,7 @@ describe('users', () => {
 
 				it('should get 400 BAD REQUEST, because input params are missing. Test i= ' + i, done => {
 					getPartialPostRequest('/api/login')
-					.set('XSRF-TOKEN', csrftoken) //MANDATORY
+					.set('XSRF-TOKEN', csrftoken)
 					.send(missingLoginMocks[i])
 					.expect(400)
 					.end((err, res) => {
@@ -220,7 +220,7 @@ describe('users', () => {
 					});
 
 					getPartialPostRequest('/api/login')
-					.set('XSRF-TOKEN', csrftoken) //MANDATORY
+					.set('XSRF-TOKEN', csrftoken)
 					.send(wrongLoginMock)
 					.expect(401)
 					.end((err, res) => {

@@ -87,7 +87,7 @@ describe('users', () => {
 
 			it('should correctly register a new user', done => {
 	    		getPartialPostRequest('/api/register')
-				.set('XSRF-TOKEN', csrftoken) //MANDATORY
+				.set('XSRF-TOKEN', csrftoken)
 				.send(registerMock)
 				.expect(200)
 				.end((err, res) => {
@@ -125,7 +125,7 @@ describe('users', () => {
 					asyncDone => insertUserTestDb(asyncDone),
 					asyncDone => {
 						getPartialPostRequest('/api/register')
-						.set('XSRF-TOKEN', csrftoken) //MANDATORY
+						.set('XSRF-TOKEN', csrftoken)
 						.send(registerMock)
 						.expect(400)
 						.end((err, res) => {
@@ -175,7 +175,7 @@ describe('users', () => {
 						asyncDone => insertUserTestDb(asyncDone),
 						asyncDone => {
 							getPartialPostRequest('/api/register')
-							.set('XSRF-TOKEN', csrftoken) //MANDATORY
+							.set('XSRF-TOKEN', csrftoken)
 							.send(wrongRegisterMocks[i])
 							.expect(400)
 							.end((err, res) => {

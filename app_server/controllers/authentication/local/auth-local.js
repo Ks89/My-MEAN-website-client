@@ -245,10 +245,13 @@ module.exports.resetPasswordFromEmail = (req, res) => {
 
 /* POST to activate the local account, using
 the token received on user's mailbox */
-/* /api/activate/:randomToken */
+/* /api/activate */
 module.exports.activateAccount = (req, res) => {
-  console.log('activateAccount: ' +  req.body.emailToken + ', ' + req.body.userName);
-  
+  if(!req.body.emailToken || !req.body.userName) {
+    Utils.sendJSONres(res, 400, "EmailToken and userName fields are required.");
+    return;
+  }
+
   const decodedUserName = decodeURI(req.body.userName);
   console.log('Decoded userName: ' + decodedUserName);
   
@@ -257,7 +260,7 @@ module.exports.activateAccount = (req, res) => {
       User.findOne({ 'local.activateAccountToken': req.body.emailToken , 'local.name' : decodedUserName},
          /*,'local.activateAccountExpires': { $gt: Date.now() }},*/ (err, user) => {
         if (!user) {
-          Utils.sendJSONresponse(res, 404, buildMessage('No account found with this link!'));
+          Utils.sendJSONresponse(res, 404, buildMessage('No account with that token exists.'));
           return;
         }
 

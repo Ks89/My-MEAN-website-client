@@ -86,7 +86,7 @@ describe('users', () => {
 
 			it('should correctly reset password', done => {
 				getPartialPostRequest('/api/reset')
-				.set('XSRF-TOKEN', csrftoken) //MANDATORY
+				.set('XSRF-TOKEN', csrftoken)
 				.send(resetMock)
 				.expect(200)
 				.end((err, res) => {
@@ -131,7 +131,7 @@ describe('users', () => {
 				console.log(missingLoginMocks[i]);
 				it('should get 400 BAD REQUEST, because email param is mandatory.', done => {
 					getPartialPostRequest('/api/reset')
-					.set('XSRF-TOKEN', csrftoken) //MANDATORY
+					.set('XSRF-TOKEN', csrftoken)
 					.send(missingLoginMocks[i])
 					.expect(400)
 					.end((err, res) => {
@@ -147,7 +147,7 @@ describe('users', () => {
 
 			it('should get 404 NOT FOUND, because the request email is not found.', done => {
 				getPartialPostRequest('/api/reset')
-				.set('XSRF-TOKEN', csrftoken) //MANDATORY
+				.set('XSRF-TOKEN', csrftoken)
 				.send({email : RESET_WRONG_EMAIL})
 				.expect(404)
 				.end((err, res) => {
