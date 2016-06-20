@@ -40,7 +40,7 @@ module.exports.projectsListHomepage = function(req, res) {
 module.exports.projectsReadOne = function(req, res) {
   console.log('Finding a Project', req.params);
   if (!req.params.projectid) {
-    Utils.sendJSONres(res, 404, "No projectid in request");
+    Utils.sendJSONres(res, 400, "No projectid in request");
     return;
   }
 
