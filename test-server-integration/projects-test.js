@@ -12,9 +12,9 @@ var Project = mongoose.model('Project');
 var project;
 var project2;
 
-var URL_PROJECTS = '/api/projects';
-var URL_PROJECTHOME = '/api/projecthome';
-var URL_SINGLE_PROJECT = URL_PROJECTS + "/";
+const URL_PROJECTS = '/api/projects';
+const URL_PROJECTHOME = '/api/projecthome';
+const URL_SINGLE_PROJECT = URL_PROJECTS + "/";
 
 describe('projects', () => {
 
@@ -69,7 +69,7 @@ describe('projects', () => {
 		});
 	}
 
-	function dropUserCollectionTestDb(done) {
+	function dropProjectCollectionTestDb(done) {
 		Project.remove({}, err => done(err));
 	}
 
@@ -130,12 +130,12 @@ describe('projects', () => {
 				});
 			});
 
-			after(done => dropUserCollectionTestDb(done));
+			after(done => dropProjectCollectionTestDb(done));
 		});
 
 		describe('---NO---', () => {
 
-			before(done => dropUserCollectionTestDb(done));
+			before(done => dropProjectCollectionTestDb(done));
 	
 			it('should catch 200 but with an empty array as response', done => {
 				getPartialGetRequest(URL_PROJECTS)
@@ -198,12 +198,12 @@ describe('projects', () => {
 				});
 			});
 
-			after(done => dropUserCollectionTestDb(done));
+			after(done => dropProjectCollectionTestDb(done));
 		});
 
 		describe('---NO---', () => {
 
-			before(done => dropUserCollectionTestDb(done));
+			before(done => dropProjectCollectionTestDb(done));
 	
 			it('should catch 200 but with an empty array as response', done => {
 				getPartialGetRequest(URL_PROJECTHOME)
@@ -263,12 +263,12 @@ describe('projects', () => {
 				});
 			});
 
-			after(done => dropUserCollectionTestDb(done));
+			after(done => dropProjectCollectionTestDb(done));
 		});
 
 		describe('---ERRORS---', () => {
 
-			before(done => dropUserCollectionTestDb(done));
+			before(done => dropProjectCollectionTestDb(done));
 	
 			it('should catch 404 not found and check the error message', done => {
 				getPartialGetRequest(URL_SINGLE_PROJECT + 'fake_id')

@@ -23,6 +23,9 @@ const loginMock = {
 	password : USER_PASSWORD
 };
 
+const URL_PROFILE = '/api/profile';
+const URL_LOGIN = '/api/login';
+
 describe('profile', () => {
 
 	function updateCookiesAndTokens(done) {
@@ -108,7 +111,7 @@ describe('profile', () => {
 
 				async.waterfall([
 					asyncDone => {
-						getPartialPostRequest('/api/login')
+						getPartialPostRequest(URL_LOGIN)
 						.set('XSRF-TOKEN', csrftoken)
 						.send(loginMock)
 						.expect(200)
@@ -119,7 +122,7 @@ describe('profile', () => {
 						});
 					},
 					asyncDone => {
-						getPartialPostRequest('/api/profile')
+						getPartialPostRequest(URL_PROFILE)
 						.set('XSRF-TOKEN', csrftoken)
 						.send(mockedProfilePost)
 						.expect(200)
@@ -188,7 +191,7 @@ describe('profile', () => {
 				for(let j = 0; j<testAggregator[i].test.length; j++) {
 					console.log(testAggregator[i].test[j]);
 					it('should get 400 BAD REQUEST,' + testAggregator[i].resultMsg + '. Test i=' + i + ', j=' + j, done => {
-						getPartialPostRequest('/api/profile')
+						getPartialPostRequest(URL_PROFILE)
 						.set('XSRF-TOKEN', csrftoken)
 						.send(testAggregator[i].test[j])
 						.expect(400)
@@ -239,7 +242,7 @@ describe('profile', () => {
 			for(let i = 0; i<wrongParamProfileUpdate.length; i++) {
 				console.log(wrongParamProfileUpdate[i]);
 				it('should get 401 UNAUTHORIZED, because you must pass correct the email/id', done => {
-					getPartialPostRequest('/api/profile')
+					getPartialPostRequest(URL_PROFILE)
 					.set('XSRF-TOKEN', csrftoken)
 					.send(wrongParamProfileUpdate[i])
 					.expect(401)
@@ -263,7 +266,7 @@ describe('profile', () => {
 
 	describe('---ERRORS---', () => {
 		it('should get 403 FORBIDDEN, because XSRF-TOKEN is not available', done => {
-			getPartialPostRequest('/api/profile')
+			getPartialPostRequest(URL_PROFILE)
 			//XSRF-TOKEN NOT SETTED!!!!
 			.send({}) //It's not necessary to pass real data here
 			.expect(403)

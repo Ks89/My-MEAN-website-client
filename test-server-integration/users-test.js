@@ -11,10 +11,24 @@ var User = mongoose.model('User');
 
 var user;
 
+const URL_SINGLE_USER = '/api/users/';
+
 describe('users', () => {
+
+	function dropUserCollectionTestDb(done) {
+		User.remove({}, err => done(err));
+	}
+
+	function getPartialGetRequest (apiUrl) {
+		return agent
+			.get(apiUrl)
+			.set('Content-Type', 'application/json')
+			.set('Accept', 'application/json');
+	}
+
 	describe('---YES---', () => {
 
-		beforeEach(done => {
+		before(done => {
 			user = new User();
 			user.local.name = 'username';
 			user.local.email = 'email@email.it';
@@ -45,10 +59,7 @@ describe('users', () => {
   		});
 
 		it('should correctly get a single user by its id', done => {
-			agent
-			.get('/api/users/' + user._id)
-			.set('Content-Type', 'application/json')
-			.set('Accept', 'application/json')
+			getPartialGetRequest(URL_SINGLE_USER + user._id)
 			.expect(200)
 			.end((err, res) => {
 				if (err) {
@@ -78,17 +89,12 @@ describe('users', () => {
 					// expect(usr.profile.updated).to.be.equals(user.profile.updated);
 					expect(usr.profile.visible).to.be.equals(user.profile.visible);
 
-					done(err);
+					done();
 				}
 			});
 		});
 
-		afterEach(done => {
-			User.remove({}, err => { 
-				console.log('collection removed') 
-				done(err);
-			});
-		});
+		after(done => dropUserCollectionTestDb(done));
 	});
 
 
@@ -97,10 +103,7 @@ describe('users', () => {
 		//in the afterEach above.
 		
 		it('should catch 404 not found and check the error message', done => {
-			agent
-			.get('/api/users/' + 'fakeId')
-			.set('Content-Type', 'application/json')
-			.set('Accept', 'application/json')
+			getPartialGetRequest(URL_SINGLE_USER + 'fakeId')
 			.expect(404)
 			.end((err, res) => {
 				if (err) {
