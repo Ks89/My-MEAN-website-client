@@ -5,13 +5,13 @@ module.exports = function (passportRef) {
   var logger = require('../../utils/logger.js');
   
   //set this to serialize and deserialize informations like the user
-  passportRef.serializeUser(function(user, done) {
+  passportRef.serializeUser((user, done) => {
     logger.silly("Serializing user " + user);
     done(null, user.id);
   });
 
-  passportRef.deserializeUser(function(id, done) {
-    User.findById(id, function(err, user) {
+  passportRef.deserializeUser((id, done) => {
+    User.findById(id, (err, user) => {
       logger.silly("Deserializing user " + user);
       done(err, user);
     });

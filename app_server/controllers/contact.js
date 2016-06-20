@@ -4,6 +4,9 @@ var url = require('url');
 var request = require('request');
 var logger = require('../utils/logger.js');
 
+
+//TODO refactor this code!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 if(process.env.NODE_ENV === 'test') {
 	mailTransport = nodemailer.createTransport(stubTransport());
 } else {

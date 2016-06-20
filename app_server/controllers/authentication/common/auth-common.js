@@ -18,7 +18,7 @@ var decodeToken = function(req, res) {
     jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
       if(err) {
         console.log("jwt.verify error");
-        Utils.sendJSONresponse(res, 404, null);
+        Utils.sendJSONres(res, 404, "Jwt not valid or corrupted");
       } 
 
       if(decoded) {
@@ -27,16 +27,16 @@ var decodeToken = function(req, res) {
           console.log("systemDate valid");
           console.log("stringifying...");
           console.log(JSON.stringify(decoded));
-          Utils.sendJSONresponse(res, 200, JSON.stringify(decoded));
+          Utils.sendJSONres(res, 200, JSON.stringify(decoded));
         } else {
           console.log('No data valid');
-          Utils.sendJSONresponse(res, 404, "invalid-data");
+          Utils.sendJSONres(res, 404, "Token's date not valid");
         }
       }
     });
   } else {
     console.log('No token found');
-    Utils.sendJSONresponse(res, 404, null);
+    Utils.sendJSONres(res, 404, "No token found");
   }
 };
 
@@ -48,11 +48,11 @@ var logout = function(req, res) {
   if(req.session.authToken) {
     req.session.destroy(function(){
       console.log('Session data destroyed');
-      Utils.sendJSONresponse(res, 200, {});
+      Utils.sendJSONres(res, 200, {});
     });
   } else {
     console.log('Authtoken not available as session data in Redis, for instance you aren\'t logged');
-    Utils.sendJSONresponse(res, 404, null);
+    Utils.sendJSONres(res, 404, "Authtoken not available as session data");
   }
 };
 
@@ -62,10 +62,10 @@ var sessionToken = function(req, res) {
   console.log('sessionToken called');
   console.log('data available (authToken): ' + req.session.authToken);
   if(req.session.authToken) {
-    Utils.sendJSONresponse(res, 200, req.session.authToken);
+    Utils.sendJSONres(res, 200, req.session.authToken);
   } else {
     console.log('Authtoken not available as session data in Redis, for instance you aren\'t logged');
-    Utils.sendJSONresponse(res, 404, null);
+    Utils.sendJSONres(res, 404, "Authtoken not available as session data");
   }
 };
 
@@ -111,7 +111,7 @@ var unlinkServiceByName = function(req, serviceName, res) {
   console.log("UnlinkServiceByName authToken: " + req.session.authToken);
   if(!req.session.authToken) {
     console.error("req.session.authToken not available");
-    Utils.sendJSONresponse(res, 404, null);
+    Utils.sendJSONres(res, 400, "authToken param is missing");
   }
 
   var token = JSON.parse(req.session.authToken).token;
@@ -119,7 +119,7 @@ var unlinkServiceByName = function(req, serviceName, res) {
 
   if(!token) {
     console.error("Token not found");
-    Utils.sendJSONresponse(res, 404, null);
+    Utils.sendJSONres(res, 404, "Token not found");
   }
 
   async.waterfall([
@@ -150,12 +150,10 @@ var unlinkServiceByName = function(req, serviceName, res) {
         if (err) { 
           console.error('Error user not found (usersReadOneById)' + err);
           throw err;
-          //Utils.sendJSONresponse(res, 404, null);
         }
         if(!user) {
           console.error("User not found - cannot unlink (usersReadOneById)");
           throw err;
-          //Utils.sendJSONresponse(res, 404, null);
         }
         // if the user is found, then log them in
         console.log("User found (usersReadOneById): " + user);
@@ -176,7 +174,6 @@ var unlinkServiceByName = function(req, serviceName, res) {
           });
         }
         done(null, user);
-        //Utils.sendJSONresponse(res, 200, {});
       } else {
         console.log("Unlinking normal situation, without a remove....");
         user = removeServiceFromDb(serviceName, user);
@@ -184,23 +181,19 @@ var unlinkServiceByName = function(req, serviceName, res) {
           if(err) {
             console.error("Impossible to remove userService from db");
             throw err;
-            //Utils.sendJSONresponse(res, 404, null);
           }
           
           req.session.authToken = generateJwtCookie(user);
           console.log("Unlinking, regenerate session token after unlink");
-          //Utils.sendJSONresponse(res, 200, user);
           done(err, user);
         });
       }
     }], (err, user) => {
-      console.log(err);
       if (err) { 
         console.log(err);
-        Utils.sendJSONresponse(res, 404, null);
-        //return next(err);
+        Utils.sendJSONres(res, 500, "Unknown error");
       } else {
-        Utils.sendJSONresponse(res, 200, "User unlinked correctly!");      
+        Utils.sendJSONres(res, 200, "User unlinked correctly!");      
       }
     });
 };

@@ -152,7 +152,7 @@
       profileData.update(vm.credentials)
       .then(function(data){
         vm.isWaiting = false;
-        vm.formMessage = data;
+        vm.formMessage = data.message;
         vm.formStatus = 'success';
         vm.formDisable = false;
       }, function(err) {
