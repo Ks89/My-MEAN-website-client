@@ -9,11 +9,11 @@ var Utils = require('../utils/util.js');
 module.exports.projectsList = function(req, res) {
   console.log('projectsList');
   Project.find({}, function(err, results) {
-    if (err) {
+    if (!results || err) {
       console.log('projectsList error:', err);
-      Utils.sendJSONresponse(res, 404, err);
+      Utils.sendJSONres(res, 404, "Project list not found");
     } else {
-      Utils.sendJSONresponse(res, 200, results);
+      Utils.sendJSONres(res, 200, results);
     }
   });
 };
@@ -26,11 +26,11 @@ module.exports.projectsListHomepage = function(req, res) {
   Project
     .find({"projectHomeView.carouselImagePath": { $exists: true } })
     .lean().exec(function(err, results) {
-      if (err) {
+      if (!results || err) {
         console.log('projectsListHomepage error:', err);
-        Utils.sendJSONresponse(res, 404, err);
+        Utils.sendJSONres(res, 404, "Project list homepage not found");
       } else {
-        Utils.sendJSONresponse(res, 200, results);
+        Utils.sendJSONres(res, 200, results);
       }
     });
 };
@@ -39,26 +39,19 @@ module.exports.projectsListHomepage = function(req, res) {
 /* /api/projects/:projectid */
 module.exports.projectsReadOne = function(req, res) {
   console.log('Finding a Project', req.params);
-  if (req.params && req.params.projectid) {
-    Project
-    .findById(req.params.projectid)
-    .exec(function(err, project) {
-      if (!project) {
-        Utils.sendJSONresponse(res, 404, {
-          message: "Project not found"
-        });
-      } else if (err) {
-        console.log(err);
-        Utils.sendJSONresponse(res, 404, err);
-      } else {
-        console.log(project);
-        Utils.sendJSONresponse(res, 200, project);
-      }
-    });
-  } else {
-    console.log('No projectid specified');
-    Utils.sendJSONresponse(res, 404, {
-      message: "No projectid in request"
-    });
+  if (!req.params.projectid) {
+    Utils.sendJSONres(res, 404, "No projectid in request");
+    return;
   }
+
+  Project
+  .findById(req.params.projectid)
+  .exec((err, project) => {
+    if (!project || err) {
+      Utils.sendJSONres(res, 404, "Project not found");
+    } else {
+      console.log(project);
+      Utils.sendJSONres(res, 200, project);
+    }
+  });
 };
