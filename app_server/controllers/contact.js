@@ -32,7 +32,7 @@ function send(formEmail, callback) {
 
 		//this is an async call. You shouldn't use a "return" here.
 		//I'm using a callback function
-		mailTransport.sendMail(message, function(error) {
+		mailTransport.sendMail(message, error => {
 			if (error) {
 				console.log('Error ----> returning 404');
 				console.log(error.message);
@@ -64,7 +64,7 @@ module.exports.sendEmailWithRecaptcha = function(req, res) {
 	};
 
 	request.post({url:'https://www.google.com/recaptcha/api/siteverify', form: data}, 
-		function(err,response,body) {
+		(err,response,body) => {
 
 			if (err) {
 				console.error('Failed:', err);

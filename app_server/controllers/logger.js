@@ -27,13 +27,13 @@ module.exports.exception = (req, res) => {
 			info: "Exception logged on server",
 			body : req.body
 		};
-		Utils.sendJSONresponse(res, 200, response);
+		Utils.sendJSONres(res, 200, response);
 	} else {
 		const errResponse = {
 			info: "Impossible to log exception on server, body is empty",
 			body : null
 		};
-		Utils.sendJSONresponse(res, 404, errResponse);
+		Utils.sendJSONres(res, 404, errResponse);
 	}
 };
 
@@ -53,12 +53,12 @@ function log(req, res, type) {
 			info: type + " logged on server",
 			body : req.body
 		};
-		Utils.sendJSONresponse(res, 200, response);
+		Utils.sendJSONres(res, 200, response);
 	} else {
 		const errResponse = {
 			info: "Impossible to log" + type + " on server, body is empty",
 			body : null
 		};
-		Utils.sendJSONresponse(res, 404, errResponse);
+		Utils.sendJSONres(res, 404, errResponse);
 	}
 }
