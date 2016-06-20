@@ -77,7 +77,7 @@ describe('util', () => {
         expect(mockedRes.getJson()).to.be.equals(mockedObjContent);
       });
 
-      it('should send a JSON response with content object and status 403', () => {
+      it('should send a JSON response with content string and status 403', () => {
         const mockedStringContent = 'string content';
         util.sendJSONres(mockedRes, 403, mockedStringContent);
         expect(mockedRes).to.be.not.null;
@@ -95,6 +95,16 @@ describe('util', () => {
         expect(mockedRes.getContentType()).to.be.equals('application/json');
         expect(mockedRes.getStatus()).to.be.equals(403);        
         expect(mockedRes.getJson().message).to.be.equals(mockedStringArrayContent);
+      });
+
+      it('should send a JSON response with content string and status 501', () => {
+        const mockedStringContent = 'string content';
+        util.sendJSONres(mockedRes, 501, mockedStringContent);
+        expect(mockedRes).to.be.not.null;
+        expect(mockedRes).to.be.not.undefined;
+        expect(mockedRes.getContentType()).to.be.equals('application/json');
+        expect(mockedRes.getStatus()).to.be.equals(501);        
+        expect(mockedRes.getJson().message).to.be.equals(mockedStringContent);
       });
     });
     describe('---ERROR---', () => {

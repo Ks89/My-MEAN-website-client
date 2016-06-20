@@ -31,7 +31,7 @@ class Utils {
     res.status(status);
     res.contentType('application/json');
     
-    if(status >= 400 && status < 500) {
+    if(status >= 400 && status < 600) {
       if(_und.isString(content) || _und.isArray(content)) {
         contentToReturn = { 
           message : content
