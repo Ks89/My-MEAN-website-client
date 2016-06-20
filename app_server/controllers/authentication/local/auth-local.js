@@ -53,18 +53,12 @@ function createRandomToken(done) {
   });
 }
 
-function buildMessage(messageText) {
-  return {
-    "message": messageText
-  };
-}
-
 /* POST to register a local user */
 /* /api/register */
 module.exports.register = (req, res) => {
   console.log('called register server side');
   if(!req.body.name || !req.body.email || !req.body.password) {
-    Utils.sendJSONresponse(res, 400, buildMessage("All fields required"));
+    Utils.sendJSONres(res, 400, "All fields required");
     return;
   }
 
@@ -77,13 +71,13 @@ module.exports.register = (req, res) => {
       User.findOne({ 'local.email': req.body.email }, (err, user) => {
         if (err) {
           console.log('Internal error');
-          Utils.sendJSONresponse(res, 500, buildMessage("Unknown error while registering..."));
+          Utils.sendJSONres(res, 500, "Unknown error while registering...");
           return;
         }
 
         if (user) {
           console.log('User already exists');
-          Utils.sendJSONresponse(res, 400, buildMessage("User already exists. Try to login."));
+          Utils.sendJSONres(res, 400, "User already exists. Try to login.");
           return;
         } 
 
@@ -117,7 +111,7 @@ module.exports.register = (req, res) => {
       if (err) { 
         return next(err);
       } else {
-        Utils.sendJSONresponse(res, 200, buildMessage("User with email " + user.local.email + " registered."));      
+        Utils.sendJSONres(res, 200, {message: "User with email " + user.local.email + " registered."});      
       }
     });
 };
@@ -175,7 +169,7 @@ module.exports.reset = (req, res) => {
       const link = 'http://' + req.headers.host + '/reset/' + token;
       User.findOne({ 'local.email': req.body.email }, (err, user) => {
         if (!user || err) {
-          Utils.sendJSONresponse(res, 404, buildMessage('No account with that email address exists.'));
+          Utils.sendJSONres(res, 404, 'No account with that email address exists.');
           return;
         }
 
@@ -201,7 +195,7 @@ module.exports.reset = (req, res) => {
         console.log(err);
         return next(err); 
       } else { 
-        Utils.sendJSONresponse(res, 200, buildMessage('An e-mail has been sent to ' + user.local.email + ' with further instructions.'));
+        Utils.sendJSONres(res, 200, {message: 'An e-mail has been sent to ' + user.local.email + ' with further instructions.'});
       }
     });
 };
@@ -219,7 +213,7 @@ module.exports.resetPasswordFromEmail = (req, res) => {
       User.findOne({ 'local.resetPasswordToken': req.body.emailToken ,
          'local.resetPasswordExpires': { $gt: Date.now() }}, (err, user) => {
         if (!user || err) {
-          Utils.sendJSONresponse(res, 404, buildMessage('No account with that token exists.'));
+          Utils.sendJSONres(res, 404, 'No account with that token exists.');
           return;
         }
         console.log('Reset password called for user: ' + user);
@@ -245,7 +239,7 @@ module.exports.resetPasswordFromEmail = (req, res) => {
         console.log(err);
         return next(err);
       } else {
-        Utils.sendJSONresponse(res, 200, buildMessage('An e-mail has been sent to ' + user.local.email + ' with further instructions.'));
+        Utils.sendJSONres(res, 200, {message: 'An e-mail has been sent to ' + user.local.email + ' with further instructions.'});
       }
      });
 };
@@ -267,7 +261,7 @@ module.exports.activateAccount = (req, res) => {
       User.findOne({ 'local.activateAccountToken': req.body.emailToken , 'local.name' : decodedUserName},
          /*,'local.activateAccountExpires': { $gt: Date.now() }},*/ (err, user) => {
         if (!user || err) {
-          Utils.sendJSONresponse(res, 404, buildMessage('No account with that token exists.'));
+          Utils.sendJSONres(res, 404, 'No account with that token exists.');
           return;
         }
 
@@ -275,7 +269,7 @@ module.exports.activateAccount = (req, res) => {
         console.log("Date.now(): " + new Date(Date.now()));
 
         if(user.local.activateAccountExpires < new Date(Date.now())) {
-          Utils.sendJSONresponse(res, 404, buildMessage('Link exprired! Your account is removed. Please, create another account, also with the same email address.'));
+          Utils.sendJSONres(res, 404, 'Link exprired! Your account is removed. Please, create another account, also with the same email address.');
           return;
         }
 
@@ -303,7 +297,7 @@ module.exports.activateAccount = (req, res) => {
         console.log(err);
         return next(err);
       } else {
-        Utils.sendJSONresponse(res, 200, buildMessage('An e-mail has been sent to ' + user.local.email + ' with further instructions.'));
+        Utils.sendJSONres(res, 200, {message: 'An e-mail has been sent to ' + user.local.email + ' with further instructions.'});
       }
      });
 };
