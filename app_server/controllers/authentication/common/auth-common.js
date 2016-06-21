@@ -111,7 +111,7 @@ var unlinkServiceByName = function(req, serviceName, res) {
   console.log("UnlinkServiceByName authToken: " + req.session.authToken);
   if(!req.session.authToken) {
     console.error("req.session.authToken not available");
-    Utils.sendJSONres(res, 400, "authToken param is missing");
+    Utils.sendJSONres(res, 401, "Session not valid, probably it's expired");
   }
 
   var token = JSON.parse(req.session.authToken).token;
@@ -119,7 +119,7 @@ var unlinkServiceByName = function(req, serviceName, res) {
 
   if(!token) {
     console.error("Token not found");
-    Utils.sendJSONres(res, 404, "Token not found");
+    Utils.sendJSONres(res, 401, "Token not found");
   }
 
   async.waterfall([
@@ -130,12 +130,14 @@ var unlinkServiceByName = function(req, serviceName, res) {
         console.log('Trying to decode jwt');
         if(!decoded) {
           console.error("Impossible to decode: " + decoded);
-          throw err;
+          Utils.sendJSONres(res, 401, "Impossible to decode token.");
+          return;
         }
         console.log("decoded valid");
         if(!Utils.isJwtValidDate(decoded)) {
           console.error('No data valid');
-          throw err;
+          Utils.sendJSONres(res, 401 , "Token Session expired (date).");
+          return;
         }
         console.log("SystemDate valid");
 
@@ -147,15 +149,11 @@ var unlinkServiceByName = function(req, serviceName, res) {
     }, 
     (token, user, done) => {
       User.findById(user._id, function(err, user) {
-        if (err) { 
-          console.error('Error user not found (usersReadOneById)' + err);
-          throw err;
+        if (err || !user) { 
+          console.log("User not found - cannot unlink (usersReadOneById)");
+          Utils.sendJSONres(res, 404, "User not found - cannot unlink");
+          return;
         }
-        if(!user) {
-          console.error("User not found - cannot unlink (usersReadOneById)");
-          throw err;
-        }
-        // if the user is found, then log them in
         console.log("User found (usersReadOneById): " + user);
         done(err, user, token);
       });
@@ -180,7 +178,8 @@ var unlinkServiceByName = function(req, serviceName, res) {
         user.save(function(err) {
           if(err) {
             console.error("Impossible to remove userService from db");
-            throw err;
+            Utils.sendJSONres(res, 500, "Impossible to remove userService from db");
+            return;
           }
           
           req.session.authToken = generateJwtCookie(user);

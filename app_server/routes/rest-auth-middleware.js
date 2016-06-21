@@ -11,31 +11,32 @@ module.exports.restAuthenticationMiddleware = function(req, res, next) {
 		var authToken = JSON.parse(req.session.authToken);
 		var token = authToken.token;
 		logger.debug("token: " + token);
-		if (token) {
-			jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
-				if(err) {
-					logger.error("jwt.verify error");
-					Utils.sendJSONresponse(res, 404, null);
-				} 
+		if(!token) {
+			Utils.sendJSONres(res, 404, "Token not found");
+			return;
+		}
+		
+		jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
+			if(err) {
+				logger.error("jwt.verify error");
+				Utils.sendJSONres(res, 404, null);
+				return;
+			} 
 
-				if(decoded) {
+			if(decoded) {
 			    console.log("decoded valid");
 			    if(Utils.isJwtValidDate(decoded)) {
 						logger.debug("systemDate valid");
 						next();
 					} else {
 						logger.error('No data valid');
-						Utils.sendJSONresponse(res, 404, "invalid-data");
+						Utils.sendJSONres(res, 404, "Data is not valid");
 					}
-				}
-			});
-		}
+			}
+		});
+		
 	} else {
 		logger.error('No token');
-
-		return res.status(403).send({ 
-			success: false, 
-			message: 'No token provided.'
-		});
+		Utils.sendJSONres(res, 403, 'No token provided.');
 	}
 };
