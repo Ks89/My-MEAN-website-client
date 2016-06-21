@@ -24,7 +24,7 @@ const resetMock = {
 
 const NEW_PASSWORD = 'NewPassword2';
 
-describe('users', () => {
+describe('auth-local', () => {
 
 	function updateCookiesAndTokens(done) {
 		agent

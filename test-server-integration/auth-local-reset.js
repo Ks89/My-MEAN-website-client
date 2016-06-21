@@ -27,7 +27,7 @@ const wrongResetMock = {
 	email : RESET_WRONG_EMAIL
 };
 
-describe('users', () => {
+describe('auth-local', () => {
 
 	function updateCookiesAndTokens(done) {
 		agent

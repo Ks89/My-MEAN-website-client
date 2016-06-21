@@ -24,7 +24,7 @@ const registerMock = {
 	password : NEW_PASSWORD
 };
 
-describe('users', () => {
+describe('auth-local', () => {
 
 	function updateCookiesAndTokens(done) {
 		agent
