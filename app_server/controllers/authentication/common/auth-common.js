@@ -110,16 +110,21 @@ var generateJwtCookie = function(user) {
 var unlinkServiceByName = function(req, serviceName, res) {
   console.log("UnlinkServiceByName authToken: " + req.session.authToken);
   if(!req.session.authToken) {
+    //in theory, !req.session.authToken will be catched inside rest-auth-middleware
+    //I added some checks only to prevent strange behaviours.
     console.error("req.session.authToken not available");
     Utils.sendJSONres(res, 401, "Session not valid, probably it's expired");
+    return;
   }
 
   var token = JSON.parse(req.session.authToken).token;
   console.log("Token is: " + token);  
 
   if(!token) {
+    //as the previous one
     console.error("Token not found");
     Utils.sendJSONres(res, 401, "Token not found");
+    return;
   }
 
   async.waterfall([

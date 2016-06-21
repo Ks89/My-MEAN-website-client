@@ -226,7 +226,6 @@ describe('auth-local', () => {
 						.expect(200)
 						.end((err, res) => asyncDone(err, res));
 					},
-					//asyncDone => updateCookiesAndTokens(asyncDone),
 					(res, asyncDone) => {
 						expect(res.body.token).to.be.not.null;
 						expect(res.body.token).to.be.not.undefined;
@@ -240,25 +239,26 @@ describe('auth-local', () => {
 							} else {
 								console.log(res.body);
 								expect(res.body).to.be.equals("User unlinked correctly!");
-								
-								User.findOne({ 'github.id': user.github.id }, (err1, usr) => {
-									if(err1) {
-										return asyncDone(err1);
-									} 
-									expect(usr.local.name).to.be.undefined;
-									expect(usr.local.email).to.be.undefined;
-									expect(usr.local.hash).to.be.undefined;
-									expect(usr.github.id).to.be.equals(user.github.id);
-									expect(usr.github.token).to.be.equals(user.github.token);
-									expect(usr.github.email).to.be.equals(user.github.email);
-									expect(usr.github.name).to.be.equals(user.github.name);
-									expect(usr.github.username).to.be.equals(user.github.username);
-									expect(usr.github.profileUrl).to.be.equals(user.github.profileUrl);
-									asyncDone();
-
-								});
-
+								asyncDone();
 							}
+						});
+					},
+					asyncDone => {
+						User.findOne({ 'github.id': user.github.id }, (err1, usr) => {
+							if(err1) {
+								return asyncDone(err1);
+							} 
+							expect(usr.local.name).to.be.undefined;
+							expect(usr.local.email).to.be.undefined;
+							expect(usr.local.hash).to.be.undefined;
+							expect(usr.github.id).to.be.equals(user.github.id);
+							expect(usr.github.token).to.be.equals(user.github.token);
+							expect(usr.github.email).to.be.equals(user.github.email);
+							expect(usr.github.name).to.be.equals(user.github.name);
+							expect(usr.github.username).to.be.equals(user.github.username);
+							expect(usr.github.profileUrl).to.be.equals(user.github.profileUrl);
+							asyncDone();
+
 						});
 					}
 				], (err, response) => done(err));
