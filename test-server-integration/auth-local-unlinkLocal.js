@@ -101,58 +101,6 @@ describe('auth-local', () => {
 
 	describe('#unlinkLocal()', () => {
 
-
-		describe('---ERRORS---', () => {
-
-			beforeEach(done => insertUserTestDb(done));
-
-			it('should catch 403 FORBIDDEN, because you are logged, but without your user into the db', done => {
-				//I'm logged in, but for some reasons my record inside the db is missing.
-				async.waterfall([
-					asyncDone => {
-						getPartialPostRequest(URL_LOGIN)
-						.set('XSRF-TOKEN', csrftoken)
-						.send(loginMock)
-						.expect(200)
-						.end((err, res) => asyncDone(err));
-					},
-					asyncDone => {
-						User.remove({}, err => { 
-							asyncDone(err);
-						});
-					},
-					asyncDone => {				
-						getPartialGetRequest(URL_UNLINK_LOCAL)
-						.send()
-						.expect(403)
-						.end((err, res) => {
-							expect(res.body.message).to.be.equals('User not found - cannot unlink');
-							asyncDone();
-						});
-					}
-				], (err, response) => done(err));
-
-			});
-
-			it('should catch 403 FORBIDDEN, because this API is available only for ' + 
-					'logged users. rest-auth-middleware will responde with -no token provided- message', done => {
-				getPartialGetRequest(URL_LOGOUT)
-				.send()
-				.expect(200)
-				.end((err, res) => {
-					getPartialGetRequest(URL_UNLINK_LOCAL)
-					.send()
-					.expect(403)
-					.end((err, res) => {
-						expect(res.body.message).to.be.equals('No token provided.');
-						done();
-					});
-				});
-			});
-
-			afterEach(done => dropUserTestDbAndLogout(done));
-		});
-
 		describe('---YES---', () => {
 
 			beforeEach(done => insertUserTestDb(done));
@@ -267,6 +215,56 @@ describe('auth-local', () => {
 			afterEach(done => dropUserTestDbAndLogout(done));
 		});
 
+		describe('---ERRORS---', () => {
+
+			beforeEach(done => insertUserTestDb(done));
+
+			it('should catch 403 FORBIDDEN, because you are logged, but without your user into the db', done => {
+				//I'm logged in, but for some reasons my record inside the db is missing.
+				async.waterfall([
+					asyncDone => {
+						getPartialPostRequest(URL_LOGIN)
+						.set('XSRF-TOKEN', csrftoken)
+						.send(loginMock)
+						.expect(200)
+						.end((err, res) => asyncDone(err));
+					},
+					asyncDone => {
+						User.remove({}, err => { 
+							asyncDone(err);
+						});
+					},
+					asyncDone => {				
+						getPartialGetRequest(URL_UNLINK_LOCAL)
+						.send()
+						.expect(403)
+						.end((err, res) => {
+							expect(res.body.message).to.be.equals('User not found - cannot unlink');
+							asyncDone();
+						});
+					}
+				], (err, response) => done(err));
+
+			});
+
+			it('should catch 403 FORBIDDEN, because this API is available only for ' + 
+					'logged users. rest-auth-middleware will responde with -no token provided- message', done => {
+				getPartialGetRequest(URL_LOGOUT)
+				.send()
+				.expect(200)
+				.end((err, res) => {
+					getPartialGetRequest(URL_UNLINK_LOCAL)
+					.send()
+					.expect(403)
+					.end((err, res) => {
+						expect(res.body.message).to.be.equals('No token provided.');
+						done();
+					});
+				});
+			});
+
+			afterEach(done => dropUserTestDbAndLogout(done));
+		});
 
 	});
 });
