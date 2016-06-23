@@ -60,8 +60,9 @@ module.exports.sendEmailWithRecaptcha = function(req, res) {
 	(done) => {
 
 		console.log("Trying to send an email");
-		if (req.body.emailFormData && req.body.emailFormData.email
-			&& req.body.emailFormData.object && req.body.emailFormData.messageText) {
+		if (req.body.emailFormData && req.body.emailFormData.email &&
+			req.body.emailFormData.object && req.body.emailFormData.messageText) {
+			
 			console.log("Preparing to send an email");
 			done(null, req.body.emailFormData);
 		} else {
