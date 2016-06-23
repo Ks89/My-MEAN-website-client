@@ -38,33 +38,21 @@ module.exports.sendEmailWithRecaptcha = function(req, res) {
 
 	async.waterfall([
     done => {
-    	if(process.env.NODE_ENV !== 'test') {
-	    	request.post({url:RECAPTCHA_URL, form: data}, (err,response,body) => {
-	    		console.log('KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK');
-	    		console.log(body);
-	    		done(err, body);
-	    	});
-	    } else {
-	    	console.log("I'm testing this method");
-	    	//TODO add something to be able to test this method.
-	    	//for example done(null, {
-			//						  "success": true,
-			//						  "challenge_ts": "2016-06-22T22:59:40Z",
-			//						  "hostname": "localhost"
-			//						 } );
-			done(null, JSON.stringify({
-					  success: true,
-					  challenge_ts: "2016-06-22T22:59:40Z",
-					  hostname: "localhost"
-					 }) );
-	    }
+    	request.post({url:RECAPTCHA_URL, form: data}, (err,response,body) => {
+    		console.log(body);
+    		done(err, body);
+    	});
     }, 
     (body, done) => {
 
     	var result = JSON.parse( body );
 		console.log(result);
-		if(!result.success) {
-			Utils.sendJSONres(res, 404, result['error-codes']);
+		if(result.success === false) {
+			if(result['error-codes']) {
+				Utils.sendJSONres(res, 401, result['error-codes']);
+			} else {
+				Utils.sendJSONres(res, 401, "Recaptcha verify answered FALSE!");
+			}
 		} else {
 			done();
 		}
@@ -72,52 +60,47 @@ module.exports.sendEmailWithRecaptcha = function(req, res) {
 	(done) => {
 
 		console.log("Trying to send an email");
-		if (req && req.body.emailFormData) {
+		if (req.body.emailFormData && req.body.emailFormData.email
+			&& req.body.emailFormData.object && req.body.emailFormData.messageText) {
 			console.log("Preparing to send an email");
 			done(null, req.body.emailFormData);
+		} else {
+			Utils.sendJSONres(res, 400, 'Missing input params');
 		}
 	},
 	(formEmail, done) => {
 
-		if (formEmail) {
-			console.log('Sending an email from ' + process.env.USER_EMAIL + ' to: ' + formEmail.email);
-		
-			var message = {
-				from: process.env.USER_EMAIL, 
-				to: formEmail.email,
-				subject: formEmail.object,
-				html: formEmail.messageText, 
-				generateTextFromHtml: true
-			};
+		console.log('Sending an email from ' + process.env.USER_EMAIL + ' to: ' + formEmail.email);
+	
+		var message = {
+			from: process.env.USER_EMAIL, 
+			to: formEmail.email,
+			subject: formEmail.object,
+			html: formEmail.messageText, 
+			generateTextFromHtml: true
+		};
 
-			//this is an async call. You shouldn't use a "return" here.
-			//I'm using a callback function
-			mailTransport.sendMail(message, error => {
-				if (error) {
-					console.log('Error ----> returning 404');
-					console.log(error.message);
-					done(null, 404, formEmail);
-				}
-				console.log('OK -----> returning 200');
-				done(null, 200, formEmail);
-			});
-		} else {
-			console.log('Error ----> returning 404');
-			done(null, 404, formEmail);
-		}
+		mailTransport.sendMail(message, err => {
+			if (err) {
+				console.log('err ----> returning 404');
+				console.log(err.message);
+				done(err, 404, null);
+			}
+			console.log('OK -----> returning 200');
+			done(null, 200, formEmail);
+		});
 	},
-	(resultVal, formEmail, done) => {
+	(resultHttpCode, formEmail, done) => {
 
-		console.log("callaback called with resultVal: " + resultVal);
-		if(resultVal === 200) {
-			console.log('Message sent successfully from: ' + formEmail.email);
+		console.log("resultHttpCode: " + resultHttpCode);
+		if(resultHttpCode === 200) {
+			console.log('Message sent successfully to: ' + formEmail.email);
 			Utils.sendJSONres(res, 200, formEmail.email);
 		} else {
-			console.log("Error, resultVal!=200 -> " + resultVal);	
+			console.log("Error, resultHttpCode!=200 -> " + resultHttpCode);	
 			Utils.sendJSONres(res, 500, "Impossibile to send the email");
 		}
-
-    }], (err, user) => {
+    }], (err) => {
     	if (err) {
     		Utils.sendJSONres(res, 500, "Unknown error");
 		}

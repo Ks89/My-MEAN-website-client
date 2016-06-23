@@ -91,6 +91,7 @@
     "karma-requirejs": "^1.0.0",
     "main-bower-files": "^2.13.0",
     "merge2": "^1.0.2",
+    "nock": "^8.0.0",
     "phantomjs-prebuilt": "^2.1.7",
     "requirejs": "^2.2.0",
     "rewire": "^2.5.1",
