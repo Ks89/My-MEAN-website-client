@@ -156,6 +156,7 @@ describe('contact', () => {
 				{response: RESPONSE, emailFormData: missingEmailFormData[4]},
 				{response: RESPONSE, emailFormData: missingEmailFormData[5]},
 				{response: RESPONSE, emailFormData: missingEmailFormData[6]},
+				{response: RESPONSE},
 				{}
 			];
 
