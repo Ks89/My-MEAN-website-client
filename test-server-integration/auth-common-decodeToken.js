@@ -22,6 +22,7 @@ const USER_PASSWORD = 'fake';
 
 const URL_LOGIN = '/api/login';
 const URL_LOGOUT = '/api/logout';
+const URL_BASE_DECODE_TOKEN = '/api/decodeToken/';
 
 const jwtMock = {
 	"_id": "57686655022691a4306b76b9",
@@ -145,7 +146,7 @@ describe('auth-common', () => {
 						expect(res.body.token).to.be.not.null;
 						expect(res.body.token).to.be.not.undefined;
 
-						getPartialGetRequest('/api/decodeToken/' + jwtStringToken)
+						getPartialGetRequest(URL_BASE_DECODE_TOKEN + jwtStringToken)
 						.send()
 						.expect(200)
 						.end((err, res) => {
@@ -179,7 +180,7 @@ describe('auth-common', () => {
 						.end((err, res) => asyncDone(err, res));
 					},
 					(res, asyncDone) => {
-						getPartialGetRequest('/api/decodeToken/' + 'fakeRandom')
+						getPartialGetRequest(URL_BASE_DECODE_TOKEN + 'fakeRandom')
 						.send()
 						.expect(401)
 						.end((err, res) => {
@@ -200,7 +201,7 @@ describe('auth-common', () => {
 						.end((err, res) => asyncDone(err, res));
 					},
 					(res, asyncDone) => {
-						getPartialGetRequest('/api/decodeToken/' + jwtWrongDateStringToken())
+						getPartialGetRequest(URL_BASE_DECODE_TOKEN + jwtWrongDateStringToken())
 						.send()
 						.expect(401)
 						.end((err, res) => {
@@ -210,9 +211,9 @@ describe('auth-common', () => {
 					}], (err, response) => done(err));
 			});
 
-			it('should get 403 FORBIDDEN, because XSRF-TOKEN is not available', done => {
-				getPartialPostRequest('/api/decodeToken/' + jwtStringToken)
-				//XSRF-TOKEN NOT SETTED!!!!
+			it('should get 403 FORBIDDEN, because you aren\'t authenticated', done => {
+				getPartialGetRequest(URL_BASE_DECODE_TOKEN + jwtStringToken)
+				//not authenticated
 				.send(loginMock)
 				.expect(403)
 				.end(() => done());
