@@ -1,4 +1,5 @@
 var _und = require('underscore');
+var jwt = require('jsonwebtoken');
 
 class Utils {
 
@@ -96,6 +97,36 @@ class Utils {
 
     return convertedDate.getTime() > systemDate.getTime();
   }
+
+  static isJwtValid(token) {
+    var self = this;
+    return new Promise(function(resolve, reject) {
+      // verify a token symmetric
+      jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
+        if(err) {
+          console.log("jwt.verify error");
+          reject({status: 401, message: "Jwt not valid or corrupted"});
+        } 
+
+        if(decoded) {
+          console.log("decoded valid");
+          if(self.isJwtValidDate(decoded)) {
+            console.log("systemDate valid");
+            console.log("stringifying...");
+            console.log(JSON.stringify(decoded));
+            resolve(decoded);
+          } else {
+            console.log('Token Session expired (date).');
+            reject({status: 401, message: "Token Session expired (date)."});
+          }
+        } else {
+          console.log('Impossible to decode token.');
+          reject({status: 401, message: "Impossible to decode token."});
+        }
+      });
+    });
+  }
+
 }
 
 module.exports = Utils;
