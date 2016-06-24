@@ -37,7 +37,7 @@ var logout = function(req, res) {
   if(req.session.authToken) {
     req.session.destroy(function(){
       console.log('Session data destroyed');
-      Utils.sendJSONres(res, 200, {});
+      Utils.sendJSONres(res, 200, {message: "Logout succeeded"});
     });
   } else {
     console.log('Authtoken not available as session data in Redis, for instance you aren\'t logged');
