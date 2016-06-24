@@ -5,6 +5,7 @@ var expect = require('chai').expect;
 var app = require('../app');
 var agent = require('supertest').agent(app);
 var async = require('async');
+var jwt = require('jsonwebtoken');
 
 require('../app_server/models/users');
 var mongoose = require('mongoose');
@@ -13,6 +14,7 @@ var User = mongoose.model('User');
 var user;
 var csrftoken;
 var connectionSid;
+var jwtStringToken;
 
 const USER_NAME = 'fake user';
 const USER_EMAIL = 'fake@email.com';
@@ -22,26 +24,43 @@ const URL_LOGIN = '/api/login';
 const URL_LOGOUT = '/api/logout';
 
 const jwtMock = {
-  "_id": "57686655022691a4306b76b9",
-  "user": {
-    "_id": "57686655022691a4306b76b9",
-    "__v": 0,
-    "local": {
-      "hash": "$2a$10$hHCcxNQmzzNCecReX1Rbeu5PJCosbjITXA1x./feykYcI2JW3npTW",
-      "email": "fake@email.it",
-      "name": "fake username"
-    }
-  },
-  "exp": 1466721597694,
-  "iat": 1466720997
+	"_id": "57686655022691a4306b76b9",
+	"user": {
+		"_id": "57686655022691a4306b76b9",
+		"__v": 0,
+		"local": {
+			"hash": "$2a$10$hHCcxNQmzzNCecReX1Rbeu5PJCosbjITXA1x./feykYcI2JW3npTW",
+			"email": USER_EMAIL,
+			"name": USER_NAME
+		}
+	},
+	"exp": 1466721597694,
+	"iat": 1466720997
 };
-
-const jwtStringMock = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1NzZjNjY4OThhYjdhNDQyMGU3YTk2ZTAiLCJ1c2VyIjp7Il9pZCI6IjU3NmM2Njg5OGFiN2E0NDIwZTdhOTZlMCIsIl9fdiI6MCwibG9jYWwiOnsiaGFzaCI6IiQyYSQxMCQ4MHVpNXdycnZhQjRXMDA2Zm1sWmF1Qjl3WUVnemFnQnpDTEkzbktuQTJVWGk3VW9QbHdSdSIsImVtYWlsIjoiZmFrZUBlbWFpbC5jb20iLCJuYW1lIjoiZmFrZSB1c2VyIn19LCJleHAiOjE0NjY3MjI1NzM3NzgsImlhdCI6MTQ2NjcyMTk3M30.rDUHwF4wmVIKBkI7ef7JC3SXOZ7YHLhf96OM_1MBD2g";
 
 const loginMock = {
 	email : USER_EMAIL,
 	password : USER_PASSWORD
 };
+
+const jwtWrongDateStringToken = function () {
+	var expiry = new Date();
+  expiry.setTime(expiry.getTime() - 600000); //expired 10 minutes ago (10*60*1000)
+
+  return jwt.sign({
+  	_id: this._id,
+     //I don't want to expose private information here -> I filter 
+     //the user object into a similar object without some fields
+     user: {
+     	"local": {
+     		"hash": "$2a$10$hHCcxNQmzzNCecReX1Rbeu5PJCosbjITXA1x./feykYcI2JW3npTW",
+     		"email": USER_EMAIL,
+     		"name": USER_NAME
+     	}
+     },
+     exp: parseFloat(expiry.getTime()),
+ }, process.env.JWT_SECRET);
+}
 
 describe('auth-common', () => {
 
@@ -58,11 +77,11 @@ describe('auth-common', () => {
 				connectionSid = (res.headers['set-cookie']).filter(value =>{
 					return value.includes('connect.sid');
 				})[0];
-			 	csrftoken = csrftoken ? csrftoken.split(';')[0].replace('XSRF-TOKEN=','') : '';
-			 	connectionSid = connectionSid ? connectionSid.split(';')[0].replace('connect.sid=','') : '';
-		      	done();
-      		}
-    	});
+				csrftoken = csrftoken ? csrftoken.split(';')[0].replace('XSRF-TOKEN=','') : '';
+				connectionSid = connectionSid ? connectionSid.split(';')[0].replace('connect.sid=','') : '';
+				done();
+			}
+		});
 	}
 
 	function insertUserTestDb(done) {
@@ -75,6 +94,7 @@ describe('auth-common', () => {
 				done(err);
 			}
 			user._id = usr._id;
+			jwtStringToken = user.generateJwt();
 			updateCookiesAndTokens(done); //pass done, it's important!
 		});
 	}
@@ -91,27 +111,27 @@ describe('auth-common', () => {
 
 	function getPartialPostRequest (apiUrl) {
 		return agent
-			.post(apiUrl)
-			.set('Content-Type', 'application/json')
-			.set('Accept', 'application/json')
-			.set('set-cookie', 'connect.sid=' + connectionSid)
-			.set('set-cookie', 'XSRF-TOKEN=' + csrftoken);
+		.post(apiUrl)
+		.set('Content-Type', 'application/json')
+		.set('Accept', 'application/json')
+		.set('set-cookie', 'connect.sid=' + connectionSid)
+		.set('set-cookie', 'XSRF-TOKEN=' + csrftoken);
 	}
 
 	//usefull function that prevent to copy and paste the same code
 	function getPartialGetRequest (apiUrl) {
 		return agent
-			.get(apiUrl)
-			.set('Content-Type', 'application/json')
-			.set('Accept', 'application/json');
+		.get(apiUrl)
+		.set('Content-Type', 'application/json')
+		.set('Accept', 'application/json');
 	}
 
 	describe('#decodeToken()', () => {
 		describe('---YES---', () => {
 
 			beforeEach(done => insertUserTestDb(done));
-			
-			it('should correctly activate an account', done => {
+
+			it('should decode a jwt token', done => {
 
 				async.waterfall([
 					asyncDone => {
@@ -125,25 +145,80 @@ describe('auth-common', () => {
 						expect(res.body.token).to.be.not.null;
 						expect(res.body.token).to.be.not.undefined;
 
-						getPartialGetRequest('/api/decodeToken/' + jwtStringMock)
+						getPartialGetRequest('/api/decodeToken/' + jwtStringToken)
 						.send()
 						.expect(200)
 						.end((err, res) => {
-							if (err) {
-								return asyncDone(err);
-							} else {
-								console.log(res.body);
-								asyncDone();
-							}
+							expect(res.body).to.be.not.undefined;
+							expect(res.body).to.be.not.null;
+							const usr = JSON.parse(res.body);
+							expect(usr.user.local.email).to.be.equals(jwtMock.user.local.email);
+							expect(usr.user.local.name).to.be.equals(jwtMock.user.local.name);
+							expect(usr.exp).to.be.not.undefined;
+							expect(usr.iat).to.be.not.undefined;
+							asyncDone(err);
 						});
-						}
-				], (err, response) => done(err));
+					}], (err, response) => done(err));
 			});
 
 			afterEach(done => dropUserTestDbAndLogout(done));
-
 		});
 
 
+		describe('---ERRORS---', () => {
+
+			beforeEach(done => insertUserTestDb(done));
+			
+			it('should 401 UNAUTHORIZED, because token isn\'t defined', done => {
+				async.waterfall([
+					asyncDone => {
+						getPartialPostRequest(URL_LOGIN)
+						.set('XSRF-TOKEN', csrftoken)
+						.send(loginMock)
+						.expect(200)
+						.end((err, res) => asyncDone(err, res));
+					},
+					(res, asyncDone) => {
+						getPartialGetRequest('/api/decodeToken/' + 'fakeRandom')
+						.send()
+						.expect(401)
+						.end((err, res) => {
+							expect(res.body.message).to.be.equals('Jwt not valid or corrupted');
+							asyncDone(err);
+						});
+					}], (err, response) => done(err));
+			});
+
+
+			it('should 401 UNAUTHORIZED, because token is expired', done => {
+				async.waterfall([
+					asyncDone => {
+						getPartialPostRequest(URL_LOGIN)
+						.set('XSRF-TOKEN', csrftoken)
+						.send(loginMock)
+						.expect(200)
+						.end((err, res) => asyncDone(err, res));
+					},
+					(res, asyncDone) => {
+						getPartialGetRequest('/api/decodeToken/' + jwtWrongDateStringToken())
+						.send()
+						.expect(401)
+						.end((err, res) => {
+							expect(res.body.message).to.be.equals('Token Session expired (date).');
+							asyncDone(err);
+						});
+					}], (err, response) => done(err));
+			});
+
+			it('should get 403 FORBIDDEN, because XSRF-TOKEN is not available', done => {
+				getPartialPostRequest('/api/decodeToken/' + jwtStringToken)
+				//XSRF-TOKEN NOT SETTED!!!!
+				.send(loginMock)
+				.expect(403)
+				.end(() => done());
+			});
+
+			afterEach(done => dropUserTestDbAndLogout(done));
+		});
 	});
 });

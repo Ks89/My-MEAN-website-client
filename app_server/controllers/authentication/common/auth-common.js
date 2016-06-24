@@ -8,31 +8,20 @@ var async = require('async');
 /* GET to decode a JWT passing the token itself*/
 /* /api/decodeToken/:token */
 var decodeToken = function(req, res) {
-  console.log('decodetoken', req.params);
+  console.log("..........................");
+  console.log(req.params);
+
   if (req.params && req.params.token) {
 
     const token = req.params.token;
-    console.log("data received jwt: " + token);
 
-    // verify a token symmetric
-    jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
-      if(err) {
-        console.log("jwt.verify error");
-        Utils.sendJSONres(res, 404, "Jwt not valid or corrupted");
-      } 
-
-      if(decoded) {
-        console.log("decoded valid");
-        if(Utils.isJwtValidDate(decoded)) {
-          console.log("systemDate valid");
-          console.log("stringifying...");
-          console.log(JSON.stringify(decoded));
-          Utils.sendJSONres(res, 200, JSON.stringify(decoded));
-        } else {
-          console.log('No data valid');
-          Utils.sendJSONres(res, 404, "Token's date not valid");
-        }
-      }
+    Utils.isJwtValid(token)
+    .then(function(result) {
+      console.log("IsJwtValid result: " + JSON.stringify(result));
+      Utils.sendJSONres(res, 200, JSON.stringify(result));
+    }, function(reason) {
+      console.log("IsJwtValid error: " + reason);
+      Utils.sendJSONres(res, reason.status, reason.message);
     });
   } else {
     console.log('No token found');
@@ -129,41 +118,28 @@ var unlinkServiceByName = function(req, serviceName, res) {
 
   async.waterfall([
     done => {
-      jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
-        if (err) throw err;
-        
-        console.log('Trying to decode jwt');
-        if(!decoded) {
-          console.error("Impossible to decode: " + decoded);
-          Utils.sendJSONres(res, 401, "Impossible to decode token.");
-          return;
-        }
-        console.log("decoded valid");
-        if(!Utils.isJwtValidDate(decoded)) {
-          console.error('No data valid');
-          Utils.sendJSONres(res, 401 , "Token Session expired (date).");
-          return;
-        }
-        console.log("SystemDate valid");
-
-        var user = decoded.user;
-        console.log("User is: ");
-        console.log(user);
-        done(err, decoded, user);
+      Utils.isJwtValid(token)
+      .then(function(result) {
+        console.log("IsJwtValid result: " + result);
+        done(null, result);
+      }, function(reason) {
+        console.log("IsJwtValid error: " + reason);
+        Utils.sendJSONres(res, reason.status, reason.message);
+        return;
       });
     }, 
-    (token, user, done) => {
-      User.findById(user._id, function(err, user) {
+    (decodedToken, done) => {
+      User.findById(decodedToken.user._id, function(err, user) {
         if (err || !user) { 
           console.log("User not found - cannot unlink (usersReadOneById)");
           Utils.sendJSONres(res, 404, "User not found - cannot unlink");
           return;
         }
         console.log("User found (usersReadOneById): " + user);
-        done(err, user, token);
+        done(err, user, decodedToken);
       });
     },
-    (user, token, done) => {
+    (user, decodedToken, done) => {
       var lastUnlink = checkIfLastUnlink(serviceName, user);
       console.log('Check if last unlink: ' + lastUnlink);
       if(lastUnlink) {
@@ -171,7 +147,7 @@ var unlinkServiceByName = function(req, serviceName, res) {
         user.remove(function() {
           console.log("User removed from DB");
         });
-        if(token) {
+        if(decodedToken) {
           req.session.destroy(function(){
             console.log('Last unlink, session data destroyed');
           });
