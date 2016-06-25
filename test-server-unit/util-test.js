@@ -1,6 +1,10 @@
 'use strict';
 process.env.NODE_ENV = 'test'; //before every other instruction
 
+//to be able to use generateJwt I must import 
+//dotenv (otherwise I cannot read process.env with the encryption key)
+require('dotenv').config();
+
 var chai = require('chai');
 var assert = chai.assert;
 var expect = chai.expect;
@@ -8,11 +12,14 @@ var _und = require('underscore');
 var util = require('../app_server/utils/util');
 var MockedRes = require('./mocked-res-class');
 var mockedRes = new MockedRes();
+var jwt = require('jsonwebtoken');
 
 describe('util', () => {
 
   const NOT_VALID_DATE = 'Not a valid date';
   const NOT_VALID_DECODEDJWT = 'Not a valid decodedJwtToken';
+  const NOT_VALID_TOKEN = 'Not a valid token';
+  const CORRUPTED_TOKEN = 'Jwt not valid or corrupted';
   const EXPIRE_DATE_NOT_FOUND = 'Expire date not found';
   const NOT_FLOAT_EXP_DATE = 'Not a float expiration date';
  
@@ -226,7 +233,7 @@ describe('util', () => {
     }
 
     describe('---YES---', () => {
-      it('should return true, becase jwt is valid', () => {
+      it('should return true, because jwt is valid', () => {
         //valid for 10 minutes (10*60*1000)
         dateExpire.setTime(dateExpire.getTime() + 600000); 
         expect(util.isJwtValidDate(getJwtMockWithFloatDate(dateExpire))).to.equal(true);
@@ -234,13 +241,13 @@ describe('util', () => {
     });
 
     describe('---NO---', () => {
-      it('should return false, becase jwt is expired', () => {
+      it('should return false, because jwt is expired', () => {
         //invalid because expired 10 minutes ago (10*60*1000)
         dateExpire.setTime(dateExpire.getTime() - 600000); 
         expect(util.isJwtValidDate(getJwtMockWithFloatDate(dateExpire))).to.equal(false);
       });
 
-      it('should return false, becase jwt is expired exactly in this moment', () => {
+      it('should return false, because jwt is expired exactly in this moment', () => {
         //invalid because expired 0 seconds ago
         dateExpire.setTime(dateExpire.getTime()); 
         expect(util.isJwtValidDate(getJwtMockWithFloatDate(dateExpire))).to.equal(false);
@@ -283,6 +290,124 @@ describe('util', () => {
         //expire date not found into decodedJwtToken
         delete mockJwt.exp;
         expect(() => util.isJwtValidDate(mockJwt)).to.throw(EXPIRE_DATE_NOT_FOUND);
+      });
+    });
+  });
+
+  describe('#isJwtValid()', () => {
+    var mockLocalUser;
+    var getMockJwtString;
+
+    before(() => {
+      mockLocalUser = {
+        local: {
+          hash: "$2a$10$hHCcxNQmzzNCecReX1Rbeu5PJCosbjITXA1x./feykYcI2JW3npTW",
+          email: 'fake@fake.com',
+          name: 'fake name'
+        }
+      };
+
+      getMockJwtString = function (expiryDate) {
+        return jwt.sign({
+          user: mockLocalUser,
+          exp: parseFloat(expiryDate.getTime()),
+        }, process.env.JWT_SECRET);
+      }
+    });
+
+    describe('---YES---', () => {
+      it('should return the result, because jwt is valid', done => {
+        var expiry = new Date();
+        expiry.setTime(expiry.getTime() + 600000);
+        util.isJwtValid(getMockJwtString(expiry))
+        .then(function(result) {
+          console.log("IsJwtValid result");
+          expect(result.user.local.name).to.be.equals(mockLocalUser.local.name);
+          expect(result.user.local.email).to.be.equals(mockLocalUser.local.email);
+          expect(result.user.local.hash).to.be.equals(mockLocalUser.local.hash);
+          done();
+        }, function(reason) {
+          console.log("IsJwtValid error");
+          expect(true).to.be.false; //XD
+          done();
+        });
+      });
+    });
+
+    describe('---NO---', () => {
+      it('should return an error message, because jwt is expired', done => {
+        //invalid because expired 10 minutes ago (10*60*1000)
+        var expiry = new Date();
+        expiry.setTime(expiry.getTime() - 600000); 
+        util.isJwtValid(getMockJwtString(expiry))
+        .then(function(result) {
+          expect(true).to.be.false; //XD
+          done();
+        }, function(reason) {
+          console.log("IsJwtValid error");
+          expect(reason.status).to.be.equals(401);
+          expect(reason.message).to.be.equals("Token Session expired (date).");
+          done();
+        });
+      });
+
+      it('should return an error message, because jwt is expired exactly in this moment', done => {
+        //invalid because expired 0 seconds ago
+        var expiry = new Date();
+        expiry.setTime(expiry.getTime()); 
+        util.isJwtValid(getMockJwtString(expiry))
+        .then(function(result) {
+          expect(true).to.be.false; //XD
+          done();
+        }, function(reason) {
+          console.log("IsJwtValid error");
+          expect(reason.status).to.be.equals(401);
+          expect(reason.message).to.be.equals("Token Session expired (date).");
+          done();
+        });
+      });
+
+      const mockJwts = ["undefined", "null", " ", "random value"];
+
+      for(let i=0; i<mockJwts.length; i++) {
+        console.log("mockJwts[" + i + "]: " + mockJwts[i]);
+        it('should return an error message, because jwt is an invalid String. Test i= ' + i, done => {
+          util.isJwtValid(mockJwts[i])
+          .then(function(result) {
+            expect(true).to.be.false; //XD
+            done();
+          }, function(reason) {
+            console.log("IsJwtValid error");
+            expect(reason.status).to.be.equals(401);
+            expect(reason.message).to.be.equals(CORRUPTED_TOKEN);
+            done();
+          });
+        });
+      }
+    });
+
+    describe('---ERRORS---', () => {
+
+      it('should return an exception, because jwt is not valid', done => {
+
+        expect(() => util.isJwtValid(undefined)).to.throw(NOT_VALID_TOKEN);
+        expect(() => util.isJwtValid(null)).to.throw(NOT_VALID_TOKEN);
+        expect(() => util.isJwtValid(-2)).to.throw(NOT_VALID_TOKEN);
+        expect(() => util.isJwtValid(-1)).to.throw(NOT_VALID_TOKEN);
+        expect(() => util.isJwtValid(-0)).to.throw(NOT_VALID_TOKEN);
+        expect(() => util.isJwtValid(0)).to.throw(NOT_VALID_TOKEN);
+        expect(() => util.isJwtValid(1)).to.throw(NOT_VALID_TOKEN);
+        expect(() => util.isJwtValid(2)).to.throw(NOT_VALID_TOKEN);
+        expect(() => util.isJwtValid("")).to.throw(NOT_VALID_TOKEN);
+        expect(() => util.isJwtValid(function(){})).to.throw(NOT_VALID_TOKEN);
+        expect(() => util.isJwtValid(()=>{})).to.throw(NOT_VALID_TOKEN);
+        expect(() => util.isJwtValid(/fooRegex/i)).to.throw(NOT_VALID_TOKEN);
+        expect(() => util.isJwtValid([])).to.throw(NOT_VALID_TOKEN);
+        expect(() => util.isJwtValid(new Error())).to.throw(NOT_VALID_TOKEN);
+        expect(() => util.isJwtValid(new RegExp(/fooRegex/,'i'))).to.throw(NOT_VALID_TOKEN);
+        expect(() => util.isJwtValid(new RegExp('/fooRegex/','i'))).to.throw(NOT_VALID_TOKEN);
+
+        done();
       });
     });
   });
