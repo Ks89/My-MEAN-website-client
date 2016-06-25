@@ -100,6 +100,15 @@ class Utils {
 
   static isJwtValid(token) {
     var self = this;
+
+    if(!token || !_und.isString(token) ||
+        _und.isObject(token) || _und.isArray(token) || 
+        _und.isFunction(token) || _und.isRegExp(token) ||
+        _und.isError(token) || _und.isNull(token) ||
+        _und.isUndefined(token) || _und.isNaN(token)) {
+      throw "Not a valid token";
+    }
+
     return new Promise(function(resolve, reject) {
       // verify a token symmetric
       jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
