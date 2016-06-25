@@ -8,7 +8,7 @@ module.exports = function (userRef, passportRef) {
     passwordField : 'password',
     passReqToCallback : true
   },(req, username, password, done) => {
-    process.nextTick(function() {
+    process.nextTick(() => {
       userRef.findOne({ 'local.email': username }, (err, user) => {
         if (err) { 
           return done(err); 

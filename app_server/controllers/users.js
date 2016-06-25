@@ -10,7 +10,7 @@ module.exports.usersReadOneById = function(req, res) {
 	console.log('Finding a User', req.params);
 	if (req.params && req.params.id) {
 
-		User.findById(req.params.id, function(err, user) {
+		User.findById(req.params.id, (err, user) => {
 			console.log("User.findOne...");
 			if (err) { 
 				console.log('Error user not found (usersReadOneById)' + err);

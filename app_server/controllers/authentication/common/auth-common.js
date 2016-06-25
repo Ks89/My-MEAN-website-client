@@ -16,10 +16,10 @@ var decodeToken = function(req, res) {
     const token = req.params.token;
 
     Utils.isJwtValid(token)
-    .then(function(result) {
+    .then(result => {
       console.log("IsJwtValid result: " + JSON.stringify(result));
       Utils.sendJSONres(res, 200, JSON.stringify(result));
-    }, function(reason) {
+    }, reason => {
       console.log("IsJwtValid error: " + reason);
       Utils.sendJSONres(res, reason.status, reason.message);
     });
@@ -35,7 +35,7 @@ var decodeToken = function(req, res) {
 var logout = function(req, res) {
   console.log('logout called (authToken): ' + req.session.authToken);
   if(req.session.authToken) {
-    req.session.destroy(function(){
+    req.session.destroy(() => {
       console.log('Session data destroyed');
       Utils.sendJSONres(res, 200, {message: "Logout succeeded"});
     });
@@ -119,17 +119,17 @@ var unlinkServiceByName = function(req, serviceName, res) {
   async.waterfall([
     done => {
       Utils.isJwtValid(token)
-      .then(function(result) {
+      .then(result => {
         console.log("IsJwtValid result: " + result);
         done(null, result);
-      }, function(reason) {
+      }, reason => {
         console.log("IsJwtValid error: " + reason);
         Utils.sendJSONres(res, reason.status, reason.message);
         return;
       });
     }, 
     (decodedToken, done) => {
-      User.findById(decodedToken.user._id, function(err, user) {
+      User.findById(decodedToken.user._id, (err, user) => {
         if (err || !user) { 
           console.log("User not found - cannot unlink (usersReadOneById)");
           Utils.sendJSONres(res, 404, "User not found - cannot unlink");
@@ -144,11 +144,11 @@ var unlinkServiceByName = function(req, serviceName, res) {
       console.log('Check if last unlink: ' + lastUnlink);
       if(lastUnlink) {
         console.log("Last unlink - removing from db....");
-        user.remove(function() {
+        user.remove(() => {
           console.log("User removed from DB");
         });
         if(decodedToken) {
-          req.session.destroy(function(){
+          req.session.destroy(() => {
             console.log('Last unlink, session data destroyed');
           });
         }
@@ -156,7 +156,7 @@ var unlinkServiceByName = function(req, serviceName, res) {
       } else {
         console.log("Unlinking normal situation, without a remove....");
         user = removeServiceFromDb(serviceName, user);
-        user.save(function(err) {
+        user.save(err => {
           if(err) {
             console.error("Impossible to remove userService from db");
             Utils.sendJSONres(res, 500, "Impossible to remove userService from db");

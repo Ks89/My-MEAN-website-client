@@ -9,7 +9,7 @@ var async = require('async');
 
 module.exports.collapseDb = (loggedUser, serviceName, req) => {
 
-	return new Promise(function(resolve, reject) {
+	return new Promise((resolve, reject) => {
 		if(!loggedUser || !serviceName) {
 			console.err("impossibile to collapseDb becase either loggedUser or serviceName are null or undefined.");
 		}
@@ -48,7 +48,7 @@ module.exports.collapseDb = (loggedUser, serviceName, req) => {
 			console.log(users);
 
 			//retrive the logged user from the db using his _id (id of mongodb's object)
-			var user = users.find(function (el) { 
+			var user = users.find(el => { 
 				if(el && el._id) {
 					return el._id + '' === loggedUser._id + '';
 				}	

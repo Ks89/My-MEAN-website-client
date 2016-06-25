@@ -5,9 +5,9 @@ var expect = require('chai').expect;
 var app = require('../app');
 var agent = require('supertest').agent(app);
 
-describe('log-api', function() {
+describe('log-api', () => {
   describe('---YES---', () => {
-    it('should correctly log a debug message', function(done){
+    it('should correctly log a debug message', done =>{
       const bodyMock = {
         "message" : "message to log"    
       };
@@ -18,7 +18,7 @@ describe('log-api', function() {
       .set('Accept', 'application/json')
       .send(bodyMock)
       .expect(200)
-      .end(function(err, res) {
+      .end((err, res) => {
         console.log("called");
         if (err) {
           console.log(err);
@@ -35,7 +35,7 @@ describe('log-api', function() {
       });
     });
 
-    it('should correctly log an error message', function(done){
+    it('should correctly log an error message', done => {
       const bodyMock = {
         "message" : "message to log"    
       };
@@ -46,7 +46,7 @@ describe('log-api', function() {
       .set('Accept', 'application/json')
       .send(bodyMock)
       .expect(200)
-      .end(function(err, res) {
+      .end((err, res) => {
         console.log("called");
         if (err) {
           console.log(err);
@@ -63,7 +63,7 @@ describe('log-api', function() {
       });
     });
 
-    it('should correctly log an exception message', function(done){
+    it('should correctly log an exception message', done =>{
 
       const bodyMock = {
         errorUrl: "http://localhost/fake url",
@@ -77,7 +77,7 @@ describe('log-api', function() {
       .set('Accept', 'application/json')
       .send(bodyMock)
       .expect(200)
-      .end(function(err, res) {
+      .end((err, res) => {
         console.log("called");
         if (err) {
           console.log(err);

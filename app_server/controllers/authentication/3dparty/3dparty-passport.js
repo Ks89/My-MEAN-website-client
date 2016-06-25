@@ -57,7 +57,7 @@ module.exports = function (userRef, passportRef) {
     
     console.log(profile);
 
-    process.nextTick(function () {
+    process.nextTick(() => {
       var sessionLocalUserId = req.session.localUserId;
       //check if the user is already logged in using the LOCAL authentication
       if(sessionLocalUserId) {
@@ -77,10 +77,10 @@ module.exports = function (userRef, passportRef) {
 
             //----------------- experimental ---------------
             authExperimentalFeatures.collapseDb(user, serviceName, req)
-            .then(function(result) {
+            .then(result => {
               console.log("collapseDb localuser with 3dpartyauth promise: " + result);
               return done(null, result);
-            }, function(reason) {
+            }, reason => {
               console.log("ERROR collapseDb localuser with 3dpartyauth promise");
               return done(null, user);
             });
@@ -146,10 +146,10 @@ module.exports = function (userRef, passportRef) {
 
             //----------------- experimental ---------------
             authExperimentalFeatures.collapseDb(savedUser, serviceName, req)
-            .then(function(result) {
+            .then(result => {
               console.log("collapseDb promise: " + result);
               return done(null, result);
-            }, function(reason) {
+            }, reason => {
               console.log("ERROR collapseDb promise");
               return done(null, savedUser);
             });

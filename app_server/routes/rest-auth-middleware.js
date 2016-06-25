@@ -16,7 +16,7 @@ module.exports.restAuthenticationMiddleware = function(req, res, next) {
 			return;
 		}
 		
-		jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
+		jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
 			if(err) {
 				logger.error("jwt.verify error");
 				Utils.sendJSONres(res, 404, null);

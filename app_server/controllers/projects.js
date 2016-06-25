@@ -8,7 +8,7 @@ var Utils = require('../utils/util.js');
 /* /api/projects */
 module.exports.projectsList = function(req, res) {
   console.log('projectsList');
-  Project.find({}, function(err, results) {
+  Project.find({}, (err, results) => {
     if (!results || err) {
       console.log('projectsList error:', err);
       Utils.sendJSONres(res, 404, "Project list not found");
@@ -25,7 +25,7 @@ module.exports.projectsListHomepage = function(req, res) {
   console.log('projectsListHomepage');
   Project
     .find({"projectHomeView.carouselImagePath": { $exists: true } })
-    .lean().exec(function(err, results) {
+    .lean().exec((err, results) => {
       if (!results || err) {
         console.log('projectsListHomepage error:', err);
         Utils.sendJSONres(res, 404, "Project list homepage not found");
