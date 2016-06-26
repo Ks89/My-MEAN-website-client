@@ -4,11 +4,11 @@ var logger = require('../../../utils/logger');
 var jwt = require('jsonwebtoken');
 var Utils = require('../../../utils/util');
 var async = require('async');
+var _und = require('underscore');
 
 /* GET to decode a JWT passing the token itself*/
 /* /api/decodeToken/:token */
 var decodeToken = function(req, res) {
-  console.log("..........................");
   console.log(req.params);
 
   if (req.params && req.params.token) {
@@ -55,26 +55,6 @@ var sessionToken = function(req, res) {
   } else {
     console.log('Authtoken not available as session data in Redis, for instance you aren\'t logged');
     Utils.sendJSONres(res, 404, "Authtoken not available as session data");
-  }
-};
-
-var checkIfLastUnlink = function(serviceName, user) {
-  switch(serviceName) {
-    case 'github':
-      return !user.facebook.id && !user.google.id && !user.local.email && !user.twitter.id && !user.linkedin.id;
-    case 'google':
-      return !user.github.id && !user.facebook.id && !user.local.email && !user.twitter.id && !user.linkedin.id;
-    case 'facebook':
-      return !user.github.id && !user.google.id && !user.local.email && !user.twitter.id && !user.linkedin.id;
-    case 'local':
-      return !user.github.id && !user.google.id && !user.facebook.id && !user.twitter.id && !user.linkedin.id;
-    case 'twitter':
-      return !user.github.id && !user.google.id && !user.facebook.id && !user.local.email && !user.linkedin.id;
-    case 'linkedin':
-      return !user.github.id && !user.google.id && !user.facebook.id && !user.local.email && !user.twitter.id;
-    default:
-      console.log('Service name not recognized in checkIfLastUnlink');
-      return false;
   }
 };
 
@@ -225,6 +205,35 @@ var unlinkServiceByName = function(req, serviceName, res) {
 //   }
 //   Utils.sendJSONresponse(res, 404, null);
 // };
+
+//exposed to be able to test it, but used only in this file
+var checkIfLastUnlink = function(serviceName, user) {
+  if(!user) {
+    throw 'User must be a valid object';
+  }
+
+  if(!_und.isString(serviceName)) {
+    throw 'serviceName must be a String';
+  }
+
+  switch(serviceName) {
+    case 'github':
+      return !user.facebook.id && !user.google.id && !user.local.email && !user.twitter.id && !user.linkedin.id;
+    case 'google':
+      return !user.github.id && !user.facebook.id && !user.local.email && !user.twitter.id && !user.linkedin.id;
+    case 'facebook':
+      return !user.github.id && !user.google.id && !user.local.email && !user.twitter.id && !user.linkedin.id;
+    case 'local':
+      return !user.github.id && !user.google.id && !user.facebook.id && !user.twitter.id && !user.linkedin.id;
+    case 'twitter':
+      return !user.github.id && !user.google.id && !user.facebook.id && !user.local.email && !user.linkedin.id;
+    case 'linkedin':
+      return !user.github.id && !user.google.id && !user.facebook.id && !user.local.email && !user.twitter.id;
+    default:
+      console.log('Service name not recognized in checkIfLastUnlink');
+      return false;
+  }
+};
 
 module.exports = {
   decodeToken: decodeToken,
