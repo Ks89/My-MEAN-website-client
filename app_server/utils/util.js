@@ -70,7 +70,8 @@ class Utils {
         !_und.isObject(decodedJwtToken) || _und.isArray(decodedJwtToken) || 
         _und.isFunction(decodedJwtToken) || _und.isRegExp(decodedJwtToken) ||
         _und.isError(decodedJwtToken) || _und.isNull(decodedJwtToken) ||
-        _und.isUndefined(decodedJwtToken) || _und.isNaN(decodedJwtToken)) {
+        _und.isUndefined(decodedJwtToken) || _und.isNaN(decodedJwtToken) ||
+        _und.isBoolean(decodedJwtToken)) {
       throw "Not a valid decodedJwtToken";
     }
 

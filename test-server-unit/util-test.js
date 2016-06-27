@@ -133,6 +133,10 @@ describe('util', () => {
         expect(()=>util.sendJSONres(mockedRes, new RegExp(/fooRegex/,'i'), mockedStringContent)).to.throw(STATUS_NUMBER);
         expect(()=>util.sendJSONres(mockedRes, new RegExp('/fooRegex/','i'), mockedStringContent)).to.throw(STATUS_NUMBER);
         expect(()=>util.sendJSONres(mockedRes, new Error(), mockedStringContent)).to.throw(STATUS_NUMBER);
+        expect(()=>util.sendJSONres(mockedRes, true, mockedStringContent)).to.throw(STATUS_NUMBER);
+        expect(()=>util.sendJSONres(mockedRes, false, mockedStringContent)).to.throw(STATUS_NUMBER);
+        expect(()=>util.sendJSONres(mockedRes, new Array(), mockedStringContent)).to.throw(STATUS_NUMBER);
+
       });
 
       it('should catch -content must be either String, or Array, or Object-', () => {
@@ -147,6 +151,9 @@ describe('util', () => {
         expect(()=>util.sendJSONres(mockedRes, 200, new RegExp(/fooRegex/,'i'))).to.throw(CONTENT_CHECK);
         expect(()=>util.sendJSONres(mockedRes, 200, new RegExp('/fooRegex/','i'))).to.throw(CONTENT_CHECK);
         expect(()=>util.sendJSONres(mockedRes, 200, new Error())).to.throw(CONTENT_CHECK);
+        expect(()=>util.sendJSONres(mockedRes, 200, true)).to.throw(CONTENT_CHECK);
+        expect(()=>util.sendJSONres(mockedRes, 200, false)).to.throw(CONTENT_CHECK);
+        expect(()=>util.sendJSONres(mockedRes, 200, new Date())).to.throw(CONTENT_CHECK);
       });
     });
   });
@@ -199,6 +206,9 @@ describe('util', () => {
         expect(() => util.getTextFormattedDate(new Error())).to.throw(NOT_VALID_DATE);
         expect(() => util.getTextFormattedDate(new RegExp(/fooRegex/,'i'))).to.throw(NOT_VALID_DATE);
         expect(() => util.getTextFormattedDate(new RegExp('/fooRegex/','i'))).to.throw(NOT_VALID_DATE);
+        expect(() => util.getTextFormattedDate(true)).to.throw(NOT_VALID_DATE);
+        expect(() => util.getTextFormattedDate(false)).to.throw(NOT_VALID_DATE);
+        expect(() => util.getTextFormattedDate(new Array())).to.throw(NOT_VALID_DATE);
       });
     });
   });
@@ -284,6 +294,9 @@ describe('util', () => {
         expect(() => util.isJwtValidDate(/fooRegex/i)).to.throw(NOT_VALID_DECODEDJWT);
         expect(() => util.isJwtValidDate(new RegExp(/fooRegex/,'i'))).to.throw(NOT_VALID_DECODEDJWT);
         expect(() => util.isJwtValidDate(new RegExp('/fooRegex/','i'))).to.throw(NOT_VALID_DECODEDJWT);
+        expect(() => util.isJwtValidDate(new Array())).to.throw(NOT_VALID_DECODEDJWT);
+        expect(() => util.isJwtValidDate(true)).to.throw(NOT_VALID_DECODEDJWT);
+        expect(() => util.isJwtValidDate(false)).to.throw(NOT_VALID_DECODEDJWT);
       });
 
       it('should catch -expire date not found- exceptions', () => {
@@ -406,7 +419,10 @@ describe('util', () => {
         expect(() => util.isJwtValid(new Error())).to.throw(NOT_VALID_TOKEN);
         expect(() => util.isJwtValid(new RegExp(/fooRegex/,'i'))).to.throw(NOT_VALID_TOKEN);
         expect(() => util.isJwtValid(new RegExp('/fooRegex/','i'))).to.throw(NOT_VALID_TOKEN);
-
+        expect(() => util.isJwtValid(true)).to.throw(NOT_VALID_TOKEN);
+        expect(() => util.isJwtValid(false)).to.throw(NOT_VALID_TOKEN);
+        expect(() => util.isJwtValid(new Date())).to.throw(NOT_VALID_TOKEN);
+        expect(() => util.isJwtValid(new Array())).to.throw(NOT_VALID_TOKEN);
         done();
       });
     });
