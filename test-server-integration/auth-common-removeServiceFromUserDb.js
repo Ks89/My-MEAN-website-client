@@ -13,7 +13,9 @@ var authCommon = require('../app_server/controllers/authentication/common/auth-c
 const FAKE = 'fake';
 const WRONG_SERVICE_NAME = 'wrong';
 
-const SERVICENAME_NOT_FOUND = 'Service name to remove from user not recognized';
+const SERVICENAME_NOT_VALID = 'Service name not valid';
+const SERVICENAME_MUSTBE_STRING = 'Service name must be a String';
+const USER_MUSTBE_OBJECT = 'User must be a valid object';
 
 describe('auth-common', () => {
 
@@ -37,8 +39,6 @@ describe('auth-common', () => {
 				{serviceName:'github', user: {twitter:{},linkedin:{}} },
 				{serviceName:'google', user: {linkedin:{}} },
 				{serviceName:'local', user: {}}
-
-				//TODO add all the cases here
 			];
 
 			for(let i=0; i<userMocks.length; i++) {
@@ -64,14 +64,58 @@ describe('auth-common', () => {
 
 		describe('---ERRORS---', () => { 
 
-			it('should catch an exception, because the serviceName cannot be found inside the user object', done => {
-				
-				expect(()=>authCommon.removeServiceFromUserDb(null, {})).to.throw(SERVICENAME_NOT_FOUND);
-
+			it('should catch an exception, because serviceName is not valid', done => {	
+				expect(()=>authCommon.removeServiceFromUserDb("not_whitelisted", {})).to.throw(SERVICENAME_NOT_VALID);
 				done();
 			});
 
+			it('should catch an exception, because user must be a valid object', done => {
+				expect(()=>authCommon.removeServiceFromUserDb("github", "")).to.throw(USER_MUSTBE_OBJECT);
+				expect(()=>authCommon.removeServiceFromUserDb("github", -2)).to.throw(USER_MUSTBE_OBJECT);
+				expect(()=>authCommon.removeServiceFromUserDb("github", -1)).to.throw(USER_MUSTBE_OBJECT);
+				expect(()=>authCommon.removeServiceFromUserDb("github", -0)).to.throw(USER_MUSTBE_OBJECT);
+				expect(()=>authCommon.removeServiceFromUserDb("github", 0)).to.throw(USER_MUSTBE_OBJECT);
+				expect(()=>authCommon.removeServiceFromUserDb("github", 1)).to.throw(USER_MUSTBE_OBJECT);
+				expect(()=>authCommon.removeServiceFromUserDb("github", 2)).to.throw(USER_MUSTBE_OBJECT);
+				expect(()=>authCommon.removeServiceFromUserDb("github", null)).to.throw(USER_MUSTBE_OBJECT);
+				expect(()=>authCommon.removeServiceFromUserDb("github", undefined)).to.throw(USER_MUSTBE_OBJECT);
+				expect(()=>authCommon.removeServiceFromUserDb("github", function(){})).to.throw(USER_MUSTBE_OBJECT);
+				expect(()=>authCommon.removeServiceFromUserDb("github", ()=>{})).to.throw(USER_MUSTBE_OBJECT);
+				expect(()=>authCommon.removeServiceFromUserDb("github", /fooRegex/i)).to.throw(USER_MUSTBE_OBJECT);
+				expect(()=>authCommon.removeServiceFromUserDb("github", [])).to.throw(USER_MUSTBE_OBJECT);
+				expect(()=>authCommon.removeServiceFromUserDb("github", new Error())).to.throw(USER_MUSTBE_OBJECT);
+				expect(()=>authCommon.removeServiceFromUserDb("github", new RegExp(/fooRegex/,'i'))).to.throw(USER_MUSTBE_OBJECT);
+				expect(()=>authCommon.removeServiceFromUserDb("github", new RegExp('/fooRegex/','i'))).to.throw(USER_MUSTBE_OBJECT);
+				expect(()=>authCommon.removeServiceFromUserDb("github", new Date())).to.throw(USER_MUSTBE_OBJECT);
+				expect(()=>authCommon.removeServiceFromUserDb("github", new Array())).to.throw(USER_MUSTBE_OBJECT);
+				expect(()=>authCommon.removeServiceFromUserDb("github", true)).to.throw(USER_MUSTBE_OBJECT);
+				expect(()=>authCommon.removeServiceFromUserDb("github", false)).to.throw(USER_MUSTBE_OBJECT);
+				done();
+			});
 
+			it('should catch an exception, because serviceName must be a string', done => {	
+				expect(()=>authCommon.removeServiceFromUserDb({}, {})).to.throw(SERVICENAME_MUSTBE_STRING);
+				expect(()=>authCommon.removeServiceFromUserDb(-2, {})).to.throw(SERVICENAME_MUSTBE_STRING);
+				expect(()=>authCommon.removeServiceFromUserDb(-1, {})).to.throw(SERVICENAME_MUSTBE_STRING);
+				expect(()=>authCommon.removeServiceFromUserDb(-0, {})).to.throw(SERVICENAME_MUSTBE_STRING);
+				expect(()=>authCommon.removeServiceFromUserDb(0, {})).to.throw(SERVICENAME_MUSTBE_STRING);
+				expect(()=>authCommon.removeServiceFromUserDb(1, {})).to.throw(SERVICENAME_MUSTBE_STRING);
+				expect(()=>authCommon.removeServiceFromUserDb(2, {})).to.throw(SERVICENAME_MUSTBE_STRING);
+				expect(()=>authCommon.removeServiceFromUserDb(null, {})).to.throw(SERVICENAME_MUSTBE_STRING);
+				expect(()=>authCommon.removeServiceFromUserDb(undefined, {})).to.throw(SERVICENAME_MUSTBE_STRING);
+				expect(()=>authCommon.removeServiceFromUserDb(function(){}, {})).to.throw(SERVICENAME_MUSTBE_STRING);
+				expect(()=>authCommon.removeServiceFromUserDb(()=>{}, {})).to.throw(SERVICENAME_MUSTBE_STRING);
+				expect(()=>authCommon.removeServiceFromUserDb(/fooRegex/i, {})).to.throw(SERVICENAME_MUSTBE_STRING);
+				expect(()=>authCommon.removeServiceFromUserDb([], {})).to.throw(SERVICENAME_MUSTBE_STRING);
+				expect(()=>authCommon.removeServiceFromUserDb(new Error(), {})).to.throw(SERVICENAME_MUSTBE_STRING);
+				expect(()=>authCommon.removeServiceFromUserDb(new RegExp(/fooRegex/,'i'), {})).to.throw(SERVICENAME_MUSTBE_STRING);
+				expect(()=>authCommon.removeServiceFromUserDb(new RegExp('/fooRegex/','i'), {})).to.throw(SERVICENAME_MUSTBE_STRING);
+				expect(()=>authCommon.removeServiceFromUserDb(new Date(), {})).to.throw(SERVICENAME_MUSTBE_STRING);
+				expect(()=>authCommon.removeServiceFromUserDb(new Array(), {})).to.throw(SERVICENAME_MUSTBE_STRING);
+				expect(()=>authCommon.removeServiceFromUserDb(true, {})).to.throw(SERVICENAME_MUSTBE_STRING);
+				expect(()=>authCommon.removeServiceFromUserDb(false, {})).to.throw(SERVICENAME_MUSTBE_STRING);
+				done();
+			});
 		});
 	});
 });

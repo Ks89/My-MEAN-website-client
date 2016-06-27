@@ -5,6 +5,7 @@ var jwt = require('jsonwebtoken');
 var Utils = require('../../../utils/util');
 var async = require('async');
 var _und = require('underscore');
+var whitelistServices = require('../serviceNames');
 
 /* GET to decode a JWT passing the token itself*/
 /* /api/decodeToken/:token */
@@ -56,15 +57,6 @@ var sessionToken = function(req, res) {
     console.log('Authtoken not available as session data in Redis, for instance you aren\'t logged');
     Utils.sendJSONres(res, 404, "Authtoken not available as session data");
   }
-};
-
-var removeServiceFromDb = function(serviceName, user) {
-  if(serviceName) {
-    user[serviceName] = undefined;
-  } else {
-    console.log('Service name not recognized to unlink');
-  }
-  return user;
 };
 
 var generateJwtCookie = function(user) {
@@ -135,7 +127,7 @@ var unlinkServiceByName = function(req, serviceName, res) {
         done(null, user);
       } else {
         console.log("Unlinking normal situation, without a remove....");
-        user = removeServiceFromDb(serviceName, user);
+        user = removeServiceFromUserDb(serviceName, user);
         user.save(err => {
           if(err) {
             console.error("Impossible to remove userService from db");
@@ -235,12 +227,34 @@ var checkIfLastUnlink = function(serviceName, user) {
   }
 };
 
+var removeServiceFromUserDb = function(serviceName, user) {
+
+   if(!user || _und.isString(user) ||
+        !_und.isObject(user) || _und.isArray(user) || 
+        _und.isFunction(user) || _und.isRegExp(user) ||
+        _und.isError(user) || _und.isNull(user) || _und.isBoolean(user) ||
+        _und.isUndefined(user) || _und.isNaN(user) || _und.isDate(user)) {
+    throw 'User must be a valid object';
+  }
+
+  if(!_und.isString(serviceName)) {
+    throw 'Service name must be a String';
+  }
+
+  if(whitelistServices.indexOf(serviceName) !== -1) {
+    user[serviceName] = undefined;
+  } else {
+    throw 'Service name not valid';
+  }
+  return user;
+};
+
 module.exports = {
   decodeToken: decodeToken,
   logout: logout,
   sessionToken: sessionToken,
   checkIfLastUnlink: checkIfLastUnlink,
-  removeServiceFromDb: removeServiceFromDb,
+  removeServiceFromUserDb: removeServiceFromUserDb,
   generateJwtCookie: generateJwtCookie,
   unlinkServiceByName: unlinkServiceByName,
 };
