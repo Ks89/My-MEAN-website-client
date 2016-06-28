@@ -1,4 +1,4 @@
-'user strict';
+'use strict';
 process.env.NODE_ENV = 'test'; //before every other instruction
 
 var expect = require('chai').expect;

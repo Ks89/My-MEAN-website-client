@@ -1,4 +1,4 @@
-'user strict';
+'use strict';
 //this class simulate/mock the response (res) for sendJSONres int util.js
 var statusVar = null;
 var contentTypeVar = null;

@@ -5,13 +5,6 @@ class Utils {
 
   constructor(){}
 
-  //@deprecated
-  static sendJSONresponse(res, status, content) {
-		res.status(status);
-		res.contentType('application/json');
-		res.json(content);
-  }
-
   static sendJSONres(res, status, content) {
     let contentToReturn;
 
