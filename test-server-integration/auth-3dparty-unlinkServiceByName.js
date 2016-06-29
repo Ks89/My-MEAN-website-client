@@ -18,6 +18,7 @@ var connectionSid;
 const USER_NAME = 'fake user';
 const USER_EMAIL = 'fake@email.com';
 const USER_PASSWORD = 'fake';
+const FAKE_ID = 'fake_id';
 
 const URL_LOGIN = '/api/login';
 const URL_LOGOUT = '/api/logout';
@@ -72,6 +73,22 @@ describe('auth-3dparty', () => {
 		});
 	}
 
+	function insertUserLastUnlinkTestDb(serviceName, done) {
+		user = new User();
+		if(serviceName === 'local') {
+			user.local.email = USER_EMAIL;
+		} else {
+			user[serviceName] = { id : FAKE_ID };
+		}
+		user.save((err, usr) => {
+			if(err) {
+				done(err);
+			}
+			user._id = usr._id;
+			updateCookiesAndTokens(done); //pass done, it's important!
+		});
+	}
+
 	function dropUserTestDb(done) {
 		User.remove({}, err => { 
 			done(err);
@@ -98,35 +115,70 @@ describe('auth-3dparty', () => {
 	describe('#unlinkServiceByName()', () => {
 		describe('---YES---', () => {
 
-			beforeEach(done => insertUserTestDb(done));
+			describe('NO last unlink', () => {
 
-			for(let i=0; i<serviceNames.length; i++) {
-				it('should remove ' + serviceNames[i] + ' account from an user with many other accounts.', done => {
+				beforeEach(done => insertUserTestDb(done));
 
-					async.waterfall([
-						asyncDone => {
-							getPartialPostRequest(URL_LOGIN)
-							.set('XSRF-TOKEN', csrftoken)
-							.send(loginMock)
-							.expect(200)
-							.end((err, res) => asyncDone(err, res));
-						},
-						(res, asyncDone) => {
-							expect(res.body.token).to.be.not.null;
-							expect(res.body.token).to.be.not.undefined;
+				for(let i=0; i<serviceNames.length; i++) {
+					it('should remove ' + serviceNames[i] + ' account from an user with many other accounts [NO last unlink].', done => {
+						async.waterfall([
+							asyncDone => {
+								getPartialPostRequest(URL_LOGIN)
+								.set('XSRF-TOKEN', csrftoken)
+								.send(loginMock)
+								.expect(200)
+								.end((err, res) => asyncDone(err, res));
+							},
+							(res, asyncDone) => {
+								expect(res.body.token).to.be.not.null;
+								expect(res.body.token).to.be.not.undefined;
 
-							getPartialGetRequest(URL_BASE_UNLINK + serviceNames[i])
-							.send()
-							.expect(200)
-							.end((err, res) => {
-								expect(res.body).to.be.equals("User unlinked correctly!");
-								asyncDone(err);
-							});
-						}], (err, response) => done(err));
-				});
-			}
+								getPartialGetRequest(URL_BASE_UNLINK + serviceNames[i])
+								.send()
+								.expect(200)
+								.end((err, res) => {
+									expect(res.body).to.be.equals("User unlinked correctly!");
+									asyncDone(err);
+								});
+							}], (err, response) => done(err));
+					});
+				}
 
-			afterEach(done => dropUserTestDb(done));
+				afterEach(done => dropUserTestDb(done));
+
+			});
+
+			describe('YES LAST UNLINK', () => {
+
+				for(let i=0; i<serviceNames.length; i++) {
+					it('should remove ' + serviceNames[i] + ' account from an user with only this account [YES LAST UNLINK].', done => {
+						async.waterfall([
+							asyncDone => insertUserLastUnlinkTestDb(serviceNames[i], asyncDone),
+							asyncDone => {
+								getPartialPostRequest(URL_LOGIN)
+								.set('XSRF-TOKEN', csrftoken)
+								.send(loginMock)
+								.expect(200)
+								.end((err, res) => asyncDone(err, res));
+							},
+							(res, asyncDone) => {
+								expect(res.body.token).to.be.not.null;
+								expect(res.body.token).to.be.not.undefined;
+
+								getPartialGetRequest(URL_BASE_UNLINK + serviceNames[i])
+								.send()
+								.expect(200)
+								.end((err, res) => {
+									expect(res.body).to.be.equals("User unlinked correctly!");
+									asyncDone(err);
+								});
+							}], (err, response) => done(err));
+					});
+				}
+
+				afterEach(done => dropUserTestDb(done));
+
+			});
 		});
 
 
@@ -186,10 +238,7 @@ describe('auth-3dparty', () => {
 					.expect(403)
 					.end(() => done());
 				});
-			}
-
-
-			for(let i=0; i<serviceNames.length; i++) {
+			
 				it('should catch an exception, because the session is not valid or expired. Test serviceName=' + serviceNames[i], done => {
 
 					async.waterfall([
@@ -210,9 +259,6 @@ describe('auth-3dparty', () => {
 							.send()
 							.expect(404)
 							.end((err, res) => {
-								console.log("---------------------------------");
-								console.log(res.body);
-								console.log("---------------------------------");
 								expect(res.body.message).to.be.equals('User not found - cannot unlink');
 								asyncDone(err);
 							});

@@ -124,16 +124,16 @@ var unlinkServiceByName = function(req, serviceName, res) {
       var lastUnlink = checkIfLastUnlink(serviceName, user);
       console.log('Check if last unlink: ' + lastUnlink);
       if(lastUnlink) {
-        console.log("Last unlink - removing from db....");
-        user.remove(() => {
-          console.log("User removed from DB");
-        });
         if(decodedToken) {
           req.session.destroy(() => {
             console.log('Last unlink, session data destroyed');
+            console.log("Last unlink - removing from db....");
+            user.remove(() => {
+              console.log("User removed from DB");
+              done(null, user);
+            });
           });
         }
-        done(null, user);
       } else {
         console.log("Unlinking normal situation, without a remove....");
         user = removeServiceFromUserDb(serviceName, user);
