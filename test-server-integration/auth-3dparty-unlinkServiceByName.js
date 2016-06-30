@@ -5,6 +5,7 @@ var expect = require('chai').expect;
 var app = require('../app');
 var agent = require('supertest').agent(app);
 var async = require('async');
+var _und = require('underscore');
 
 require('../app_server/models/users');
 var mongoose = require('mongoose');
@@ -75,9 +76,14 @@ describe('auth-3dparty', () => {
 
 	function insertUserLastUnlinkTestDb(serviceName, done) {
 		user = new User();
-		if(serviceName === 'local') {
-			user.local.email = USER_EMAIL;
-		} else {
+		//i'm registering a local user that i'll 
+		//use to login (because it's quicker than mock oauth2 authentication :)).
+		//Also, I'm adding another service speicified by serviceName,
+		//to do a real and usefull test
+		user.local.name = USER_NAME;
+		user.local.email = USER_EMAIL;
+		user.setPassword(USER_PASSWORD);
+		if(serviceName !== 'local') {
 			user[serviceName] = { id : FAKE_ID };
 		}
 		user.save((err, usr) => {
@@ -149,12 +155,15 @@ describe('auth-3dparty', () => {
 			});
 
 			describe('YES LAST UNLINK', () => {
+				//because I'm testing on 3dauth-unlink, I'm removing 'local'
+				var services3dAuth = _und.without(serviceNames, 'local');
 
-				for(let i=0; i<serviceNames.length; i++) {
-					it('should remove ' + serviceNames[i] + ' account from an user with only this account [YES LAST UNLINK].', done => {
+				for(let i=0; i<services3dAuth.length; i++) {
+					it('should remove ' + services3dAuth[i] + ' account from an user with only this account [YES LAST UNLINK].', done => {
 						async.waterfall([
-							asyncDone => insertUserLastUnlinkTestDb(serviceNames[i], asyncDone),
+							asyncDone => insertUserLastUnlinkTestDb(services3dAuth[i], asyncDone),
 							asyncDone => {
+								//login as local user
 								getPartialPostRequest(URL_LOGIN)
 								.set('XSRF-TOKEN', csrftoken)
 								.send(loginMock)
@@ -162,10 +171,26 @@ describe('auth-3dparty', () => {
 								.end((err, res) => asyncDone(err, res));
 							},
 							(res, asyncDone) => {
+								//unlink local user, to leave only a 3dparty
+								// service (services3dAuth[i]), because
+								// in this test i want to test the last unlink's function
 								expect(res.body.token).to.be.not.null;
 								expect(res.body.token).to.be.not.undefined;
 
-								getPartialGetRequest(URL_BASE_UNLINK + serviceNames[i])
+								getPartialGetRequest(URL_BASE_UNLINK + 'local')
+								.send()
+								.expect(200)
+								.end((err, res) => {
+									console.log(res.body);
+									expect(res.body).to.be.equals("User unlinked correctly!");
+									asyncDone(err);
+								});
+							},
+							asyncDone => {
+								// I call unlink/*serviceName* to remove this account, however
+								// because this is the last account into the user object, 
+								// this is a LAST UNLINK!!!!
+								getPartialGetRequest(URL_BASE_UNLINK + services3dAuth[i])
 								.send()
 								.expect(200)
 								.end((err, res) => {
