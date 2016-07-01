@@ -3,6 +3,7 @@ var User = mongoose.model('User');
 var logger = require('../../../utils/logger');
 var jwt = require('jsonwebtoken');
 var Utils = require('../../../utils/util');
+var AuthUtils = require('../../../utils/auth-util');
 var async = require('async');
 var _und = require('underscore');
 var whitelistServices = require('../serviceNames');
@@ -121,7 +122,7 @@ var unlinkServiceByName = function(req, serviceName, res) {
       });
     },
     (user, decodedToken, done) => {
-      var lastUnlink = checkIfLastUnlink(serviceName, user);
+      var lastUnlink = AuthUtils.checkIfLastUnlink(serviceName, user);
       console.log('Check if last unlink: ' + lastUnlink);
       if(lastUnlink) {
         if(decodedToken) {
@@ -136,7 +137,7 @@ var unlinkServiceByName = function(req, serviceName, res) {
         }
       } else {
         console.log("Unlinking normal situation, without a remove....");
-        user = removeServiceFromUserDb(serviceName, user);
+        user = AuthUtils.removeServiceFromUserDb(serviceName, user);
         user.save(err => {
           if(err) {
             console.error("Impossible to remove userService from db");
@@ -207,63 +208,10 @@ var unlinkServiceByName = function(req, serviceName, res) {
 //   Utils.sendJSONresponse(res, 404, null);
 // };
 
-//exposed to be able to test it, but used only in this file
-var checkIfLastUnlink = function(serviceName, user) {
-  if(!user) {
-    throw 'User must be a valid object';
-  }
-
-  if(!_und.isString(serviceName)) {
-    throw 'serviceName must be a String';
-  }
-
-  switch(serviceName) {
-    case 'github':
-      return !user.facebook.id && !user.google.id && !user.local.email && !user.twitter.id && !user.linkedin.id;
-    case 'google':
-      return !user.github.id && !user.facebook.id && !user.local.email && !user.twitter.id && !user.linkedin.id;
-    case 'facebook':
-      return !user.github.id && !user.google.id && !user.local.email && !user.twitter.id && !user.linkedin.id;
-    case 'local':
-      return !user.github.id && !user.google.id && !user.facebook.id && !user.twitter.id && !user.linkedin.id;
-    case 'twitter':
-      return !user.github.id && !user.google.id && !user.facebook.id && !user.local.email && !user.linkedin.id;
-    case 'linkedin':
-      return !user.github.id && !user.google.id && !user.facebook.id && !user.local.email && !user.twitter.id;
-    default:
-      console.log('Service name not recognized in checkIfLastUnlink');
-      return false;
-  }
-};
-
-var removeServiceFromUserDb = function(serviceName, user) {
-
-   if(!user || _und.isString(user) ||
-        !_und.isObject(user) || _und.isArray(user) || 
-        _und.isFunction(user) || _und.isRegExp(user) ||
-        _und.isError(user) || _und.isNull(user) || _und.isBoolean(user) ||
-        _und.isUndefined(user) || _und.isNaN(user) || _und.isDate(user)) {
-    throw 'User must be a valid object';
-  }
-
-  if(!_und.isString(serviceName)) {
-    throw 'Service name must be a String';
-  }
-
-  if(whitelistServices.indexOf(serviceName) !== -1) {
-    user[serviceName] = undefined;
-  } else {
-    throw 'Service name not valid';
-  }
-  return user;
-};
-
 module.exports = {
   decodeToken: decodeToken,
   logout: logout,
   sessionToken: sessionToken,
-  checkIfLastUnlink: checkIfLastUnlink,
-  removeServiceFromUserDb: removeServiceFromUserDb,
   generateJwtCookie: generateJwtCookie,
   unlinkServiceByName: unlinkServiceByName,
 };

@@ -14,10 +14,10 @@ module.exports = function (userRef, passportRef) {
   function updateUser (user, accessToken, profile, serviceName) {
     // warning: if you are not able to set a value in user[serviceName]
     // go to models/users.js and add the missing property there.
-    //common
+    // common
     user[serviceName].id = profile.id;
     user[serviceName].token = accessToken;
-    //other cases
+    // other cases
     switch(serviceName) {
       case 'facebook':
         user[serviceName].name  = profile.name.givenName + ' ' + profile.name.familyName;

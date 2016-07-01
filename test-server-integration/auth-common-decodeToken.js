@@ -46,21 +46,21 @@ const loginMock = {
 
 const jwtWrongDateStringToken = function () {
 	var expiry = new Date();
-  expiry.setTime(expiry.getTime() - 600000); //expired 10 minutes ago (10*60*1000)
+	expiry.setTime(expiry.getTime() - 600000); //expired 10 minutes ago (10*60*1000)
 
-  return jwt.sign({
-  	_id: this._id,
-     //I don't want to expose private information here -> I filter 
-     //the user object into a similar object without some fields
-     user: {
-     	"local": {
-     		"hash": "$2a$10$hHCcxNQmzzNCecReX1Rbeu5PJCosbjITXA1x./feykYcI2JW3npTW",
-     		"email": USER_EMAIL,
-     		"name": USER_NAME
-     	}
-     },
-     exp: parseFloat(expiry.getTime()),
- }, process.env.JWT_SECRET);
+	return jwt.sign({
+		_id: 'fake_id',
+		//I don't want to expose private information here -> I filter 
+		//the user object into a similar object without some fields
+		user: {
+			local: {
+				hash: "$2a$10$hHCcxNQmzzNCecReX1Rbeu5PJCosbjITXA1x./feykYcI2JW3npTW",
+				email: USER_EMAIL,
+				name: USER_NAME
+			}
+		},
+		exp: parseFloat(expiry.getTime()),
+	}, process.env.JWT_SECRET);
 }
 
 describe('auth-common', () => {

@@ -109,23 +109,23 @@ module.exports.collapseDb = (loggedUser, serviceName, req) => {
 						reject('Error while saving collapsed users');
 					} else {
 						console.log("Saved modified user: " + savedUser); 
-	          console.log("updating auth token with user infos");
-	          req.session.authToken = authCommon.generateJwtCookie(savedUser);
-	          console.log('req.session.authToken finished collapse with: ' + req.session.authToken);
+						console.log("updating auth token with user infos");
+						req.session.authToken = authCommon.generateJwtCookie(savedUser);
+						console.log('req.session.authToken finished collapse with: ' + req.session.authToken);
 
-	          console.log("--------------------------******---- removing duplicated user [OK]");
+						console.log("--------------------------******---- removing duplicated user [OK]");
 
 						User.findByIdAndRemove(duplicatedUser._id, err => {
 							if (err) {
 								reject('Impossible to remove duplicaed user while collapsing');
 							} else {
 								// we have deleted the user
-						  	console.log('--------------------------******---- duplicated User deleted! [OK]');
-						  	console.log("savedUser: " + savedUser);
-						  	resolve(savedUser);
+								console.log('--------------------------******---- duplicated User deleted! [OK]');
+								console.log("savedUser: " + savedUser);
+								resolve(savedUser);
 							}	  
 						}); 
-	        }
+					}
 				});
 			} else {
 				console.log("I can't do anything because there isn't a duplicated users! [OK]");
