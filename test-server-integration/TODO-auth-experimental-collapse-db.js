@@ -121,56 +121,56 @@ describe('auth-experimental-collapse-db', () => {
 	describe('#collapseDb()', () => {
 		describe('---YES---', () => {
 
-			describe('YES LAST UNLINK', () => {
-				//because I'm testing on 3dauth-unlink, I'm removing 'local'
-				var services3dAuth = _und.without(serviceNames, 'local');
+			// describe('YES LAST UNLINK', () => {
+			// 	//because I'm testing on 3dauth-unlink, I'm removing 'local'
+			// 	var services3dAuth = _und.without(serviceNames, 'local');
 
-				for(let i=0; i<services3dAuth.length; i++) {
-					it('should remove ' + services3dAuth[i] + ' account from an user with only this account [YES LAST UNLINK].', done => {
-						async.waterfall([
-							asyncDone => insertUserLastUnlinkTestDb(services3dAuth[i], asyncDone),
-							asyncDone => {
-								//login as local user
-								getPartialPostRequest(URL_LOGIN)
-								.set('XSRF-TOKEN', csrftoken)
-								.send(loginMock)
-								.expect(200)
-								.end((err, res) => asyncDone(err, res));
-							},
-							(res, asyncDone) => {
-								//unlink local user, to leave only a 3dparty
-								// service (services3dAuth[i]), because
-								// in this test i want to test the last unlink's function
-								expect(res.body.token).to.be.not.null;
-								expect(res.body.token).to.be.not.undefined;
+			// 	for(let i=0; i<services3dAuth.length; i++) {
+			// 		it('should remove ' + services3dAuth[i] + ' account from an user with only this account [YES LAST UNLINK].', done => {
+			// 			async.waterfall([
+			// 				asyncDone => insertUserLastUnlinkTestDb(services3dAuth[i], asyncDone),
+			// 				asyncDone => {
+			// 					//login as local user
+			// 					getPartialPostRequest(URL_LOGIN)
+			// 					.set('XSRF-TOKEN', csrftoken)
+			// 					.send(loginMock)
+			// 					.expect(200)
+			// 					.end((err, res) => asyncDone(err, res));
+			// 				},
+			// 				(res, asyncDone) => {
+			// 					//unlink local user, to leave only a 3dparty
+			// 					// service (services3dAuth[i]), because
+			// 					// in this test i want to test the last unlink's function
+			// 					expect(res.body.token).to.be.not.null;
+			// 					expect(res.body.token).to.be.not.undefined;
 
-								getPartialGetRequest(URL_BASE_UNLINK + 'local')
-								.send()
-								.expect(200)
-								.end((err, res) => {
-									console.log(res.body);
-									expect(res.body).to.be.equals("User unlinked correctly!");
-									asyncDone(err);
-								});
-							},
-							asyncDone => {
-								// I call unlink/*serviceName* to remove this account, however
-								// because this is the last account into the user object, 
-								// this is a LAST UNLINK!!!!
-								getPartialGetRequest(URL_BASE_UNLINK + services3dAuth[i])
-								.send()
-								.expect(200)
-								.end((err, res) => {
-									expect(res.body).to.be.equals("User unlinked correctly!");
-									asyncDone(err);
-								});
-							}], (err, response) => done(err));
-					});
-				}
+			// 					getPartialGetRequest(URL_BASE_UNLINK + 'local')
+			// 					.send()
+			// 					.expect(200)
+			// 					.end((err, res) => {
+			// 						console.log(res.body);
+			// 						expect(res.body).to.be.equals("User unlinked correctly!");
+			// 						asyncDone(err);
+			// 					});
+			// 				},
+			// 				asyncDone => {
+			// 					// I call unlink/*serviceName* to remove this account, however
+			// 					// because this is the last account into the user object, 
+			// 					// this is a LAST UNLINK!!!!
+			// 					getPartialGetRequest(URL_BASE_UNLINK + services3dAuth[i])
+			// 					.send()
+			// 					.expect(200)
+			// 					.end((err, res) => {
+			// 						expect(res.body).to.be.equals("User unlinked correctly!");
+			// 						asyncDone(err);
+			// 					});
+			// 				}], (err, response) => done(err));
+			// 		});
+			// 	}
 
-				afterEach(done => dropUserTestDb(done));
+			// 	afterEach(done => dropUserTestDb(done));
 
-			});
+			// });
 		});
 
 
