@@ -10,7 +10,7 @@
     "npm": "~3.8.9"
   },
   "dependencies": {
-    "angular-ladda": "^0.3.3",
+    "angular-ladda": "^0.4.0",
     "angular-ui-bootstrap": "^1.3.3",
     "async": "^2.0.0-rc.5",
     "bcrypt-nodejs": "0.0.3",
