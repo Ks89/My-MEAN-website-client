@@ -37,8 +37,8 @@ describe('my app', function() {
        var titleElement0 = project[0].element(by.binding('project.name'));
        var titleElement1 = project[1].element(by.binding('project.name'));
        var titleElement2 = project[2].element(by.binding('project.name'));
-       expect(titleElement0.getText()).toEqual('SPF');
-       expect(titleElement1.getText()).toEqual('BYAManager');
+       expect(titleElement0.getText()).toEqual('BYAManager');
+       expect(titleElement1.getText()).toEqual('SPF');
        expect(titleElement2.getText()).toEqual('Superapp');
       });
 
