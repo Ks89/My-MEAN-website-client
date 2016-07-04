@@ -85,18 +85,16 @@ describe('homeCtrl', function() {
   });
 
 
-  it('should fetch authentication token', function() {
+  it('should check if controller responds correctly with mocked services', function() {
     $httpBackend.expectGET('/api/projecthome');
     var controller = createController();
 
-    //expect($rootScope.slides[0].projectHomeView.carouselImagePath).toEqual("htp://placehold.it/1000x400");
-    console.log(controller.thumbs[0]);
-
     expect(controller.message).toEqual('Welcome to my website');
-
     expect(controller.pageHeader.title).toEqual('KS');
 
     $httpBackend.flush();
+
+    console.log(controller.thumbs[0]);    
 
     expect(controller.slides[0]).toEqual(mockSlide);
     expect(controller.thumbs[0]).toEqual(mockThumb);
