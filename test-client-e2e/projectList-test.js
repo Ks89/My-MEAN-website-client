@@ -27,7 +27,8 @@ describe('my app', function() {
 
 
     it('should render projects when user navigates to /projects', function() {
-      
+
+
       expect(browser.getLocationAbsUrl()).toMatch("/projects");
 
 // browser.pause();
@@ -37,16 +38,21 @@ describe('my app', function() {
        var titleElement0 = project[0].element(by.binding('project.name'));
        var titleElement1 = project[1].element(by.binding('project.name'));
        var titleElement2 = project[2].element(by.binding('project.name'));
+
        expect(titleElement0.getText()).toEqual('BYAManager');
        expect(titleElement1.getText()).toEqual('SPF');
        expect(titleElement2.getText()).toEqual('Superapp');
       });
 
-  
+      element(by.model('search.name')).sendKeys('BYA');
 
-      // var searchName = element(by.model('search.name'));
+      element.all(by.repeater('project in vm.projects')).then(function(project) {
+       var titleElement0 = project[0].element(by.binding('project.name'));
 
-     // expect(projects[0].shortDescription).toEqual('dsffsduhfsduaf asfyhasfuas fy8shfuiqw fUWQHBFUIWEBQ fewhfuwfnoeiwb ewuhfiewn');
+       expect(titleElement0.getText()).toEqual('BYAManager');
+       expect(project[1]).toEqual(undefined);
+       expect(project[2]).toEqual(undefined);
+      });
 
     });
 
