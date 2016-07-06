@@ -171,9 +171,7 @@ describe('contact', () => {
 			    })
 			    .get("/login/oauth/authorize")
 			    .reply(302,undefined,
-					{ 
-						location : "http://localhost:3000/api/auth/github/callback?code=b012aeeb06102bc7c0cc"
-					}
+					{ location : "http://localhost:3000/api/auth/github/callback?code=49499d00d6b933a3d55b"}
 				);
 
 				nock("http://localhost:3000/api/auth/github/callback")
@@ -191,7 +189,7 @@ describe('contact', () => {
 				})
 			    .post("/access_token", '*')
 			    .reply(200, {
-                	'access_token' : 'e72e16c7e42f292c6912e7710c838347ae178b4a',
+                	'access_token' : 'a986671ecd883b1a1ecf16414dd9fb30a591abbd',
                 	'scope' : 'user,email',
                 	'token_type' : 'bearer'
                	});
@@ -223,38 +221,48 @@ describe('contact', () => {
 
 
 				// getPartialNockApiUrl().reply(302, recaptchaCorrectRespMock);
-				
+			var codeFromRedirect = '';	
 
-			request({
+
+			var r = request({
 					headers: {
 							 'user-agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'
 							},
-					url:     'https://github.com/login/oauth/authorize?response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fapi%2Fauth%2Fgithub%2Fcallback&scope=user%3Aemail&client_id=408b6ba64789e150dcc5',
+					url:     'https://github.com/login/oauth/authorize?client_id=408b6ba64789e150dcc5&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fapi%2Fauth%2Fgithub%2Fcallback&scope=user%3Aemail',
 					method: 'GET'
-				}, function(err, res, body) {
+				}, function(err, res) {
 
-			    console.log(body);
+				codeFromRedirect = r.uri.href.split('=')[1];
+				console.log(codeFromRedirect);
+				console.log("-------------------------------------------------------");
+				console.log(res);
+			    console.log("-------------------------------------------------------");
 
 			    request({
-					headers: {'content-type' : 'application/json',
-							  'user-agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'
+					headers: {
+							  'content-type' : 'application/json',
+							  'user-agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36',
+							  'accept' : 'application/json'
 							},
 					url:     'https://github.com/login/oauth/access_token',
 					method: 'POST',
 					json:    {
 	                  client_id: '408b6ba64789e150dcc5',
 	                  client_secret: 'd9fdacda313d9936f9e4382a8717b4f4087c2725',
-	                  code: 'b012aeeb06102bc7c0cc',
-	                  redirect_uri: 'http://localhost:3000/api/auth/github/callback'
+	                  code: codeFromRedirect,
+	                  //redirect_uri: 'http://localhost:3000/api/auth/github/callback'
 	                }
 				}, function(error, response, body){
+					console.log("----------**----------");
 					console.log(body);
+					console.log(body.access_token)
+					console.log("----------**----------");
 					
 					request({
 						headers: {
 								 'user-agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'
 								},
-						url:     "https://api.github.com/user?access_token=e72e16c7e42f292c6912e7710c838347ae178b4a",
+						url:     "https://api.github.com/user?access_token=" + body.access_token,
 						method: 'GET'
 					}, function(err, res, body) {
 			    		console.log(body);
