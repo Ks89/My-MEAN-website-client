@@ -292,7 +292,7 @@ describe('contact', () => {
 				// 	done(err);
 				//  //	done();
 				// });
-			});
+			
 
 			// it('should correctly login with Facebook', done => {
 
@@ -378,21 +378,23 @@ describe('contact', () => {
 
 			// 	// getPartialNockApiUrl().reply(302, recaptchaCorrectRespMock);
 
-	  //   		getPartialGetRequest(GITHUB_AUTH_URL)
-			// 	//.set('XSRF-TOKEN', csrftoken)
-			// 	//.send(contactMock)
-			// 	.set('set-cookie', 'connect.sid=' + connectionSid)
-	  //   		.set('set-cookie', 'XSRF-TOKEN=' + csrftoken)
-			// 	.send()
-			// 	.expect(302)
-			// 	.end((err, res) => {
-			// 		console.log(res.body);
-			// 		// expect(res.body).to.be.equals(EMAIL);
-			// 		done(err);
-			// 	 //	done();
-			// 	});
-			// });
+	     	getPartialGetRequest(GITHUB_AUTH_URL)
+				//.set('XSRF-TOKEN', csrftoken)
+				//.send(contactMock)
+				.set('set-cookie', 'connect.sid=' + connectionSid)
+	    		.set('set-cookie', 'XSRF-TOKEN=' + csrftoken)
+	    		.redirects(2)
+				.send()
+				.expect(302)
+				.expect('Location', '/profile')
+				.end((err, res) => {
+					//console.log(res.body);
+					// expect(res.body).to.be.equals(EMAIL);
+					done(err);
+				 //	done();
+				});
 
+			});
 		});
 
 	});
