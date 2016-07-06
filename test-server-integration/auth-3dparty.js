@@ -5,7 +5,7 @@ var expect = require('chai').expect;
 var app = require('../app');
 var agent = require('supertest').agent(app);
 var nock = require('nock');
-
+var request = require('request');
 var csrftoken;
 var connectionSid;
 
@@ -162,144 +162,230 @@ describe('contact', () => {
     //               email: 'pedro.teixeira@gmail.com'
     //             });
 
-				nock('https://github.com/login/oauth')
-				.get('/authorize?response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fapi%2Fauth%2Fgithub%2Fcallback&scope=user%3Aemail&client_id=408b6ba64789e150dcc5')
-				// .reply(200,{})
-				// .get('http://localhost:3000/api/auth/github/callback?code=fd7f0960f03071133b26')
+    			console.log(connectionSid);
+    			console.log(csrftoken);
 
-				.reply(302,undefined,
+    			nock('https://github.com')
+    			.filteringPath(function(path){
+			        return '/login/oauth/authorize';
+			    })
+			    .get("/login/oauth/authorize")
+			    .reply(302,undefined,
 					{ 
 						location : "http://localhost:3000/api/auth/github/callback?code=b012aeeb06102bc7c0cc"
 					}
-				)
-// 				GITHUB_CLIENT_ID=408b6ba64789e150dcc5
-// GITHUB_CLIENT_SECRET=d9fdacda313d9936f9e4382a8717b4f4087c2725
+				);
 
-				.post('/access_token', {
-                  client_id: '408b6ba64789e150dcc5',
-                  client_secret: 'd9fdacda313d9936f9e4382a8717b4f4087c2725',
-                  code: 'b012aeeb06102bc7c0cc',
-                  redirect_uri: 'http://localhost:3000/api/auth/github/callback'
-                })
-                .reply(200,{
+				nock("http://localhost:3000/api/auth/github/callback")
+				.filteringPath(function(path){
+			        return '/';
+			    })
+			    .get("/")
+			    .reply(200, "OK");
+
+
+
+			    nock('https://github.com/login/oauth')
+			    .filteringRequestBody(function(body) {
+					return '*';
+				})
+			    .post("/access_token", '*')
+			    .reply(200, {
                 	'access_token' : 'e72e16c7e42f292c6912e7710c838347ae178b4a',
                 	'scope' : 'user,email',
                 	'token_type' : 'bearer'
-                })
-                .get('https://api.github.com/user?access_token=e72e16c7e42f292c6912e7710c838347ae178b4a')
+               	});
 
-				.reply(200, recaptchaCorrectRespMock);
+				// nock('https://github.com/login/oauth')
+				// .get('/authorize?response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fapi%2Fauth%2Fgithub%2Fcallback&scope=user%3Aemail&client_id=408b6ba64789e150dcc5')
+				// // .reply(200,{})
+				// // .get('http://localhost:3000/api/auth/github/callback?code=fd7f0960f03071133b26')
+
+				// .reply(302,undefined,
+				// 	{ 
+				// 		location : "http://localhost:3000/api/auth/github/callback?code=b012aeeb06102bc7c0cc"
+				// 	}
+				// )
+				// .post('/access_token', {
+    //               client_id: '408b6ba64789e150dcc5',
+    //               client_secret: 'd9fdacda313d9936f9e4382a8717b4f4087c2725',
+    //               code: 'b012aeeb06102bc7c0cc',
+    //               redirect_uri: 'http://localhost:3000/api/auth/github/callback'
+    //             })
+    //             .reply(200,{
+    //             	'access_token' : 'e72e16c7e42f292c6912e7710c838347ae178b4a',
+    //             	'scope' : 'user,email',
+    //             	'token_type' : 'bearer'
+    //             })
+    //             .get('https://api.github.com/user?access_token=e72e16c7e42f292c6912e7710c838347ae178b4a')
+
+				// .reply(200, recaptchaCorrectRespMock);
 
 
 				// getPartialNockApiUrl().reply(302, recaptchaCorrectRespMock);
+				
 
-	    		getPartialGetRequest(GITHUB_AUTH_URL)
-				//.set('XSRF-TOKEN', csrftoken)
-				//.send(contactMock)
-				.set('set-cookie', 'connect.sid=' + connectionSid)
-	    		.set('set-cookie', 'XSRF-TOKEN=' + csrftoken)
-				.send()
-				.expect(302)
-				.end((err, res) => {
-					console.log(res.body);
-					// expect(res.body).to.be.equals(EMAIL);
-					done(err);
-				 //	done();
-				});
-			});
-		});
+			request({
+					headers: {
+							 'user-agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'
+							},
+					url:     'https://github.com/login/oauth/authorize?response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fapi%2Fauth%2Fgithub%2Fcallback&scope=user%3Aemail&client_id=408b6ba64789e150dcc5',
+					method: 'GET'
+				}, function(err, res, body) {
 
+			    console.log(body);
 
-		// describe('---NO---', () => {
-
-		// 	beforeEach(done => updateCookiesAndTokens(done));
-
-		// 	it('should catch a 401 UNAUTHORIZED, because Recaptcha2 answers false', done => {
-		// 		getPartialNockApiUrl().reply(200, recaptchaWrong1RespMock);
-	 //    		getPartialPostRequest(GITHUB_AUTH_URL)
-		// 		.set('XSRF-TOKEN', csrftoken)
-		// 		.send(contactMock)
-		// 		.expect(401)
-		// 		.end((err, res) => {
-		// 			if (!err) {
-		// 				expect(res.body.message).to.be.equals('Recaptcha verify answered FALSE!');
-		// 			}
-		// 			done(err);
-		// 		});
-		// 	});
-
-		// 	it('should catch a 401 UNAUTHORIZED, because Recaptcha2 answers false also with an array of error codes', done => {
-		// 		getPartialNockApiUrl().reply(200, recaptchaWrong2RespMock);
-	 //    		getPartialPostRequest(GITHUB_AUTH_URL)
-		// 		.set('XSRF-TOKEN', csrftoken)
-		// 		.send(contactMock)
-		// 		.expect(401)
-		// 		.end((err, res) => {
-		// 			if (!err) {
-		// 				expect(res.body.message[0]).to.be.equals('some-error1');
-		// 				expect(res.body.message[1]).to.be.equals('another-error');
-		// 			}
-		// 			done(err);
-		// 		});
-		// 	});
-
-
-		// 	const missingEmailFormData = [
-		// 		{email: EMAIL, object: OBJECT, messageText: MESSAGE},
-		// 		{email: EMAIL, messageText: MESSAGE},
-		// 		{email: EMAIL, object: OBJECT},
-		// 		{object: OBJECT, messageText: MESSAGE},
-		// 		{email: EMAIL},
-		// 		{object: OBJECT},
-		// 		{messageText: MESSAGE},
-		// 		{}
-		// 	];
-		// 	const missingContactMocks = [
-		// 		{response: RESPONSE, emailFormData: missingEmailFormData[0]},
-		// 		{response: RESPONSE, emailFormData: missingEmailFormData[1]},
-		// 		{response: RESPONSE, emailFormData: missingEmailFormData[2]},
-		// 		{response: RESPONSE, emailFormData: missingEmailFormData[3]},
-		// 		{response: RESPONSE, emailFormData: missingEmailFormData[4]},
-		// 		{response: RESPONSE, emailFormData: missingEmailFormData[5]},
-		// 		{response: RESPONSE, emailFormData: missingEmailFormData[6]},
-		// 		{response: RESPONSE},
-		// 		{}
-		// 	];
-
-		// 	//these are multiple tests that I'm execting for all cobinations
-		// 	//of missing params
-		// 	for(let i = 0; i<missingContactMocks.length; i++) {
-		// 		console.log(missingContactMocks[i]);
-
-		// 		it('should catch a 400 BAD REQUEST, because subject, object and text params are mandatory. Test i=' + i, done => {
-		// 			getPartialNockApiUrl().reply(200, recaptchaCorrectRespMock);
+			    request({
+					headers: {'content-type' : 'application/json',
+							  'user-agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'
+							},
+					url:     'https://github.com/login/oauth/access_token',
+					method: 'POST',
+					json:    {
+	                  client_id: '408b6ba64789e150dcc5',
+	                  client_secret: 'd9fdacda313d9936f9e4382a8717b4f4087c2725',
+	                  code: 'b012aeeb06102bc7c0cc',
+	                  redirect_uri: 'http://localhost:3000/api/auth/github/callback'
+	                }
+				}, function(error, response, body){
+					console.log(body);
 					
-		// 			//remove imput params
-		// 			delete contactMock.emailFormData;
+					request({
+						headers: {
+								 'user-agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'
+								},
+						url:     "https://api.github.com/user?access_token=e72e16c7e42f292c6912e7710c838347ae178b4a",
+						method: 'GET'
+					}, function(err, res, body) {
+			    		console.log(body);
+			    		done(err);
+			    	});
 
-		//     		getPartialPostRequest(GITHUB_AUTH_URL)
-		// 			.set('XSRF-TOKEN', csrftoken)
-		// 			.send(contactMock)
-		// 			.expect(400)
-		// 			.end((err, res) => {
-		// 				if (!err) {
-		// 					expect(res.body.message).to.be.equals('Missing input params');	
-		// 				}
-		// 				done(err);
-		// 			});
-		// 		});
-		// 	}
-		// });
-		
-		describe('---ERRORS---', () => {
-			it('should get 403 FORBIDDEN,, because XSRF-TOKEN is not available', done => {
-				// getPartialPostRequest(GITHUB_AUTH_URL)
-				// //XSRF-TOKEN NOT SETTED!!!!
-				// .send(contactMock)
-				// .expect(403)
-				// .end(() => done());
-				done();
+				});
+
+			    
 			});
+
+			
+
+
+
+				// agent
+	   //  		.get('https://github.com/login/oauth/authorize?response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fapi%2Fauth%2Fgithub%2Fcallback&scope=user%3Aemail&client_id=408b6ba64789e150dcc5')
+				// //.set('XSRF-TOKEN', csrftoken)
+				// //.send(contactMock)
+				// .set('set-cookie', 'connect.sid=' + connectionSid)
+	   //  		.set('set-cookie', 'XSRF-TOKEN=' + csrftoken)
+				// .send()
+				// .expect(200)
+				// .end((err, res) => {
+				// 	console.log(res);
+				// 	// expect(res.body).to.be.equals(EMAIL);
+				// 	done(err);
+				//  //	done();
+				// });
+			});
+
+			// it('should correctly login with Facebook', done => {
+
+			// 	const recaptchaCorrectRespMock = {
+			// 		id: '925672560814690',
+			// 		username: undefined,
+			// 		displayName: undefined,
+			// 		name: {
+			// 			familyName: 'Cappa',
+			// 		  	givenName: 'Stefano',
+			// 		  	middleName: undefined 
+			// 		},
+			// 		gender: 'male',
+			// 		profileUrl: 'https://www.facebook.com/app_scoped_user_id/925672560814690/',
+			// 		emails: [ { value: 'stefano.cappa@yahoo.it' } ],
+			// 		provider: 'facebook',
+			// 		_raw: '{"id":"925672560814690","email":"stefano.cappa\\u0040yahoo.it","gender":"male","link":"https:\\/\\/www.facebook.com\\/app_scoped_user_id\\/925672560814690\\/","locale":"it_IT","last_name":"Cappa","first_name":"Stefano","timezone":2,"updated_time":"2015-06-14T14:20:52+0000","verified":true}',
+			// 		_json: { 
+			// 			id: '925672560814690',
+			// 			email: 'stefano.cappa@yahoo.it',
+			// 			gender: 'male',
+			// 			link: 'https://www.facebook.com/app_scoped_user_id/925672560814690/',
+			// 			locale: 'it_IT',
+			// 			last_name: 'Cappa',
+			// 			first_name: 'Stefano',
+			// 			timezone: 2,
+			// 			updated_time: '2015-06-14T14:20:52+0000',
+			// 			verified: true 
+			// 		}					
+			// 	};
+
+
+			// 	// nock(AUTH_GITHUB_BASE_URL)
+			// 	// .get(AUTH_GITHUB_API_URL);
+
+			// 	// .get('/users/1')
+   //  //             .reply(404)
+   //  //             .post('/users', {
+   //  //               username: 'pgte',
+   //  //               email: 'pedro.teixeira@gmail.com'
+   //  //             })
+   //  //             .reply(201, {
+   //  //               ok: true,
+   //  //               id: '123ABC',
+   //  //               rev: '946B7D1C'
+   //  //             })
+   //  //             .get('/users/123ABC')
+   //  //             .reply(200, {
+   //  //               _id: '123ABC',
+   //  //               _rev: '946B7D1C',
+   //  //               username: 'pgte',
+   //  //               email: 'pedro.teixeira@gmail.com'
+   //  //             });
+
+   //  			console.log(connectionSid);
+   //  			console.log(csrftoken);
+
+			// 	nock('https://www.facebook.com/dialog')
+			// 	.get('/oauth?response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fapi%2Fauth%2Ffacebook%2Fcallback&scope=email&client_id=1551851841772033')
+			// 	// .reply(200,{})
+			// 	// .get('http://localhost:3000/api/auth/github/callback?code=fd7f0960f03071133b26')
+
+			// 	.reply(302,undefined,
+			// 		{ 
+			// 			location : "http://localhost:3000/api/auth/facebook/callback?code=AQCZBOv_2SNzfG8FFIsjC5Qqb5IIzmWlTbbTggFEqPupqAY5eP2W8TJMmlpePY4tOOfPIkGs1azF9EPt3Apuu6G3hanHb9Y9J05qAxRsC1XT03yL-Cpw5nFsJiP1ozmEKtBtNRxUKmA9ao6I_hXDLgeC88OFfAefUcvX2F4Agir0M59FzfsPdoqjRP1BPOAV3XLF3Hg-q5-UbWCuBZWMXC2d3LT6C6S7EADPfVNKPHudawlQ2h2mcZUCRYmLAyGJtzjkBQ4fyVJixbQVkTEh3ltkKkOUjo0TdFpLCeo2ZnwW_znvvMONxOeU0-R6Y_0MTb_b6hqJYgqm1-xxm5ehlElu"
+			// 		}
+			// 	)
+			// 	.post('/access_token', {
+   //                client_id: '408b6ba64789e150dcc5',
+   //                client_secret: 'd9fdacda313d9936f9e4382a8717b4f4087c2725',
+   //                code: 'b012aeeb06102bc7c0cc',
+   //                redirect_uri: 'http://localhost:3000/api/auth/github/callback'
+   //              })
+   //              .reply(200,{
+   //              	'access_token' : 'e72e16c7e42f292c6912e7710c838347ae178b4a',
+   //              	'scope' : 'user,email',
+   //              	'token_type' : 'bearer'
+   //              })
+   //              .get('https://api.github.com/user?access_token=e72e16c7e42f292c6912e7710c838347ae178b4a')
+
+			// 	.reply(200, recaptchaCorrectRespMock);
+
+
+			// 	// getPartialNockApiUrl().reply(302, recaptchaCorrectRespMock);
+
+	  //   		getPartialGetRequest(GITHUB_AUTH_URL)
+			// 	//.set('XSRF-TOKEN', csrftoken)
+			// 	//.send(contactMock)
+			// 	.set('set-cookie', 'connect.sid=' + connectionSid)
+	  //   		.set('set-cookie', 'XSRF-TOKEN=' + csrftoken)
+			// 	.send()
+			// 	.expect(302)
+			// 	.end((err, res) => {
+			// 		console.log(res.body);
+			// 		// expect(res.body).to.be.equals(EMAIL);
+			// 		done(err);
+			// 	 //	done();
+			// 	});
+			// });
+
 		});
+
 	});
 });
