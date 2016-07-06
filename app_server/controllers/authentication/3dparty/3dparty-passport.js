@@ -1,7 +1,7 @@
 module.exports = function (userRef, passportRef) {
   var thirdpartyConfig = require('./3dpartyconfig');
   var FacebookStrategy = require('passport-facebook').Strategy;
-  var GitHubStrategy = require('passport-github2').Strategy;
+  var GitHubStrategy = require('passport-github').Strategy;
   var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
   var LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
   var TwitterStrategy = require('passport-twitter').Strategy;
@@ -12,6 +12,9 @@ module.exports = function (userRef, passportRef) {
   //-------------------------
 
   function updateUser (user, accessToken, profile, serviceName) {
+    // console.log(profile);
+    // console.log("accessToken: " + accessToken);
+    
     // warning: if you are not able to set a value in user[serviceName]
     // go to models/users.js and add the missing property there.
     // common
