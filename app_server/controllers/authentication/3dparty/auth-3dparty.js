@@ -70,7 +70,7 @@ module.exports.callbackRedirectLinkedin = function(req, res) {
 function redirectToProfile(user, res, req) {
 	console.log("callbackRedirect called");
 	req.session.authToken = authCommon.generateJwtCookie(user);
-	res.redirect(302, '/profile');
+	res.redirect('/profile');
 }
 
 
