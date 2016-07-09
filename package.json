@@ -44,6 +44,7 @@
     "passport-google-oauth": "^1.0.0",
     "passport-linkedin-oauth2": "^1.4.1",
     "passport-local": "^1.0.0",
+    "passport-mocked": "0.0.5",
     "passport-twitter": "^1.0.4",
     "please-wait": "0.0.5",
     "redis": "^2.6.2",
