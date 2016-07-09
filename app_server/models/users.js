@@ -107,12 +107,14 @@ function getFilteredUser(user) {
   //clone the user - necessary
   let cloned = Object.create(user);
 
+  cloned.__v = undefined;
+
   //because this is an utility function used everywhere,
   //I decided to use ...=undefined, instead of delete ... to achieve 
   //better performances, as explained here: 
   //http://stackoverflow.com/questions/208105/how-do-i-remove-a-property-from-a-javascript-object?rq=1
   for(let prop in dbData) {
-    if(dbData.hasOwnProperty(prop) && prop !== '_id' && prop !== '__v') {
+    if(dbData.hasOwnProperty(prop) && prop !== '_id') {
       //console.log("2-obj." + prop + " = " + dbData[prop]);
       for(let innerProp in dbData[prop]) {
         //console.log("3-obj." + innerProp + " = " + dbData[prop][innerProp]);
