@@ -69,7 +69,12 @@ module.exports.callbackRedirectLinkedin = function(req, res) {
 
 function redirectToProfile(user, res, req) {
 	console.log("callbackRedirect called");
-	req.session.authToken = authCommon.generateJwtCookie(user);
+	try {
+		req.session.authToken = authCommon.generateJwtCookie(user);
+	} catch(e) {
+		logger.error(e);
+		res.redirect('/home');
+	}
 	res.redirect('/profile');
 }
 

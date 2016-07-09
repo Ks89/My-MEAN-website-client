@@ -60,8 +60,13 @@ module.exports.update = function(req, res) {
         Utils.sendJSONres(res, 404, 'Error while updating your profile. Please retry.');
       } else {
         console.log("updating auth token with new profile infos");
-        req.session.authToken = authCommon.generateJwtCookie(savedUser);
-        Utils.sendJSONres(res, 200, {message: 'Profile updated successfully!'});
+        try {
+          req.session.authToken = authCommon.generateJwtCookie(savedUser);
+          Utils.sendJSONres(res, 200, {message: 'Profile updated successfully!'});
+        } catch(e) {
+          logger.error(e);
+          Utils.sendJSONres(res, 500, 'Impossible to generateJwtCookie');
+        }
       }
     });
   });

@@ -139,9 +139,15 @@ module.exports.login = (req, res) => {
       const token = user.generateJwt();
 
       req.session.localUserId = user._id;
-      req.session.authToken = authCommon.generateJwtCookie(user);
       
-      Utils.sendJSONres(res, 200, { token: token });
+      try {
+        req.session.authToken = authCommon.generateJwtCookie(user);
+        Utils.sendJSONres(res, 200, { token: token });
+      } catch (e) {
+        logger.error(e);
+        Utils.sendJSONres(res, 500, 'Impossible to generateJwtCookie');
+      }
+
     } else {
       console.log("user NOT enabled");
       Utils.sendJSONres(res, 401, "Incorrect username or password. Or this account is not activated, check your mailbox.");

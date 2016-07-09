@@ -1,5 +1,6 @@
 var _und = require('underscore');
 var jwt = require('jsonwebtoken');
+var logger = require('./logger');
 
 class Utils {
 
@@ -82,14 +83,21 @@ class Utils {
     let convertedDate = new Date();
     convertedDate.setTime(decodedJwtToken.exp);
 
-    console.log("date jwt: " + convertedDate.getTime() +
-       ", formatted: " + this.getTextFormattedDate(convertedDate));
+    try {
+      console.log("date jwt: " + convertedDate.getTime() +
+         ", formatted: " + this.getTextFormattedDate(convertedDate));
 
-    const systemDate = new Date();
-    console.log("systemDate: " + systemDate.getTime() + 
-       ", formatted: " + this.getTextFormattedDate(systemDate));
+      const systemDate = new Date();
+      console.log("systemDate: " + systemDate.getTime() + 
+         ", formatted: " + this.getTextFormattedDate(systemDate));
 
-    return convertedDate.getTime() > systemDate.getTime();
+      return convertedDate.getTime() > systemDate.getTime();
+    } catch(e) {
+      //impossible to get dates to compare
+      //I decide to return false
+      logger.error(e);
+      return false;
+    }
   }
 
   static isJwtValid(token) {
@@ -103,9 +111,9 @@ class Utils {
       throw "Not a valid token";
     }
 
-    return new Promise(function(resolve, reject) {
+    return new Promise((resolve, reject) => {
       // verify a token symmetric
-      jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
+      jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
         if(err) {
           console.log("jwt.verify error");
           reject({status: 401, message: "Jwt not valid or corrupted"});
@@ -113,14 +121,19 @@ class Utils {
 
         if(decoded) {
           console.log("decoded valid");
-          if(self.isJwtValidDate(decoded)) {
-            console.log("systemDate valid");
-            console.log("stringifying...");
-            console.log(JSON.stringify(decoded));
-            resolve(decoded);
-          } else {
-            console.log('Token Session expired (date).');
-            reject({status: 401, message: "Token Session expired (date)."});
+          try {
+            if(self.isJwtValidDate(decoded)) {
+              console.log("systemDate valid");
+              console.log("stringifying...");
+              console.log(JSON.stringify(decoded));
+              resolve(decoded);
+            } else {
+              console.log('Token Session expired (date).');
+              reject({status: 401, message: "Token Session expired (date)."});
+            }
+          } catch(e) {
+            logger.error(e.message);
+            reject({status: 500, message: "Impossible to check if jwt is valid"});
           }
         } else {
           console.log('Impossible to decode token.');

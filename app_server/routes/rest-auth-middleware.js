@@ -1,7 +1,6 @@
 var jwt = require('jsonwebtoken');
-
-var logger = require('../utils/logger.js');
-var Utils = require('../utils/util.js');
+var logger = require('../utils/logger');
+var Utils = require('../utils/util');
 
 module.exports.restAuthenticationMiddleware = function(req, res, next) {
 	logger.debug("route middleware to authenticate and check token: " + req.session.authToken);
@@ -25,13 +24,18 @@ module.exports.restAuthenticationMiddleware = function(req, res, next) {
 
 			if(decoded) {
 			    console.log("decoded valid");
-			    if(Utils.isJwtValidDate(decoded)) {
+			    try {
+			    	if(Utils.isJwtValidDate(decoded)) {
 						logger.debug("systemDate valid");
 						next();
 					} else {
 						logger.error('No data valid');
 						Utils.sendJSONres(res, 404, "Data is not valid");
 					}
+				} catch (e) {
+					logger.error(e);
+					Utils.sendJSONres(res, 500, "Impossible to check if jwt is valid");
+				}
 			}
 		});
 		

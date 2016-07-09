@@ -110,7 +110,12 @@ module.exports.collapseDb = (loggedUser, serviceName, req) => {
 					} else {
 						console.log("Saved modified user: " + savedUser); 
 						console.log("updating auth token with user infos");
-						req.session.authToken = authCommon.generateJwtCookie(savedUser);
+						try {
+							req.session.authToken = authCommon.generateJwtCookie(savedUser);
+						} catch(e) {
+							logger.error(e);
+							reject("Impossible to generateJwtCookie due to an internal server error");
+						}
 						console.log('req.session.authToken finished collapse with: ' + req.session.authToken);
 
 						console.log("--------------------------******---- removing duplicated user [OK]");

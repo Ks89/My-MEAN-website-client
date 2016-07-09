@@ -17,14 +17,19 @@ var decodeToken = function(req, res) {
 
     const token = req.params.token;
 
-    Utils.isJwtValid(token)
-    .then(result => {
-      console.log("IsJwtValid result: " + JSON.stringify(result));
-      Utils.sendJSONres(res, 200, JSON.stringify(result));
-    }, reason => {
-      console.log("IsJwtValid error: " + reason);
-      Utils.sendJSONres(res, reason.status, reason.message);
-    });
+    try {
+      Utils.isJwtValid(token)
+      .then(result => {
+        console.log("IsJwtValid result: " + JSON.stringify(result));
+        Utils.sendJSONres(res, 200, JSON.stringify(result));
+      }, reason => {
+        console.log("IsJwtValid error: " + reason);
+        Utils.sendJSONres(res, reason.status, reason.message);
+      });
+    } catch(e) {
+      logger.error(e);
+      Utils.sendJSONres(res, 500, "Impossible to check if jwt is valid");
+    }
   } else {
     console.log('No token found');
     Utils.sendJSONres(res, 404, "No token found");
@@ -100,15 +105,21 @@ var unlinkServiceByName = function(req, serviceName, res) {
 
   async.waterfall([
     done => {
-      Utils.isJwtValid(token)
-      .then(result => {
-        console.log("IsJwtValid result: " + result);
-        done(null, result);
-      }, reason => {
-        console.log("IsJwtValid error: " + reason);
-        Utils.sendJSONres(res, reason.status, reason.message);
+      try {
+        Utils.isJwtValid(token)
+        .then(result => {
+          console.log("IsJwtValid result: " + result);
+          done(null, result);
+        }, reason => {
+          console.log("IsJwtValid error: " + reason);
+          Utils.sendJSONres(res, reason.status, reason.message);
+          return;
+        });
+      } catch(e) {
+        logger.error(e);
+        Utils.sendJSONres(res, 500, 'Impossible to check if jwt is valid');
         return;
-      });
+      }
     }, 
     (decodedToken, done) => {
       User.findById(decodedToken.user._id, (err, user) => {
@@ -159,54 +170,6 @@ var unlinkServiceByName = function(req, serviceName, res) {
       }
     });
 };
-
-// var isLoggedIn = function(req, res) {
-//   console.log('isLoggedIn called');
-//   console.log('isLoggedIn data available (authToken): ' + req.session.authToken);
-//   if(req.session.authToken) {
-
-
-//     // verify a token symmetric
-//     jwt.verify(req.session.authToken, process.env.JWT_SECRET, function(err, decoded) {
-//       if(err) {
-//         console.log("jwt.verify error");
-//         Utils.sendJSONresponse(res, 404, null);
-//       } 
-
-//       if(decoded) {
-//         console.log("decoded valid");
-//         if(Utils.isJwtValidDate(decoded)) {
-//           console.log("systemDate valid");
-//           console.log("stringifying...");
-//           console.log(JSON.stringify(decoded));
-//           var islogged = {
-//             thirdpartyauth: false,
-//             local: false
-//           };
-//           if(decoded.user) {
-//             if(decoded.user.local) {
-//               islogged.local = true;
-//             }
-//             if(decoded.user.github || decoded.user.facebook ||  decoded.user.google) {
-//               islogged.thirdpartyauth = true;
-//             }
-//           }
-//           Utils.sendJSONresponse(res, 200, JSON.stringify(islogged));
-//         } else {
-//           console.log('No data valid');
-//           Utils.sendJSONresponse(res, 404, "invalid-data");
-//         }
-//       }
-//     });
-
-
-//     Utils.sendJSONresponse(res, 200, req.session.authToken);
-//   } else {
-//     console.log('isLoggedIn: Authtoken not available as session data in Redis, for instance you aren\'t logged');
-//     Utils.sendJSONresponse(res, 404, null);
-//   }
-//   Utils.sendJSONresponse(res, 404, null);
-// };
 
 module.exports = {
   decodeToken: decodeToken,
