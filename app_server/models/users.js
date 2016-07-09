@@ -127,7 +127,8 @@ function getFilteredUser(user) {
             innerProp==='resetPasswordExpires' ||
             innerProp==='_id' || //to remove '_id', '__v' and 'updated' into user.profile
             innerProp==='__v' ||
-            innerProp==='updated') {
+            innerProp==='updated' ||
+            innerProp==='hash') {
           cloned[prop][innerProp] = undefined;
         }
       }
