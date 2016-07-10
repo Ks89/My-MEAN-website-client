@@ -1,4 +1,3 @@
-var passport = require('passport');
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var logger = require('../../../utils/logger.js');
@@ -6,12 +5,11 @@ var authCommon = require('./auth-common.js');
 var Utils = require('../../../utils/util.js');
 var async = require('async');
 
-
 module.exports.collapseDb = (loggedUser, serviceName, req) => {
 
 	return new Promise((resolve, reject) => {
 		if(!loggedUser || !serviceName) {
-			console.err("impossibile to collapseDb becase either loggedUser or serviceName are null or undefined.");
+			console.error("impossibile to collapseDb becase either loggedUser or serviceName are null or undefined.");
 		}
 
 		console.log("--------------------------******----");
@@ -24,7 +22,7 @@ module.exports.collapseDb = (loggedUser, serviceName, req) => {
 		console.log("inputId " + inputId);
 
 		if(!inputId) {
-			console.err("inputId is not valid");
+			console.error("inputId is not valid");
 			reject('input id not valid while collapsing');
 		}
 
@@ -40,7 +38,7 @@ module.exports.collapseDb = (loggedUser, serviceName, req) => {
 		User.find(query, (err, users) => {
 
 			if(err) {
-				console.err("--------------------------******---- Error - users not found!!!");
+				console.error("--------------------------******---- Error - users not found!!!");
 				reject('User by id not found while collapsing');
 			}
 
@@ -55,7 +53,7 @@ module.exports.collapseDb = (loggedUser, serviceName, req) => {
 			});
 
 			if(!user) {
-				console.err("--------------------------******---- Error - user not found!!!");	
+				console.error("--------------------------******---- Error - user not found!!!");	
 				reject('User not found while collapsing db');
 			}
 
