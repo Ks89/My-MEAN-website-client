@@ -34,40 +34,7 @@ before(done => {
 	// Connecting to a local test database or creating it on the fly
 	mongoose.connect('mongodb://localhost/test-db');
 	User = mongoose.model('User');
-	
-	var newUser = new User();
-	newUser.local.id = 'idlocal';
-	newUser.local.name = USERNAME;
-	newUser.local.email = EMAIL;
-	newUser.setPassword(PASSWORD);
-	newUser.local.activateAccountToken = 'TOKEN';
-	newUser.local.activateAccountExpires =  new Date(Date.now() + 24*3600*1000); // 1 hour
-	newUser.local.resetPasswordToken = 'TOKEN';
-	newUser.local.resetPasswordExpires = Date.now() + 3600000; // 1 hour
-	newUser.google.id = 'id';
-	newUser.facebook.id = 'id';
-	newUser.linkedin.id = 'id';
-	newUser.twitter.id = 'id';
-	newUser.github.id = '1231232';
-	newUser.github.token = 'TOKEN';
-	newUser.github.email = EMAIL;
-	newUser.github.name = USERNAME;
-	newUser.github.username = USERNAME;
-	newUser.github.profileUrl = 'http://fakeprofileurl.com/myprofile';
-	newUser.profile = {
-		name : USERNAME,
-		surname : USERNAME,
-		nickname : USERNAME,
-		email : EMAIL,
-		updated : new Date(),
-		visible : true
-	}
-	newUser.save((err, savedUser) => {
-		expect(err).to.be.null;
-		expect(savedUser.validPassword(PASSWORD)).to.be.true;
-		userDb = newUser;
-		done(err);
-	});
+	done();
 });
 
 describe('users model', () => {
@@ -76,54 +43,80 @@ describe('users model', () => {
 
 	describe('#setPassword()', () => {
 
-		const NOT_VALID_PASSWORD_FORMAT = 'not a valid password format';
+		
 
 		describe('---YES---', () => {
+
+			beforeEach(done => {
+				var newUser = new User();
+				newUser.local.name = USERNAME;
+				newUser.local.email = EMAIL;
+				newUser.setPassword(PASSWORD);
+				newUser.google = {};
+				newUser.twitter = {};
+				newUser.linkedin = {};
+				newUser.facebook = {};
+				newUser.github.id = 'github id';
+				newUser.github.token = 'TOKEN';
+				newUser.github.email = EMAIL;
+				newUser.github.name = USERNAME;
+				newUser.github.username = USERNAME;
+				newUser.github.profileUrl = 'http://fakeprofileurl.com/myprofile';
+				newUser.profile = {
+					name : USERNAME,
+					surname : USERNAME,
+					nickname : USERNAME,
+					email : EMAIL,
+					updated : new Date(),
+					visible : true
+				}
+				newUser.save((err, savedUser) => {
+					expect(err).to.be.null;
+					expect(savedUser.validPassword(PASSWORD)).to.be.true;
+					done(err);
+				});
+			});
+
 			it('should create a user and verify it with a correct password', done => {
 				
 				mockedRes.session.authToken = 'pippo';
+				
+				var newUser = new User();
+				newUser.google.id = 'google id';
+				newUser.google.email = EMAIL;
+				newUser.google.name = 'fake name';
+				newUser.google.token = 'token google';
+				newUser.github.id = 'github id';
+				newUser.github.token = 'TOKEN';
+				newUser.github.email = EMAIL;
+				newUser.github.name = USERNAME;
+				newUser.github.username = USERNAME;
+				newUser.github.profileUrl = 'http://fakeprofileurl.com/myprofile';
+				newUser.save((err, savedUser) => {
+					expect(err).to.be.null;
+					userDb = newUser;
+					
+					collapser.collapseDb(userDb, 'github', mockedRes)
+		            .then(result => {
+		              console.log("collapseDb localuser with 3dpartyauth promise");
+		              console.log(result);
+		              done();
+		            }, reason => {
+		              console.log("ERROR collapseDb localuser with 3dpartyauth promise");
+		              done(null);
+		            });
 
-				collapser.collapseDb(userDb, 'local', mockedRes)
-	            .then(result => {
-	              console.log("collapseDb localuser with 3dpartyauth promise: " + result);
-	              done();
-	            }, reason => {
-	              console.log("ERROR collapseDb localuser with 3dpartyauth promise");
-	              done(null);
-	            });
+				});
+			});
 
-				// var newUser = new User();
-				// newUser.setPassword(PASSWORD);
-				// newUser.save((err, savedUser) => {
-				// 	expect(err).to.be.null;
-				// 	expect(savedUser.validPassword(PASSWORD)).to.be.true;
-				// 	done(err);
-				// });
+			afterEach(done => {
+				User.remove({}, err => { 
+					console.log('collection removed') 
+					done(err);
+				});
 			});
 		});
 
-		// describe('---ERRORS---', () => {
-		// 	it('should catch -not a valid password format- exception', done => {
-		// 		var newUser = new User();
-		// 		expect(() => newUser.setPassword(new Date())).to.throw(NOT_VALID_PASSWORD_FORMAT);
-		// 		expect(() => newUser.setPassword(undefined)).to.throw(NOT_VALID_PASSWORD_FORMAT);
-		// 		expect(() => newUser.setPassword(null)).to.throw(NOT_VALID_PASSWORD_FORMAT);
-		// 		expect(() => newUser.setPassword(-1)).to.throw(NOT_VALID_PASSWORD_FORMAT);
-		// 		expect(() => newUser.setPassword(1)).to.throw(NOT_VALID_PASSWORD_FORMAT);
-		// 		expect(() => newUser.setPassword(function(){})).to.throw(NOT_VALID_PASSWORD_FORMAT);
-		// 		expect(() => newUser.setPassword(()=>{})).to.throw(NOT_VALID_PASSWORD_FORMAT);
-		// 		expect(() => newUser.setPassword(/fooRegex/i)).to.throw(NOT_VALID_PASSWORD_FORMAT);
-		// 		expect(() => newUser.setPassword(new RegExp(/fooRegex/,'i'))).to.throw(NOT_VALID_PASSWORD_FORMAT);
-		// 		expect(() => newUser.setPassword(new RegExp('/fooRegex/','i'))).to.throw(NOT_VALID_PASSWORD_FORMAT);
-		// 		done();
-		// 	});
-		// });
-	});
-
-	after(done => {
-		User.remove({}, err => { 
-			console.log('collection removed') 
-			done(err);
-		});
+		
 	});
 });
