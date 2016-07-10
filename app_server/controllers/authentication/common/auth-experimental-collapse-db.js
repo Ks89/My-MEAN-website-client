@@ -3,13 +3,27 @@ var User = mongoose.model('User');
 var logger = require('../../../utils/logger.js');
 var authCommon = require('./auth-common.js');
 var Utils = require('../../../utils/util.js');
-var async = require('async');
+var serviceNames = require('../serviceNames');
+var _und = require('underscore');
 
 module.exports.collapseDb = (loggedUser, serviceName, req) => {
-
 	return new Promise((resolve, reject) => {
-		if(!loggedUser || !serviceName) {
-			console.error("impossibile to collapseDb becase either loggedUser or serviceName are null or undefined.");
+		if(Utils.isNotSimpleCustomObject(loggedUser)) {
+			console.error("impossible to collapseDb because loggedUser is not an object");
+			reject('impossible to collapseDb because loggedUser is not an object');
+			return;
+		}
+
+		if(!_und.isString(serviceName)) {
+			console.error("impossible to collapseDb because serviceName must be a string");
+			reject('impossible to collapseDb because serviceName must be a string');
+			return;
+		}
+
+		if(serviceNames.indexOf(serviceName) === -1) {
+			console.error("impossible to collapseDb because serviceName is not recognized");
+			reject('impossible to collapseDb because serviceName is not recognized');	
+			return;
 		}
 
 		console.log("--------------------------******----");
@@ -21,9 +35,10 @@ module.exports.collapseDb = (loggedUser, serviceName, req) => {
 		
 		console.log("inputId " + inputId);
 
-		if(!inputId) {
+		if(inputId === null) {
 			console.error("inputId is not valid");
 			reject('input id not valid while collapsing');
+			return;
 		}
 
 		const key =  serviceName + '.id';
@@ -55,6 +70,7 @@ module.exports.collapseDb = (loggedUser, serviceName, req) => {
 			if(!user) {
 				console.error("--------------------------******---- Error - user not found!!!");	
 				reject('User not found while collapsing db');
+				return;
 			}
 
 			console.log("2*****************************************");
@@ -70,6 +86,7 @@ module.exports.collapseDb = (loggedUser, serviceName, req) => {
 			if(!duplicatedUser || !duplicatedUser[0]) {
 				console.log("No duplicated user found");
 				reject('No duplicated user found while collapsing');
+				return;
 			}
 
 			duplicatedUser = duplicatedUser[0];
@@ -101,7 +118,9 @@ module.exports.collapseDb = (loggedUser, serviceName, req) => {
 			console.log("**--------------------------******---- saving this modified user");
 
 			if(duplicatedUser && updated) {
-				user.save((err, savedUser) => {
+				user.save((err, saved) => {
+					var savedUser = Object.create(saved.toObject());
+
 					if (err) {
 						console.log("Error while saving collapsed users");
 						reject('Error while saving collapsed users');
@@ -109,10 +128,11 @@ module.exports.collapseDb = (loggedUser, serviceName, req) => {
 						console.log("Saved modified user: " + savedUser); 
 						console.log("updating auth token with user infos");
 						try {
-							req.session.authToken = authCommon.generateJwtCookie(savedUser);
+							req.session.authToken = authCommon.generateJwtCookie(saved);
 						} catch(e) {
 							logger.error(e);
 							reject("Impossible to generateJwtCookie due to an internal server error");
+							return;
 						}
 						console.log('req.session.authToken finished collapse with: ' + req.session.authToken);
 
@@ -120,7 +140,8 @@ module.exports.collapseDb = (loggedUser, serviceName, req) => {
 
 						User.findByIdAndRemove(duplicatedUser._id, err => {
 							if (err) {
-								reject('Impossible to remove duplicaed user while collapsing');
+								reject('Impossible to remove duplicated user while collapsing');
+								return;
 							} else {
 								// we have deleted the user
 								console.log('--------------------------******---- duplicated User deleted! [OK]');
@@ -133,6 +154,7 @@ module.exports.collapseDb = (loggedUser, serviceName, req) => {
 			} else {
 				console.log("I can't do anything because there isn't a duplicated users! [OK]");
 				reject("I can't do anything because there isn't a duplicated users! [OK]");
+				return;
 			}
 		});
 	});
