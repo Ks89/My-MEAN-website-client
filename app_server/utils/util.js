@@ -55,6 +55,27 @@ class Utils {
     return day + "/" + month + "/" + year + " " + hour + ":" + min + ":" + sec;
   }
 
+    //Function that returns true if the param 
+  // is not a custom Object (neither an array, or an error, or a function, or null, or
+  // undefined, or a boolean, or nan)
+  // false otherwise
+  //isObject: JavaScript arrays and functions 
+  //          are objects, while (normal) strings and numbers are not.
+  static isNotSimpleCustomObject(obj) {
+    return !_und.isObject(obj) || _und.isArray(obj) || 
+        _und.isFunction(obj) || _und.isRegExp(obj) ||
+        _und.isError(obj) || _und.isNull(obj) ||
+        _und.isUndefined(obj) || _und.isNaN(obj) ||
+        _und.isBoolean(obj);
+  }
+
+  static isSimpleCustomObject(obj) {
+    return _und.isObject(token) || _und.isArray(token) || 
+        _und.isFunction(token) || _und.isRegExp(token) ||
+        _und.isError(token) || _und.isNull(token) ||
+        _und.isUndefined(token) || _und.isNaN(token);
+  }
+
   static isJwtValidDate(decodedJwtToken) {
     console.log("isJwtValidDate " + decodedJwtToken);
 
