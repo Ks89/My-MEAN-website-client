@@ -127,6 +127,21 @@ describe('auth-experimental-collapse-db', () => {
 		            console.log("----------------COLLAPSE RESULT---------------");
 		            console.log(result);
 
+		            expect(result.local.name).to.be.equals(tempAlreadyOnDbUser.local.name);
+		            expect(result.local.email).to.be.equals(tempAlreadyOnDbUser.local.email);
+		            expect(result.google.id).to.be.equals(tempInputCollapse.google.id);
+		            expect(result.google.token).to.be.equals(tempInputCollapse.google.token);
+		            expect(result.google.name).to.be.equals(tempInputCollapse.google.name);
+		            expect(result.google.email).to.be.equals(tempInputCollapse.google.email);
+		            expect(result.github.id).to.be.equals(tempInputCollapse.github.id);
+		            expect(result.github.token).to.be.equals(tempInputCollapse.github.token);
+		            expect(result.github.name).to.be.equals(tempInputCollapse.github.name);
+		            expect(result.github.email).to.be.equals(tempInputCollapse.github.email);
+		            expect(result.github.id).to.be.equals(tempAlreadyOnDbUser.github.id);
+		            expect(result.github.token).to.be.equals(tempAlreadyOnDbUser.github.token);
+		            expect(result.github.name).to.be.equals(tempAlreadyOnDbUser.github.name);
+		            expect(result.github.email).to.be.equals(tempAlreadyOnDbUser.github.email);
+
 		            User.remove({}, err => { 
 									console.log('collection removed') 
 									done(err);

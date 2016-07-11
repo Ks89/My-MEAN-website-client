@@ -83,84 +83,60 @@ userSchema.methods.validPassword = function(password) {
   if(!_und.isString(password)) {
     throw "not a valid password format";
   }
-
   return bcrypt.compareSync(password, this.local.hash);
 };
 
+//method to generete JWT
 userSchema.methods.generateJwt = function() {
-  var expiry = new Date();
-  expiry.setTime(expiry.getTime() + 600000); //valid for 10 minutes (10*60*1000)
-
-  return jwt.sign({
-    _id: this._id,
-     //I don't want to expose private information here -> I filter 
-     //the user object into a similar object without some fields
-    user: getFilteredUser(this),
-    exp: parseFloat(expiry.getTime()),
-  }, process.env.JWT_SECRET); // DO NOT KEEP YOUR SECRET IN THE CODE!
+  return signJwt(false, this); // isForCookie = false (used elsewhere)
 };
 
-userSchema.methods.generateJwtExperimental = function() {
-  var expiry = new Date();
-  expiry.setTime(expiry.getTime() + 600000); //valid for 10 minutes (10*60*1000)
-
-  return jwt.sign({
-    _id: this._id,
-     //I don't want to expose private information here -> I filter 
-     //the user object into a similar object without some fields
-    user: getFilteredUserExperimental(JSON.parse(JSON.stringify(this))),
-    exp: parseFloat(expiry.getTime()),
-  }, process.env.JWT_SECRET); // DO NOT KEEP YOUR SECRET IN THE CODE!
+//method to generete JWT used to create a jwt cookie
+//this is necessary to prevent 
+userSchema.methods.generateJwtCookie = function() {
+  return signJwt(true, this); // isForCookie = true
 };
 
-function getFilteredUserExperimental(user) {
-  //use toObject to get data from mongoose object received as parameter
-  const dbData = user;
-
-  //clone the user - necessary
-  let cloned = Object.create(user);
-
-  cloned.__v = undefined;
-
-  //because this is an utility function used everywhere,
-  //I decided to use ...=undefined, instead of delete ... to achieve 
-  //better performances, as explained here: 
-  //http://stackoverflow.com/questions/208105/how-do-i-remove-a-property-from-a-javascript-object?rq=1
-  for(let prop in dbData) {
-    if(dbData.hasOwnProperty(prop) && prop !== '_id') {
-      //console.log("2-obj." + prop + " = " + dbData[prop]);
-      for(let innerProp in dbData[prop]) {
-        //console.log("3-obj." + innerProp + " = " + dbData[prop][innerProp]);
-        if(innerProp==='profileUrl' || 
-            innerProp==='token' ||
-            innerProp==='username' ||
-            innerProp==='activateAccountToken' ||
-            innerProp==='activateAccountExpires' ||
-            innerProp==='resetPasswordToken' ||
-            innerProp==='resetPasswordExpires' ||
-            innerProp==='_id' || //to remove '_id', '__v' and 'updated' into user.profile
-            innerProp==='__v' ||
-            innerProp==='updated' ||
-            innerProp==='hash') {
-          cloned[prop][innerProp] = undefined;
-        }
-      }
-    } 
+function signJwt(isForCookie, thisObject) {
+  let user;
+  console.log(thisObject);
+  if(isForCookie === true) {
+    //because I want to modify 'thisObject' without to change the mongoose object
+    user = getFilteredUserForCookie(JSON.parse(JSON.stringify(thisObject)));
+  } else {
+    user = getFilteredUser(thisObject);
   }
-  console.log("Cloned user data:" + cloned);
-  console.log("the original user was: " + user);
-  return cloned;
+
+  var expiry = new Date();
+  expiry.setTime(expiry.getTime() + 600000); //valid for 10 minutes (10*60*1000)
+
+  return jwt.sign({
+    _id: thisObject._id,
+     //I don't want to expose private information here -> I filter 
+     //the user object into a similar object without some fields
+    user: user,
+    exp: parseFloat(expiry.getTime()),
+  }, process.env.JWT_SECRET); // DO NOT KEEP YOUR SECRET IN THE CODE!
+}
+
+function getFilteredUserForCookie(user) {
+  const dbData = user;
+  user.__v = undefined;
+  filterUser(dbData, user);
+  return user;
 }
 
 function getFilteredUser(user) {
   //use toObject to get data from mongoose object received as parameter
   const dbData = user.toObject();
-
   //clone the user - necessary
   let cloned = Object.create(user);
-
   cloned.__v = undefined;
+  filterUser(dbData, cloned);
+  return cloned;
+}
 
+function filterUser(dbData, user) {
   //because this is an utility function used everywhere,
   //I decided to use ...=undefined, instead of delete ... to achieve 
   //better performances, as explained here: 
@@ -181,14 +157,11 @@ function getFilteredUser(user) {
             innerProp==='__v' ||
             innerProp==='updated' ||
             innerProp==='hash') {
-          cloned[prop][innerProp] = undefined;
+          user[prop][innerProp] = undefined;
         }
       }
     } 
   }
-  console.log("Cloned user data:" + cloned);
-  console.log("the original user was: " + user);
-  return cloned;
 }
 
 mongoose.model('User', userSchema);

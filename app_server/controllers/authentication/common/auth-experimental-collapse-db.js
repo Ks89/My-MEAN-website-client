@@ -127,9 +127,7 @@ module.exports.collapseDb = (loggedUser, serviceName, req) => {
 						console.log("Saved modified user: " + savedUser); 
 						console.log("updating auth token with user infos");
 						try {
-							console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-							req.session.authToken = authCommon.generateJwtCookieExperimental(savedUser);
-							console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+							req.session.authToken = authCommon.generateJwtCookie(savedUser);
 						} catch(e) {
 							logger.error(e);
 							reject("Impossible to generateJwtCookie due to an internal server error");
