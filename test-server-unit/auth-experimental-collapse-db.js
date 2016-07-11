@@ -14,6 +14,9 @@ var User;
 var mongoose = require('mongoose');
 require('../app_server/models/users');
 
+mongoose.connect('mongodb://localhost/test-db');
+	User = mongoose.model('User');
+
 var userDb;
 
 var util = require('../app_server/utils/util');
@@ -34,8 +37,8 @@ const PASSWORD = 'Password1';
 
 before(done => {
 	// Connecting to a local test database or creating it on the fly
-	mongoose.connect('mongodb://localhost/test-db');
-	User = mongoose.model('User');
+	// mongoose.connect('mongodb://localhost/test-db');
+	// User = mongoose.model('User');
 	done();
 });
 
@@ -73,54 +76,74 @@ describe('auth-experimental-collapse-db', () => {
 			};
 		}
 
+		function getUser(serviceNames, isAddProfile) {
+			console.log("getting user..");
+			var newUser = new User();
+			console.log("user created");
+			if(isAddProfile === true) {
+				addProfile(newUser);
+			}
+			for(let serviceName of serviceNames) {
+				if(serviceName === 'local') {
+					addLocalUser(newUser);
+				} else {
+					addUserByServiceName(newUser, serviceName);
+				}
+			}
+			return newUser;
+		}
+
+		//alreadyOnDb is an account previously created on db,
+		//inputCollapse is the current account used to login.
+		const inputAndOutputMocked = [
+			{ alreadyOnDb: getUser(['local', 'github'], true), inputCollapse: getUser(['github', 'google'], false), service: 'github'}
+		];
+
 		describe('---YES---', () => {
 
-			beforeEach(done => {
-				var newUser = new User();
-				addProfile(newUser);
-				addLocalUser(newUser);
-				addUserByServiceName(newUser, 'github');
-				newUser.save((err, savedUser) => {
-					expect(err).to.be.null;
-					expect(savedUser.validPassword(PASSWORD)).to.be.true;
-					userDb = newUser;
-					done(err);
-				});
-			});
+			for(let i=0; i<inputAndOutputMocked.length; i++) {
+				it('should collapse the db and check that users has been merged', done => {
+					var tempAlreadyOnDbUser;
+					var tempInputCollapse;
 
-			it('should collapse the db and check that users has been merged', done => {
-								
-				var newUser = new User();
-				addUserByServiceName(newUser, 'google');
-				addUserByServiceName(newUser, 'github');
-				newUser.save((err, savedUser) => {
-					expect(err).to.be.null;
+					inputAndOutputMocked[i].alreadyOnDb.save((err, onDbUser) => {
+						expect(err).to.be.null;
+						expect(onDbUser.validPassword(PASSWORD)).to.be.true;
+						tempAlreadyOnDbUser = onDbUser;
 					
-					collapser.collapseDb(newUser, 'github', mockedRes)
-          .then(result => {
-            console.log("collapseDb localuser with 3dpartyauth promise");
-            console.log(result);
+						
+						inputAndOutputMocked[i].inputCollapse.save((err, inputCollapseUser) => {
+							expect(err).to.be.null;
+							tempInputCollapse = inputCollapseUser;
+							collapser.collapseDb(tempInputCollapse, inputAndOutputMocked[i].service, mockedRes)
+		          .then(result => {
+		            console.log("collapseDb localuser with 3dpartyauth promise");
+		            console.log(result);
 
-            console.log("-------------------------------");
-            console.log(userDb);
-            console.log("-------------------------------");
-            console.log(result);
+		            console.log("----------------alreadyOnDb---------------");
+		            console.log(tempAlreadyOnDbUser);
+		            console.log("----------------inputCollapseUser---------------");
+		            console.log(tempInputCollapse);
+		            console.log("----------------COLLAPSE RESULT---------------");
+		            console.log(result);
 
-            done();
-          }, reason => {
-            console.log("ERROR collapseDb localuser with 3dpartyauth promise");
-            done(null);
-          });
+		            User.remove({}, err => { 
+									console.log('collection removed') 
+									done(err);
+								});
+		          }, reason => {
+		            console.log("ERROR collapseDb localuser with 3dpartyauth promise");
+		            User.remove({}, err => { 
+									console.log('collection removed') 
+									done(err);
+								});
+		          });
 
+	          });
+
+					});
 				});
-			});
-
-			afterEach(done => {
-				User.remove({}, err => { 
-					console.log('collection removed') 
-					done(err);
-				});
-			});
+			}
 		});
 
 		describe('---ERRORS---', () => {
@@ -166,13 +189,13 @@ describe('auth-experimental-collapse-db', () => {
 				});
 			}
 
-			it('should catch an error, because logged user hasn\'t an id for the specified serviceName', done => {
-				collapser.collapseDb({ local : { email: 'fake'}}, 'local', mockedRes)
-        .then(result => {}, reason => {
-          expect(reason).to.be.equals('input id not valid while collapsing');
-          done(null);
-        });
-			});
+			// it('should catch an error, because logged user hasn\'t an id for the specified serviceName', done => {
+			// 	collapser.collapseDb({ local : { email: 'fake'}}, 'local', mockedRes)
+   //      .then(result => {}, reason => {
+   //        expect(reason).to.be.equals('input id not valid while collapsing');
+   //        done(null);
+   //      });
+			// });
 		});
 		
 	});

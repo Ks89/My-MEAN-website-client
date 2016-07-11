@@ -118,8 +118,7 @@ module.exports.collapseDb = (loggedUser, serviceName, req) => {
 			console.log("**--------------------------******---- saving this modified user");
 
 			if(duplicatedUser && updated) {
-				user.save((err, saved) => {
-					var savedUser = Object.create(saved.toObject());
+				user.save((err, savedUser) => {
 
 					if (err) {
 						console.log("Error while saving collapsed users");
@@ -128,7 +127,9 @@ module.exports.collapseDb = (loggedUser, serviceName, req) => {
 						console.log("Saved modified user: " + savedUser); 
 						console.log("updating auth token with user infos");
 						try {
-							req.session.authToken = authCommon.generateJwtCookie(saved);
+							console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+							req.session.authToken = authCommon.generateJwtCookieExperimental(savedUser);
+							console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 						} catch(e) {
 							logger.error(e);
 							reject("Impossible to generateJwtCookie due to an internal server error");

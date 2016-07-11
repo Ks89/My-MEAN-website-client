@@ -65,6 +65,23 @@ var sessionToken = function(req, res) {
   }
 };
 
+var generateJwtCookieExperimental = function(user) {
+  
+  if(!user || _und.isString(user) ||
+      !_und.isObject(user) || _und.isArray(user) || 
+      _und.isFunction(user) || _und.isRegExp(user) ||
+      _und.isError(user) || _und.isNull(user) || _und.isBoolean(user) ||
+      _und.isUndefined(user) || _und.isNaN(user) || _und.isDate(user)) {
+    throw 'User must be a valid object';
+  }
+
+  const token3dauth = user.generateJwtExperimental();
+  const authToken = JSON.stringify({ 
+    token: token3dauth
+  });
+  return authToken;
+};
+
 var generateJwtCookie = function(user) {
   
   if(!user || _und.isString(user) ||
@@ -176,5 +193,6 @@ module.exports = {
   logout: logout,
   sessionToken: sessionToken,
   generateJwtCookie: generateJwtCookie,
+  generateJwtCookieExperimental : generateJwtCookieExperimental,
   unlinkServiceByName: unlinkServiceByName,
 };
