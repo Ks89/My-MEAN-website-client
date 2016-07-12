@@ -1,7 +1,7 @@
 'use strict';
 process.env.NODE_ENV = 'test'; //before every other instruction
 
-//to be able to use generateJwt I must import 
+//to be able to use generateJwt I must import
 //dotenv (otherwise I cannot read process.env with the encryption key)
 require('dotenv').config();
 
@@ -15,7 +15,7 @@ var mongoose = require('mongoose');
 require('../app_server/models/users');
 
 mongoose.connect('mongodb://localhost/test-db');
-	User = mongoose.model('User');
+User = mongoose.model('User');
 
 var userDb;
 
@@ -107,20 +107,20 @@ describe('auth-experimental-collapse-db', () => {
 		//inputCollapse is the current account used to login.
 		const inputAndOutputMocked = [
 			{alreadyOnDb:getUser(['local','github'],true), inputCollapse:getUser(['github','google'],false), service:'github'},
-			// {alreadyOnDb:getUser(['local','google'],true), inputCollapse:getUser(['facebook','google'],false), service:'google'},
-			// {alreadyOnDb:getUser(['local','facebook'],false), inputCollapse:getUser(['local','google'],true), service:'local'},
-			// {alreadyOnDb:getUser(['local','twitter'],true), inputCollapse:getUser(['twitter','github'],false), service:'twitter'},
-			// {alreadyOnDb:getUser(['local','linkedin'],true), inputCollapse:getUser(['local','facebook'],true), service:'local'},
-			// {alreadyOnDb:getUser(['facebook','github'],true), inputCollapse:getUser(['github','local'],true), service:'github'},
-			// {alreadyOnDb:getUser(['facebook','google'],true), inputCollapse:getUser(['facebook','local'],true), service:'facebook'},
-			// {alreadyOnDb:getUser(['facebook','twitter'],true), inputCollapse:getUser(['facebook','twitter'],true), service:'twitter'},
-			// {alreadyOnDb:getUser(['facebook','linkedin'],false), inputCollapse:getUser(['facebook','github'],false), service:'facebook'},
-			// {alreadyOnDb:getUser(['google','github'],false), inputCollapse:getUser(['github','facebook'],false), service:'github'},
-			// {alreadyOnDb:getUser(['google','twitter'],true), inputCollapse:getUser(['github','google'],false), service:'google'},
-			// {alreadyOnDb:getUser(['google','linkedin'],true), inputCollapse:getUser(['linkedin','twitter'],true), service:'linkedin'},
-			// {alreadyOnDb:getUser(['github','twitter'],true), inputCollapse:getUser(['github','google'],true), service:'github'},
-			// {alreadyOnDb:getUser(['github','linkedin'],false), inputCollapse:getUser(['linkedin','local'],false), service:'linkedin'},
-			// {alreadyOnDb:getUser(['twitter','linkedin'],true), inputCollapse:getUser(['local','twitter'],false), service:'twitter'}
+			{alreadyOnDb:getUser(['local','google'],true), inputCollapse:getUser(['facebook','google'],false), service:'google'},
+			{alreadyOnDb:getUser(['local','facebook'],false), inputCollapse:getUser(['local','google'],true), service:'local'},
+			{alreadyOnDb:getUser(['local','twitter'],true), inputCollapse:getUser(['twitter','github'],false), service:'twitter'},
+			{alreadyOnDb:getUser(['local','linkedin'],true), inputCollapse:getUser(['local','facebook'],true), service:'local'},
+			{alreadyOnDb:getUser(['facebook','github'],true), inputCollapse:getUser(['local','github'],true), service:'github'},
+			{alreadyOnDb:getUser(['facebook','google'],true), inputCollapse:getUser(['facebook','local'],true), service:'facebook'},
+			{alreadyOnDb:getUser(['facebook','twitter'],true), inputCollapse:getUser(['facebook','twitter'],true), service:'twitter'},
+			{alreadyOnDb:getUser(['facebook','linkedin'],false), inputCollapse:getUser(['facebook','github'],false), service:'facebook'},
+			{alreadyOnDb:getUser(['google','github'],false), inputCollapse:getUser(['github','facebook'],false), service:'github'},
+			{alreadyOnDb:getUser(['google','twitter'],true), inputCollapse:getUser(['github','google'],false), service:'google'},
+			{alreadyOnDb:getUser(['google','linkedin'],true), inputCollapse:getUser(['linkedin','twitter'],true), service:'linkedin'},
+			{alreadyOnDb:getUser(['github','twitter'],true), inputCollapse:getUser(['github','google'],true), service:'github'},
+			{alreadyOnDb:getUser(['github','linkedin'],false), inputCollapse:getUser(['linkedin','local'],false), service:'linkedin'},
+			{alreadyOnDb:getUser(['twitter','linkedin'],true), inputCollapse:getUser(['local','twitter'],false), service:'twitter'}
 	];
 
 		describe('---YES---', () => {
@@ -138,13 +138,13 @@ describe('auth-experimental-collapse-db', () => {
 
 					inputAndOutputMocked[i].alreadyOnDb.save((err, onDbUser) => {
 						expect(err).to.be.null;
-						expect(onDbUser.validPassword(PASSWORD)).to.be.true;
+						// expect(onDbUser.validPassword(PASSWORD)).to.be.true;
 						tempAlreadyOnDbUser = onDbUser;
-						
+
 						console.log("@@@@@@@@@@@@@@@@@@A@@@@@@@@@@@@@");
 		        console.log(tempAlreadyOnDbUser);
 		        console.log("@@@@@@@@@@@@@@@@@@B@@@@@@@@@@@@@");
-						
+
 						inputAndOutputMocked[i].inputCollapse.save((err, inputCollapseUser) => {
 							expect(err).to.be.null;
 							tempInputCollapse = inputCollapseUser;
@@ -184,14 +184,14 @@ describe('auth-experimental-collapse-db', () => {
 		            // expect(result.github.name).to.be.equals(tempAlreadyOnDbUser.github.name);
 		            // expect(result.github.email).to.be.equals(tempAlreadyOnDbUser.github.email);
 
-		            User.remove({}, err => { 
-									console.log('collection removed') 
+		            User.remove({}, err => {
+									console.log('collection removed')
 									done(err);
 								});
 		          }, reason => {
 		            console.log("ERROR collapseDb localuser with 3dpartyauth promise");
-		            User.remove({}, err => { 
-									console.log('collection removed') 
+		            User.remove({}, err => {
+									console.log('collection removed')
 									done(err);
 								});
 		          });
@@ -205,7 +205,7 @@ describe('auth-experimental-collapse-db', () => {
 
 		// describe('---ERRORS---', () => {
 
-		// 	const serviceNameWrongMock = [undefined, null, -1, 5, 99, 600, 
+		// 	const serviceNameWrongMock = [undefined, null, -1, 5, 99, 600,
 		// 			function(){}, ()=>{}, /fooRegex/i, [], new RegExp(/fooRegex/,'i'),
 		// 			new RegExp('/fooRegex/','i'), new Error(), true, false, new Array()];
 
@@ -232,10 +232,10 @@ describe('auth-experimental-collapse-db', () => {
 		// 		});
 		// 	}
 
-		// 	const loggedUserWrongMock = ["not an object", undefined, null, -1, 5, 99, 600, 
+		// 	const loggedUserWrongMock = ["not an object", undefined, null, -1, 5, 99, 600,
 		// 			" ", function(){}, ()=>{}, /fooRegex/i, [], new RegExp(/fooRegex/,'i'),
 		// 			new RegExp('/fooRegex/','i'), new Error(), true, false, new Array()];
-	
+
 		// 	for(let i=0; i<loggedUserWrongMock.length; i++) {
 		// 		it('should catch an error, because you must pass an object as loggedUser\'s parameter. Test i=' + i, done => {
 		// 			collapser.collapseDb(loggedUserWrongMock[i], 'local', mockedRes)
@@ -254,6 +254,6 @@ describe('auth-experimental-collapse-db', () => {
   //  //      });
 		// 	// });
 		// });
-		
+
 	});
 });
