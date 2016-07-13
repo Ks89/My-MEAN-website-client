@@ -6,6 +6,8 @@ process.env.NODE_ENV = 'test'; //before every other instruction
 require('dotenv').config();
 
 var chai = require('chai');
+var chaiDeepMatch = require('chai-deep-match');
+chai.use( chaiDeepMatch );
 var assert = chai.assert;
 var expect = chai.expect;
 var _und = require('underscore');
@@ -20,6 +22,7 @@ User = mongoose.model('User');
 var userDb;
 
 var util = require('../app_server/utils/util');
+var serviceNames = require('../app_server/controllers/authentication/serviceNames');
 
 var MockedRes = require('./mocked-res-class');
 var mockedRes = new MockedRes();
@@ -107,20 +110,20 @@ describe('auth-experimental-collapse-db', () => {
 		//inputCollapse is the current account used to login.
 		const inputAndOutputMocked = [
 			{alreadyOnDb:getUser(['local','github'],true), inputCollapse:getUser(['github','google'],false), service:'github'},
-			{alreadyOnDb:getUser(['local','google'],true), inputCollapse:getUser(['facebook','google'],false), service:'google'},
-			{alreadyOnDb:getUser(['local','facebook'],false), inputCollapse:getUser(['local','google'],true), service:'local'},
-			{alreadyOnDb:getUser(['local','twitter'],true), inputCollapse:getUser(['twitter','github'],false), service:'twitter'},
-			{alreadyOnDb:getUser(['local','linkedin'],true), inputCollapse:getUser(['local','facebook'],true), service:'local'},
-			{alreadyOnDb:getUser(['facebook','github'],true), inputCollapse:getUser(['local','github'],true), service:'github'},
-			{alreadyOnDb:getUser(['facebook','google'],true), inputCollapse:getUser(['facebook','local'],true), service:'facebook'},
-			{alreadyOnDb:getUser(['facebook','twitter'],true), inputCollapse:getUser(['facebook','twitter'],true), service:'twitter'},
-			{alreadyOnDb:getUser(['facebook','linkedin'],false), inputCollapse:getUser(['facebook','github'],false), service:'facebook'},
-			{alreadyOnDb:getUser(['google','github'],false), inputCollapse:getUser(['github','facebook'],false), service:'github'},
-			{alreadyOnDb:getUser(['google','twitter'],true), inputCollapse:getUser(['github','google'],false), service:'google'},
-			{alreadyOnDb:getUser(['google','linkedin'],true), inputCollapse:getUser(['linkedin','twitter'],true), service:'linkedin'},
-			{alreadyOnDb:getUser(['github','twitter'],true), inputCollapse:getUser(['github','google'],true), service:'github'},
-			{alreadyOnDb:getUser(['github','linkedin'],false), inputCollapse:getUser(['linkedin','local'],false), service:'linkedin'},
-			{alreadyOnDb:getUser(['twitter','linkedin'],true), inputCollapse:getUser(['local','twitter'],false), service:'twitter'}
+			// {alreadyOnDb:getUser(['local','google'],true), inputCollapse:getUser(['facebook','google'],false), service:'google'},
+			// {alreadyOnDb:getUser(['local','facebook'],false), inputCollapse:getUser(['local','google'],true), service:'local'},
+			// {alreadyOnDb:getUser(['local','twitter'],true), inputCollapse:getUser(['twitter','github'],false), service:'twitter'},
+			// {alreadyOnDb:getUser(['local','linkedin'],true), inputCollapse:getUser(['local','facebook'],true), service:'local'},
+			// {alreadyOnDb:getUser(['facebook','github'],true), inputCollapse:getUser(['local','github'],true), service:'github'},
+			// {alreadyOnDb:getUser(['facebook','google'],true), inputCollapse:getUser(['facebook','local'],true), service:'facebook'},
+			// {alreadyOnDb:getUser(['facebook','twitter'],true), inputCollapse:getUser(['facebook','twitter'],true), service:'twitter'},
+			// {alreadyOnDb:getUser(['facebook','linkedin'],false), inputCollapse:getUser(['facebook','github'],false), service:'facebook'},
+			// {alreadyOnDb:getUser(['google','github'],false), inputCollapse:getUser(['github','facebook'],false), service:'github'},
+			// {alreadyOnDb:getUser(['google','twitter'],true), inputCollapse:getUser(['github','google'],false), service:'google'},
+			// {alreadyOnDb:getUser(['google','linkedin'],true), inputCollapse:getUser(['linkedin','twitter'],true), service:'linkedin'},
+			// {alreadyOnDb:getUser(['github','twitter'],true), inputCollapse:getUser(['github','google'],true), service:'github'},
+			// {alreadyOnDb:getUser(['github','linkedin'],false), inputCollapse:getUser(['linkedin','local'],true), service:'linkedin'},
+			// {alreadyOnDb:getUser(['twitter','linkedin'],true), inputCollapse:getUser(['local','twitter'],false), service:'twitter'}
 	];
 
 		describe('---YES---', () => {
@@ -129,6 +132,7 @@ describe('auth-experimental-collapse-db', () => {
 				it('should collapse the db and check that users has been merged', done => {
 					var tempAlreadyOnDbUser;
 					var tempInputCollapse;
+					var service = inputAndOutputMocked[i].service;
 
 
 					console.log("@@@@@@@@@@@@@@@@@@1@@@@@@@@@@@@@");
@@ -157,7 +161,7 @@ describe('auth-experimental-collapse-db', () => {
 		          console.log("@@@@@@@@@@@@@@@@@@COLLAPSE RESULT@@@@@@@@@@@@@");
 
 
-							collapser.collapseDb(tempInputCollapse, inputAndOutputMocked[i].service, mockedRes)
+							collapser.collapseDb(tempInputCollapse, service, mockedRes)
 		          .then(result => {
 		            console.log("collapseDb localuser with 3dpartyauth promise");
 		            console.log(result);
@@ -169,20 +173,135 @@ describe('auth-experimental-collapse-db', () => {
 		            console.log("----------------COLLAPSE RESULT---------------");
 		            console.log(result);
 
-		            // expect(result.local.name).to.be.equals(tempAlreadyOnDbUser.local.name);
-		            // expect(result.local.email).to.be.equals(tempAlreadyOnDbUser.local.email);
-		            // expect(result.google.id).to.be.equals(tempInputCollapse.google.id);
-		            // expect(result.google.token).to.be.equals(tempInputCollapse.google.token);
-		            // expect(result.google.name).to.be.equals(tempInputCollapse.google.name);
-		            // expect(result.google.email).to.be.equals(tempInputCollapse.google.email);
-		            // expect(result.github.id).to.be.equals(tempInputCollapse.github.id);
-		            // expect(result.github.token).to.be.equals(tempInputCollapse.github.token);
-		            // expect(result.github.name).to.be.equals(tempInputCollapse.github.name);
-		            // expect(result.github.email).to.be.equals(tempInputCollapse.github.email);
-		            // expect(result.github.id).to.be.equals(tempAlreadyOnDbUser.github.id);
-		            // expect(result.github.token).to.be.equals(tempAlreadyOnDbUser.github.token);
-		            // expect(result.github.name).to.be.equals(tempAlreadyOnDbUser.github.name);
-		            // expect(result.github.email).to.be.equals(tempAlreadyOnDbUser.github.email);
+								expect(result[service].id).to.be.equal(tempAlreadyOnDbUser[service].id);
+								expect(result[service].token).to.be.equal(tempAlreadyOnDbUser[service].token);
+								expect(result[service].email).to.be.equal(tempAlreadyOnDbUser[service].email);
+								expect(result[service].name).to.be.equal(tempAlreadyOnDbUser[service].name);
+
+								switch(result[service]) {
+									case 'facebook':
+										expect(result[service].profileUrl).to.be.equal(tempAlreadyOnDbUser[service].profileUrl);
+									case 'github':
+										expect(result[service].username).to.be.equal(tempAlreadyOnDbUser[service].username);
+										expect(result[service].profileUrl).to.be.equal(tempAlreadyOnDbUser[service].profileUrl);
+									case 'twitter':
+										expect(result[service].username).to.be.equal(tempAlreadyOnDbUser[service].username);
+								}
+
+								expect(result[service].id).to.be.equal(tempInputCollapse[service].id);
+								expect(result[service].token).to.be.equal(tempInputCollapse[service].token);
+								expect(result[service].email).to.be.equal(tempInputCollapse[service].email);
+								expect(result[service].name).to.be.equal(tempInputCollapse[service].name);
+
+								switch(result[service]) {
+									case 'facebook':
+										expect(result[service].profileUrl).to.be.equal(tempInputCollapse[service].profileUrl);
+									case 'github':
+										expect(result[service].username).to.be.equal(tempInputCollapse[service].username);
+										expect(result[service].profileUrl).to.be.equal(tempInputCollapse[service].profileUrl);
+									case 'twitter':
+										expect(result[service].username).to.be.equal(tempInputCollapse[service].username);
+								}
+
+
+								for(let alreadyInServiceName in tempAlreadyOnDbUser) {
+									if(serviceNames.indexOf(alreadyInServiceName) !== -1 &&  (tempAlreadyOnDbUser[alreadyInServiceName]['name'] !== undefined
+											|| tempAlreadyOnDbUser[alreadyInServiceName]['id'] !== undefined)) {
+										console.log("§§§§§§§§§§§§§§§§§§§§§§§§§ " + alreadyInServiceName);
+
+										if(alreadyInServiceName === 'local') {
+											console.log("LOCAL!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+											expect(result[alreadyInServiceName].email).to.be.not.undefined;
+											expect(result[alreadyInServiceName].name).to.be.not.undefined;
+											expect(result[alreadyInServiceName].hash).to.be.not.undefined;
+											expect(result[alreadyInServiceName].email).to.be.equal(tempAlreadyOnDbUser[alreadyInServiceName].email);
+											expect(result[alreadyInServiceName].name).to.be.equal(tempAlreadyOnDbUser[alreadyInServiceName].name);
+											expect(result[alreadyInServiceName].hash).to.be.equal(tempAlreadyOnDbUser[alreadyInServiceName].hash);
+											expect(tempAlreadyOnDbUser.validPassword(PASSWORD)).to.be.true;
+											expect(result.validPassword(PASSWORD)).to.be.true;
+										} else {
+											expect(result[alreadyInServiceName].id).to.be.not.undefined;
+											expect(result[alreadyInServiceName].token).to.be.not.undefined;
+											expect(result[alreadyInServiceName].email).to.be.not.undefined;
+											expect(result[alreadyInServiceName].name).to.be.not.undefined;
+											expect(result[alreadyInServiceName].id).to.be.equal(tempAlreadyOnDbUser[alreadyInServiceName].id);
+											expect(result[alreadyInServiceName].token).to.be.equal(tempAlreadyOnDbUser[alreadyInServiceName].token);
+											expect(result[alreadyInServiceName].email).to.be.equal(tempAlreadyOnDbUser[alreadyInServiceName].email);
+											expect(result[alreadyInServiceName].name).to.be.equal(tempAlreadyOnDbUser[alreadyInServiceName].name);
+											switch(result[alreadyInServiceName]) {
+												case 'facebook':
+													expect(result[alreadyInServiceName].profileUrl).to.be.not.undefined;
+													expect(result[alreadyInServiceName].profileUrl).to.be.equal(tempAlreadyOnDbUser[alreadyInServiceName].profileUrl);
+												case 'github':
+													expect(result[alreadyInServiceName].username).to.be.not.undefined;
+													expect(result[alreadyInServiceName].username).to.be.equal(tempAlreadyOnDbUser[alreadyInServiceName].username);
+													expect(result[alreadyInServiceName].profileUrl).to.be.equal(tempAlreadyOnDbUser[alreadyInServiceName].profileUrl);
+													expect(result[alreadyInServiceName].profileUrl).to.be.not.undefined;
+												case 'twitter':
+													expect(result[alreadyInServiceName].username).to.be.not.undefined;
+													expect(result[alreadyInServiceName].username).to.be.equal(tempAlreadyOnDbUser[alreadyInServiceName].username);
+											}
+										}
+									}
+
+								}
+
+
+								for(let tempInputServiceName in inputAndOutputMocked[i].inputCollapse) {
+
+									if(serviceNames.indexOf(tempInputServiceName) === -1) {
+										continue;
+									}
+
+									if(inputAndOutputMocked[i].inputCollapse[tempInputServiceName]['name'] !== undefined
+											|| inputAndOutputMocked[i].inputCollapse[tempInputServiceName]['id'] !== undefined) {
+										console.log("§§§§§§§§§§§§§§§§§§§§§§§§§ " + tempInputServiceName);
+
+
+										if(tempInputServiceName === 'local') {
+											console.log("LOCAL!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+										}
+
+										expect(result[tempInputServiceName].id).to.be.equal(inputAndOutputMocked[i].inputCollapse[tempInputServiceName].id);
+										expect(result[tempInputServiceName].token).to.be.equal(inputAndOutputMocked[i].inputCollapse[tempInputServiceName].token);
+										expect(result[tempInputServiceName].email).to.be.equal(inputAndOutputMocked[i].inputCollapse[tempInputServiceName].email);
+										expect(result[tempInputServiceName].name).to.be.equal(inputAndOutputMocked[i].inputCollapse[tempInputServiceName].name);
+
+
+										switch(result[tempInputServiceName]) {
+											case 'facebook':
+												expect(result[tempInputServiceName].profileUrl).to.be.equal(inputAndOutputMocked[i].inputCollapse[tempInputServiceName].profileUrl);
+											case 'github':
+												expect(result[tempInputServiceName].username).to.be.equal(inputAndOutputMocked[i].inputCollapse[tempInputServiceName].username);
+												expect(result[tempInputServiceName].profileUrl).to.be.equal(inputAndOutputMocked[i].inputCollapse[tempInputServiceName].profileUrl);
+											case 'twitter':
+												expect(result[tempInputServiceName].username).to.be.equal(inputAndOutputMocked[i].inputCollapse[tempInputServiceName].username);
+										}
+									}
+
+								}
+
+								//
+								// for(let tempInputServiceName in tempInputCollapse) {
+								// 	expect(result[tempInputServiceName].id).to.be.equal(tempInputCollapse[tempInputServiceName].id);
+								// 	expect(result[tempInputServiceName].token).to.be.equal(tempInputCollapse[tempInputServiceName].token);
+								// 	expect(result[tempInputServiceName].email).to.be.equal(tempInputCollapse[tempInputServiceName].email);
+								// 	expect(result[tempInputServiceName].name).to.be.equal(tempInputCollapse[tempInputServiceName].name);
+								//
+								//
+								// 	switch(result[tempInputServiceName]) {
+								// 		case 'facebook':
+								// 			expect(result[tempInputServiceName].profileUrl).to.be.equal(tempInputCollapse[tempInputServiceName].profileUrl);
+								// 		case 'github':
+								// 			expect(result[tempInputServiceName].username).to.be.equal(tempInputCollapse[tempInputServiceName].username);
+								// 			expect(result[tempInputServiceName].profileUrl).to.be.equal(tempInputCollapse[tempInputServiceName].profileUrl);
+								// 		case 'twitter':
+								// 			expect(result[tempInputServiceName].username).to.be.equal(tempInputCollapse[tempInputServiceName].username);
+								// 	}
+								//
+								// }
+
+
 
 		            User.remove({}, err => {
 									console.log('collection removed')
