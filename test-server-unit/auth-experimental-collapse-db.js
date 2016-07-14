@@ -228,57 +228,57 @@ describe('auth-experimental-collapse-db', () => {
 			}
 		});
 
-		// describe('---ERRORS---', () => {
+		describe('---ERRORS---', () => {
 
-		// 	const serviceNameWrongMock = [undefined, null, -1, 5, 99, 600,
-		// 			function(){}, ()=>{}, /fooRegex/i, [], new RegExp(/fooRegex/,'i'),
-		// 			new RegExp('/fooRegex/','i'), new Error(), true, false, new Array()];
+			const serviceNameWrongMock = [undefined, null, -1, 5, 99, 600,
+					function(){}, ()=>{}, /fooRegex/i, [], new RegExp(/fooRegex/,'i'),
+					new RegExp('/fooRegex/','i'), new Error(), true, false, new Array()];
 
-		// 	for(let i=0; i<serviceNameWrongMock.length; i++) {
-		// 		it('should catch an error, because you must pass a serviceName as parameter. Test i=' + i, done => {
-		// 			collapser.collapseDb({}, serviceNameWrongMock[i], mockedRes)
-	 //        .then(result => {}, reason => {
-	 //          expect(reason).to.be.equals('impossible to collapseDb because serviceName must be a string');
-	 //          done(null);
-	 //        });
-		// 		});
-		// 	}
+			for(let i=0; i<serviceNameWrongMock.length; i++) {
+				it('should catch an error, because you must pass a serviceName as parameter. Test i=' + i, done => {
+					collapser.collapseDb({}, serviceNameWrongMock[i], mockedRes)
+	        .then(result => {}, reason => {
+	          expect(reason).to.be.equals('impossible to collapseDb because serviceName must be a string');
+	          done(null);
+	        });
+				});
+			}
 
-		// 	const serviceNameUnrecognizedMock = [' ', '', 'fake serviceName', 'faceBRook',
-		// 		'gOGle', 'loCAal', '...' ];
+			const serviceNameUnrecognizedMock = [' ', '', 'fake serviceName', 'faceBRook',
+				'gOGle', 'loCAal', '...' ];
 
-		// 	for(let i=0; i<serviceNameUnrecognizedMock.length; i++) {
-		// 		it('should catch an error, because you must pass a recognized serviceName as parameter. Test i=' + i, done => {
-		// 			collapser.collapseDb({}, serviceNameUnrecognizedMock[i], mockedRes)
-	 //        .then(result => {}, reason => {
-	 //          expect(reason).to.be.equals('impossible to collapseDb because serviceName is not recognized');
-	 //          done(null);
-	 //        });
-		// 		});
-		// 	}
+			for(let i=0; i<serviceNameUnrecognizedMock.length; i++) {
+				it('should catch an error, because you must pass a recognized serviceName as parameter. Test i=' + i, done => {
+					collapser.collapseDb({}, serviceNameUnrecognizedMock[i], mockedRes)
+	        .then(result => {}, reason => {
+	          expect(reason).to.be.equals('impossible to collapseDb because serviceName is not recognized');
+	          done(null);
+	        });
+				});
+			}
 
-		// 	const loggedUserWrongMock = ["not an object", undefined, null, -1, 5, 99, 600,
-		// 			" ", function(){}, ()=>{}, /fooRegex/i, [], new RegExp(/fooRegex/,'i'),
-		// 			new RegExp('/fooRegex/','i'), new Error(), true, false, new Array()];
+			const loggedUserWrongMock = ["not an object", undefined, null, -1, 5, 99, 600,
+					" ", function(){}, ()=>{}, /fooRegex/i, [], new RegExp(/fooRegex/,'i'),
+					new RegExp('/fooRegex/','i'), new Error(), true, false, new Array()];
 
-		// 	for(let i=0; i<loggedUserWrongMock.length; i++) {
-		// 		it('should catch an error, because you must pass an object as loggedUser\'s parameter. Test i=' + i, done => {
-		// 			collapser.collapseDb(loggedUserWrongMock[i], 'local', mockedRes)
-  //         .then(result => {}, reason => {
-  //           expect(reason).to.be.equals('impossible to collapseDb because loggedUser is not an object');
-  //           done(null);
-  //         });
-		// 		});
-		// 	}
+			for(let i=0; i<loggedUserWrongMock.length; i++) {
+				it('should catch an error, because you must pass an object as loggedUser\'s parameter. Test i=' + i, done => {
+					collapser.collapseDb(loggedUserWrongMock[i], 'local', mockedRes)
+          .then(result => {}, reason => {
+            expect(reason).to.be.equals('impossible to collapseDb because loggedUser is not an object');
+            done(null);
+          });
+				});
+			}
 
-		// 	// it('should catch an error, because logged user hasn\'t an id for the specified serviceName', done => {
-		// 	// 	collapser.collapseDb({ local : { email: 'fake'}}, 'local', mockedRes)
-  //  //      .then(result => {}, reason => {
-  //  //        expect(reason).to.be.equals('input id not valid while collapsing');
-  //  //        done(null);
-  //  //      });
-		// 	// });
-		// });
+			// it('should catch an error, because logged user hasn\'t an id for the specified serviceName', done => {
+			// 	collapser.collapseDb({ local : { email: 'fake'}}, 'local', mockedRes)
+   //      .then(result => {}, reason => {
+   //        expect(reason).to.be.equals('input id not valid while collapsing');
+   //        done(null);
+   //      });
+			// });
+		});
 
 	});
 });
