@@ -22,7 +22,7 @@ module.exports.collapseDb = (loggedUser, serviceName, req) => {
 
 		if(serviceNames.indexOf(serviceName) === -1) {
 			console.error("impossible to collapseDb because serviceName is not recognized");
-			reject('impossible to collapseDb because serviceName is not recognized');	
+			reject('impossible to collapseDb because serviceName is not recognized');
 			return;
 		}
 
@@ -32,7 +32,7 @@ module.exports.collapseDb = (loggedUser, serviceName, req) => {
 		console.log("serviceName: " + serviceName);
 
 		const inputId = loggedUser[serviceName] ? loggedUser[serviceName].id : null;
-		
+
 		console.log("inputId " + inputId);
 
 		if(inputId === null) {
@@ -43,7 +43,7 @@ module.exports.collapseDb = (loggedUser, serviceName, req) => {
 
 		const key =  serviceName + '.id';
 		const query = {};
-		
+
 		query[key] = inputId;
 
 		// query._id = {
@@ -61,14 +61,14 @@ module.exports.collapseDb = (loggedUser, serviceName, req) => {
 			console.log(users);
 
 			//retrive the logged user from the db using his _id (id of mongodb's object)
-			var user = users.find(el => { 
+			var user = users.find(el => {
 				if(el && el._id) {
 					return el._id + '' === loggedUser._id + '';
-				}	
+				}
 			});
 
 			if(!user) {
-				console.error("--------------------------******---- Error - user not found!!!");	
+				console.error("--------------------------******---- Error - user not found!!!");
 				reject('User not found while collapsing db');
 				return;
 			}
@@ -106,9 +106,12 @@ module.exports.collapseDb = (loggedUser, serviceName, req) => {
 			//I'll remove this logic splitting profile logic from authentication logic.
 			for(let s of ['google', 'github', 'facebook', 'local', 'linkedin', 'twitter', 'profile']) {
 				console.log('**--------------------------******----cycle s: ' + s + ', serviceName: ' + serviceName);
-				if(s !== serviceName && (!user[s] || !user[s].id) && duplicatedUser[s]) {
+				if(s !== serviceName && (!user[s] || !user[s].id) && duplicatedUser[s] && (duplicatedUser[s].id || duplicatedUser[s].email)) {
 					console.log("**--------------------------******---- merging service: " + s);
+					console.log("£££££££££££££££££££££££££££££££££duplicatedUser " + duplicatedUser[s]);
+					console.log("£££££££££££££££££££££££££££££££££user before " + user[s]);
 					user[s] = duplicatedUser[s];
+					console.log("£££££££££££££££££££££££££££££££££user after " + user[s]);
 					updated = true;
 				}
 			}
@@ -124,7 +127,7 @@ module.exports.collapseDb = (loggedUser, serviceName, req) => {
 						console.log("Error while saving collapsed users");
 						reject('Error while saving collapsed users');
 					} else {
-						console.log("Saved modified user: " + savedUser); 
+						console.log("Saved modified user: " + savedUser);
 						console.log("updating auth token with user infos");
 						try {
 							req.session.authToken = authCommon.generateJwtCookie(savedUser);
@@ -134,6 +137,9 @@ module.exports.collapseDb = (loggedUser, serviceName, req) => {
 							return;
 						}
 						console.log('req.session.authToken finished collapse with: ' + req.session.authToken);
+
+						console.log('°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°savedUser is: ');
+						console.log(savedUser);
 
 						console.log("--------------------------******---- removing duplicated user [OK]");
 
@@ -146,8 +152,8 @@ module.exports.collapseDb = (loggedUser, serviceName, req) => {
 								console.log('--------------------------******---- duplicated User deleted! [OK]');
 								console.log("savedUser: " + savedUser);
 								resolve(savedUser);
-							}	  
-						}); 
+							}
+						});
 					}
 				});
 			} else {
