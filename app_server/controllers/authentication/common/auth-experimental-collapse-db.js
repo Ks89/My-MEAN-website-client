@@ -33,42 +33,29 @@ module.exports.collapseDb = (loggedUser, serviceName, req) => {
 
 		let inputId;
 		let query = {};
+		var keyProperty;
 
-		if(loggedUser[serviceName]) {
-			console.log('àààààààààààà2 		------    ' + JSON.stringify(loggedUser[serviceName]));
-			if(serviceName === 'local') {
-				if(loggedUser[serviceName].email!==null && loggedUser[serviceName].email!==undefined) {
-					console.log('àààààààààààà3 		------    ' + JSON.stringify(loggedUser[serviceName].email));
-					inputId = loggedUser[serviceName].email;
-
-					const key =  serviceName + '.email';
-					query[key] = inputId;
-				}
-			} else { 
-				console.log('àààààààààààà4 		------    ' + JSON.stringify(loggedUser[serviceName]));
-				if(loggedUser[serviceName].id!==null && loggedUser[serviceName].id!==undefined) {
-					console.log('àààààààààààà5 		------    ' + loggedUser[serviceName].id);
-
-					inputId = loggedUser[serviceName].id;
-
-					const key =  serviceName + '.id';
-					query[key] = inputId;
-				}
-			}
+		if(serviceName === 'local') {
+			keyProperty = 'email';
+		} else { 
+			keyProperty = 'id';
 		}
 
-		console.log("àààààààààààà 		------ 		inputId " + inputId);
+		if(loggedUser[serviceName] &&
+				loggedUser[serviceName][keyProperty]!==null &&
+				loggedUser[serviceName][keyProperty]!==undefined) {
+			inputId = loggedUser[serviceName][keyProperty];
+			const key =  serviceName + '.' + keyProperty;
+			query[key] = inputId;
+		}
+
+
+		console.log("inputId " + inputId);
 
 		if(inputId === undefined || inputId === null) {
 			console.error('inputId is not valid');
 			reject('input id not valid while collapsing');
 		}
-
-
-
-		// query._id = {
-		// 	'$ne' : loggedUser._id
-		// };
 
 		User.find(query, (err, users) => {
 
@@ -98,14 +85,9 @@ module.exports.collapseDb = (loggedUser, serviceName, req) => {
 			console.log("2*****************************************");
 
 			let duplicatedUser = users.filter(dbUser => {
-				let idOrEmail;
-				if(serviceName === 'local') {
-					idOrEmail = dbUser[serviceName].email;
-				} else {
-					idOrEmail = dbUser[serviceName].id;
-				}
-
-				if (dbUser && dbUser[serviceName] && idOrEmail === inputId && (dbUser._id + '') !== (user._id + '') ) {
+				let idOrEmail = dbUser[serviceName][keyProperty];
+				if (dbUser && dbUser[serviceName] && idOrEmail === inputId &&
+					 (dbUser._id + '') !== (user._id + '') ) {
 					return dbUser;
 				}
 			});
@@ -131,7 +113,7 @@ module.exports.collapseDb = (loggedUser, serviceName, req) => {
 
 			//ATTENTION: at the moment I decided to manage profile infos as services.
 			//I'll remove this logic splitting profile logic from authentication logic.
-			for(let s of ['google', 'github', 'facebook', 'local', 'linkedin', 'twitter', 'profile']) {
+			for(let s of serviceNames) {
 				console.log('**--------------------------******----cycle s: ' + s + ', serviceName: ' + serviceName);
 				if(s !== serviceName && (!user[s] || !user[s].id) && duplicatedUser[s] && (duplicatedUser[s].id || duplicatedUser[s].email)) {
 					console.log("**--------------------------******---- merging service: " + s);

@@ -175,19 +175,11 @@ describe('auth-experimental-collapse-db', () => {
 		            console.log("----------------COLLAPSE RESULT---------------");
 		            console.log(result);
 
-								console.log('ciclo inizio 1');
 								//iterate over an array of two objects built on the fly with alreadyOnDbUser and inputCollapseUser
 								for(let tempObjUser of [tempAlreadyOnDbUser,tempInputCollapse]) {
 									//Iterate over the properties of the object
-									console.log('ciclo inizio 2');
 									for(let tempObjServiceName in tempObjUser) {
 										//if the property is recognized (found inside serviceNames array) go ahead
-										console.log('ciclo inizio 3');
-
-										console.log(serviceNames.indexOf(tempObjServiceName));
-										// console.log(tempObjUser[tempObjServiceName]);
-										// console.log(tempObjUser[tempObjServiceName]['name']);
-										// console.log(tempObjUser[tempObjServiceName]['id']);
 										if(serviceNames.indexOf(tempObjServiceName) !== -1 &&
 											tempObjUser[tempObjServiceName] !== undefined &&
 											(tempObjUser[tempObjServiceName]['name'] !== undefined
@@ -239,18 +231,41 @@ describe('auth-experimental-collapse-db', () => {
 														break;
 												}
 											} else if(tempObjServiceName === 'profile') {
-												// expect(resultUserSN.name).to.be.equal(PROFILENAME2);
-									      // expect(resultUserSN.surname).to.be.equal(PROFILESURNAME2);
-									      // expect(resultUserSN.nickname).to.be.equal(PROFILENICKNAME2);
-									      // expect(resultUserSN.email).to.be.equal(PROFILEEMAIL2);
-									      // // expect(resultUserSN.updated).to.be.equal(PROFILEDATE);
-									      // expect(resultUserSN.visible).to.be.equal(PROFILEVISIBLE2);
-											}
-											console.log('1');
-										}
+												if(resultUserSN !== null && resultUserSN !== undefined) {
+														console.log(resultUserSN);
 
+														if(originalUserSN !== null && originalUserSN !== undefined) {
+																console.log(originalUserSN);
+
+																if(originalUserSN.name!==resultUserSN.name) {
+																	if(originalUserSN.name===PROFILENAME1) {
+																		expect(resultUserSN.name).to.be.equal(PROFILENAME2);
+															      expect(resultUserSN.surname).to.be.equal(PROFILESURNAME2);
+															      expect(resultUserSN.nickname).to.be.equal(PROFILENICKNAME2);
+															      expect(resultUserSN.email).to.be.equal(PROFILEEMAIL2);
+															      //expect(resultUserSN.updated).to.be.equal(PROFILEDATE);
+															      expect(resultUserSN.visible).to.be.equal(PROFILEVISIBLE2);
+																	} else {
+																		expect(resultUserSN.name).to.be.equal(PROFILENAME1);
+															      expect(resultUserSN.surname).to.be.equal(PROFILESURNAME1);
+															      expect(resultUserSN.nickname).to.be.equal(PROFILENICKNAME1);
+															      expect(resultUserSN.email).to.be.equal(PROFILEEMAIL1);
+															      //expect(resultUserSN.updated).to.be.equal(PROFILEDATE);
+															      expect(resultUserSN.visible).to.be.equal(PROFILEVISIBLE1);
+																	}
+																} else {
+																	expect(resultUserSN.name).to.be.equal(originalUserSN.name);
+														      expect(resultUserSN.surname).to.be.equal(originalUserSN.surname);
+														      expect(resultUserSN.nickname).to.be.equal(originalUserSN.nickname);
+														      expect(resultUserSN.email).to.be.equal(originalUserSN.email);
+														      //expect(resultUserSN.updated).to.be.equal(originalUserSN.);
+														      expect(resultUserSN.visible).to.be.equal(originalUserSN.visible);
+																}
+														}
+												}
+											}
+										}
 									}
-									console.log('2');
 								}
 								done();
 		          }, reason => {
