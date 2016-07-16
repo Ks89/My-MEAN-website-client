@@ -31,20 +31,40 @@ module.exports.collapseDb = (loggedUser, serviceName, req) => {
 		console.log(loggedUser);
 		console.log("serviceName: " + serviceName);
 
-		const inputId = loggedUser[serviceName] ? loggedUser[serviceName].id : null;
+		let inputId;
+		let query = {};
 
-		console.log("inputId " + inputId);
+		if(loggedUser[serviceName]) {
+			console.log('àààààààààààà2 		------    ' + JSON.stringify(loggedUser[serviceName]));
+			if(serviceName === 'local') {
+				if(loggedUser[serviceName].email!==null && loggedUser[serviceName].email!==undefined) {
+					console.log('àààààààààààà3 		------    ' + JSON.stringify(loggedUser[serviceName].email));
+					inputId = loggedUser[serviceName].email;
 
-		if(inputId === null) {
-			console.error("inputId is not valid");
-			reject('input id not valid while collapsing');
-			return;
+					const key =  serviceName + '.email';
+					query[key] = inputId;
+				}
+			} else { 
+				console.log('àààààààààààà4 		------    ' + JSON.stringify(loggedUser[serviceName]));
+				if(loggedUser[serviceName].id!==null && loggedUser[serviceName].id!==undefined) {
+					console.log('àààààààààààà5 		------    ' + loggedUser[serviceName].id);
+
+					inputId = loggedUser[serviceName].id;
+
+					const key =  serviceName + '.id';
+					query[key] = inputId;
+				}
+			}
 		}
 
-		const key =  serviceName + '.id';
-		const query = {};
+		console.log("àààààààààààà 		------ 		inputId " + inputId);
 
-		query[key] = inputId;
+		if(inputId === undefined || inputId === null) {
+			console.error('inputId is not valid');
+			reject('input id not valid while collapsing');
+		}
+
+
 
 		// query._id = {
 		// 	'$ne' : loggedUser._id
@@ -54,7 +74,7 @@ module.exports.collapseDb = (loggedUser, serviceName, req) => {
 
 			if(err) {
 				console.error("--------------------------******---- Error - users not found!!!");
-				reject('User by id not found while collapsing');
+				reject('User  not found while collapsing');
 			}
 
 			console.log("--------------------------******---- users found");
@@ -78,7 +98,14 @@ module.exports.collapseDb = (loggedUser, serviceName, req) => {
 			console.log("2*****************************************");
 
 			let duplicatedUser = users.filter(dbUser => {
-				if (dbUser && dbUser[serviceName] && dbUser[serviceName].id === inputId && (dbUser._id + '') !== (user._id + '') ) {
+				let idOrEmail;
+				if(serviceName === 'local') {
+					idOrEmail = dbUser[serviceName].email;
+				} else {
+					idOrEmail = dbUser[serviceName].id;
+				}
+
+				if (dbUser && dbUser[serviceName] && idOrEmail === inputId && (dbUser._id + '') !== (user._id + '') ) {
 					return dbUser;
 				}
 			});

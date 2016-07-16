@@ -37,13 +37,21 @@ var collapser = require('../app_server/controllers/authentication/common/auth-ex
 const USERNAME = 'username';
 const EMAIL = 'email@email.it';
 const PASSWORD = 'Password1';
-
-before(done => {
-	// Connecting to a local test database or creating it on the fly
-	// mongoose.connect('mongodb://localhost/test-db');
-	// User = mongoose.model('User');
-	done();
-});
+const TOKEN = 'random_fake_token';
+const ID_POSTFIX = ' id';
+const NAME = 'name';
+const URL = 'http//fakeprofileurl.com/myprofile';
+const PROFILENAME1 = 'name 1';
+const PROFILESURNAME1 = 'surname 1';
+const PROFILENICKNAME1 = 'nickname 1';
+const PROFILEEMAIL1 = 'email 1';
+const PROFILEVISIBLE1 = true;
+const PROFILENAME2 = 'name 2';
+const PROFILESURNAME2 = 'surname 2';
+const PROFILENICKNAME2 = 'nickname 2';
+const PROFILEEMAIL2 = 'email 2';
+const PROFILEVISIBLE2 = true;
+const PROFILEDATE = new Date();
 
 describe('auth-experimental-collapse-db', () => {
 
@@ -52,24 +60,25 @@ describe('auth-experimental-collapse-db', () => {
 		function addLocalUser(newUser) {
 			newUser.local = {
 					name : USERNAME,
-					email : EMAIL
+					email : EMAIL,
+					hash : PASSWORD
 			};
-			newUser.setPassword(PASSWORD);
+			//newUser.setPassword(PASSWORD);
 		}
 
 		function addUserByServiceName(newUser, serviceName) {
-			newUser[serviceName].id = serviceName + ' id';
-	    newUser[serviceName].token = 'random_fake_token';
+			newUser[serviceName].id = serviceName + ID_POSTFIX;
+	    newUser[serviceName].token = TOKEN;
 	    newUser[serviceName].email = EMAIL;
-	    newUser[serviceName].name  = 'name';
+	    newUser[serviceName].name  = NAME;
 	    // other cases
 	    switch(serviceName) {
 	      case 'facebook':
-	        newUser[serviceName].profileUrl = 'http//fakeprofileurl.com/myprofile';
+	        newUser[serviceName].profileUrl = URL;
 					break;
 	      case 'github':
 	        newUser[serviceName].username = USERNAME;
-	        newUser[serviceName].profileUrl = 'http//fakeprofileurl.com/myprofile';
+	        newUser[serviceName].profileUrl = URL;
 					break;
 	      case 'twitter':
 	        newUser[serviceName].username  = USERNAME;
@@ -77,21 +86,34 @@ describe('auth-experimental-collapse-db', () => {
 	    }
 		}
 
-		function addProfile(newUser) {
-			newUser.profile = {
-				name : 'name',
-				surname : 'surname',
-				nickname : 'nickname',
-				email : EMAIL,
-				updated : new Date(),
-				visible : true
-			};
+		function addProfile(newUser, profileType) {
+			//if profileType === 0 => don't add anything
+			if(profileType === 1) {
+				newUser.profile = {
+					name : PROFILENAME1,
+					surname : PROFILESURNAME1,
+					nickname : PROFILENICKNAME1,
+					email : PROFILEEMAIL1,
+					updated : PROFILEDATE,
+					visible : PROFILEVISIBLE1
+				};
+			} else if(profileType === 2) {
+				newUser.profile = {
+					name : PROFILENAME2,
+					surname : PROFILESURNAME2,
+					nickname : PROFILENICKNAME2,
+					email : PROFILEEMAIL2,
+					updated : PROFILEDATE,
+					visible : PROFILEVISIBLE2
+				};
+			}
 		}
 
-		function getUser(serviceNames, isAddProfile) {
+		function getUser(serviceNames, profileType) {
 			var newUser = new User();
-			if(isAddProfile === true) {
-				addProfile(newUser);
+			//if profileType === 0 => don't add anything
+			if(profileType !== 0) {
+				addProfile(newUser, profileType);
 			}
 			for(let serviceName of serviceNames) {
 				if(serviceName === 'local') {
@@ -105,22 +127,23 @@ describe('auth-experimental-collapse-db', () => {
 
 		//alreadyOnDb is an account previously created on db,
 		//inputCollapse is the current account used to login.
+		//0: no profile, 1: profile with '1' in string fields, 2: profile with '2' in string fields
 		const inputAndOutputMocked = [
-			{alreadyOnDb:getUser(['local','github'],true), inputCollapse:getUser(['github','google'],false), service:'github'},
-			{alreadyOnDb:getUser(['local','google'],true), inputCollapse:getUser(['facebook','google'],false), service:'google'},
-			{alreadyOnDb:getUser(['local','facebook'],false), inputCollapse:getUser(['local','google'],true), service:'local'},
-			{alreadyOnDb:getUser(['local','twitter'],true), inputCollapse:getUser(['twitter','github'],false), service:'twitter'},
-			{alreadyOnDb:getUser(['local','linkedin'],true), inputCollapse:getUser(['local','facebook'],true), service:'local'},
-			{alreadyOnDb:getUser(['facebook','github'],true), inputCollapse:getUser(['local','github'],true), service:'github'},
-			{alreadyOnDb:getUser(['facebook','google'],true), inputCollapse:getUser(['facebook','local'],true), service:'facebook'},
-			{alreadyOnDb:getUser(['facebook','twitter'],true), inputCollapse:getUser(['google','twitter'],true), service:'twitter'},
-			{alreadyOnDb:getUser(['facebook','linkedin'],false), inputCollapse:getUser(['facebook','github'],false), service:'facebook'},
-			{alreadyOnDb:getUser(['google','github'],false), inputCollapse:getUser(['github','facebook'],false), service:'github'},
-			{alreadyOnDb:getUser(['google','twitter'],true), inputCollapse:getUser(['github','google'],false), service:'google'},
-			{alreadyOnDb:getUser(['google','linkedin'],true), inputCollapse:getUser(['linkedin','twitter'],true), service:'linkedin'},
-			{alreadyOnDb:getUser(['github','twitter'],true), inputCollapse:getUser(['github','google'],true), service:'github'},
-			{alreadyOnDb:getUser(['github','linkedin'],false), inputCollapse:getUser(['linkedin','local'],true), service:'linkedin'},
-			{alreadyOnDb:getUser(['twitter','linkedin'],true), inputCollapse:getUser(['local','twitter'],false), service:'twitter'}
+			{alreadyOnDb:getUser(['local','github'],1), inputCollapse:getUser(['github','google'],0), service:'github'},
+			{alreadyOnDb:getUser(['local','google'],1), inputCollapse:getUser(['facebook','google'],0), service:'google'},
+			{alreadyOnDb:getUser(['local','facebook'],0), inputCollapse:getUser(['local','google'],2), service:'local'},
+			{alreadyOnDb:getUser(['local','twitter'],1), inputCollapse:getUser(['twitter','github'],0), service:'twitter'},
+			{alreadyOnDb:getUser(['local','linkedin'],1), inputCollapse:getUser(['local','facebook'],2), service:'local'},
+			{alreadyOnDb:getUser(['facebook','github'],1), inputCollapse:getUser(['local','github'],2), service:'github'},
+			{alreadyOnDb:getUser(['facebook','google'],1), inputCollapse:getUser(['facebook','local'],2), service:'facebook'},
+			{alreadyOnDb:getUser(['facebook','twitter'],1), inputCollapse:getUser(['google','twitter'],2), service:'twitter'},
+			{alreadyOnDb:getUser(['facebook','linkedin'],0), inputCollapse:getUser(['facebook','github'],0), service:'facebook'},
+			{alreadyOnDb:getUser(['google','github'],0), inputCollapse:getUser(['github','facebook'],0), service:'github'},
+			{alreadyOnDb:getUser(['google','twitter'],1), inputCollapse:getUser(['github','google'],0), service:'google'},
+			{alreadyOnDb:getUser(['google','linkedin'],1), inputCollapse:getUser(['linkedin','twitter'],2), service:'linkedin'},
+			{alreadyOnDb:getUser(['github','twitter'],1), inputCollapse:getUser(['github','google'],2), service:'github'},
+			{alreadyOnDb:getUser(['github','linkedin'],0), inputCollapse:getUser(['linkedin','local'],2), service:'linkedin'},
+			{alreadyOnDb:getUser(['twitter','linkedin'],1), inputCollapse:getUser(['local','twitter'],0), service:'twitter'}
 	];
 
 		describe('---YES---', () => {
@@ -152,12 +175,22 @@ describe('auth-experimental-collapse-db', () => {
 		            console.log("----------------COLLAPSE RESULT---------------");
 		            console.log(result);
 
+								console.log('ciclo inizio 1');
 								//iterate over an array of two objects built on the fly with alreadyOnDbUser and inputCollapseUser
 								for(let tempObjUser of [tempAlreadyOnDbUser,tempInputCollapse]) {
 									//Iterate over the properties of the object
+									console.log('ciclo inizio 2');
 									for(let tempObjServiceName in tempObjUser) {
 										//if the property is recognized (found inside serviceNames array) go ahead
-										if(serviceNames.indexOf(tempObjServiceName) !== -1 &&  (tempObjUser[tempObjServiceName]['name'] !== undefined
+										console.log('ciclo inizio 3');
+
+										console.log(serviceNames.indexOf(tempObjServiceName));
+										// console.log(tempObjUser[tempObjServiceName]);
+										// console.log(tempObjUser[tempObjServiceName]['name']);
+										// console.log(tempObjUser[tempObjServiceName]['id']);
+										if(serviceNames.indexOf(tempObjServiceName) !== -1 &&
+											tempObjUser[tempObjServiceName] !== undefined &&
+											(tempObjUser[tempObjServiceName]['name'] !== undefined
 												|| tempObjUser[tempObjServiceName]['id'] !== undefined)) {
 											console.log("§§§§§§§§§§§§§§§§§§§§§§§§§ " + tempObjServiceName);
 
@@ -170,7 +203,6 @@ describe('auth-experimental-collapse-db', () => {
 
 											//il check if the result's properties are equal to the object, before the collapse procedure
 											if(tempObjServiceName === 'local') {
-												console.log("<<<<<<<<<<<<<<<<<<<local service");
 												console.log(originalUserSN);
 												console.log(resultUserSN);
 												expect(resultUserSN.email).to.be.not.undefined;
@@ -178,12 +210,9 @@ describe('auth-experimental-collapse-db', () => {
 												// expect(resultUserSN.hash).to.be.not.undefined;
 												expect(resultUserSN.email).to.be.equal(originalUserSN.email);
 												expect(resultUserSN.name).to.be.equal(originalUserSN.name);
-												console.log("<<<<<<<<<<<<<<<<<<<before to check if its valid or not");
 												// expect(tempObjUser.validPassword(PASSWORD)).to.be.true;
 												// expect(result.validPassword(PASSWORD)).to.be.true;
-												console.log("<<<<<<<<<<<<<<<<<<<is valid password");
-											} else {
-												console.log("<<<<<<<<<<<<<<<<<<<3dpartyservice");
+											} else if(tempObjServiceName !== 'profile') {
 												expect(resultUserSN.id).to.be.not.undefined;
 												expect(resultUserSN.token).to.be.not.undefined;
 												expect(resultUserSN.email).to.be.not.undefined;
@@ -192,7 +221,6 @@ describe('auth-experimental-collapse-db', () => {
 												expect(resultUserSN.token).to.be.equal(originalUserSN.token);
 												expect(resultUserSN.email).to.be.equal(originalUserSN.email);
 												expect(resultUserSN.name).to.be.equal(originalUserSN.name);
-												console.log("<<<<<<<<<<<<<<<<<<<before switch");
 												switch(tempObjServiceName) {
 													case 'facebook':
 														expect(resultUserSN.profileUrl).to.be.not.undefined;
@@ -209,14 +237,20 @@ describe('auth-experimental-collapse-db', () => {
 														expect(resultUserSN.username).to.be.equal(originalUserSN.username);
 														break;
 												}
-												console.log("<<<<<<<<<<<<<<<<<<<after switch");
+											} else if(tempObjServiceName === 'profile') {
+												// expect(resultUserSN.name).to.be.equal(PROFILENAME2);
+									      // expect(resultUserSN.surname).to.be.equal(PROFILESURNAME2);
+									      // expect(resultUserSN.nickname).to.be.equal(PROFILENICKNAME2);
+									      // expect(resultUserSN.email).to.be.equal(PROFILEEMAIL2);
+									      // // expect(resultUserSN.updated).to.be.equal(PROFILEDATE);
+									      // expect(resultUserSN.visible).to.be.equal(PROFILEVISIBLE2);
 											}
+											console.log('1');
 										}
-										console.log("<<<<<<<<<<<<<<<<<<<finishing inner for");
+
 									}
-									console.log("<<<<<<<<<<<<<<<<<<<finishing outer for");
+									console.log('2');
 								}
-								console.log("<<<<<<<<<<<<<<<<<<<outside outer for");
 								done();
 		          }, reason => {
 		            console.log("ERROR collapseDb localuser with 3dpartyauth promise");
@@ -271,13 +305,53 @@ describe('auth-experimental-collapse-db', () => {
 				});
 			}
 
-			// it('should catch an error, because logged user hasn\'t an id for the specified serviceName', done => {
-			// 	collapser.collapseDb({ local : { email: 'fake'}}, 'local', mockedRes)
-   //      .then(result => {}, reason => {
-   //        expect(reason).to.be.equals('input id not valid while collapsing');
-   //        done(null);
-   //      });
-			// });
+			it('should catch an error, because logged user hasn\'t an id for the specified serviceName', done => {
+				collapser.collapseDb({ github : { id: NAME}}, 'local', mockedRes)
+        .then(result => {
+					console.log("result: " + res);
+					expect(true).to.be.false;
+					done();
+				}, reason => {
+          expect(reason).to.be.equals('input id not valid while collapsing');
+          done();
+        });
+			});
+
+			it('should catch an error, because logged user hasn\'t an id for the specified serviceName', done => {
+				collapser.collapseDb({ local : { email: NAME}}, 'github', mockedRes)
+        .then(result => {
+					console.log("result: " + res);
+					expect(true).to.be.false;
+					done();
+				}, reason => {
+          expect(reason).to.be.equals('input id not valid while collapsing');
+          done();
+        });
+			});
+
+			it('should catch an error, because logged user hasn\'t an id for the specified serviceName', done => {
+				collapser.collapseDb({ github : { username: NAME}}, 'github', mockedRes)
+        .then(result => {
+					console.log("result: " + res);
+					expect(true).to.be.false;
+					done();
+				}, reason => {
+          expect(reason).to.be.equals('input id not valid while collapsing');
+          done();
+        });
+			});
+
+			it('should catch an error, because logged user hasn\'t an id for the specified serviceName', done => {
+				collapser.collapseDb({ local : { id: NAME}}, 'local', mockedRes)
+        .then(result => {
+					console.log("result: " + res);
+					expect(true).to.be.false;
+					done();
+				}, reason => {
+          expect(reason).to.be.equals('input id not valid while collapsing');
+          done();
+        });
+			});
 		});
 
 	});
