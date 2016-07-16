@@ -207,9 +207,10 @@ describe('auth-experimental-collapse-db', () => {
 												console.log(resultUserSN);
 												expect(resultUserSN.email).to.be.not.undefined;
 												expect(resultUserSN.name).to.be.not.undefined;
-												// expect(resultUserSN.hash).to.be.not.undefined;
+												expect(resultUserSN.hash).to.be.not.undefined;
 												expect(resultUserSN.email).to.be.equal(originalUserSN.email);
 												expect(resultUserSN.name).to.be.equal(originalUserSN.name);
+												expect(originalUserSN.hash).to.be.not.undefined;
 												// expect(tempObjUser.validPassword(PASSWORD)).to.be.true;
 												// expect(result.validPassword(PASSWORD)).to.be.true;
 											} else if(tempObjServiceName !== 'profile') {
@@ -305,53 +306,44 @@ describe('auth-experimental-collapse-db', () => {
 				});
 			}
 
-			it('should catch an error, because logged user hasn\'t an id for the specified serviceName', done => {
-				collapser.collapseDb({ github : { id: NAME}}, 'local', mockedRes)
-        .then(result => {
-					console.log("result: " + res);
-					expect(true).to.be.false;
-					done();
-				}, reason => {
-          expect(reason).to.be.equals('input id not valid while collapsing');
-          done();
-        });
-			});
+			const loggedUserIdNotValidMock = [
+				{user: {local: {}}, serviceName: 'github'},
+				{user: {github: {}}, serviceName: 'local'},
+				{user: {github: null}, serviceName: 'github'},
+				{user: {github: undefined}, serviceName: 'github'},
+				{user: {local: null}, serviceName: 'github'},
+				{user: {github: undefined}, serviceName: 'local'},
+				{user: {local: { email: NAME}}, serviceName: 'github'},
+				{user: {github: { id: 'id'}}, serviceName: 'local'},
+				{user: {local: { id: 'id'}}, serviceName: 'local'},
+				{user: {local: { username: NAME}}, serviceName: 'local'},
+				{user: {local: { token: TOKEN}}, serviceName: 'local'},
+				{user: {google: { email: EMAIL}}, serviceName: 'google'},
+				{user: {google: { hash: PASSWORD}}, serviceName: 'google'},
+				{user: {google: { name: NAME}}, serviceName: 'google'},
+				{user: {local: { email: NAME}, profile:{name: PROFILENAME1}}, serviceName: 'github'},
+				{user: {github: { id: 'id'}, profile:{name: PROFILENAME1}}, serviceName: 'local'},
+				{user: {local: { id: 'id'}, profile:{name: PROFILENAME1}}, serviceName: 'local'},
+				{user: {local: { username: NAME}, profile:{name: PROFILENAME1}}, serviceName: 'local'},
+				{user: {local: { token: TOKEN}, profile:{name: PROFILENAME1}}, serviceName: 'local'},
+				{user: {google: { email: EMAIL}, profile:{name: PROFILENAME1}}, serviceName: 'google'},
+				{user: {google: { hash: PASSWORD}, profile:{name: PROFILENAME1}}, serviceName: 'google'},
+				{user: {google: { name: NAME}, profile:{name: PROFILENAME1}}, serviceName: 'google'},
+				{user: {github: { id: 'id'}, profile:{name: PROFILENAME1}}, serviceName: 'local'},
+				{user: {google: { email: EMAIL}, github: { hash: PASSWORD}, profile:{name: PROFILENAME1}}, serviceName: 'google'},
+				{user: {google: { hash: PASSWORD}, facebook: { name: NAME}, profile:{name: PROFILENAME1}}, serviceName: 'google'},
+				{user: {google: { name: NAME}, twitter: { email: EMAIL},profile:{name: PROFILENAME1}}, serviceName: 'google'}
+			];
 
-			it('should catch an error, because logged user hasn\'t an id for the specified serviceName', done => {
-				collapser.collapseDb({ local : { email: NAME}}, 'github', mockedRes)
-        .then(result => {
-					console.log("result: " + res);
-					expect(true).to.be.false;
-					done();
-				}, reason => {
-          expect(reason).to.be.equals('input id not valid while collapsing');
-          done();
-        });
-			});
-
-			it('should catch an error, because logged user hasn\'t an id for the specified serviceName', done => {
-				collapser.collapseDb({ github : { username: NAME}}, 'github', mockedRes)
-        .then(result => {
-					console.log("result: " + res);
-					expect(true).to.be.false;
-					done();
-				}, reason => {
-          expect(reason).to.be.equals('input id not valid while collapsing');
-          done();
-        });
-			});
-
-			it('should catch an error, because logged user hasn\'t an id for the specified serviceName', done => {
-				collapser.collapseDb({ local : { id: NAME}}, 'local', mockedRes)
-        .then(result => {
-					console.log("result: " + res);
-					expect(true).to.be.false;
-					done();
-				}, reason => {
-          expect(reason).to.be.equals('input id not valid while collapsing');
-          done();
-        });
-			});
+			for(let i=0; i<loggedUserIdNotValidMock.length; i++) {
+				it('should catch an error, because logged user hasn\'t an id/email for the specified serviceName. Test i=' + i, done => {
+					collapser.collapseDb(loggedUserIdNotValidMock[i].user, loggedUserIdNotValidMock[i].serviceName, mockedRes)
+	        .then(result => {}, reason => {
+	          expect(reason).to.be.equals('input id not valid while collapsing');
+	          done();
+	        });
+				});
+			}
 		});
 
 	});
