@@ -93,7 +93,7 @@ module.exports.collapseDb = (loggedUser, serviceName, req) => {
 			});
 
 			if(!duplicatedUser || !duplicatedUser[0]) {
-				console.log("No duplicated user found");
+				console.error("No duplicated user found");
 				reject('No duplicated user found while collapsing');
 				return;
 			}

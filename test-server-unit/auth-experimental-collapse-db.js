@@ -359,6 +359,23 @@ describe('auth-experimental-collapse-db', () => {
 	        });
 				});
 			}
+
+
+			it('should catch an error, because there isn\'t a duplicated user', done => {
+				var alreadyOnDbUser = getUser(['local','github'],1);
+				var loggingInUser = getUser(['facebook','google'],0);
+				alreadyOnDbUser.save((err, onDbUser) => {
+					if(err) done(err);
+					loggingInUser.save((err, onDbUser) => {
+						if(err) done(err);
+						collapser.collapseDb(loggingInUser, 'facebook', mockedRes)
+						.then(result => {}, reason => {
+							expect(reason).to.be.equals('No duplicated user found while collapsing');
+							done();
+						});
+					});
+				});
+			});
 		});
 
 	});
