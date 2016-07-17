@@ -129,6 +129,7 @@ describe('auth-experimental-collapse-db', () => {
 		//inputCollapse is the current account used to login.
 		//0: no profile, 1: profile with '1' in string fields, 2: profile with '2' in string fields
 		const inputAndOutputMocked = [
+			// collapse between two users with two accounts each one (also with profiles)
 			{alreadyOnDb:getUser(['local','github'],1), inputCollapse:getUser(['github','google'],0), service:'github'},
 			{alreadyOnDb:getUser(['local','google'],1), inputCollapse:getUser(['facebook','google'],0), service:'google'},
 			{alreadyOnDb:getUser(['local','facebook'],0), inputCollapse:getUser(['local','google'],2), service:'local'},
@@ -143,7 +144,17 @@ describe('auth-experimental-collapse-db', () => {
 			{alreadyOnDb:getUser(['google','linkedin'],1), inputCollapse:getUser(['linkedin','twitter'],2), service:'linkedin'},
 			{alreadyOnDb:getUser(['github','twitter'],1), inputCollapse:getUser(['github','google'],2), service:'github'},
 			{alreadyOnDb:getUser(['github','linkedin'],0), inputCollapse:getUser(['linkedin','local'],2), service:'linkedin'},
-			{alreadyOnDb:getUser(['twitter','linkedin'],1), inputCollapse:getUser(['local','twitter'],0), service:'twitter'}
+			{alreadyOnDb:getUser(['twitter','linkedin'],1), inputCollapse:getUser(['local','twitter'],0), service:'twitter'},
+
+			// collapse between two users with three accounts each one
+			{alreadyOnDb:getUser(['local','github', 'facebook'],1), inputCollapse:getUser(['github','google', 'twitter'],0), service:'github'},
+			{alreadyOnDb:getUser(['local','google', 'twitter'],1), inputCollapse:getUser(['facebook','google', 'linkedin'],0), service:'google'},
+			{alreadyOnDb:getUser(['local','facebook', 'linkedin'],0), inputCollapse:getUser(['local','google', 'github'],2), service:'local'},
+			{alreadyOnDb:getUser(['local','facebook', 'linkedin'],1), inputCollapse:getUser(['local','google', 'github'],2), service:'local'},
+
+			// multiple-collapse between two users with three or more accounts each one (because these two users have two services in common )
+			// this test should pass as the previous cases
+			{alreadyOnDb:getUser(['linkedin','google', 'twitter'],1), inputCollapse:getUser(['facebook','github', 'linkedin', 'local'],0), service:'linkedin'}
 	];
 
 		describe('---YES---', () => {
@@ -364,20 +375,22 @@ describe('auth-experimental-collapse-db', () => {
 			it('should catch an error, because there isn\'t a duplicated user', done => {
 				var alreadyOnDbUser = getUser(['local','github'],1);
 				var loggingInUser = getUser(['facebook','google'],0);
-				alreadyOnDbUser.save((err, onDbUser) => {
-					if(err) done(err);
-					loggingInUser.save((err, onDbUser) => {
+
+				User.remove({}, err => {
+					alreadyOnDbUser.save((err, onDbUser) => {
 						if(err) done(err);
-						collapser.collapseDb(loggingInUser, 'facebook', mockedRes)
-						.then(result => {}, reason => {
-							expect(reason).to.be.equals('No duplicated user found while collapsing');
-							done();
+						loggingInUser.save((err, onDbUser) => {
+							if(err) done(err);
+							collapser.collapseDb(loggingInUser, 'facebook', mockedRes)
+							.then(result => done('error'), reason => {
+								expect(reason).to.be.equals('No duplicated user found while collapsing');
+								done();
+							});
 						});
 					});
 				});
 			});
 		});
-
 	});
 });
 
