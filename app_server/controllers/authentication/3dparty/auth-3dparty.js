@@ -51,26 +51,26 @@ module.exports.connectLinkedinCallback = passport.authorize('linkedin', connectR
 
 //GET that represents callbacks. This functions are used to manage the object "user" returned in req.user
 //All of these have this form: /auth/****serviceName****/callback
-module.exports.callbackRedirectFacebook = function(req, res) { 
+module.exports.callbackRedirectFacebook = function(req, res) {
 	redirectToProfile(req.user, res, req);
 };
-module.exports.callbackRedirectGoogle = function(req, res) { 
+module.exports.callbackRedirectGoogle = function(req, res) {
 	redirectToProfile(req.user, res, req);
 };
-module.exports.callbackRedirectGithub = function(req, res) { 
+module.exports.callbackRedirectGithub = function(req, res) {
 	redirectToProfile(req.user, res, req);
 };
-module.exports.callbackRedirectTwitter = function(req, res) { 
+module.exports.callbackRedirectTwitter = function(req, res) {
 	redirectToProfile(req.user, res, req);
 };
-module.exports.callbackRedirectLinkedin = function(req, res) { 
+module.exports.callbackRedirectLinkedin = function(req, res) {
 	redirectToProfile(req.user, res, req);
 };
 
 function redirectToProfile(user, res, req) {
 	console.log("callbackRedirect called");
 	try {
-		req.session.authToken = authCommon.generateJwtCookie(user);
+		req.session.authToken = authCommon.generateSessionJwtToken(user);
 	} catch(e) {
 		logger.error(e);
 		res.redirect('/home');

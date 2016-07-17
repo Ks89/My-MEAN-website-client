@@ -10,7 +10,8 @@ var _und = require('underscore');
 require('../app_server/models/users');
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
-var serviceNames = require('../app_server/controllers/authentication/serviceNames');
+var fullServiceNames = require('../app_server/controllers/authentication/serviceNames');
+var serviceNames = _und.without(fullServiceNames, 'profile');
 
 var user;
 var csrftoken;
@@ -34,7 +35,7 @@ const SESSION_NOT_VALID = 'Session not valid, probably it\'s expired';
 const LOGOUT_SUCCEEDED = 'Logout succeeded';
 const NO_TOKEN_PROVIDED = 'No token provided.';
 
-//this file is usefull to test authCommon.unlinkServiceByName for 3dauth, 
+//this file is usefull to test authCommon.unlinkServiceByName for 3dauth,
 //i.e. to call /unlink/****serviceName**** in auth-3dparty.js
 //indirectly I'm testing authCommon.unlinkServiceByName, call rest services /unlink/...
 
@@ -76,7 +77,7 @@ describe('auth-3dparty', () => {
 
 	function insertUserLastUnlinkTestDb(serviceName, done) {
 		user = new User();
-		//i'm registering a local user that i'll 
+		//i'm registering a local user that i'll
 		//use to login (because it's quicker than mock oauth2 authentication :)).
 		//Also, I'm adding another service speicified by serviceName,
 		//to do a real and usefull test
@@ -96,7 +97,7 @@ describe('auth-3dparty', () => {
 	}
 
 	function dropUserTestDb(done) {
-		User.remove({}, err => { 
+		User.remove({}, err => {
 			done(err);
 		});
 	}
@@ -188,7 +189,7 @@ describe('auth-3dparty', () => {
 							},
 							asyncDone => {
 								// I call unlink/*serviceName* to remove this account, however
-								// because this is the last account into the user object, 
+								// because this is the last account into the user object,
 								// this is a LAST UNLINK!!!!
 								getPartialGetRequest(URL_BASE_UNLINK + services3dAuth[i])
 								.send()
@@ -231,7 +232,7 @@ describe('auth-3dparty', () => {
 							.expect(200)
 							.end((err, res) => asyncDone(err, res));
 						},
-						(res, asyncDone) => { 
+						(res, asyncDone) => {
 							getPartialGetRequest(URL_LOGOUT)
 							.send()
 							.expect(200)
@@ -263,7 +264,7 @@ describe('auth-3dparty', () => {
 					.expect(403)
 					.end(() => done());
 				});
-			
+
 				it('should catch an exception, because the session is not valid or expired. Test serviceName=' + serviceNames[i], done => {
 
 					async.waterfall([
@@ -273,7 +274,7 @@ describe('auth-3dparty', () => {
 							.send(loginMock)
 							.expect(200)
 							.end((err, res) => {
-								User.remove({}, err => { 
+								User.remove({}, err => {
 									asyncDone(err, res);
 								});
 							});

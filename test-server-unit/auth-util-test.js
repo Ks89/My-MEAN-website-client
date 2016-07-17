@@ -1,7 +1,7 @@
 'use strict';
 process.env.NODE_ENV = 'test'; //before every other instruction
 
-//to be able to use generateJwt I must import 
+//to be able to use generateJwt I must import
 //dotenv (otherwise I cannot read process.env with the encryption key)
 require('dotenv').config();
 
@@ -171,9 +171,9 @@ describe('auth-util', () => {
 		});
 
 
-		describe('---ERRORS---', () => { 
+		describe('---ERRORS---', () => {
 
-			it('should catch an exception, because serviceName is not valid', done => {	
+			it('should catch an exception, because serviceName is not valid', done => {
 				expect(()=>AuthUtil.removeServiceFromUserDb("not_whitelisted", {})).to.throw(SERVICENAME_NOT_VALID);
 				done();
 			});
@@ -202,7 +202,7 @@ describe('auth-util', () => {
 				done();
 			});
 
-			it('should catch an exception, because serviceName must be a string', done => {	
+			it('should catch an exception, because serviceName must be a string', done => {
 				expect(()=>AuthUtil.removeServiceFromUserDb({}, {})).to.throw(SERVICENAME_MUSTBE_STRING);
 				expect(()=>AuthUtil.removeServiceFromUserDb(-2, {})).to.throw(SERVICENAME_MUSTBE_STRING);
 				expect(()=>AuthUtil.removeServiceFromUserDb(-1, {})).to.throw(SERVICENAME_MUSTBE_STRING);

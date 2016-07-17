@@ -29,10 +29,10 @@ if(process.env.NODE_ENV === 'test') {
 
 function emailMsg(to, subject, htmlMessage) {
   return {
-    from: process.env.USER_EMAIL, 
+    from: process.env.USER_EMAIL,
     to: to,
     subject: subject,
-    html: htmlMessage, 
+    html: htmlMessage,
     generateTextFromHtml: true
   };
 }
@@ -79,7 +79,7 @@ module.exports.register = (req, res) => {
           console.log('User already exists');
           Utils.sendJSONres(res, 400, "User already exists. Try to login.");
           return;
-        } 
+        }
 
         var newUser = new User();
         newUser.local.name = req.body.name;
@@ -92,8 +92,8 @@ module.exports.register = (req, res) => {
           if (err) {
             throw err;
           }
-          console.log("Registered user: " + savedUser); 
-                    
+          console.log("Registered user: " + savedUser);
+
           //create message data
           const msgText = 'You are receiving this because you (or someone else) have requested an account for this website.\n' +
             'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
@@ -104,14 +104,14 @@ module.exports.register = (req, res) => {
           done(err, savedUser, message);
         });
       });
-    }, 
+    },
     sendEmail //function defined below
     ], (err, user) => {
       console.log(err);
-      if (err) { 
+      if (err) {
         return next(err);
       } else {
-        Utils.sendJSONres(res, 200, {message: "User with email " + user.local.email + " registered."});      
+        Utils.sendJSONres(res, 200, {message: "User with email " + user.local.email + " registered."});
       }
     });
 };
@@ -123,7 +123,7 @@ module.exports.login = (req, res) => {
     Utils.sendJSONres(res, 400, "All fields required");
     return;
   }
-  
+
   passport.authenticate('local', (err, user, info) => {
     console.log("called login...");
     if (!user || err) {
@@ -132,20 +132,20 @@ module.exports.login = (req, res) => {
     }
 
     console.log("user exists");
-    console.log("Registered user: " + user); 
+    console.log("Registered user: " + user);
 
     if(!user.local.activateAccountToken && !user.local.activateAccountExpires) {
       console.log("user enabled");
       const token = user.generateJwt();
 
       req.session.localUserId = user._id;
-      
+
       try {
-        req.session.authToken = authCommon.generateJwtCookie(user);
+        req.session.authToken = authCommon.generateSessionJwtToken(user);
         Utils.sendJSONres(res, 200, { token: token });
       } catch (e) {
         logger.error(e);
-        Utils.sendJSONres(res, 500, 'Impossible to generateJwtCookie');
+        Utils.sendJSONres(res, 500, 'Impossible to generateSessionJwtToken');
       }
 
     } else {
@@ -199,8 +199,8 @@ module.exports.reset = (req, res) => {
     ], (err, user) => {
       if (err) { 
         console.log(err);
-        return next(err); 
-      } else { 
+        return next(err);
+      } else {
         Utils.sendJSONres(res, 200, {message: 'An e-mail has been sent to ' + user.local.email + ' with further instructions.'});
       }
     });
@@ -223,7 +223,7 @@ module.exports.resetPasswordFromEmail = (req, res) => {
           return;
         }
         console.log('Reset password called for user: ' + user);
-        
+
         user.setPassword(req.body.newPassword);
         user.local.resetPasswordToken = undefined;
         user.local.resetPasswordExpires = undefined;
@@ -231,7 +231,7 @@ module.exports.resetPasswordFromEmail = (req, res) => {
         user.save((err, savedUser) => {
 
           //create email data
-          const msgText = 'This is a confirmation that the password for your account ' + 
+          const msgText = 'This is a confirmation that the password for your account ' +
             user.local.email + ' has just been changed.\n';
           const message = emailMsg(savedUser.local.email, 'Password for stefanocappa.it updated', msgText);
 
@@ -241,7 +241,7 @@ module.exports.resetPasswordFromEmail = (req, res) => {
     },
     sendEmail //function defined below
     ], (err, user) => {
-      if (err) { 
+      if (err) {
         console.log(err);
         return next(err);
       } else {
@@ -261,7 +261,7 @@ module.exports.activateAccount = (req, res) => {
 
   const decodedUserName = decodeURI(req.body.userName);
   console.log('Decoded userName: ' + decodedUserName);
-  
+
   async.waterfall([
     done => {
       User.findOne({ 'local.activateAccountToken': req.body.emailToken , 'local.name' : decodedUserName},
@@ -288,7 +288,7 @@ module.exports.activateAccount = (req, res) => {
           console.log('Activated account with savedUser: ' + savedUser);
 
           //create email data
-          const msgText = 'This is a confirmation that your account ' + user.local.name + 
+          const msgText = 'This is a confirmation that your account ' + user.local.name +
                           'with email ' + user.local.email + ' has just been activated.\n';
           const message = emailMsg(savedUser.local.email, 'Account activated for stefanocappa.it', msgText);
 
@@ -299,7 +299,7 @@ module.exports.activateAccount = (req, res) => {
     sendEmail //function defined below
     ], (err, user) => {
       console.log('Finished');
-      if (err) { 
+      if (err) {
         console.log(err);
         return next(err);
       } else {

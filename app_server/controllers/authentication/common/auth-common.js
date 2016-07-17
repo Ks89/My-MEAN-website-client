@@ -65,9 +65,9 @@ var sessionToken = function(req, res) {
   }
 };
 
-var generateJwtCookie = function(user) {
+var generateSessionJwtToken = function(user) {
   if(!user || _und.isString(user) ||
-      !_und.isObject(user) || _und.isArray(user) || 
+      !_und.isObject(user) || _und.isArray(user) ||
       _und.isFunction(user) || _und.isRegExp(user) ||
       _und.isError(user) || _und.isNull(user) || _und.isBoolean(user) ||
       _und.isUndefined(user) || _und.isNaN(user) || _und.isDate(user)) {
@@ -75,8 +75,8 @@ var generateJwtCookie = function(user) {
   }
 
   //call a user's model method to generete a jwt signed token
-  const token3dauth = user.generateJwtCookie();
-  const authToken = JSON.stringify({ 
+  const token3dauth = user.generateSessionJwtToken();
+  const authToken = JSON.stringify({
     token: token3dauth
   });
   return authToken;
@@ -93,7 +93,7 @@ var unlinkServiceByName = function(req, serviceName, res) {
   }
 
   var token = JSON.parse(req.session.authToken).token;
-  console.log("Token is: " + token);  
+  console.log("Token is: " + token);
 
   if(!token) {
     //as the previous one
@@ -119,10 +119,10 @@ var unlinkServiceByName = function(req, serviceName, res) {
         Utils.sendJSONres(res, 500, 'Impossible to check if jwt is valid');
         return;
       }
-    }, 
+    },
     (decodedToken, done) => {
       User.findById(decodedToken.user._id, (err, user) => {
-        if (err || !user) { 
+        if (err || !user) {
           console.log("User not found - cannot unlink (usersReadOneById)");
           Utils.sendJSONres(res, 404, "User not found - cannot unlink");
           return;
@@ -154,18 +154,18 @@ var unlinkServiceByName = function(req, serviceName, res) {
             Utils.sendJSONres(res, 500, "Impossible to remove userService from db");
             return;
           }
-          
-          req.session.authToken = generateJwtCookie(user);
+
+          req.session.authToken = generateSessionJwtToken(user);
           console.log("Unlinking, regenerate session token after unlink");
           done(err, user);
         });
       }
     }], (err, user) => {
-      if (err) { 
+      if (err) {
         console.log(err);
         Utils.sendJSONres(res, 500, "Unknown error");
       } else {
-        Utils.sendJSONres(res, 200, "User unlinked correctly!");      
+        Utils.sendJSONres(res, 200, "User unlinked correctly!");
       }
     });
 };
@@ -174,6 +174,6 @@ module.exports = {
   decodeToken: decodeToken,
   logout: logout,
   sessionToken: sessionToken,
-  generateJwtCookie: generateJwtCookie,
+  generateSessionJwtToken: generateSessionJwtToken,
   unlinkServiceByName: unlinkServiceByName,
 };

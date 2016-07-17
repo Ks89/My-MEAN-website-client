@@ -67,9 +67,9 @@ describe('auth-common', () => {
 	}
 
 	function dropUserCollectionTestDb(done) {
-		User.remove({}, err => { 
+		User.remove({}, err => {
 			done(err);
-		}); 
+		});
 	}
 
 	//usefull function that prevent to copy and paste the same code
@@ -89,16 +89,16 @@ describe('auth-common', () => {
 		.set('set-cookie', 'XSRF-TOKEN=' + csrftoken);
 	}
 
-	describe('#generateJwtCookie()', () => {
+	describe('#generateSessionJwtToken()', () => {
 
 		describe('---YES---', () => {
 
 			beforeEach(done => insertUserTestDb(done));
 
 			it('should return true, because it removes the specified service.', done => {
-				const jwtSessionToken = authCommon.generateJwtCookie(user);
+				const jwtSessionToken = authCommon.generateSessionJwtToken(user);
 				const parsedJwtSessionToken =  JSON.parse(jwtSessionToken).token;
-				
+
 				async.waterfall([
 					asyncDone => {
 						getPartialPostRequest(URL_LOGIN)
@@ -121,40 +121,40 @@ describe('auth-common', () => {
 							expect(usr.iat).to.be.not.undefined;
 							asyncDone(err);
 						});
-				}], (err, response) => done(err));	
+				}], (err, response) => done(err));
 			});
-			
+
 
 			afterEach(done => dropUserCollectionTestDb(done));
 		});
 
 
 
-		describe('---ERRORS---', () => { 
+		describe('---ERRORS---', () => {
 
 			it('should catch an exception, because user must be a valid object', done => {
-				
-				expect(()=>authCommon.generateJwtCookie("")).to.throw(USER_MUSTBE_OBJECT);
-				expect(()=>authCommon.generateJwtCookie(-2)).to.throw(USER_MUSTBE_OBJECT);
-				expect(()=>authCommon.generateJwtCookie(-1)).to.throw(USER_MUSTBE_OBJECT);
-				expect(()=>authCommon.generateJwtCookie(-0)).to.throw(USER_MUSTBE_OBJECT);
-				expect(()=>authCommon.generateJwtCookie(0)).to.throw(USER_MUSTBE_OBJECT);
-				expect(()=>authCommon.generateJwtCookie(1)).to.throw(USER_MUSTBE_OBJECT);
-				expect(()=>authCommon.generateJwtCookie(2)).to.throw(USER_MUSTBE_OBJECT);
-				expect(()=>authCommon.generateJwtCookie(null)).to.throw(USER_MUSTBE_OBJECT);
-				expect(()=>authCommon.generateJwtCookie(undefined)).to.throw(USER_MUSTBE_OBJECT);
-				expect(()=>authCommon.generateJwtCookie(function(){})).to.throw(USER_MUSTBE_OBJECT);
-				expect(()=>authCommon.generateJwtCookie(()=>{})).to.throw(USER_MUSTBE_OBJECT);
-				expect(()=>authCommon.generateJwtCookie(/fooRegex/i)).to.throw(USER_MUSTBE_OBJECT);
-				expect(()=>authCommon.generateJwtCookie([])).to.throw(USER_MUSTBE_OBJECT);
-				expect(()=>authCommon.generateJwtCookie(new Error())).to.throw(USER_MUSTBE_OBJECT);
-				expect(()=>authCommon.generateJwtCookie(new RegExp(/fooRegex/,'i'))).to.throw(USER_MUSTBE_OBJECT);
-				expect(()=>authCommon.generateJwtCookie(new RegExp('/fooRegex/','i'))).to.throw(USER_MUSTBE_OBJECT);
-				expect(()=>authCommon.generateJwtCookie(new Date())).to.throw(USER_MUSTBE_OBJECT);
-				expect(()=>authCommon.generateJwtCookie(new Array())).to.throw(USER_MUSTBE_OBJECT);
-				expect(()=>authCommon.generateJwtCookie(true)).to.throw(USER_MUSTBE_OBJECT);
-				expect(()=>authCommon.generateJwtCookie(false)).to.throw(USER_MUSTBE_OBJECT);
-	
+
+				expect(()=>authCommon.generateSessionJwtToken("")).to.throw(USER_MUSTBE_OBJECT);
+				expect(()=>authCommon.generateSessionJwtToken(-2)).to.throw(USER_MUSTBE_OBJECT);
+				expect(()=>authCommon.generateSessionJwtToken(-1)).to.throw(USER_MUSTBE_OBJECT);
+				expect(()=>authCommon.generateSessionJwtToken(-0)).to.throw(USER_MUSTBE_OBJECT);
+				expect(()=>authCommon.generateSessionJwtToken(0)).to.throw(USER_MUSTBE_OBJECT);
+				expect(()=>authCommon.generateSessionJwtToken(1)).to.throw(USER_MUSTBE_OBJECT);
+				expect(()=>authCommon.generateSessionJwtToken(2)).to.throw(USER_MUSTBE_OBJECT);
+				expect(()=>authCommon.generateSessionJwtToken(null)).to.throw(USER_MUSTBE_OBJECT);
+				expect(()=>authCommon.generateSessionJwtToken(undefined)).to.throw(USER_MUSTBE_OBJECT);
+				expect(()=>authCommon.generateSessionJwtToken(function(){})).to.throw(USER_MUSTBE_OBJECT);
+				expect(()=>authCommon.generateSessionJwtToken(()=>{})).to.throw(USER_MUSTBE_OBJECT);
+				expect(()=>authCommon.generateSessionJwtToken(/fooRegex/i)).to.throw(USER_MUSTBE_OBJECT);
+				expect(()=>authCommon.generateSessionJwtToken([])).to.throw(USER_MUSTBE_OBJECT);
+				expect(()=>authCommon.generateSessionJwtToken(new Error())).to.throw(USER_MUSTBE_OBJECT);
+				expect(()=>authCommon.generateSessionJwtToken(new RegExp(/fooRegex/,'i'))).to.throw(USER_MUSTBE_OBJECT);
+				expect(()=>authCommon.generateSessionJwtToken(new RegExp('/fooRegex/','i'))).to.throw(USER_MUSTBE_OBJECT);
+				expect(()=>authCommon.generateSessionJwtToken(new Date())).to.throw(USER_MUSTBE_OBJECT);
+				expect(()=>authCommon.generateSessionJwtToken(new Array())).to.throw(USER_MUSTBE_OBJECT);
+				expect(()=>authCommon.generateSessionJwtToken(true)).to.throw(USER_MUSTBE_OBJECT);
+				expect(()=>authCommon.generateSessionJwtToken(false)).to.throw(USER_MUSTBE_OBJECT);
+
 				done();
 			});
 

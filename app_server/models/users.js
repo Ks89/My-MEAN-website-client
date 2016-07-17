@@ -14,11 +14,11 @@ var profileSchema = new mongoose.Schema({
   updated: Date,
   visible: {
     type: Boolean,
-    required: true 
+    required: true
   }
 });
 
-//REMEMBER that if you want to add other properties, you shuld check 
+//REMEMBER that if you want to add other properties, you shuld check
 //this fcuntion -> getFilteredUser in this file
 var userSchema = new mongoose.Schema({
   local: {
@@ -92,8 +92,8 @@ userSchema.methods.generateJwt = function() {
 };
 
 //method to generete JWT used to create a jwt cookie
-//this is necessary to prevent 
-userSchema.methods.generateJwtCookie = function() {
+//this is necessary to prevent
+userSchema.methods.generateSessionJwtToken = function() {
   return signJwt(true, this); // isForCookie = true
 };
 
@@ -112,7 +112,7 @@ function signJwt(isForCookie, thisObject) {
 
   return jwt.sign({
     _id: thisObject._id,
-     //I don't want to expose private information here -> I filter 
+     //I don't want to expose private information here -> I filter
      //the user object into a similar object without some fields
     user: user,
     exp: parseFloat(expiry.getTime()),
@@ -138,15 +138,15 @@ function getFilteredUser(user) {
 
 function filterUser(dbData, user) {
   //because this is an utility function used everywhere,
-  //I decided to use ...=undefined, instead of delete ... to achieve 
-  //better performances, as explained here: 
+  //I decided to use ...=undefined, instead of delete ... to achieve
+  //better performances, as explained here:
   //http://stackoverflow.com/questions/208105/how-do-i-remove-a-property-from-a-javascript-object?rq=1
   for(let prop in dbData) {
     if(dbData.hasOwnProperty(prop) && prop !== '_id') {
       //console.log("2-obj." + prop + " = " + dbData[prop]);
       for(let innerProp in dbData[prop]) {
         //console.log("3-obj." + innerProp + " = " + dbData[prop][innerProp]);
-        if(innerProp==='profileUrl' || 
+        if(innerProp==='profileUrl' ||
             innerProp==='token' ||
             innerProp==='username' ||
             innerProp==='activateAccountToken' ||
@@ -160,7 +160,7 @@ function filterUser(dbData, user) {
           user[prop][innerProp] = undefined;
         }
       }
-    } 
+    }
   }
 }
 

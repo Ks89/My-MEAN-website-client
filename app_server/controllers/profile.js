@@ -32,7 +32,7 @@ module.exports.update = function(req, res) {
     query[req.body.serviceName + '.id'] = req.body.id;
     console.log(query);
   } else {
-    //local authentication    
+    //local authentication
     query[req.body.serviceName + '.email'] = req.body.localUserEmail;
     console.log(query);
   }
@@ -45,7 +45,7 @@ module.exports.update = function(req, res) {
       updated : new Date(),
       visible : true
     };
-    
+
   User.findOne(query, (err, user) => {
     if (!user || err) {
       Utils.sendJSONres(res, 401, 'Cannot update your profile. Please try to logout and login again.');
@@ -56,16 +56,16 @@ module.exports.update = function(req, res) {
 
     user.profile = profileObj; //update profile
     user.save((err, savedUser) => {
-      if (err) { 
+      if (err) {
         Utils.sendJSONres(res, 404, 'Error while updating your profile. Please retry.');
       } else {
         console.log("updating auth token with new profile infos");
         try {
-          req.session.authToken = authCommon.generateJwtCookie(savedUser);
+          req.session.authToken = authCommon.generateSessionJwtToken(savedUser);
           Utils.sendJSONres(res, 200, {message: 'Profile updated successfully!'});
         } catch(e) {
           logger.error(e);
-          Utils.sendJSONres(res, 500, 'Impossible to generateJwtCookie');
+          Utils.sendJSONres(res, 500, 'Impossible to generateSessionJwtToken');
         }
       }
     });

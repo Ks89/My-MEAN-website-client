@@ -23,8 +23,9 @@ class AuthUtils {
     let result = false;
     let checkProp;
     //I remove serviceName from whitelistServices
-    const filteredServices = _und.without(whitelistServices, serviceName);
-    
+    const noProfileServices = _und.without(whitelistServices, 'profile');
+    const filteredServices = _und.without(noProfileServices, serviceName);
+
     for(let service of filteredServices) {
       if(service === 'local') {
         checkProp = 'email';
@@ -46,7 +47,7 @@ class AuthUtils {
 
   static removeServiceFromUserDb(serviceName, user) {
     if(!user || _und.isString(user) ||
-        !_und.isObject(user) || _und.isArray(user) || 
+        !_und.isObject(user) || _und.isArray(user) ||
         _und.isFunction(user) || _und.isRegExp(user) ||
         _und.isError(user) || _und.isNull(user) || _und.isBoolean(user) ||
         _und.isUndefined(user) || _und.isNaN(user) || _und.isDate(user)) {
