@@ -1,7 +1,7 @@
 'use strict';
 process.env.NODE_ENV = 'test'; //before every other instruction
 
-//to be able to use generateJwt I must import 
+//to be able to use generateJwt I must import
 //dotenv (otherwise I cannot read process.env with the encryption key)
 require('dotenv').config();
 
@@ -102,7 +102,7 @@ describe('users model', () => {
 	describe('#generateJwt()', () => {
 		describe('---YES---', () => {
 			it('should generate a valid JWT', done => {
-				var newUser = getCorrectNewUser();
+				let newUser = getCorrectNewUser();
 				const jasonWebToken = newUser.generateJwt();
 				expect(jasonWebToken).is.not.null;
 				jwt.verify(jasonWebToken, process.env.JWT_SECRET, (err, decoded) => {
@@ -117,69 +117,109 @@ describe('users model', () => {
 			});
 
 			it('should generate a valid JWT with the correct filtered user', done => {
-				var newUser = new User();
-				newUser.local.name = USERNAME;
-				newUser.local.email = EMAIL;
-				newUser.setPassword(PASSWORD);
-				newUser.local.activateAccountToken = 'TOKEN';
-				newUser.local.activateAccountExpires =  new Date(Date.now() + 24*3600*1000); // 1 hour
-				newUser.local.resetPasswordToken = 'TOKEN';
-				newUser.local.resetPasswordExpires = Date.now() + 3600000; // 1 hour
-				newUser.github.id = '1231232';
-				newUser.github.token = 'TOKEN';
-				newUser.github.email = EMAIL;
-				newUser.github.name = USERNAME;
-				newUser.github.username = USERNAME;
-				newUser.github.profileUrl = 'http://fakeprofileurl.com/myprofile';
-				newUser.profile = {
-					name : USERNAME,
-					surname : USERNAME,
-					nickname : USERNAME,
-					email : EMAIL,
-					updated : new Date(),
-					visible : true
-				}
-
+				var newUser = getCompleteUser();
 				const jsonWebToken = newUser.generateJwt();
 				expect(jsonWebToken).to.be.not.null;
 				jwt.verify(jsonWebToken, process.env.JWT_SECRET, (err, decoded) => {
-					expect(err).to.be.null;
-					expect(decoded).to.be.not.null;
-					expect(decoded.user).to.be.not.null;
-					expect(decoded.user._id).to.be.equals(newUser._id+'');
-					expect(decoded.user.__v).to.be.undefined;
-					expect(decoded.user.local).to.be.not.null;
-					expect(decoded.user.local.name).to.be.equals(USERNAME);
-					expect(decoded.user.local.email).to.be.equals(EMAIL);
-					expect(decoded.user.local.hash).to.be.undefined;
-					expect(decoded.user.local.activateAccountToken).to.be.undefined;
-					expect(decoded.user.local.activateAccountExpires).to.be.undefined;
-					expect(decoded.user.local.resetPasswordToken).to.be.undefined;
-					expect(decoded.user.local.resetPasswordExpires).to.be.undefined;
-
-					expect(decoded.user.github.id).to.be.equals('1231232');
-					expect(decoded.user.github.token).to.be.undefined;
-					expect(decoded.user.github.email).to.be.equals(EMAIL);
-					expect(decoded.user.github.name).to.be.equals(USERNAME);
-					expect(decoded.user.github.username).to.be.undefined;
-					expect(decoded.user.github.profileUrl).to.be.undefined;
-
-					expect(decoded.user.profile.name).to.be.equals(USERNAME);
-					expect(decoded.user.profile.surname).to.be.equals(USERNAME);
-					expect(decoded.user.profile.nickname).to.be.equals(USERNAME);
-					expect(decoded.user.profile.email).to.be.equals(EMAIL);
-					expect(decoded.user.profile.updated).to.be.undefined;
-					expect(decoded.user.profile.visible).to.be.true;
-
+					expectValidCompleteUserJwt(err, decoded, newUser._id+'');
 					done(err)
 				});
 			});
 		});
 	});
 
+	describe('#generateSessionJwtToken()', () => {
+		describe('---YES---', () => {
+			it('should generate a valid session\'s JWT token stored on Redis Server', done => {
+				let newUser = getCorrectNewUser();
+				const jasonWebToken = newUser.generateSessionJwtToken();
+				expect(jasonWebToken).is.not.null;
+				jwt.verify(jasonWebToken, process.env.JWT_SECRET, (err, decoded) => {
+					expectValidUserJwt(err, decoded);
+					done(err)
+				});
+			});
+
+			it('should generate a valid JWT with the correct filtered user', done => {
+				var newUser = getCompleteUser();
+				const jsonWebToken = newUser.generateSessionJwtToken();
+				expect(jsonWebToken).to.be.not.null;
+				jwt.verify(jsonWebToken, process.env.JWT_SECRET, (err, decoded) => {
+					expectValidCompleteUserJwt(err, decoded, newUser._id+'');
+					done(err)
+				});
+			});
+		});
+	});
+
+	function getCompleteUser() {
+		var newUser = new User();
+		newUser.local.name = USERNAME;
+		newUser.local.email = EMAIL;
+		newUser.setPassword(PASSWORD);
+		newUser.local.activateAccountToken = 'TOKEN';
+		newUser.local.activateAccountExpires =  new Date(Date.now() + 24*3600*1000); // 1 hour
+		newUser.local.resetPasswordToken = 'TOKEN';
+		newUser.local.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+		newUser.github.id = '1231232';
+		newUser.github.token = 'TOKEN';
+		newUser.github.email = EMAIL;
+		newUser.github.name = USERNAME;
+		newUser.github.username = USERNAME;
+		newUser.github.profileUrl = 'http://fakeprofileurl.com/myprofile';
+		newUser.profile = {
+			name : USERNAME,
+			surname : USERNAME,
+			nickname : USERNAME,
+			email : EMAIL,
+			updated : new Date(),
+			visible : true
+		}
+		return newUser;
+	}
+
+	function expectValidUserJwt(err, decoded) {
+		expect(err).is.null;
+		expect(decoded).is.not.null;
+		expect(decoded.user).is.not.null;
+		expect(decoded.user.local).is.not.null;
+		expect(decoded.user.local.name).to.be.equals(USERNAME);
+		expect(decoded.user.local.email).to.be.equals(EMAIL);
+	}
+
+	function expectValidCompleteUserJwt(err, decoded, newUserId) {
+		expect(err).to.be.null;
+		expect(decoded).to.be.not.null;
+		expect(decoded.user).to.be.not.null;
+		expect(decoded.user._id).to.be.equals(newUserId);
+		expect(decoded.user.__v).to.be.undefined;
+		expect(decoded.user.local).to.be.not.null;
+		expect(decoded.user.local.name).to.be.equals(USERNAME);
+		expect(decoded.user.local.email).to.be.equals(EMAIL);
+		expect(decoded.user.local.hash).to.be.undefined;
+		expect(decoded.user.local.activateAccountToken).to.be.undefined;
+		expect(decoded.user.local.activateAccountExpires).to.be.undefined;
+		expect(decoded.user.local.resetPasswordToken).to.be.undefined;
+		expect(decoded.user.local.resetPasswordExpires).to.be.undefined;
+
+		expect(decoded.user.github.id).to.be.equals('1231232');
+		expect(decoded.user.github.token).to.be.undefined;
+		expect(decoded.user.github.email).to.be.equals(EMAIL);
+		expect(decoded.user.github.name).to.be.equals(USERNAME);
+		expect(decoded.user.github.username).to.be.undefined;
+		expect(decoded.user.github.profileUrl).to.be.undefined;
+
+		expect(decoded.user.profile.name).to.be.equals(USERNAME);
+		expect(decoded.user.profile.surname).to.be.equals(USERNAME);
+		expect(decoded.user.profile.nickname).to.be.equals(USERNAME);
+		expect(decoded.user.profile.email).to.be.equals(EMAIL);
+		expect(decoded.user.profile.updated).to.be.undefined;
+		expect(decoded.user.profile.visible).to.be.true;
+	}
+
 	after(done => {
-		User.remove({}, err => { 
-			console.log('collection removed') 
+		User.remove({}, err => {
+			console.log('collection removed')
 			done(err);
 		});
 	});
