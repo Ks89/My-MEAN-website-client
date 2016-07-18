@@ -6,8 +6,6 @@ process.env.NODE_ENV = 'test'; //before every other instruction
 require('dotenv').config();
 
 var chai = require('chai');
-var chaiDeepMatch = require('chai-deep-match');
-chai.use( chaiDeepMatch );
 var assert = chai.assert;
 var expect = chai.expect;
 var _und = require('underscore');
