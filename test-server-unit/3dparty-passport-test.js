@@ -10,7 +10,6 @@ var assert = chai.assert;
 var expect = chai.expect;
 var _und = require('underscore');
 var rewire = require('rewire');
-var sinon = require('sinon');
 
 var User;
 var mongoose = require('mongoose');
@@ -118,14 +117,11 @@ describe('3dparty-passport', () => {
 			}
 		}
 
-		function getUser(serviceNames, profileType) {
+		function getUser(profileType) {
 			var newUser = new User();
 			//if profileType === 0 => don't add anything
 			if(profileType !== 0) {
 				addProfile(newUser, profileType);
-			}
-			for(let serviceName of serviceNames) {
-				addUserByServiceName(newUser, serviceName);
 			}
 			return newUser;
 		}
@@ -135,15 +131,14 @@ describe('3dparty-passport', () => {
 			beforeEach(done => User.remove({}, err => done(err)));
 
 			it('should update an empty object with profile infos after the 3dparty login.', done => {
-
         // Overwrite the private a1 function with the mock.
         var updateFunct = thirdParty.__get__('updateUser');
 
-        let userGithub = updateFunct(getUser([], 0), TOKEN, profileMock, 'github');
-        let userGoogle = updateFunct(getUser([], 0), TOKEN, profileMock, 'google');
-        let userFacebook = updateFunct(getUser([], 0), TOKEN, profileMock, 'facebook');
-        let userTwitter = updateFunct(getUser([], 0), TOKEN, profileMock, 'twitter');
-        let userLinkedin = updateFunct(getUser([], 0), TOKEN, profileMock, 'linkedin');
+        let userGithub = updateFunct(getUser(1), TOKEN, profileMock, 'github');
+        let userGoogle = updateFunct(getUser(1), TOKEN, profileMock, 'google');
+        let userFacebook = updateFunct(getUser(1), TOKEN, profileMock, 'facebook');
+        let userTwitter = updateFunct(getUser(1), TOKEN, profileMock, 'twitter');
+        let userLinkedin = updateFunct(getUser(1), TOKEN, profileMock, 'linkedin');
 
         expect(userGithub.github.email).to.be.equals(EMAIL);
         expect(userGithub.github.profileUrl).to.be.equals(URL);
@@ -183,7 +178,7 @@ describe('3dparty-passport', () => {
         //remove profileMock's email
         profileMock.emails = undefined;
 
-        let userTwitter = updateFunct(getUser([], 0), TOKEN, profileMock, 'twitter');
+        let userTwitter = updateFunct(getUser(0), TOKEN, profileMock, 'twitter');
 
         expect(userTwitter.twitter.email).to.be.undefined;
         expect(userTwitter.twitter.username).to.be.equals(USERNAME);
@@ -199,24 +194,24 @@ describe('3dparty-passport', () => {
       var updateFunct = thirdParty.__get__('updateUser')
 
 			it('should catch an exception, because user must be an object.', done => {
-        expect(()=>updateFunct(null, TOKEN, profileMock, 'github')).to.throw(USER_NOT_AN_OBJECT);
+        expect(()=>updateFunct(null, TOKEN, profileMock, 'any_string')).to.throw(USER_NOT_AN_OBJECT);
         done();
 			});
 
       it('should catch an exception, because profile must be an object.', done => {
-        expect(()=>updateFunct(getUser([], 0), TOKEN, null, 'github')).to.throw(PROFILE_NOT_AN_OBJECT);
+        expect(()=>updateFunct(getUser(0), TOKEN, null, 'any_string')).to.throw(PROFILE_NOT_AN_OBJECT);
         done();
 			});
 
       it('should catch an exception, because both accessToken and serviceName must be strings.', done => {
-        expect(()=>updateFunct(getUser([], 0), null, profileMock, null)).to.throw(MUST_BE_STRINGS);
-        expect(()=>updateFunct(getUser([], 0), null, profileMock, 'github')).to.throw(MUST_BE_STRINGS);
-        expect(()=>updateFunct(getUser([], 0), TOKEN, profileMock, null)).to.throw(MUST_BE_STRINGS);
+        expect(()=>updateFunct(getUser(0), null, profileMock, null)).to.throw(MUST_BE_STRINGS);
+        expect(()=>updateFunct(getUser(0), null, profileMock, 'any_string')).to.throw(MUST_BE_STRINGS);
+        expect(()=>updateFunct(getUser(0), TOKEN, profileMock, null)).to.throw(MUST_BE_STRINGS);
         done();
       });
 
       it('should catch an exception, because serviceName isn\'t recogized.', done => {
-        expect(()=>updateFunct(getUser([], 0), TOKEN, profileMock, 'fake_not_recognized')).to.throw(SERVICENAME_NOT_RECOGNIZED);
+        expect(()=>updateFunct(getUser(0), TOKEN, profileMock, 'fake_not_recognized')).to.throw(SERVICENAME_NOT_RECOGNIZED);
         done();
       });
 		});
