@@ -28,8 +28,8 @@ function updateUser (user, accessToken, profile, serviceName) {
   }
 
   if(!_und.isString(serviceName) || !_und.isString(accessToken)) {
-    logger.error("impossible to update because serviceName and accessToken must be strings");
-    throw 'impossible to update because serviceName and accessToken must be strings';
+    logger.error("impossible to update because both serviceName and accessToken must be strings");
+    throw 'impossible to update because both serviceName and accessToken must be strings';
   }
 
   const whitelistServices = _und.without(serviceNames, 'local', 'profile');

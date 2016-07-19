@@ -53,18 +53,27 @@ const PROFILEEMAIL2 = 'email 2';
 const PROFILEVISIBLE2 = true;
 const PROFILEDATE = new Date();
 
+const profileMock = {
+  id: 'id',
+  displayName: NAME,
+  username: USERNAME,
+  name : {
+    familyName : NAME,
+    givenName : NAME
+  },
+  profileUrl: URL,
+  emails: [ { value: EMAIL } ],
+  provider: 'random value',
+};
+
+const USER_NOT_AN_OBJECT = "impossible to update because user must be an object";
+const PROFILE_NOT_AN_OBJECT = "impossible to update because profile must be an object";
+const MUST_BE_STRINGS = "impossible to update because both serviceName and accessToken must be strings";
+const SERVICENAME_NOT_RECOGNIZED = "impossible to update because serviceName is not recognized";
+
 describe('3dparty-passport', () => {
 
 	describe('#updateUser()', () => {
-
-		function addLocalUser(newUser) {
-			newUser.local = {
-					name : USERNAME,
-					email : EMAIL,
-					hash : PASSWORD
-			};
-			//newUser.setPassword(PASSWORD);
-		}
 
 		function addUserByServiceName(newUser, serviceName) {
 			newUser[serviceName].id = serviceName + ID_POSTFIX;
@@ -116,11 +125,7 @@ describe('3dparty-passport', () => {
 				addProfile(newUser, profileType);
 			}
 			for(let serviceName of serviceNames) {
-				if(serviceName === 'local') {
-					addLocalUser(newUser);
-				} else {
-					addUserByServiceName(newUser, serviceName);
-				}
+				addUserByServiceName(newUser, serviceName);
 			}
 			return newUser;
 		}
@@ -130,16 +135,6 @@ describe('3dparty-passport', () => {
 			beforeEach(done => User.remove({}, err => done(err)));
 
 			it('should update an empty object with profile infos after the 3dparty login.', done => {
-        	const profileMock = {
-  					id: 'id',
-  					displayName: NAME,
-  					username: USERNAME,
-            name : NAME,
-            givenName : NAME,
-  					profileUrl: URL,
-  					emails: [ { value: EMAIL } ],
-  					provider: 'random value',
-  				};
 
         // Overwrite the private a1 function with the mock.
         var updateFunct = thirdParty.__get__('updateUser');
@@ -150,15 +145,80 @@ describe('3dparty-passport', () => {
         let userTwitter = updateFunct(getUser([], 0), TOKEN, profileMock, 'twitter');
         let userLinkedin = updateFunct(getUser([], 0), TOKEN, profileMock, 'linkedin');
 
-        console.log(userGithub);
-        console.log(userGoogle);
-        console.log(userFacebook);
-        console.log(userTwitter);
-        console.log(userLinkedin);
+        expect(userGithub.github.email).to.be.equals(EMAIL);
+        expect(userGithub.github.profileUrl).to.be.equals(URL);
+        expect(userGithub.github.username).to.be.equals(USERNAME);
+        expect(userGithub.github.name).to.be.equals(NAME);
+        expect(userGithub.github.token).to.be.equals(TOKEN);
+        expect(userGithub.github.id).to.be.equals('id');
 
+        expect(userGoogle.google.email).to.be.equals(EMAIL);
+        expect(userGoogle.google.name).to.be.equals(NAME);
+        expect(userGoogle.google.token).to.be.equals(TOKEN);
+        expect(userGoogle.google.id).to.be.equals('id');
+
+        expect(userFacebook.facebook.email).to.be.equals(EMAIL);
+        expect(userFacebook.facebook.profileUrl).to.be.equals(URL);
+        expect(userFacebook.facebook.name).to.be.equals(NAME + ' ' + NAME);
+        expect(userFacebook.facebook.token).to.be.equals(TOKEN);
+        expect(userFacebook.facebook.id).to.be.equals('id');
+
+        expect(userTwitter.twitter.email).to.be.equals(EMAIL);
+        expect(userTwitter.twitter.username).to.be.equals(USERNAME);
+        expect(userTwitter.twitter.name).to.be.equals(NAME);
+        expect(userTwitter.twitter.token).to.be.equals(TOKEN);
+        expect(userTwitter.twitter.id).to.be.equals('id');
+
+        expect(userLinkedin.linkedin.email).to.be.equals(EMAIL);
+        expect(userLinkedin.linkedin.name).to.be.equals(NAME + ' ' + NAME);
+        expect(userLinkedin.linkedin.token).to.be.equals(TOKEN);
+        expect(userLinkedin.linkedin.id).to.be.equals('id');
 
         done();
 			});
+
+      it('should update an empty object with twitter profile without email after the 3dparty login.', done => {
+        // Overwrite the private a1 function with the mock.
+        var updateFunct = thirdParty.__get__('updateUser');
+        //remove profileMock's email
+        profileMock.emails = undefined;
+
+        let userTwitter = updateFunct(getUser([], 0), TOKEN, profileMock, 'twitter');
+
+        expect(userTwitter.twitter.email).to.be.undefined;
+        expect(userTwitter.twitter.username).to.be.equals(USERNAME);
+        expect(userTwitter.twitter.name).to.be.equals(NAME);
+        expect(userTwitter.twitter.token).to.be.equals(TOKEN);
+        expect(userTwitter.twitter.id).to.be.equals('id');
+
+        done();
+			});
+		});
+
+    describe('---ERRORS---', () => {
+      var updateFunct = thirdParty.__get__('updateUser')
+
+			it('should catch an exception, because user must be an object.', done => {
+        expect(()=>updateFunct(null, TOKEN, profileMock, 'github')).to.throw(USER_NOT_AN_OBJECT);
+        done();
+			});
+
+      it('should catch an exception, because profile must be an object.', done => {
+        expect(()=>updateFunct(getUser([], 0), TOKEN, null, 'github')).to.throw(PROFILE_NOT_AN_OBJECT);
+        done();
+			});
+
+      it('should catch an exception, because both accessToken and serviceName must be strings.', done => {
+        expect(()=>updateFunct(getUser([], 0), null, profileMock, null)).to.throw(MUST_BE_STRINGS);
+        expect(()=>updateFunct(getUser([], 0), null, profileMock, 'github')).to.throw(MUST_BE_STRINGS);
+        expect(()=>updateFunct(getUser([], 0), TOKEN, profileMock, null)).to.throw(MUST_BE_STRINGS);
+        done();
+      });
+
+      it('should catch an exception, because serviceName isn\'t recogized.', done => {
+        expect(()=>updateFunct(getUser([], 0), TOKEN, profileMock, 'fake_not_recognized')).to.throw(SERVICENAME_NOT_RECOGNIZED);
+        done();
+      });
 		});
 	});
 });
