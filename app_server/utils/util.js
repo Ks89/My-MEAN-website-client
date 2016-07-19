@@ -25,10 +25,10 @@ class Utils {
 
     res.status(status);
     res.contentType('application/json');
-    
+
     if(status >= 400 && status < 600) {
       if(_und.isString(content) || _und.isArray(content)) {
-        contentToReturn = { 
+        contentToReturn = {
           message : content
         };
       } else {
@@ -55,22 +55,30 @@ class Utils {
     return day + "/" + month + "/" + year + " " + hour + ":" + min + ":" + sec;
   }
 
-    //Function that returns true if the param 
+    //Function that returns true if the param
   // is not a custom Object (neither an array, or an error, or a function, or null, or
   // undefined, or a boolean, or nan)
   // false otherwise
-  //isObject: JavaScript arrays and functions 
+  //isObject: JavaScript arrays and functions
   //          are objects, while (normal) strings and numbers are not.
   static isNotSimpleCustomObject(obj) {
-    return !_und.isObject(obj) || _und.isArray(obj) || 
+    return !_und.isObject(obj) || _und.isArray(obj) ||
         _und.isFunction(obj) || _und.isRegExp(obj) ||
         _und.isError(obj) || _und.isNull(obj) ||
         _und.isUndefined(obj) || _und.isNaN(obj) ||
         _und.isBoolean(obj);
   }
 
+  static isNotSimpleCustomObjectOrDate(obj) {
+    return !_und.isObject(obj) || _und.isArray(obj) ||
+        _und.isFunction(obj) || _und.isRegExp(obj) ||
+        _und.isError(obj) || _und.isNull(obj) ||
+        _und.isUndefined(obj) || _und.isNaN(obj) ||
+        _und.isBoolean(obj) || _und.isDate(obj);
+  }
+
   static isSimpleCustomObject(obj) {
-    return _und.isObject(token) || _und.isArray(token) || 
+    return _und.isObject(token) || _und.isArray(token) ||
         _und.isFunction(token) || _und.isRegExp(token) ||
         _und.isError(token) || _und.isNull(token) ||
         _und.isUndefined(token) || _und.isNaN(token);
@@ -79,10 +87,10 @@ class Utils {
   static isJwtValidDate(decodedJwtToken) {
     console.log("isJwtValidDate " + decodedJwtToken);
 
-    //isObject: JavaScript arrays and functions 
+    //isObject: JavaScript arrays and functions
     //          are objects, while (normal) strings and numbers are not.
-    if(!decodedJwtToken || 
-        !_und.isObject(decodedJwtToken) || _und.isArray(decodedJwtToken) || 
+    if(!decodedJwtToken ||
+        !_und.isObject(decodedJwtToken) || _und.isArray(decodedJwtToken) ||
         _und.isFunction(decodedJwtToken) || _und.isRegExp(decodedJwtToken) ||
         _und.isError(decodedJwtToken) || _und.isNull(decodedJwtToken) ||
         _und.isUndefined(decodedJwtToken) || _und.isNaN(decodedJwtToken) ||
@@ -95,7 +103,7 @@ class Utils {
     }
 
     //decodedJwtToken.exp is a Float that represents the exp date
-    //it must be a float, and not a Date 
+    //it must be a float, and not a Date
     //NB: parseFloat returns NaN if it can't parse a value
     if(_und.isDate(decodedJwtToken.exp) || _und.isNaN(parseFloat(decodedJwtToken.exp))) {
       throw "Not a float expiration date";
@@ -109,7 +117,7 @@ class Utils {
          ", formatted: " + this.getTextFormattedDate(convertedDate));
 
       const systemDate = new Date();
-      console.log("systemDate: " + systemDate.getTime() + 
+      console.log("systemDate: " + systemDate.getTime() +
          ", formatted: " + this.getTextFormattedDate(systemDate));
 
       return convertedDate.getTime() > systemDate.getTime();
@@ -125,7 +133,7 @@ class Utils {
     var self = this;
 
     if(!token || !_und.isString(token) ||
-        _und.isObject(token) || _und.isArray(token) || 
+        _und.isObject(token) || _und.isArray(token) ||
         _und.isFunction(token) || _und.isRegExp(token) ||
         _und.isError(token) || _und.isNull(token) ||
         _und.isUndefined(token) || _und.isNaN(token)) {
@@ -138,7 +146,7 @@ class Utils {
         if(err) {
           console.log("jwt.verify error");
           reject({status: 401, message: "Jwt not valid or corrupted"});
-        } 
+        }
 
         if(decoded) {
           console.log("decoded valid");

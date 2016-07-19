@@ -17,12 +17,12 @@ var authExperimentalFeatures = require('../common/auth-experimental-collapse-db.
 //-------------------------
 
 function updateUser (user, accessToken, profile, serviceName) {
-  if(util.isNotSimpleCustomObject(user)) {
+  if(util.isNotSimpleCustomObjectOrDate(user)) {
     logger.error("impossible to update because user must be an object");
     throw 'impossible to update because user must be an object';
   }
 
-  if(util.isNotSimpleCustomObject(profile)) {
+  if(util.isNotSimpleCustomObjectOrDate(profile)) {
     logger.error("impossible to update because profile must be an object");
     throw 'impossible to update because profile must be an objects';
   }

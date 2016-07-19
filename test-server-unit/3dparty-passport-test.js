@@ -194,19 +194,76 @@ describe('3dparty-passport', () => {
       var updateFunct = thirdParty.__get__('updateUser')
 
 			it('should catch an exception, because user must be an object.', done => {
-        expect(()=>updateFunct(null, TOKEN, profileMock, 'any_string')).to.throw(USER_NOT_AN_OBJECT);
+        expect(()=>updateFunct("", TOKEN, profileMock, 'any_string')).to.throw(USER_NOT_AN_OBJECT);
+				expect(()=>updateFunct(-2, TOKEN, profileMock, 'any_string')).to.throw(USER_NOT_AN_OBJECT);
+				expect(()=>updateFunct(-1, TOKEN, profileMock, 'any_string')).to.throw(USER_NOT_AN_OBJECT);
+				expect(()=>updateFunct(-0, TOKEN, profileMock, 'any_string')).to.throw(USER_NOT_AN_OBJECT);
+				expect(()=>updateFunct(0, TOKEN, profileMock, 'any_string')).to.throw(USER_NOT_AN_OBJECT);
+				expect(()=>updateFunct(1, TOKEN, profileMock, 'any_string')).to.throw(USER_NOT_AN_OBJECT);
+				expect(()=>updateFunct(2, TOKEN, profileMock, 'any_string')).to.throw(USER_NOT_AN_OBJECT);
+				expect(()=>updateFunct(null, TOKEN, profileMock, 'any_string')).to.throw(USER_NOT_AN_OBJECT);
+				expect(()=>updateFunct(undefined, TOKEN, profileMock, 'any_string')).to.throw(USER_NOT_AN_OBJECT);
+				expect(()=>updateFunct(function(){}, TOKEN, profileMock, 'any_string')).to.throw(USER_NOT_AN_OBJECT);
+				expect(()=>updateFunct(()=>{}, TOKEN, profileMock, 'any_string')).to.throw(USER_NOT_AN_OBJECT);
+				expect(()=>updateFunct(/fooRegex/i, TOKEN, profileMock, 'any_string')).to.throw(USER_NOT_AN_OBJECT);
+				expect(()=>updateFunct([], TOKEN, profileMock, 'any_string')).to.throw(USER_NOT_AN_OBJECT);
+				expect(()=>updateFunct(new Error(), TOKEN, profileMock, 'any_string')).to.throw(USER_NOT_AN_OBJECT);
+				expect(()=>updateFunct(new RegExp(/fooRegex/,'i'), TOKEN, profileMock, 'any_string')).to.throw(USER_NOT_AN_OBJECT);
+				expect(()=>updateFunct(new RegExp('/fooRegex/','i'), TOKEN, profileMock, 'any_string')).to.throw(USER_NOT_AN_OBJECT);
+				expect(()=>updateFunct(new Date(), TOKEN, profileMock, 'any_string')).to.throw(USER_NOT_AN_OBJECT);
+				expect(()=>updateFunct(new Array(), TOKEN, profileMock, 'any_string')).to.throw(USER_NOT_AN_OBJECT);
+				expect(()=>updateFunct(true, TOKEN, profileMock, 'any_string')).to.throw(USER_NOT_AN_OBJECT);
+				expect(()=>updateFunct(false, TOKEN, profileMock, 'any_string')).to.throw(USER_NOT_AN_OBJECT);
         done();
 			});
 
       it('should catch an exception, because profile must be an object.', done => {
-        expect(()=>updateFunct(getUser(0), TOKEN, null, 'any_string')).to.throw(PROFILE_NOT_AN_OBJECT);
+        expect(()=>updateFunct(getUser(0), TOKEN, "", 'any_string')).to.throw(PROFILE_NOT_AN_OBJECT);
+				expect(()=>updateFunct(getUser(0), TOKEN, -2, 'any_string')).to.throw(PROFILE_NOT_AN_OBJECT);
+				expect(()=>updateFunct(getUser(0), TOKEN, -1, 'any_string')).to.throw(PROFILE_NOT_AN_OBJECT);
+				expect(()=>updateFunct(getUser(0), TOKEN, -0, 'any_string')).to.throw(PROFILE_NOT_AN_OBJECT);
+				expect(()=>updateFunct(getUser(0), TOKEN, 0, 'any_string')).to.throw(PROFILE_NOT_AN_OBJECT);
+				expect(()=>updateFunct(getUser(0), TOKEN, 1, 'any_string')).to.throw(PROFILE_NOT_AN_OBJECT);
+				expect(()=>updateFunct(getUser(0), TOKEN, 2, 'any_string')).to.throw(PROFILE_NOT_AN_OBJECT);
+				expect(()=>updateFunct(getUser(0), TOKEN, null, 'any_string')).to.throw(PROFILE_NOT_AN_OBJECT);
+				expect(()=>updateFunct(getUser(0), TOKEN, undefined, 'any_string')).to.throw(PROFILE_NOT_AN_OBJECT);
+				expect(()=>updateFunct(getUser(0), TOKEN, function(){}, 'any_string')).to.throw(PROFILE_NOT_AN_OBJECT);
+				expect(()=>updateFunct(getUser(0), TOKEN, ()=>{}, 'any_string')).to.throw(PROFILE_NOT_AN_OBJECT);
+				expect(()=>updateFunct(getUser(0), TOKEN, /fooRegex/i, 'any_string')).to.throw(PROFILE_NOT_AN_OBJECT);
+				expect(()=>updateFunct(getUser(0), TOKEN, [], 'any_string')).to.throw(PROFILE_NOT_AN_OBJECT);
+				expect(()=>updateFunct(getUser(0), TOKEN, new Error(), 'any_string')).to.throw(PROFILE_NOT_AN_OBJECT);
+				expect(()=>updateFunct(getUser(0), TOKEN, new RegExp(/fooRegex/,'i'), 'any_string')).to.throw(PROFILE_NOT_AN_OBJECT);
+				expect(()=>updateFunct(getUser(0), TOKEN, new RegExp('/fooRegex/','i'), 'any_string')).to.throw(PROFILE_NOT_AN_OBJECT);
+				expect(()=>updateFunct(getUser(0), TOKEN, new Date(), 'any_string')).to.throw(PROFILE_NOT_AN_OBJECT);
+				expect(()=>updateFunct(getUser(0), TOKEN, new Array(), 'any_string')).to.throw(PROFILE_NOT_AN_OBJECT);
+				expect(()=>updateFunct(getUser(0), TOKEN, true, 'any_string')).to.throw(PROFILE_NOT_AN_OBJECT);
+				expect(()=>updateFunct(getUser(0), TOKEN, false, 'any_string')).to.throw(PROFILE_NOT_AN_OBJECT);
         done();
 			});
 
       it('should catch an exception, because both accessToken and serviceName must be strings.', done => {
-        expect(()=>updateFunct(getUser(0), null, profileMock, null)).to.throw(MUST_BE_STRINGS);
         expect(()=>updateFunct(getUser(0), null, profileMock, 'any_string')).to.throw(MUST_BE_STRINGS);
-        expect(()=>updateFunct(getUser(0), TOKEN, profileMock, null)).to.throw(MUST_BE_STRINGS);
+        expect(()=>updateFunct(getUser(0), 'any_string', profileMock, null)).to.throw(MUST_BE_STRINGS);
+
+				expect(()=>updateFunct(getUser(0), -2, profileMock, null)).to.throw(MUST_BE_STRINGS);
+				expect(()=>updateFunct(getUser(0), -1, profileMock, null)).to.throw(MUST_BE_STRINGS);
+				expect(()=>updateFunct(getUser(0), -0, profileMock, null)).to.throw(MUST_BE_STRINGS);
+				expect(()=>updateFunct(getUser(0), 0, profileMock, null)).to.throw(MUST_BE_STRINGS);
+				expect(()=>updateFunct(getUser(0), 1, profileMock, null)).to.throw(MUST_BE_STRINGS);
+				expect(()=>updateFunct(getUser(0), 2, profileMock, null)).to.throw(MUST_BE_STRINGS);
+				expect(()=>updateFunct(getUser(0), null, profileMock, null)).to.throw(MUST_BE_STRINGS);
+				expect(()=>updateFunct(getUser(0), undefined, profileMock, null)).to.throw(MUST_BE_STRINGS);
+				expect(()=>updateFunct(getUser(0), function(){}, profileMock, null)).to.throw(MUST_BE_STRINGS);
+				expect(()=>updateFunct(getUser(0), ()=>{}, profileMock, null)).to.throw(MUST_BE_STRINGS);
+				expect(()=>updateFunct(getUser(0), /fooRegex/i, profileMock, null)).to.throw(MUST_BE_STRINGS);
+				expect(()=>updateFunct(getUser(0), [], profileMock, null)).to.throw(MUST_BE_STRINGS);
+				expect(()=>updateFunct(getUser(0), new Error(), profileMock, null)).to.throw(MUST_BE_STRINGS);
+				expect(()=>updateFunct(getUser(0), new RegExp(/fooRegex/,'i'), profileMock, null)).to.throw(MUST_BE_STRINGS);
+				expect(()=>updateFunct(getUser(0), new RegExp('/fooRegex/','i'), profileMock, null)).to.throw(MUST_BE_STRINGS);
+				expect(()=>updateFunct(getUser(0), new Date(), profileMock, null)).to.throw(MUST_BE_STRINGS);
+				expect(()=>updateFunct(getUser(0), new Array(), profileMock, null)).to.throw(MUST_BE_STRINGS);
+				expect(()=>updateFunct(getUser(0), true, profileMock, null)).to.throw(MUST_BE_STRINGS);
+				expect(()=>updateFunct(getUser(0), false, profileMock, null)).to.throw(MUST_BE_STRINGS);
         done();
       });
 
