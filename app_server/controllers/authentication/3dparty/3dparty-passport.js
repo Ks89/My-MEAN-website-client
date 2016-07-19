@@ -7,8 +7,6 @@ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
 var TwitterStrategy = require('passport-twitter').Strategy;
 
-var MockStrategy = require('passport-mocked').Strategy;
-
 var logger = require('../../../utils/logger');
 var util = require('../../../utils/util');
 
@@ -78,15 +76,9 @@ function updateUser (user, accessToken, profile, serviceName) {
   return user;
 }
 
-  function authenticate(req, accessToken, refreshToken, profile, done, serviceName, userRef) {
-    console.log(serviceName + ' authentication called');
-
-    console.log("accessToken: " + accessToken);
-
-    console.log(profile);
-
-    process.nextTick(() => {
-      var sessionLocalUserId = req.session.localUserId;
+function authenticate(req, accessToken, refreshToken, profile, done, serviceName, userRef) {
+  process.nextTick(() => {
+    var sessionLocalUserId = req.session.localUserId;
     //check if the user is already logged in using the LOCAL authentication
     if(sessionLocalUserId) {
       console.log("sessionLocalUserId found - managing 3dauth + local");
@@ -192,40 +184,22 @@ function updateUser (user, accessToken, profile, serviceName) {
 
 function buildStrategy(serviceName, userRef) {
   console.log("service: " + serviceName + " env: " + process.env.NODE_ENV);
-  if (process.env.NODE_ENV === 'test' ) {
-    console.log("building strategy in test env");
-    let config = thirdpartyConfig[serviceName];
-    config.name = serviceName;
-    console.log(config);
-    return new MockStrategy( config,
-      function(accessToken, refreshToken, profile, cb) {
-        var newUser = updateUser(new userRef(), accessToken, profile, serviceName);
-        console.log("New user created: " + newUser);
-        newUser.save( err => {
-          if (err) {
-            throw err;
-          }
-          return done(null, newUser);
-        });
-      });
-  } else {
-    switch(serviceName) {
-      case 'facebook':
+  switch(serviceName) {
+    case 'facebook':
       return new FacebookStrategy( thirdpartyConfig[serviceName],
-        (req, accessToken, refreshToken, profile, done) => { authenticate(req, accessToken, refreshToken, profile, done, serviceName, userRef);});
-      case 'github':
+      (req, accessToken, refreshToken, profile, done) => { authenticate(req, accessToken, refreshToken, profile, done, serviceName, userRef);});
+    case 'github':
       return new GitHubStrategy( thirdpartyConfig[serviceName],
-        (req, accessToken, refreshToken, profile, done) => { authenticate(req, accessToken, refreshToken, profile, done, serviceName, userRef);});
-      case 'google':
+      (req, accessToken, refreshToken, profile, done) => { authenticate(req, accessToken, refreshToken, profile, done, serviceName, userRef);});
+    case 'google':
       return new GoogleStrategy( thirdpartyConfig[serviceName],
-        (req, accessToken, refreshToken, profile, done) => { authenticate(req, accessToken, refreshToken, profile, done, serviceName, userRef);});
-      case 'linkedin':
+      (req, accessToken, refreshToken, profile, done) => { authenticate(req, accessToken, refreshToken, profile, done, serviceName, userRef);});
+    case 'linkedin':
       return new LinkedInStrategy( thirdpartyConfig[serviceName],
-        (req, accessToken, refreshToken, profile, done) => { authenticate(req, accessToken, refreshToken, profile, done, serviceName, userRef);});
-      case 'twitter':
+      (req, accessToken, refreshToken, profile, done) => { authenticate(req, accessToken, refreshToken, profile, done, serviceName, userRef);});
+    case 'twitter':
       return new TwitterStrategy( thirdpartyConfig[serviceName],
-        (req, accessToken, refreshToken, profile, done) => { authenticate(req, accessToken, refreshToken, profile, done, serviceName, userRef);});
-    }
+      (req, accessToken, refreshToken, profile, done) => { authenticate(req, accessToken, refreshToken, profile, done, serviceName, userRef);});
   }
 }
 
