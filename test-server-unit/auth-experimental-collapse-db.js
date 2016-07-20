@@ -22,11 +22,12 @@ var userDb;
 var util = require('../app_server/utils/util');
 var serviceNames = require('../app_server/controllers/authentication/serviceNames');
 
-var MockedRes = require('./mocked-res-class');
-var mockedRes = new MockedRes();
-//add session property to the mocked object
-mockedRes.session = {
-	authToken : null
+//add session property to the mocked 
+//request (used to store jwt session token by redis)
+var mockedReq = {
+	session : {
+			authToken : null
+	}
 };
 
 var jwt = require('jsonwebtoken');
@@ -171,7 +172,7 @@ describe('auth-experimental-collapse-db', () => {
 						inputAndOutputMocked[i].inputCollapse.save((err, inputCollapseUser) => {
 							if(err) done(err);
 
-							collapser.collapseDb(tempInputCollapse, service, mockedRes)
+							collapser.collapseDb(tempInputCollapse, service, mockedReq)
 		          .then(result => {
 								if(!result) done("result is null");
 		            console.log("collapseDb localuser with 3dpartyauth promise");
@@ -295,7 +296,7 @@ describe('auth-experimental-collapse-db', () => {
 
 			for(let i=0; i<serviceNameWrongMock.length; i++) {
 				it('should catch an error, because you must pass a serviceName as parameter. Test i=' + i, done => {
-					collapser.collapseDb({}, serviceNameWrongMock[i], mockedRes)
+					collapser.collapseDb({}, serviceNameWrongMock[i], mockedReq)
 	        .then(result => {}, reason => {
 	          expect(reason).to.be.equals('impossible to collapseDb because serviceName must be a string');
 	          done(null);
@@ -308,7 +309,7 @@ describe('auth-experimental-collapse-db', () => {
 
 			for(let i=0; i<serviceNameUnrecognizedMock.length; i++) {
 				it('should catch an error, because you must pass a recognized serviceName as parameter. Test i=' + i, done => {
-					collapser.collapseDb({}, serviceNameUnrecognizedMock[i], mockedRes)
+					collapser.collapseDb({}, serviceNameUnrecognizedMock[i], mockedReq)
 	        .then(result => {}, reason => {
 	          expect(reason).to.be.equals('impossible to collapseDb because serviceName is not recognized');
 	          done(null);
@@ -322,7 +323,7 @@ describe('auth-experimental-collapse-db', () => {
 
 			for(let i=0; i<loggedUserWrongMock.length; i++) {
 				it('should catch an error, because you must pass an object as loggedUser\'s parameter. Test i=' + i, done => {
-					collapser.collapseDb(loggedUserWrongMock[i], 'local', mockedRes)
+					collapser.collapseDb(loggedUserWrongMock[i], 'local', mockedReq)
           .then(result => {}, reason => {
             expect(reason).to.be.equals('impossible to collapseDb because loggedUser is not an object');
             done(null);
@@ -361,7 +362,7 @@ describe('auth-experimental-collapse-db', () => {
 
 			for(let i=0; i<loggedUserIdNotValidMock.length; i++) {
 				it('should catch an error, because logged user hasn\'t an id/email for the specified serviceName. Test i=' + i, done => {
-					collapser.collapseDb(loggedUserIdNotValidMock[i].user, loggedUserIdNotValidMock[i].serviceName, mockedRes)
+					collapser.collapseDb(loggedUserIdNotValidMock[i].user, loggedUserIdNotValidMock[i].serviceName, mockedReq)
 	        .then(result => {}, reason => {
 	          expect(reason).to.be.equals('input id not valid while collapsing');
 	          done();
@@ -379,7 +380,7 @@ describe('auth-experimental-collapse-db', () => {
 						if(err) done(err);
 						loggingInUser.save((err, onDbUser) => {
 							if(err) done(err);
-							collapser.collapseDb(loggingInUser, 'facebook', mockedRes)
+							collapser.collapseDb(loggingInUser, 'facebook', mockedReq)
 							.then(result => done('error'), reason => {
 								expect(reason).to.be.equals('No duplicated user found while collapsing');
 								done();
