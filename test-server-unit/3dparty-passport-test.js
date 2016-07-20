@@ -23,11 +23,12 @@ var userDb;
 var util = require('../app_server/utils/util');
 var serviceNames = require('../app_server/controllers/authentication/serviceNames');
 
-var MockedRes = require('./mocked-res-class');
-var mockedRes = new MockedRes();
-//add session property to the mocked object
-mockedRes.session = {
-	authToken : null
+//add session property to the mocked
+//request (used to store jwt session token by redis)
+var mockedReq = {
+	session : {
+			authToken : null
+	}
 };
 
 //rewire to call functions using _get_
@@ -72,60 +73,140 @@ const SERVICENAME_NOT_RECOGNIZED = "impossible to update because serviceName is 
 
 describe('3dparty-passport', () => {
 
+	function addUserByServiceName(newUser, serviceName) {
+		newUser[serviceName].id = serviceName + ID_POSTFIX;
+		newUser[serviceName].token = TOKEN;
+		newUser[serviceName].email = EMAIL;
+		newUser[serviceName].name  = NAME;
+		// other cases
+		switch(serviceName) {
+			case 'facebook':
+				newUser[serviceName].profileUrl = URL;
+				break;
+			case 'github':
+				newUser[serviceName].username = USERNAME;
+				newUser[serviceName].profileUrl = URL;
+				break;
+			case 'twitter':
+				newUser[serviceName].username  = USERNAME;
+				break;
+		}
+	}
+
+	function addProfile(newUser, profileType) {
+		//if profileType === 0 => don't add anything
+		if(profileType === 1) {
+			newUser.profile = {
+				name : PROFILENAME1,
+				surname : PROFILESURNAME1,
+				nickname : PROFILENICKNAME1,
+				email : PROFILEEMAIL1,
+				updated : PROFILEDATE,
+				visible : PROFILEVISIBLE1
+			};
+		} else if(profileType === 2) {
+			newUser.profile = {
+				name : PROFILENAME2,
+				surname : PROFILESURNAME2,
+				nickname : PROFILENICKNAME2,
+				email : PROFILEEMAIL2,
+				updated : PROFILEDATE,
+				visible : PROFILEVISIBLE2
+			};
+		}
+	}
+
+	function getUser(profileType) {
+		var newUser = new User();
+		//if profileType === 0 => don't add anything
+		if(profileType !== 0) {
+			addProfile(newUser, profileType);
+		}
+		return newUser;
+	}
+
+	// function insertUserTestDb(done) {
+	// 	userDb = new User();
+	// 	userDb.local.name = NAME;
+	// 	userDb.local.email = EMAIL;
+	// 	userDb.setPassword(PASSWORD);
+	// 	userDb.save((err, usr) => {
+	// 		if(err) {
+	// 			done(err);
+	// 		}
+	// 		userDb._id = usr._id;
+	// 		done(); //pass done, it's important!
+	// 	});
+	// }
+
+	function dropUserCollectionTestDb(done) {
+		User.remove({}, err => {
+			done(err);
+		});
+	}
+
+	describe('#authenticate()', () => {
+		describe('---YES---', () => {
+			beforeEach(done => dropUserCollectionTestDb(done));
+
+			var whitelistServices = _und.without(serviceNames, 'profile', 'local');
+			for(let i=0; i<whitelistServices.length; i++) {
+				it('should authenticate for the first time (new user 3dparty service). Test i=' + i, done => {
+					//TODO FIXME implement
+					var authenticateFunct = thirdParty.__get__('authenticate');
+
+					//callback function used below
+					var callbackResponse = function(err, response) {
+						console.log(err);
+
+						expect(response[whitelistServices[i]].token).to.be.equals(TOKEN);
+						expect(response[whitelistServices[i]].id).to.be.equals('id');
+
+						switch(whitelistServices[i]) {
+					    case 'facebook':
+					      expect(response[whitelistServices[i]].name).to.be.equals(NAME + ' ' + NAME);
+					      expect(response[whitelistServices[i]].profileUrl).to.be.equals(URL);
+					      expect(response[whitelistServices[i]].email).to.be.equals(EMAIL);
+					      break;
+					    case 'github':
+					      expect(response[whitelistServices[i]].name).to.be.equals(NAME);
+					      expect(response[whitelistServices[i]].username).to.be.equals(USERNAME);
+					      expect(response[whitelistServices[i]].profileUrl).to.be.equals(URL);
+					      expect(response[whitelistServices[i]].email).to.be.equals(EMAIL);
+					      break;
+					    case 'google':
+					      expect(response[whitelistServices[i]].name).to.be.equals(NAME);
+					      expect(response[whitelistServices[i]].email).to.be.equals(EMAIL);
+					      break;
+					    case 'linkedin':
+					      expect(response[whitelistServices[i]].name).to.be.equals(NAME + ' ' + NAME);
+					      expect(response[whitelistServices[i]].email).to.be.equals(EMAIL);
+					      break;
+					    case 'twitter':
+					      expect(response[whitelistServices[i]].name).to.be.equals(NAME);
+					      expect(response[whitelistServices[i]].username).to.be.equals(USERNAME);
+					    	expect(response[whitelistServices[i]].email).to.be.equals(EMAIL);
+					      break;
+					  }
+						done();
+					};
+
+					authenticateFunct(mockedReq, TOKEN, TOKEN, profileMock,
+						callbackResponse, whitelistServices[i], User);
+				});
+			}
+		});
+
+		describe('---ERRORS---', () => {
+
+			it('should catch an exception.', done => {
+				//TODO FIXME implement
+				done();
+			});
+		});
+	})
+
 	describe('#updateUser()', () => {
-
-		function addUserByServiceName(newUser, serviceName) {
-			newUser[serviceName].id = serviceName + ID_POSTFIX;
-	    newUser[serviceName].token = TOKEN;
-	    newUser[serviceName].email = EMAIL;
-	    newUser[serviceName].name  = NAME;
-	    // other cases
-	    switch(serviceName) {
-	      case 'facebook':
-	        newUser[serviceName].profileUrl = URL;
-					break;
-	      case 'github':
-	        newUser[serviceName].username = USERNAME;
-	        newUser[serviceName].profileUrl = URL;
-					break;
-	      case 'twitter':
-	        newUser[serviceName].username  = USERNAME;
-					break;
-	    }
-		}
-
-		function addProfile(newUser, profileType) {
-			//if profileType === 0 => don't add anything
-			if(profileType === 1) {
-				newUser.profile = {
-					name : PROFILENAME1,
-					surname : PROFILESURNAME1,
-					nickname : PROFILENICKNAME1,
-					email : PROFILEEMAIL1,
-					updated : PROFILEDATE,
-					visible : PROFILEVISIBLE1
-				};
-			} else if(profileType === 2) {
-				newUser.profile = {
-					name : PROFILENAME2,
-					surname : PROFILESURNAME2,
-					nickname : PROFILENICKNAME2,
-					email : PROFILEEMAIL2,
-					updated : PROFILEDATE,
-					visible : PROFILEVISIBLE2
-				};
-			}
-		}
-
-		function getUser(profileType) {
-			var newUser = new User();
-			//if profileType === 0 => don't add anything
-			if(profileType !== 0) {
-				addProfile(newUser, profileType);
-			}
-			return newUser;
-		}
-
 		describe('---YES---', () => {
 
 			beforeEach(done => User.remove({}, err => done(err)));
