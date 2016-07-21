@@ -152,10 +152,9 @@ describe('3dparty-passport', () => {
 			var whitelistServices = _und.without(serviceNames, 'profile', 'local');
 			for(let i=0; i<whitelistServices.length; i++) {
 				it('should authenticate for the first time (new user 3dparty service). Test i=' + i, done => {
-					//TODO FIXME implement
 					var authenticateFunct = thirdParty.__get__('authenticate');
 
-					//callback function used below
+					//callback fun ction used below
 					var callbackResponse = function(err, response) {
 						console.log(err);
 
@@ -195,6 +194,122 @@ describe('3dparty-passport', () => {
 						callbackResponse, whitelistServices[i], User);
 				});
 			}
+
+			it('should authenticate, but the user is existing and you are logged in.', done => {
+				//TODO FIXME implement
+				var authenticateFunct = thirdParty.__get__('authenticate');
+
+				userDb = new User();
+
+				addUserByServiceName(userDb, 'twitter');
+
+				userDb.save((err, usr) => {
+					if(err) {
+						done(err);
+					}
+
+					console.log("user input saved on db");
+					console.log(usr);
+
+					//callback fun ction used below
+					var callbackResponse = function(err, response) {
+						console.log(err);
+
+						expect(response.github.token).to.be.equals(TOKEN);
+						expect(response.github.id).to.be.equals('id');
+
+								expect(response.github.name).to.be.equals(NAME);
+								expect(response.github.username).to.be.equals(USERNAME);
+								expect(response.github.profileUrl).to.be.equals(URL);
+								expect(response.github.email).to.be.equals(EMAIL);
+
+						done();
+					};
+
+					mockedReq.user = usr; //already logged in
+
+					authenticateFunct(mockedReq, TOKEN, TOKEN, profileMock,
+						callbackResponse, 'github', User);
+				});
+			});
+
+
+			// it('should authenticate, but the user is existing and you aren\'t logged in.', done => {
+			// 	//TODO FIXME implement
+			// 	var authenticateFunct = thirdParty.__get__('authenticate');
+			//
+			// 	userDb = new User();
+			//
+			// 	addUserByServiceName(userDb, 'twitter');
+			//
+			// 	userDb.save((err, usr) => {
+			// 		if(err) {
+			// 			done(err);
+			// 		}
+			//
+			// 		console.log("user input saved on db");
+			// 		console.log(usr);
+			//
+			// 		//callback fun ction used below
+			// 		var callbackResponse = function(err, response) {
+			// 			console.log(err);
+			//
+			// 			expect(response.github.token).to.be.equals(TOKEN);
+			// 			expect(response.github.id).to.be.equals('not already existing token');
+			// 					expect(response.github.name).to.be.equals(NAME);
+			// 					expect(response.github.username).to.be.equals(USERNAME);
+			// 					expect(response.github.profileUrl).to.be.equals(URL);
+			// 					expect(response.github.email).to.be.equals(EMAIL);
+			// 			done();
+			// 		};
+			//
+			// 		mockedReq.user = null;
+			// 		profileMock.id = 'not already existing token';
+			//
+			// 		authenticateFunct(mockedReq, TOKEN, TOKEN, profileMock,
+			// 			callbackResponse, 'github', User);
+			// 	});
+			// });
+
+
+
+			// it('should authenticate, but the user is NOT existing and you aren\'t logged in.', done => {
+			// 	//TODO FIXME implement
+			// 	var authenticateFunct = thirdParty.__get__('authenticate');
+			//
+			// 	userDb = new User();
+			//
+			// 	addUserByServiceName(userDb, 'twitter');
+			//
+			// 	userDb.save((err, usr) => {
+			// 		if(err) {
+			// 			done(err);
+			// 		}
+			//
+			// 		console.log("user input saved on db");
+			// 		console.log(usr);
+			//
+			// 		//callback fun ction used below
+			// 		var callbackResponse = function(err, response) {
+			// 			console.log(err);
+			//
+			// 			expect(response.github.token).to.be.equals(TOKEN);
+			// 			expect(response.github.id).to.be.equals('not already existing token');
+			// 					expect(response.github.name).to.be.equals(NAME);
+			// 					expect(response.github.username).to.be.equals(USERNAME);
+			// 					expect(response.github.profileUrl).to.be.equals(URL);
+			// 					expect(response.github.email).to.be.equals(EMAIL);
+			// 			done();
+			// 		};
+			//
+			// 		mockedReq.user = null;
+			// 		profileMock.id = 'not already existing token';
+			//
+			// 		authenticateFunct(mockedReq, TOKEN, TOKEN, profileMock,
+			// 			callbackResponse, 'github', User);
+			// 	});
+			// });
+
 		});
 
 		describe('---ERRORS---', () => {

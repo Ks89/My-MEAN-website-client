@@ -155,7 +155,7 @@ function authenticate(req, accessToken, refreshToken, profile, done, serviceName
         // user already exists and is logged in, we have to link accounts
         // req.user pull the user out of the session
         // and finally update the user with the currecnt users credentials
-        console.log("User already exists but I'm not previously logged in");
+        console.log("User already exists but I'm previously logged in");
         var user = updateUser(req.user, accessToken, profile, serviceName);
         user.save( (err, savedUser) => {
           if (err) {
