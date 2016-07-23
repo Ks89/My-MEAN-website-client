@@ -123,7 +123,7 @@ function authenticate(req, accessToken, refreshToken, profile, done, serviceName
           }
 
           if (user) { // if the user is found, then log them in
-            console.log("User found");
+            console.log("You aren't logged in, but I found an user on db");
             // if there is already a user id but no token (user was linked at one point and then removed)
             // just add our token and profile informations
             var userUpdated = '';
@@ -155,7 +155,7 @@ function authenticate(req, accessToken, refreshToken, profile, done, serviceName
         // user already exists and is logged in, we have to link accounts
         // req.user pull the user out of the session
         // and finally update the user with the currecnt users credentials
-        console.log("User already exists but I'm previously logged in");
+        console.log("User already exists and I'm previously logged in");
         var user = updateUser(req.user, accessToken, profile, serviceName);
         user.save( (err, savedUser) => {
           if (err) {
