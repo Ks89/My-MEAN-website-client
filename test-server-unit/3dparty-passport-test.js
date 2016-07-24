@@ -230,8 +230,6 @@ describe('3dparty-passport', () => {
 				});
 			});
 
-
-
 			it('should authenticate, but the user is NOT existing and you aren\'t logged in.', done => {
 				//TODO FIXME implement
 				var authenticateFunct = thirdParty.__get__('authenticate');
@@ -270,7 +268,6 @@ describe('3dparty-passport', () => {
 				});
 			});
 
-
 			it('should authenticate, but the user exists and you aren\'t logged in.', done => {
 				var authenticateFunct = thirdParty.__get__('authenticate');
 
@@ -308,6 +305,38 @@ describe('3dparty-passport', () => {
 				});
 			});
 
+
+			//------------------------------- LOCAL ------------------------------
+			it('should authenticate, but there is a local user already logged in.', done => {
+				//TODO FIXME implement
+				var authenticateFunct = thirdParty.__get__('authenticate');
+				userDb = new User();
+				addUserByServiceName(userDb, 'local');
+
+				userDb.save((err, usr) => {
+					if(err) {
+						done(err);
+					}
+
+					//callback fun ction used below
+					var callbackResponse = function(err, response) {
+						console.log(err);
+						expect(response.github.token).to.be.equals(TOKEN);
+						expect(response.github.id).to.be.equals('id');
+						expect(response.github.name).to.be.equals(NAME);
+						expect(response.github.username).to.be.equals(USERNAME);
+						expect(response.github.profileUrl).to.be.equals(URL);
+						expect(response.github.email).to.be.equals(EMAIL);
+						done();
+					};
+
+					mockedReq.session.localUserId = usr._id;
+
+					authenticateFunct(mockedReq, TOKEN, TOKEN, profileMock,
+						callbackResponse, 'github', User);
+				});
+			});
+
 		});
 
 		describe('---ERRORS---', () => {
@@ -327,23 +356,9 @@ describe('3dparty-passport', () => {
 			it('should update an empty object with profile infos after the 3dparty login.', done => {
         // Overwrite the private a1 function with the mock.
         var updateFunct = thirdParty.__get__('updateUser');
-				console.log("°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° p mock");
-				console.log(profileMock);
-				console.log("°°°°°°°°°°°°°°°°°°°°°°");
+
         let userGithub = updateFunct(getUser(1), TOKEN, profileMock, 'github');
-
-				console.log("°°°°°°°°°°°°°°°°°°°°°°");
-				console.log(getUser(1));
-				console.log("°°°°°°°°°°°°°°°°°°°°°°");
-				console.log(profileMock);
-
 				let userGoogle = updateFunct(getUser(1), TOKEN, profileMock, 'google');
-				console.log("°°°°°°°°°°°°°°°°°°°°°°");
-				console.log(userGoogle);
-				console.log("TOKEN " + TOKEN);
-				console.log("°°°°°°°°°°°°°°°°°°°°°°");
-				console.log(profileMock);
-
         let userFacebook = updateFunct(getUser(1), TOKEN, profileMock, 'facebook');
         let userTwitter = updateFunct(getUser(1), TOKEN, profileMock, 'twitter');
         let userLinkedin = updateFunct(getUser(1), TOKEN, profileMock, 'linkedin');

@@ -90,6 +90,7 @@ function authenticate(req, accessToken, refreshToken, profile, done, serviceName
         console.log("User found - saving");
         var userUpdated = updateUser(user, accessToken, profile, serviceName);
         console.log("updated localuser with 3dpartyauth");
+        console.log(userUpdated);
         userUpdated.save(err => {
           if (err) {
             throw err;
