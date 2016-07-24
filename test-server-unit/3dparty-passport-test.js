@@ -214,15 +214,12 @@ describe('3dparty-passport', () => {
 					//callback fun ction used below
 					var callbackResponse = function(err, response) {
 						console.log(err);
-
 						expect(response.github.token).to.be.equals(TOKEN);
 						expect(response.github.id).to.be.equals('id');
-
-								expect(response.github.name).to.be.equals(NAME);
-								expect(response.github.username).to.be.equals(USERNAME);
-								expect(response.github.profileUrl).to.be.equals(URL);
-								expect(response.github.email).to.be.equals(EMAIL);
-
+						expect(response.github.name).to.be.equals(NAME);
+						expect(response.github.username).to.be.equals(USERNAME);
+						expect(response.github.profileUrl).to.be.equals(URL);
+						expect(response.github.email).to.be.equals(EMAIL);
 						done();
 					};
 
@@ -234,81 +231,82 @@ describe('3dparty-passport', () => {
 			});
 
 
-			// it('should authenticate, but the user is existing and you aren\'t logged in.', done => {
-			// 	//TODO FIXME implement
-			// 	var authenticateFunct = thirdParty.__get__('authenticate');
-			//
-			// 	userDb = new User();
-			//
-			// 	addUserByServiceName(userDb, 'twitter');
-			//
-			// 	userDb.save((err, usr) => {
-			// 		if(err) {
-			// 			done(err);
-			// 		}
-			//
-			// 		console.log("user input saved on db");
-			// 		console.log(usr);
-			//
-			// 		//callback fun ction used below
-			// 		var callbackResponse = function(err, response) {
-			// 			console.log(err);
-			//
-			// 			expect(response.github.token).to.be.equals(TOKEN);
-			// 			expect(response.github.id).to.be.equals('not already existing token');
-			// 					expect(response.github.name).to.be.equals(NAME);
-			// 					expect(response.github.username).to.be.equals(USERNAME);
-			// 					expect(response.github.profileUrl).to.be.equals(URL);
-			// 					expect(response.github.email).to.be.equals(EMAIL);
-			// 			done();
-			// 		};
-			//
-			// 		mockedReq.user = null;
-			// 		profileMock.id = 'not already existing token';
-			//
-			// 		authenticateFunct(mockedReq, TOKEN, TOKEN, profileMock,
-			// 			callbackResponse, 'github', User);
-			// 	});
-			// });
+
+			it('should authenticate, but the user is NOT existing and you aren\'t logged in.', done => {
+				//TODO FIXME implement
+				var authenticateFunct = thirdParty.__get__('authenticate');
+
+				userDb = new User();
+
+				addUserByServiceName(userDb, 'twitter');
+
+				userDb.save((err, usr) => {
+					if(err) {
+						done(err);
+					}
+
+					console.log("user input saved on db");
+					console.log(usr);
+
+					//callback fun ction used below
+					var callbackResponse = function(err, response) {
+						console.log(err);
+
+						expect(response.github.token).to.be.equals(TOKEN);
+						expect(response.github.id).to.be.equals('not already existing token');
+						expect(response.github.name).to.be.equals(NAME);
+						expect(response.github.username).to.be.equals(USERNAME);
+						expect(response.github.profileUrl).to.be.equals(URL);
+						expect(response.github.email).to.be.equals(EMAIL);
+						done();
+					};
+
+					mockedReq.user = null;
+					let profileMockModified = _und.clone(profileMock);
+					profileMockModified.id = 'not already existing token';
+
+					authenticateFunct(mockedReq, TOKEN, TOKEN, profileMockModified,
+						callbackResponse, 'github', User);
+				});
+			});
 
 
+			it('should authenticate, but the user exists and you aren\'t logged in.', done => {
+				var authenticateFunct = thirdParty.__get__('authenticate');
 
-			// it('should authenticate, but the user is NOT existing and you aren\'t logged in.', done => {
-			// 	//TODO FIXME implement
-			// 	var authenticateFunct = thirdParty.__get__('authenticate');
-			//
-			// 	userDb = new User();
-			//
-			// 	addUserByServiceName(userDb, 'twitter');
-			//
-			// 	userDb.save((err, usr) => {
-			// 		if(err) {
-			// 			done(err);
-			// 		}
-			//
-			// 		console.log("user input saved on db");
-			// 		console.log(usr);
-			//
-			// 		//callback fun ction used below
-			// 		var callbackResponse = function(err, response) {
-			// 			console.log(err);
-			//
-			// 			expect(response.github.token).to.be.equals(TOKEN);
-			// 			expect(response.github.id).to.be.equals('not already existing token');
-			// 					expect(response.github.name).to.be.equals(NAME);
-			// 					expect(response.github.username).to.be.equals(USERNAME);
-			// 					expect(response.github.profileUrl).to.be.equals(URL);
-			// 					expect(response.github.email).to.be.equals(EMAIL);
-			// 			done();
-			// 		};
-			//
-			// 		mockedReq.user = null;
-			// 		profileMock.id = 'not already existing token';
-			//
-			// 		authenticateFunct(mockedReq, TOKEN, TOKEN, profileMock,
-			// 			callbackResponse, 'github', User);
-			// 	});
-			// });
+				userDb = new User();
+
+				addUserByServiceName(userDb, 'github');
+				userDb.github.token = null;
+
+				userDb.save((err, usr) => {
+					if(err) {
+						done(err);
+					}
+
+					console.log("user input saved on db");
+					console.log(usr);
+
+					//callback fun ction used below
+					var callbackResponse = function(err, response) {
+						console.log(err);
+						expect(response.github.token).to.be.equals(TOKEN);
+						expect(response.github.id).to.be.equals(profileMockModified.id);
+						expect(response.github.name).to.be.equals(NAME);
+						expect(response.github.username).to.be.equals(USERNAME);
+						expect(response.github.profileUrl).to.be.equals(URL);
+						expect(response.github.email).to.be.equals(EMAIL);
+						done();
+					};
+
+					mockedReq.user = null;
+					let profileMockModified = _und.clone(profileMock);
+					profileMockModified.id = 'github' + ID_POSTFIX;
+
+					authenticateFunct(mockedReq, TOKEN, TOKEN, profileMockModified,
+						callbackResponse, 'github', User);
+				});
+			});
 
 		});
 
@@ -329,9 +327,23 @@ describe('3dparty-passport', () => {
 			it('should update an empty object with profile infos after the 3dparty login.', done => {
         // Overwrite the private a1 function with the mock.
         var updateFunct = thirdParty.__get__('updateUser');
-
+				console.log("°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° p mock");
+				console.log(profileMock);
+				console.log("°°°°°°°°°°°°°°°°°°°°°°");
         let userGithub = updateFunct(getUser(1), TOKEN, profileMock, 'github');
-        let userGoogle = updateFunct(getUser(1), TOKEN, profileMock, 'google');
+
+				console.log("°°°°°°°°°°°°°°°°°°°°°°");
+				console.log(getUser(1));
+				console.log("°°°°°°°°°°°°°°°°°°°°°°");
+				console.log(profileMock);
+
+				let userGoogle = updateFunct(getUser(1), TOKEN, profileMock, 'google');
+				console.log("°°°°°°°°°°°°°°°°°°°°°°");
+				console.log(userGoogle);
+				console.log("TOKEN " + TOKEN);
+				console.log("°°°°°°°°°°°°°°°°°°°°°°");
+				console.log(profileMock);
+
         let userFacebook = updateFunct(getUser(1), TOKEN, profileMock, 'facebook');
         let userTwitter = updateFunct(getUser(1), TOKEN, profileMock, 'twitter');
         let userLinkedin = updateFunct(getUser(1), TOKEN, profileMock, 'linkedin');

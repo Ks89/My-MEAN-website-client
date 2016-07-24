@@ -116,11 +116,17 @@ function authenticate(req, accessToken, refreshToken, profile, done, serviceName
         const query = {};
         query[serviceNameId] = profile.id;
 
+        console.log("findOne by query: " + JSON.stringify(query));
+
         userRef.findOne(query, (err, user) => {
           console.log("User.findOne...");
           if (err) {
+            console.log("ERROR");
             return done(err);
           }
+
+          console.log("User found in findOne: ");
+          console.log(user);
 
           if (user) { // if the user is found, then log them in
             console.log("You aren't logged in, but I found an user on db");
@@ -128,16 +134,19 @@ function authenticate(req, accessToken, refreshToken, profile, done, serviceName
             // just add our token and profile informations
             var userUpdated = '';
             if (!user[serviceName].token) {
-              console.log("Id is ok, but not token, updating...");
+              console.log("Id is ok, but not token, updating user...");
               userUpdated = updateUser(user, accessToken, profile, serviceName);
-              userUpdated.save( err => {
+              userUpdated.save( (err, userSaved) => {
                 if (err) {
                   throw err;
                 }
-                return done(null, userUpdated);
+                console.log("User updated and saved");
+                return done(null, userSaved);
               });
+            } else {
+              console.log("Token is valid. Returns the user without modifications");
+              return done(null, user);
             }
-            return done(null, user);
           } else {
             //otherwise, if there is no user found with that id, create them
             console.log("User not found with that id, creating a new one...");
