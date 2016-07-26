@@ -305,8 +305,6 @@ describe('3dparty-passport', () => {
 				});
 			});
 
-
-			//------------------------------- LOCAL ------------------------------
 			it('should authenticate, but there is a local user already logged in.', done => {
 				//TODO FIXME implement
 				var authenticateFunct = thirdParty.__get__('authenticate');
@@ -337,6 +335,58 @@ describe('3dparty-passport', () => {
 				});
 			});
 
+		});
+
+		describe('---NO---', () => {
+			it('should not authenticate, but the local user id isn\'t existing.', done => {
+				//TODO FIXME implement
+
+				//TODO FIXME implement
+				var authenticateFunct = thirdParty.__get__('authenticate');
+				userDb = new User();
+				addUserByServiceName(userDb, 'local');
+
+				userDb.save((err, usr) => {
+					if(err) {
+						done(err);
+					}
+
+
+					//TODO FIXME FIXME
+					//TODO FIXME FIXME
+					//TODO FIXME FIXME
+					//TODO FIXME FIXME
+					//TODO FIXME FIXME
+					//TODO FIXME FIXME
+					//TODO FIXME FIXME
+
+
+					//callback fun ction used below
+					var callbackResponse = function(err, response) {
+						console.log(err);
+						console.log("err: " + err);
+						//expect(err).to.be.equals('Impossible to find an user with sessionLocalUserId');
+						// expect(response.github.token).to.be.equals(TOKEN);
+						// expect(response.github.id).to.be.equals('id');
+						// expect(response.github.name).to.be.equals(NAME);
+						// expect(response.github.username).to.be.equals(USERNAME);
+						// expect(response.github.profileUrl).to.be.equals(URL);
+						// expect(response.github.email).to.be.equals(EMAIL);
+						done();
+					}; 
+					mockedReq.session.localUserId = '123456789012345678901234';
+
+					authenticateFunct(mockedReq, TOKEN, TOKEN, profileMock,
+						callbackResponse, 'github', User);
+
+						//TODO FIXME FIXME
+						//TODO FIXME FIXME
+						//TODO FIXME FIXME
+						//TODO FIXME FIXME
+						//TODO FIXME FIXME
+
+				});
+			});
 		});
 
 		describe('---ERRORS---', () => {
