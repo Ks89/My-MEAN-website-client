@@ -85,15 +85,19 @@ function authenticate(req, accessToken, refreshToken, profile, done, serviceName
       //the user is already logged in
       userRef.findOne({ '_id': sessionLocalUserId }, (err, user) => {
         if (err) {
-          throw err;
+          done(err);
+          return;
+        }
+        if(!user) {
+          done('Impossible to find an user with sessionLocalUserId');
+          return;
         }
         console.log("User found - saving");
         var userUpdated = updateUser(user, accessToken, profile, serviceName);
         console.log("updated localuser with 3dpartyauth");
-        console.log(userUpdated);
         userUpdated.save(err => {
           if (err) {
-            throw err;
+            done(err);
           }
 
           //----------------- experimental ---------------
