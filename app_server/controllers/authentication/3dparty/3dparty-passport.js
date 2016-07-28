@@ -126,12 +126,9 @@ function authenticate(req, accessToken, refreshToken, profile, done, serviceName
         userRef.findOne(query, (err, user) => {
           console.log("User.findOne...");
           if (err) {
-            console.log("ERROR");
+            console.log("User.findOne... ERROR");
             return done(err);
           }
-
-          console.log("User found in findOne: ");
-          console.log(user);
 
           if (user) { // if the user is found, then log them in
             console.log("You aren't logged in, but I found an user on db");
