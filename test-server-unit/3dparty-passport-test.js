@@ -1,228 +1,551 @@
+'use strict';
+process.env.NODE_ENV = 'test'; //before every other instruction
+
+//to be able to use generateJwt I must import
+//dotenv (otherwise I cannot read process.env with the encryption key)
+require('dotenv').config();
+
+var chai = require('chai');
+var assert = chai.assert;
+var expect = chai.expect;
 var _und = require('underscore');
-var serviceNames = require('../serviceNames');
-var thirdpartyConfig = require('./3dpartyconfig');
-var FacebookStrategy = require('passport-facebook').Strategy;
-var GitHubStrategy = require('passport-github').Strategy;
-var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-var LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
-var TwitterStrategy = require('passport-twitter').Strategy;
+var rewire = require('rewire');
 
-var logger = require('../../../utils/logger');
-var util = require('../../../utils/util');
+var User;
+var mongoose = require('mongoose');
+require('../app_server/models/users');
 
-//----------experimental---
-var authExperimentalFeatures = require('../common/auth-experimental-collapse-db.js');
-//-------------------------
+mongoose.connect('mongodb://localhost/test-db');
+User = mongoose.model('User');
 
-function updateUser (user, accessToken, profile, serviceName) {
-  if(util.isNotSimpleCustomObjectOrDate(user)) {
-    logger.error("impossible to update because user must be an object");
-    throw 'impossible to update because user must be an object';
-  }
+var userDb;
 
-  if(util.isNotSimpleCustomObjectOrDate(profile)) {
-    logger.error("impossible to update because profile must be an object");
-    throw 'impossible to update because profile must be an objects';
-  }
+var util = require('../app_server/utils/util');
+var serviceNames = require('../app_server/controllers/authentication/serviceNames');
 
-  if(!_und.isString(serviceName) || !_und.isString(accessToken)) {
-    logger.error("impossible to update because both serviceName and accessToken must be strings");
-    throw 'impossible to update because both serviceName and accessToken must be strings';
-  }
-
-  const whitelistServices = _und.without(serviceNames, 'local', 'profile');
-  if(whitelistServices.indexOf(serviceName) === -1) {
-    logger.error("impossible to update because serviceName is not recognized");
-    throw 'impossible to update because serviceName is not recognized';
-  }
-
-  // warning: if you are not able to set a value in user[serviceName]
-  // go to models/users.js and add the missing property there.
-  // common
-  user[serviceName].id = profile.id;
-  user[serviceName].token = accessToken;
-  // other cases
-  switch(serviceName) {
-    case 'facebook':
-      user[serviceName].name  = profile.name.givenName + ' ' + profile.name.familyName;
-      user[serviceName].profileUrl = profile.profileUrl;
-      user[serviceName].email = profile.emails[0].value; //get the first email
-      return user;
-    case 'github':
-      user[serviceName].name  = profile.displayName;
-      user[serviceName].username = profile.username;
-      user[serviceName].profileUrl = profile.profileUrl;
-      user[serviceName].email = profile.emails[0].value; //get the first email
-      return user;
-    case 'google':
-      user[serviceName].name  = profile.displayName;
-      user[serviceName].email = profile.emails[0].value; //get the first email
-      return user;
-    case 'linkedin':
-      user[serviceName].name  = profile.name.givenName + ' ' + profile.name.familyName;
-      user[serviceName].email = profile.emails[0].value; //get the first email
-      return user;
-    case 'twitter':
-      user[serviceName].name  = profile.displayName ? profile.displayName : profile.username;
-      user[serviceName].username  = profile.username;
-      if(profile.emails && profile.emails[0] && profile.emails[0].value) {
-        //twitter doesn't provide profile.email's field by default. You must
-        //request the permission to twitter to ask email to users.
-        //To be sure, I decided to check if email's field is available.
-        user[serviceName].email = profile.emails[0].value; //get the first email
-      }
-      return user;
-  }
-  return user;
-}
-
-function authenticate(req, accessToken, refreshToken, profile, done, serviceName, userRef) {
-  process.nextTick(() => {
-    var sessionLocalUserId = req.session.localUserId;
-    //check if the user is already logged in using the LOCAL authentication
-    if(sessionLocalUserId) {
-      console.log("sessionLocalUserId found - managing 3dauth + local");
-      //the user is already logged in
-      userRef.findOne({ '_id': sessionLocalUserId }, (err, user) => {
-        if (err) {
-          done(err);
-          return;
-        }
-        if(!user) {
-          done('Impossible to find an user with sessionLocalUserId');
-          return;
-        }
-        console.log("User found - saving");
-        var userUpdated = updateUser(user, accessToken, profile, serviceName);
-        console.log("updated localuser with 3dpartyauth");
-        userUpdated.save(err => {
-          if (err) {
-            done(err);
-          }
-
-          //----------------- experimental ---------------
-          authExperimentalFeatures.collapseDb(user, serviceName, req)
-          .then(result => {
-            console.log("collapseDb localuser with 3dpartyauth promise: " + result);
-            return done(null, result);
-          }, reason => {
-            console.log("ERROR collapseDb localuser with 3dpartyauth promise");
-            return done(null, user);
-          });
-          //----------------------------------------------
-        });
-      });
-    } else {
-      console.log("Only 3dauth");
-      if (!req.user) { //if the user is NOT already logged in
-        console.log("User not already logged in");
-        const serviceNameId = serviceName + '.id';
-
-        const query = {};
-        query[serviceNameId] = profile.id;
-
-        console.log("findOne by query: " + JSON.stringify(query));
-
-        userRef.findOne(query, (err, user) => {
-          console.log("User.findOne...");
-          if (err) {
-            console.log("ERROR");
-            return done(err);
-          }
-
-          console.log("User found in findOne: ");
-          console.log(user);
-
-          if (user) { // if the user is found, then log them in
-            console.log("You aren't logged in, but I found an user on db");
-            // if there is already a user id but no token (user was linked at one point and then removed)
-            // just add our token and profile informations
-            var userUpdated = '';
-            if (!user[serviceName].token) {
-              console.log("Id is ok, but not token, updating user...");
-              userUpdated = updateUser(user, accessToken, profile, serviceName);
-              userUpdated.save( (err, userSaved) => {
-                if (err) {
-                  throw err;
-                }
-                console.log("User updated and saved");
-                return done(null, userSaved);
-              });
-            } else {
-              console.log("Token is valid. Returns the user without modifications");
-              return done(null, user);
-            }
-          } else {
-            //otherwise, if there is no user found with that id, create them
-            console.log("User not found with that id, creating a new one...");
-            var newUser = updateUser(new userRef(), accessToken, profile, serviceName);
-            console.log("New user created: " + newUser);
-            newUser.save( err => {
-              if (err) {
-                throw err;
-              }
-              return done(null, newUser);
-            });
-          }
-        });
-      } else {
-        // user already exists and is logged in, we have to link accounts
-        // req.user pull the user out of the session
-        // and finally update the user with the currecnt users credentials
-        console.log("User already exists and I'm previously logged in");
-        var user = updateUser(req.user, accessToken, profile, serviceName);
-        user.save( (err, savedUser) => {
-          if (err) {
-            throw err;
-          }
-
-          console.log("Saving already existing user.");
-
-          //----------------- experimental ---------------
-          authExperimentalFeatures.collapseDb(savedUser, serviceName, req)
-          .then(result => {
-            console.log("collapseDb promise: " + result);
-            return done(null, result);
-          }, reason => {
-            console.log("ERROR collapseDb promise");
-            return done(null, savedUser);
-          });
-          //----------------------------------------------
-
-        });
-      }
-    }
-  });
-}
-
-
-function buildStrategy(serviceName, userRef) {
-  console.log("service: " + serviceName + " env: " + process.env.NODE_ENV);
-  switch(serviceName) {
-    case 'facebook':
-      return new FacebookStrategy( thirdpartyConfig[serviceName],
-      (req, accessToken, refreshToken, profile, done) => { authenticate(req, accessToken, refreshToken, profile, done, serviceName, userRef);});
-    case 'github':
-      return new GitHubStrategy( thirdpartyConfig[serviceName],
-      (req, accessToken, refreshToken, profile, done) => { authenticate(req, accessToken, refreshToken, profile, done, serviceName, userRef);});
-    case 'google':
-      return new GoogleStrategy( thirdpartyConfig[serviceName],
-      (req, accessToken, refreshToken, profile, done) => { authenticate(req, accessToken, refreshToken, profile, done, serviceName, userRef);});
-    case 'linkedin':
-      return new LinkedInStrategy( thirdpartyConfig[serviceName],
-      (req, accessToken, refreshToken, profile, done) => { authenticate(req, accessToken, refreshToken, profile, done, serviceName, userRef);});
-    case 'twitter':
-      return new TwitterStrategy( thirdpartyConfig[serviceName],
-      (req, accessToken, refreshToken, profile, done) => { authenticate(req, accessToken, refreshToken, profile, done, serviceName, userRef);});
-  }
-}
-
-module.exports = function (userRef, passportRef) {
-  passportRef.use(buildStrategy('facebook', userRef));
-  passportRef.use(buildStrategy('github', userRef));
-  passportRef.use(buildStrategy('google', userRef));
-  passportRef.use(buildStrategy('linkedin', userRef));
-  passportRef.use(buildStrategy('twitter', userRef));
-
-  return module;
+//add session property to the mocked
+//request (used to store jwt session token by redis)
+var mockedReq = {
+	session : {
+			authToken : null
+	}
 };
+
+//rewire to call functions using _get_
+var thirdParty = rewire('../app_server/controllers/authentication/3dparty/3dparty-passport');
+
+const USERNAME = 'username';
+const EMAIL = 'email@email.it';
+const PASSWORD = 'Password1';
+const TOKEN = 'random_fake_token';
+const ID_POSTFIX = ' id';
+const NAME = 'name';
+const URL = 'http//fakeprofileurl.com/myprofile';
+const PROFILENAME1 = 'name 1';
+const PROFILESURNAME1 = 'surname 1';
+const PROFILENICKNAME1 = 'nickname 1';
+const PROFILEEMAIL1 = 'email 1';
+const PROFILEVISIBLE1 = true;
+const PROFILENAME2 = 'name 2';
+const PROFILESURNAME2 = 'surname 2';
+const PROFILENICKNAME2 = 'nickname 2';
+const PROFILEEMAIL2 = 'email 2';
+const PROFILEVISIBLE2 = true;
+const PROFILEDATE = new Date();
+
+const profileMock = {
+  id: 'id',
+  displayName: NAME,
+  username: USERNAME,
+  name : {
+    familyName : NAME,
+    givenName : NAME
+  },
+  profileUrl: URL,
+  emails: [ { value: EMAIL } ],
+  provider: 'random value',
+};
+
+const USER_NOT_AN_OBJECT = "impossible to update because user must be an object";
+const PROFILE_NOT_AN_OBJECT = "impossible to update because profile must be an object";
+const MUST_BE_STRINGS = "impossible to update because both serviceName and accessToken must be strings";
+const SERVICENAME_NOT_RECOGNIZED = "impossible to update because serviceName is not recognized";
+
+describe('3dparty-passport', () => {
+
+	function addUserByServiceName(newUser, serviceName) {
+		newUser[serviceName].id = serviceName + ID_POSTFIX;
+		newUser[serviceName].token = TOKEN;
+		newUser[serviceName].email = EMAIL;
+		newUser[serviceName].name  = NAME;
+		// other cases
+		switch(serviceName) {
+			case 'facebook':
+				newUser[serviceName].profileUrl = URL;
+				break;
+			case 'github':
+				newUser[serviceName].username = USERNAME;
+				newUser[serviceName].profileUrl = URL;
+				break;
+			case 'twitter':
+				newUser[serviceName].username  = USERNAME;
+				break;
+		}
+	}
+
+	function addProfile(newUser, profileType) {
+		//if profileType === 0 => don't add anything
+		if(profileType === 1) {
+			newUser.profile = {
+				name : PROFILENAME1,
+				surname : PROFILESURNAME1,
+				nickname : PROFILENICKNAME1,
+				email : PROFILEEMAIL1,
+				updated : PROFILEDATE,
+				visible : PROFILEVISIBLE1
+			};
+		} else if(profileType === 2) {
+			newUser.profile = {
+				name : PROFILENAME2,
+				surname : PROFILESURNAME2,
+				nickname : PROFILENICKNAME2,
+				email : PROFILEEMAIL2,
+				updated : PROFILEDATE,
+				visible : PROFILEVISIBLE2
+			};
+		}
+	}
+
+	function getUser(profileType) {
+		var newUser = new User();
+		//if profileType === 0 => don't add anything
+		if(profileType !== 0) {
+			addProfile(newUser, profileType);
+		}
+		return newUser;
+	}
+
+	// function insertUserTestDb(done) {
+	// 	userDb = new User();
+	// 	userDb.local.name = NAME;
+	// 	userDb.local.email = EMAIL;
+	// 	userDb.setPassword(PASSWORD);
+	// 	userDb.save((err, usr) => {
+	// 		if(err) {
+	// 			done(err);
+	// 		}
+	// 		userDb._id = usr._id;
+	// 		done(); //pass done, it's important!
+	// 	});
+	// }
+
+	function dropUserCollectionTestDb(done) {
+		User.remove({}, err => {
+			done(err);
+		});
+	}
+
+	describe('#authenticate()', () => {
+		describe('---YES---', () => {
+			beforeEach(done => dropUserCollectionTestDb(done));
+
+			var whitelistServices = _und.without(serviceNames, 'profile', 'local');
+			for(let i=0; i<whitelistServices.length; i++) {
+				it('should authenticate for the first time (new user 3dparty service). Test i=' + i, done => {
+					var authenticateFunct = thirdParty.__get__('authenticate');
+
+					//callback fun ction used below
+					var callbackResponse = function(err, response) {
+						console.log(err);
+
+						expect(response[whitelistServices[i]].token).to.be.equals(TOKEN);
+						expect(response[whitelistServices[i]].id).to.be.equals('id');
+
+						switch(whitelistServices[i]) {
+					    case 'facebook':
+					      expect(response[whitelistServices[i]].name).to.be.equals(NAME + ' ' + NAME);
+					      expect(response[whitelistServices[i]].profileUrl).to.be.equals(URL);
+					      expect(response[whitelistServices[i]].email).to.be.equals(EMAIL);
+					      break;
+					    case 'github':
+					      expect(response[whitelistServices[i]].name).to.be.equals(NAME);
+					      expect(response[whitelistServices[i]].username).to.be.equals(USERNAME);
+					      expect(response[whitelistServices[i]].profileUrl).to.be.equals(URL);
+					      expect(response[whitelistServices[i]].email).to.be.equals(EMAIL);
+					      break;
+					    case 'google':
+					      expect(response[whitelistServices[i]].name).to.be.equals(NAME);
+					      expect(response[whitelistServices[i]].email).to.be.equals(EMAIL);
+					      break;
+					    case 'linkedin':
+					      expect(response[whitelistServices[i]].name).to.be.equals(NAME + ' ' + NAME);
+					      expect(response[whitelistServices[i]].email).to.be.equals(EMAIL);
+					      break;
+					    case 'twitter':
+					      expect(response[whitelistServices[i]].name).to.be.equals(NAME);
+					      expect(response[whitelistServices[i]].username).to.be.equals(USERNAME);
+					    	expect(response[whitelistServices[i]].email).to.be.equals(EMAIL);
+					      break;
+					  }
+						done();
+					};
+
+					authenticateFunct(mockedReq, TOKEN, TOKEN, profileMock,
+						callbackResponse, whitelistServices[i], User);
+				});
+			}
+
+			it('should authenticate, but the user is existing and you are logged in.', done => {
+				//TODO FIXME implement
+				var authenticateFunct = thirdParty.__get__('authenticate');
+
+				userDb = new User();
+
+				addUserByServiceName(userDb, 'twitter');
+
+				userDb.save((err, usr) => {
+					if(err) {
+						done(err);
+					}
+
+					console.log("user input saved on db");
+					console.log(usr);
+
+					//callback fun ction used below
+					var callbackResponse = function(err, response) {
+						console.log(err);
+						expect(response.github.token).to.be.equals(TOKEN);
+						expect(response.github.id).to.be.equals('id');
+						expect(response.github.name).to.be.equals(NAME);
+						expect(response.github.username).to.be.equals(USERNAME);
+						expect(response.github.profileUrl).to.be.equals(URL);
+						expect(response.github.email).to.be.equals(EMAIL);
+						done();
+					};
+
+					mockedReq.user = usr; //already logged in
+
+					authenticateFunct(mockedReq, TOKEN, TOKEN, profileMock,
+						callbackResponse, 'github', User);
+				});
+			});
+
+			it('should authenticate, but the user is NOT existing and you aren\'t logged in.', done => {
+				//TODO FIXME implement
+				var authenticateFunct = thirdParty.__get__('authenticate');
+
+				userDb = new User();
+
+				addUserByServiceName(userDb, 'twitter');
+
+				userDb.save((err, usr) => {
+					if(err) {
+						done(err);
+					}
+
+					console.log("user input saved on db");
+					console.log(usr);
+
+					//callback fun ction used below
+					var callbackResponse = function(err, response) {
+						console.log(err);
+
+						expect(response.github.token).to.be.equals(TOKEN);
+						expect(response.github.id).to.be.equals('not already existing token');
+						expect(response.github.name).to.be.equals(NAME);
+						expect(response.github.username).to.be.equals(USERNAME);
+						expect(response.github.profileUrl).to.be.equals(URL);
+						expect(response.github.email).to.be.equals(EMAIL);
+						done();
+					};
+
+					mockedReq.user = null;
+					let profileMockModified = _und.clone(profileMock);
+					profileMockModified.id = 'not already existing token';
+
+					authenticateFunct(mockedReq, TOKEN, TOKEN, profileMockModified,
+						callbackResponse, 'github', User);
+				});
+			});
+
+			it('should authenticate, but the user exists and you aren\'t logged in.', done => {
+				var authenticateFunct = thirdParty.__get__('authenticate');
+
+				userDb = new User();
+
+				addUserByServiceName(userDb, 'github');
+				userDb.github.token = null;
+
+				userDb.save((err, usr) => {
+					if(err) {
+						done(err);
+					}
+
+					console.log("user input saved on db");
+					console.log(usr);
+
+					//callback fun ction used below
+					var callbackResponse = function(err, response) {
+						console.log(err);
+						expect(response.github.token).to.be.equals(TOKEN);
+						expect(response.github.id).to.be.equals(profileMockModified.id);
+						expect(response.github.name).to.be.equals(NAME);
+						expect(response.github.username).to.be.equals(USERNAME);
+						expect(response.github.profileUrl).to.be.equals(URL);
+						expect(response.github.email).to.be.equals(EMAIL);
+						done();
+					};
+
+					mockedReq.user = null;
+					let profileMockModified = _und.clone(profileMock);
+					profileMockModified.id = 'github' + ID_POSTFIX;
+
+					authenticateFunct(mockedReq, TOKEN, TOKEN, profileMockModified,
+						callbackResponse, 'github', User);
+				});
+			});
+
+			it('should authenticate, but there is a local user already logged in.', done => {
+				//TODO FIXME implement
+				var authenticateFunct = thirdParty.__get__('authenticate');
+				userDb = new User();
+				addUserByServiceName(userDb, 'local');
+
+				userDb.save((err, usr) => {
+					if(err) {
+						done(err);
+					}
+
+					//callback fun ction used below
+					var callbackResponse = function(err, response) {
+						console.log(err);
+						expect(response.github.token).to.be.equals(TOKEN);
+						expect(response.github.id).to.be.equals('id');
+						expect(response.github.name).to.be.equals(NAME);
+						expect(response.github.username).to.be.equals(USERNAME);
+						expect(response.github.profileUrl).to.be.equals(URL);
+						expect(response.github.email).to.be.equals(EMAIL);
+						done();
+					};
+
+					mockedReq.session.localUserId = usr._id;
+
+					authenticateFunct(mockedReq, TOKEN, TOKEN, profileMock,
+						callbackResponse, 'github', User);
+				});
+			});
+
+		});
+
+		describe('---NO---', () => {
+			it('should not authenticate, but the local user id isn\'t existing.', done => {
+				//TODO FIXME implement
+
+				//TODO FIXME implement
+				var authenticateFunct = thirdParty.__get__('authenticate');
+				userDb = new User();
+				addUserByServiceName(userDb, 'local');
+
+				userDb.save((err, usr) => {
+					if(err) {
+						done(err);
+					}
+
+
+					//TODO FIXME FIXME
+					//TODO FIXME FIXME
+					//TODO FIXME FIXME
+					//TODO FIXME FIXME
+					//TODO FIXME FIXME
+					//TODO FIXME FIXME
+					//TODO FIXME FIXME
+
+
+					//callback fun ction used below
+					var callbackResponse = function(err, response) {
+						console.log(err);
+						console.log("err: " + err);
+						//expect(err).to.be.equals('Impossible to find an user with sessionLocalUserId');
+						// expect(response.github.token).to.be.equals(TOKEN);
+						// expect(response.github.id).to.be.equals('id');
+						// expect(response.github.name).to.be.equals(NAME);
+						// expect(response.github.username).to.be.equals(USERNAME);
+						// expect(response.github.profileUrl).to.be.equals(URL);
+						// expect(response.github.email).to.be.equals(EMAIL);
+						done();
+					};
+					mockedReq.session.localUserId = '123456789012345678901234';
+
+					authenticateFunct(mockedReq, TOKEN, TOKEN, profileMock,
+						callbackResponse, 'github', User);
+
+						//TODO FIXME FIXME
+						//TODO FIXME FIXME
+						//TODO FIXME FIXME
+						//TODO FIXME FIXME
+						//TODO FIXME FIXME
+
+				});
+			});
+		});
+
+		describe('---ERRORS---', () => {
+
+			it('should catch an exception.', done => {
+				//TODO FIXME implement
+				done();
+			});
+		});
+	})
+
+	describe('#updateUser()', () => {
+		describe('---YES---', () => {
+
+			beforeEach(done => User.remove({}, err => done(err)));
+
+			it('should update an empty object with profile infos after the 3dparty login.', done => {
+        // Overwrite the private a1 function with the mock.
+        var updateFunct = thirdParty.__get__('updateUser');
+
+        let userGithub = updateFunct(getUser(1), TOKEN, profileMock, 'github');
+				let userGoogle = updateFunct(getUser(1), TOKEN, profileMock, 'google');
+        let userFacebook = updateFunct(getUser(1), TOKEN, profileMock, 'facebook');
+        let userTwitter = updateFunct(getUser(1), TOKEN, profileMock, 'twitter');
+        let userLinkedin = updateFunct(getUser(1), TOKEN, profileMock, 'linkedin');
+
+        expect(userGithub.github.email).to.be.equals(EMAIL);
+        expect(userGithub.github.profileUrl).to.be.equals(URL);
+        expect(userGithub.github.username).to.be.equals(USERNAME);
+        expect(userGithub.github.name).to.be.equals(NAME);
+        expect(userGithub.github.token).to.be.equals(TOKEN);
+        expect(userGithub.github.id).to.be.equals('id');
+
+        expect(userGoogle.google.email).to.be.equals(EMAIL);
+        expect(userGoogle.google.name).to.be.equals(NAME);
+        expect(userGoogle.google.token).to.be.equals(TOKEN);
+        expect(userGoogle.google.id).to.be.equals('id');
+
+        expect(userFacebook.facebook.email).to.be.equals(EMAIL);
+        expect(userFacebook.facebook.profileUrl).to.be.equals(URL);
+        expect(userFacebook.facebook.name).to.be.equals(NAME + ' ' + NAME);
+        expect(userFacebook.facebook.token).to.be.equals(TOKEN);
+        expect(userFacebook.facebook.id).to.be.equals('id');
+
+        expect(userTwitter.twitter.email).to.be.equals(EMAIL);
+        expect(userTwitter.twitter.username).to.be.equals(USERNAME);
+        expect(userTwitter.twitter.name).to.be.equals(NAME);
+        expect(userTwitter.twitter.token).to.be.equals(TOKEN);
+        expect(userTwitter.twitter.id).to.be.equals('id');
+
+        expect(userLinkedin.linkedin.email).to.be.equals(EMAIL);
+        expect(userLinkedin.linkedin.name).to.be.equals(NAME + ' ' + NAME);
+        expect(userLinkedin.linkedin.token).to.be.equals(TOKEN);
+        expect(userLinkedin.linkedin.id).to.be.equals('id');
+
+        done();
+			});
+
+      it('should update an empty object with twitter profile without email after the 3dparty login.', done => {
+        // Overwrite the private a1 function with the mock.
+        var updateFunct = thirdParty.__get__('updateUser');
+        //remove profileMock's email
+        profileMock.emails = undefined;
+
+        let userTwitter = updateFunct(getUser(0), TOKEN, profileMock, 'twitter');
+
+        expect(userTwitter.twitter.email).to.be.undefined;
+        expect(userTwitter.twitter.username).to.be.equals(USERNAME);
+        expect(userTwitter.twitter.name).to.be.equals(NAME);
+        expect(userTwitter.twitter.token).to.be.equals(TOKEN);
+        expect(userTwitter.twitter.id).to.be.equals('id');
+
+        done();
+			});
+		});
+
+    describe('---ERRORS---', () => {
+      var updateFunct = thirdParty.__get__('updateUser')
+
+			it('should catch an exception, because user must be an object.', done => {
+        expect(()=>updateFunct("", TOKEN, profileMock, 'any_string')).to.throw(USER_NOT_AN_OBJECT);
+				expect(()=>updateFunct(-2, TOKEN, profileMock, 'any_string')).to.throw(USER_NOT_AN_OBJECT);
+				expect(()=>updateFunct(-1, TOKEN, profileMock, 'any_string')).to.throw(USER_NOT_AN_OBJECT);
+				expect(()=>updateFunct(-0, TOKEN, profileMock, 'any_string')).to.throw(USER_NOT_AN_OBJECT);
+				expect(()=>updateFunct(0, TOKEN, profileMock, 'any_string')).to.throw(USER_NOT_AN_OBJECT);
+				expect(()=>updateFunct(1, TOKEN, profileMock, 'any_string')).to.throw(USER_NOT_AN_OBJECT);
+				expect(()=>updateFunct(2, TOKEN, profileMock, 'any_string')).to.throw(USER_NOT_AN_OBJECT);
+				expect(()=>updateFunct(null, TOKEN, profileMock, 'any_string')).to.throw(USER_NOT_AN_OBJECT);
+				expect(()=>updateFunct(undefined, TOKEN, profileMock, 'any_string')).to.throw(USER_NOT_AN_OBJECT);
+				expect(()=>updateFunct(function(){}, TOKEN, profileMock, 'any_string')).to.throw(USER_NOT_AN_OBJECT);
+				expect(()=>updateFunct(()=>{}, TOKEN, profileMock, 'any_string')).to.throw(USER_NOT_AN_OBJECT);
+				expect(()=>updateFunct(/fooRegex/i, TOKEN, profileMock, 'any_string')).to.throw(USER_NOT_AN_OBJECT);
+				expect(()=>updateFunct([], TOKEN, profileMock, 'any_string')).to.throw(USER_NOT_AN_OBJECT);
+				expect(()=>updateFunct(new Error(), TOKEN, profileMock, 'any_string')).to.throw(USER_NOT_AN_OBJECT);
+				expect(()=>updateFunct(new RegExp(/fooRegex/,'i'), TOKEN, profileMock, 'any_string')).to.throw(USER_NOT_AN_OBJECT);
+				expect(()=>updateFunct(new RegExp('/fooRegex/','i'), TOKEN, profileMock, 'any_string')).to.throw(USER_NOT_AN_OBJECT);
+				expect(()=>updateFunct(new Date(), TOKEN, profileMock, 'any_string')).to.throw(USER_NOT_AN_OBJECT);
+				expect(()=>updateFunct(new Array(), TOKEN, profileMock, 'any_string')).to.throw(USER_NOT_AN_OBJECT);
+				expect(()=>updateFunct(true, TOKEN, profileMock, 'any_string')).to.throw(USER_NOT_AN_OBJECT);
+				expect(()=>updateFunct(false, TOKEN, profileMock, 'any_string')).to.throw(USER_NOT_AN_OBJECT);
+        done();
+			});
+
+      it('should catch an exception, because profile must be an object.', done => {
+        expect(()=>updateFunct(getUser(0), TOKEN, "", 'any_string')).to.throw(PROFILE_NOT_AN_OBJECT);
+				expect(()=>updateFunct(getUser(0), TOKEN, -2, 'any_string')).to.throw(PROFILE_NOT_AN_OBJECT);
+				expect(()=>updateFunct(getUser(0), TOKEN, -1, 'any_string')).to.throw(PROFILE_NOT_AN_OBJECT);
+				expect(()=>updateFunct(getUser(0), TOKEN, -0, 'any_string')).to.throw(PROFILE_NOT_AN_OBJECT);
+				expect(()=>updateFunct(getUser(0), TOKEN, 0, 'any_string')).to.throw(PROFILE_NOT_AN_OBJECT);
+				expect(()=>updateFunct(getUser(0), TOKEN, 1, 'any_string')).to.throw(PROFILE_NOT_AN_OBJECT);
+				expect(()=>updateFunct(getUser(0), TOKEN, 2, 'any_string')).to.throw(PROFILE_NOT_AN_OBJECT);
+				expect(()=>updateFunct(getUser(0), TOKEN, null, 'any_string')).to.throw(PROFILE_NOT_AN_OBJECT);
+				expect(()=>updateFunct(getUser(0), TOKEN, undefined, 'any_string')).to.throw(PROFILE_NOT_AN_OBJECT);
+				expect(()=>updateFunct(getUser(0), TOKEN, function(){}, 'any_string')).to.throw(PROFILE_NOT_AN_OBJECT);
+				expect(()=>updateFunct(getUser(0), TOKEN, ()=>{}, 'any_string')).to.throw(PROFILE_NOT_AN_OBJECT);
+				expect(()=>updateFunct(getUser(0), TOKEN, /fooRegex/i, 'any_string')).to.throw(PROFILE_NOT_AN_OBJECT);
+				expect(()=>updateFunct(getUser(0), TOKEN, [], 'any_string')).to.throw(PROFILE_NOT_AN_OBJECT);
+				expect(()=>updateFunct(getUser(0), TOKEN, new Error(), 'any_string')).to.throw(PROFILE_NOT_AN_OBJECT);
+				expect(()=>updateFunct(getUser(0), TOKEN, new RegExp(/fooRegex/,'i'), 'any_string')).to.throw(PROFILE_NOT_AN_OBJECT);
+				expect(()=>updateFunct(getUser(0), TOKEN, new RegExp('/fooRegex/','i'), 'any_string')).to.throw(PROFILE_NOT_AN_OBJECT);
+				expect(()=>updateFunct(getUser(0), TOKEN, new Date(), 'any_string')).to.throw(PROFILE_NOT_AN_OBJECT);
+				expect(()=>updateFunct(getUser(0), TOKEN, new Array(), 'any_string')).to.throw(PROFILE_NOT_AN_OBJECT);
+				expect(()=>updateFunct(getUser(0), TOKEN, true, 'any_string')).to.throw(PROFILE_NOT_AN_OBJECT);
+				expect(()=>updateFunct(getUser(0), TOKEN, false, 'any_string')).to.throw(PROFILE_NOT_AN_OBJECT);
+        done();
+			});
+
+      it('should catch an exception, because both accessToken and serviceName must be strings.', done => {
+        expect(()=>updateFunct(getUser(0), null, profileMock, 'any_string')).to.throw(MUST_BE_STRINGS);
+        expect(()=>updateFunct(getUser(0), 'any_string', profileMock, null)).to.throw(MUST_BE_STRINGS);
+
+				expect(()=>updateFunct(getUser(0), -2, profileMock, null)).to.throw(MUST_BE_STRINGS);
+				expect(()=>updateFunct(getUser(0), -1, profileMock, null)).to.throw(MUST_BE_STRINGS);
+				expect(()=>updateFunct(getUser(0), -0, profileMock, null)).to.throw(MUST_BE_STRINGS);
+				expect(()=>updateFunct(getUser(0), 0, profileMock, null)).to.throw(MUST_BE_STRINGS);
+				expect(()=>updateFunct(getUser(0), 1, profileMock, null)).to.throw(MUST_BE_STRINGS);
+				expect(()=>updateFunct(getUser(0), 2, profileMock, null)).to.throw(MUST_BE_STRINGS);
+				expect(()=>updateFunct(getUser(0), null, profileMock, null)).to.throw(MUST_BE_STRINGS);
+				expect(()=>updateFunct(getUser(0), undefined, profileMock, null)).to.throw(MUST_BE_STRINGS);
+				expect(()=>updateFunct(getUser(0), function(){}, profileMock, null)).to.throw(MUST_BE_STRINGS);
+				expect(()=>updateFunct(getUser(0), ()=>{}, profileMock, null)).to.throw(MUST_BE_STRINGS);
+				expect(()=>updateFunct(getUser(0), /fooRegex/i, profileMock, null)).to.throw(MUST_BE_STRINGS);
+				expect(()=>updateFunct(getUser(0), [], profileMock, null)).to.throw(MUST_BE_STRINGS);
+				expect(()=>updateFunct(getUser(0), new Error(), profileMock, null)).to.throw(MUST_BE_STRINGS);
+				expect(()=>updateFunct(getUser(0), new RegExp(/fooRegex/,'i'), profileMock, null)).to.throw(MUST_BE_STRINGS);
+				expect(()=>updateFunct(getUser(0), new RegExp('/fooRegex/','i'), profileMock, null)).to.throw(MUST_BE_STRINGS);
+				expect(()=>updateFunct(getUser(0), new Date(), profileMock, null)).to.throw(MUST_BE_STRINGS);
+				expect(()=>updateFunct(getUser(0), new Array(), profileMock, null)).to.throw(MUST_BE_STRINGS);
+				expect(()=>updateFunct(getUser(0), true, profileMock, null)).to.throw(MUST_BE_STRINGS);
+				expect(()=>updateFunct(getUser(0), false, profileMock, null)).to.throw(MUST_BE_STRINGS);
+        done();
+      });
+
+      it('should catch an exception, because serviceName isn\'t recogized.', done => {
+        expect(()=>updateFunct(getUser(0), TOKEN, profileMock, 'fake_not_recognized')).to.throw(SERVICENAME_NOT_RECOGNIZED);
+        done();
+      });
+		});
+	});
+});
+
+after(done => User.remove({}, err => done(err)));
