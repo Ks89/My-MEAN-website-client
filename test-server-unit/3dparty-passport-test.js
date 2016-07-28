@@ -351,40 +351,19 @@ describe('3dparty-passport', () => {
 						done(err);
 					}
 
-
-					//TODO FIXME FIXME
-					//TODO FIXME FIXME
-					//TODO FIXME FIXME
-					//TODO FIXME FIXME
-					//TODO FIXME FIXME
-					//TODO FIXME FIXME
-					//TODO FIXME FIXME
-
-
-					//callback fun ction used below
+					//callback function used below
 					var callbackResponse = function(err, response) {
-						console.log(err);
-						console.log("err: " + err);
-						//expect(err).to.be.equals('Impossible to find an user with sessionLocalUserId');
-						// expect(response.github.token).to.be.equals(TOKEN);
-						// expect(response.github.id).to.be.equals('id');
-						// expect(response.github.name).to.be.equals(NAME);
-						// expect(response.github.username).to.be.equals(USERNAME);
-						// expect(response.github.profileUrl).to.be.equals(URL);
-						// expect(response.github.email).to.be.equals(EMAIL);
+						expect(err).to.be.equals('Impossible to find an user with sessionLocalUserId');
 						done();
 					};
-					mockedReq.session.localUserId = '123456789012345678901234';
+
+					var ObjectID = require('mongodb').ObjectID;
+					// Create a new ObjectID using the createFromHexString function
+					var objectID = new ObjectID.createFromHexString('123456789012345678901234')
+					mockedReq.session.localUserId = objectID;
 
 					authenticateFunct(mockedReq, TOKEN, TOKEN, profileMock,
 						callbackResponse, 'github', User);
-
-						//TODO FIXME FIXME
-						//TODO FIXME FIXME
-						//TODO FIXME FIXME
-						//TODO FIXME FIXME
-						//TODO FIXME FIXME
-
 				});
 			});
 		});
