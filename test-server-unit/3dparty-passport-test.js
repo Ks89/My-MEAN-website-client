@@ -339,9 +339,6 @@ describe('3dparty-passport', () => {
 
 		describe('---NO---', () => {
 			it('should not authenticate, but the local user id isn\'t existing.', done => {
-				//TODO FIXME implement
-
-				//TODO FIXME implement
 				var authenticateFunct = thirdParty.__get__('authenticate');
 				userDb = new User();
 				addUserByServiceName(userDb, 'local');
