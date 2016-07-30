@@ -427,15 +427,6 @@ describe('3dparty-passport', () => {
 				});
 			}
 		});
-
-
-		describe('---ERRORS---', () => {
-
-			it('should catch an exception.', done => {
-				//TODO FIXME implement
-				done();
-			});
-		});
 	})
 
 	describe('#updateUser()', () => {
