@@ -364,17 +364,13 @@ describe('3dparty-passport', () => {
 				});
 			});
 
-			//improve the code in 3dparty-passport to prevent some of these cases
 			const mockedWrongLocalUserId = [
-				//"",
 				-2,
 				-1,
-				//-0,
-				//0,
+				-0,
+				0,
 				1,
 				2,
-				//null,
-				//undefined,
 				function(){},
 				()=>{},
 				/fooRegex/i,
@@ -385,7 +381,7 @@ describe('3dparty-passport', () => {
 				new Date(),
 				new Array(),
 				true,
-				//false
+				false
 			];
 
 			for(let i=0; i<mockedWrongLocalUserId.length; i++) {
@@ -406,6 +402,38 @@ describe('3dparty-passport', () => {
 						};
 
 						mockedReq.session.localUserId = mockedWrongLocalUserId[i];
+
+						authenticateFunct(mockedReq, TOKEN, TOKEN, profileMock,
+							callbackResponse, 'github', User);
+					});
+				});
+			}
+
+
+			const mockedNotFoundLocalUserId = [
+				"123456789012345678901234",
+				(new require('mongodb').ObjectID).createFromHexString('123456789012345678901234')
+				//nb: if you pass null or undefined it's like if you aren\'t logged in as local user
+			];
+
+			for(let i=0; i<mockedNotFoundLocalUserId.length; i++) {
+				it('should not authenticate, because the local user id isn\'t inside the db. Test i=' + i, done => {
+					var authenticateFunct = thirdParty.__get__('authenticate');
+					userDb = new User();
+					addUserByServiceName(userDb, 'local');
+
+					userDb.save((err, usr) => {
+						if(err) {
+							done(err);
+						}
+
+						//callback function used below
+						var callbackResponse = function(err, response) {
+							expect(err).to.be.equals('Impossible to find an user with sessionLocalUserId');
+							done();
+						};
+
+						mockedReq.session.localUserId = mockedNotFoundLocalUserId[i];
 
 						authenticateFunct(mockedReq, TOKEN, TOKEN, profileMock,
 							callbackResponse, 'github', User);

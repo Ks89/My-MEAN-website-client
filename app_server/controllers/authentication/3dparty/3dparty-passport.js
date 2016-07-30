@@ -89,15 +89,15 @@ function authenticate(req, accessToken, refreshToken, profile, done, serviceName
     }
 
     //check if the user is already logged in using the LOCAL authentication
-    if(!_und.isNull(sessionLocalUserId) && !_und.isUndefined(sessionLocalUserId)
-      && ( _und.isString(sessionLocalUserId) ||
+    if(!_und.isNull(sessionLocalUserId) && !_und.isUndefined(sessionLocalUserId) &&
+        ( _und.isString(sessionLocalUserId) ||
           sessionLocalUserId instanceof mongoose.Types.ObjectId) ) {
 
       console.log("sessionLocalUserId found - managing 3dauth + local");
       //the user is already logged in
       userRef.findOne({ '_id': sessionLocalUserId }, (err, user) => {
         if (err) {
-          console.log("Error: " + err)
+          console.log("Error: " + err);
           return done('Impossible to find a user with the specified sessionLocalUserId');
         }
         if(!user) {
