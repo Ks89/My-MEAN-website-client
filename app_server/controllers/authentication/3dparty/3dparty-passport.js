@@ -79,13 +79,15 @@ function updateUser (user, accessToken, profile, serviceName) {
 function authenticate(req, accessToken, refreshToken, profile, done, serviceName, userRef) {
   process.nextTick(() => {
     var sessionLocalUserId = req.session.localUserId;
+
     //check if the user is already logged in using the LOCAL authentication
     if(sessionLocalUserId) {
       console.log("sessionLocalUserId found - managing 3dauth + local");
       //the user is already logged in
       userRef.findOne({ '_id': sessionLocalUserId }, (err, user) => {
         if (err) {
-          done(err);
+          console.log("Error: " + err)
+          done('Impossible to find a user with the specified sessionLocalUserId');
           return;
         }
         if(!user) {

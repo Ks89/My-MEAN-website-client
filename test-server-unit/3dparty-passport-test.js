@@ -356,14 +356,64 @@ describe('3dparty-passport', () => {
 
 					var ObjectID = require('mongodb').ObjectID;
 					// Create a new ObjectID using the createFromHexString function
-					var objectID = new ObjectID.createFromHexString('123456789012345678901234')
+					var objectID = new ObjectID.createFromHexString('123456789012345678901234');
 					mockedReq.session.localUserId = objectID;
 
 					authenticateFunct(mockedReq, TOKEN, TOKEN, profileMock,
 						callbackResponse, 'github', User);
 				});
 			});
+
+			//improve the code in 3dparty-passport to prevent some of these cases
+			const mockedWrongLocalUserId = [
+				//"",
+				-2,
+				-1,
+				//-0,
+				//0,
+				1,
+				2,
+				//null,
+				//undefined,
+				function(){},
+				()=>{},
+				/fooRegex/i,
+				[],
+				new Error(),
+				new RegExp(/fooRegex/,'i'),
+				new RegExp('/fooRegex/','i'),
+				new Date(),
+				new Array(),
+				true,
+				//false
+			];
+
+			for(let i=0; i<mockedWrongLocalUserId.length; i++) {
+				it('should not authenticate, because the local user id isn\'t valid. Test i=' + i, done => {
+					var authenticateFunct = thirdParty.__get__('authenticate');
+					userDb = new User();
+					addUserByServiceName(userDb, 'local');
+
+					userDb.save((err, usr) => {
+						if(err) {
+							done(err);
+						}
+
+						//callback function used below
+						var callbackResponse = function(err, response) {
+							expect(err).to.be.equals('Impossible to find a user with the specified sessionLocalUserId');
+							done();
+						};
+
+						mockedReq.session.localUserId = mockedWrongLocalUserId[i];
+
+						authenticateFunct(mockedReq, TOKEN, TOKEN, profileMock,
+							callbackResponse, 'github', User);
+					});
+				});
+			}
 		});
+
 
 		describe('---ERRORS---', () => {
 
