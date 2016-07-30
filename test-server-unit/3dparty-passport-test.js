@@ -337,7 +337,7 @@ describe('3dparty-passport', () => {
 
 		});
 
-		describe('---NO---', () => {
+		describe('---NO/ERRORS---', () => {
 			it('should not authenticate, because the local user id isn\'t existing.', done => {
 				var authenticateFunct = thirdParty.__get__('authenticate');
 				userDb = new User();
@@ -365,23 +365,9 @@ describe('3dparty-passport', () => {
 			});
 
 			const mockedWrongLocalUserId = [
-				-2,
-				-1,
-				-0,
-				0,
-				1,
-				2,
-				function(){},
-				()=>{},
-				/fooRegex/i,
-				[],
-				new Error(),
-				new RegExp(/fooRegex/,'i'),
-				new RegExp('/fooRegex/','i'),
-				new Date(),
-				new Array(),
-				true,
-				false
+				-2, -1, -0, 0, 1, 2, function(){}, ()=>{}, /fooRegex/i, [],
+				new Error(), new RegExp(/fooRegex/,'i'), new RegExp('/fooRegex/','i'),
+				new Date(), new Array(), true, false
 			];
 
 			for(let i=0; i<mockedWrongLocalUserId.length; i++) {
