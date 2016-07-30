@@ -9,6 +9,7 @@ var TwitterStrategy = require('passport-twitter').Strategy;
 
 var logger = require('../../../utils/logger');
 var util = require('../../../utils/util');
+var mongoose = require('mongoose');
 
 //----------experimental---
 var authExperimentalFeatures = require('../common/auth-experimental-collapse-db.js');
@@ -80,26 +81,35 @@ function authenticate(req, accessToken, refreshToken, profile, done, serviceName
   process.nextTick(() => {
     var sessionLocalUserId = req.session.localUserId;
 
+    if(_und.isArray(sessionLocalUserId) || _und.isRegExp(sessionLocalUserId) || _und.isFunction(sessionLocalUserId) ||
+      _und.isDate(sessionLocalUserId) || _und.isBoolean(sessionLocalUserId) || _und.isError(sessionLocalUserId) ||
+      _und.isNaN(sessionLocalUserId) || _und.isNumber(sessionLocalUserId)) {
+        console.log('sessionLocalUserId must be either a string, null, undefined or an ObjectId');
+        return done('sessionLocalUserId must be either a string, null, undefined or an ObjectId');
+    }
+
     //check if the user is already logged in using the LOCAL authentication
-    if(sessionLocalUserId) {
+    if(!_und.isNull(sessionLocalUserId) && !_und.isUndefined(sessionLocalUserId)
+      && ( _und.isString(sessionLocalUserId) ||
+          sessionLocalUserId instanceof mongoose.Types.ObjectId) ) {
+
       console.log("sessionLocalUserId found - managing 3dauth + local");
       //the user is already logged in
       userRef.findOne({ '_id': sessionLocalUserId }, (err, user) => {
         if (err) {
           console.log("Error: " + err)
-          done('Impossible to find a user with the specified sessionLocalUserId');
-          return;
+          return done('Impossible to find a user with the specified sessionLocalUserId');
         }
         if(!user) {
-          done('Impossible to find an user with sessionLocalUserId');
-          return;
+          console.log('Impossible to find an user with sessionLocalUserId');
+          return done('Impossible to find an user with sessionLocalUserId');
         }
         console.log("User found - saving");
         var userUpdated = updateUser(user, accessToken, profile, serviceName);
         console.log("updated localuser with 3dpartyauth");
         userUpdated.save(err => {
           if (err) {
-            done(err);
+            return done(err);
           }
 
           //----------------- experimental ---------------

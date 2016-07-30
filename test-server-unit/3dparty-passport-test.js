@@ -401,7 +401,7 @@ describe('3dparty-passport', () => {
 
 						//callback function used below
 						var callbackResponse = function(err, response) {
-							expect(err).to.be.equals('Impossible to find a user with the specified sessionLocalUserId');
+							expect(err).to.be.equals('sessionLocalUserId must be either a string, null, undefined or an ObjectId');
 							done();
 						};
 
