@@ -84,7 +84,7 @@ function authenticate(req, accessToken, refreshToken, profile, done, serviceName
     if(_und.isArray(sessionLocalUserId) || _und.isRegExp(sessionLocalUserId) || _und.isFunction(sessionLocalUserId) ||
       _und.isDate(sessionLocalUserId) || _und.isBoolean(sessionLocalUserId) || _und.isError(sessionLocalUserId) ||
       _und.isNaN(sessionLocalUserId) || _und.isNumber(sessionLocalUserId)) {
-        console.log('sessionLocalUserId must be either a string, null, undefined or an ObjectId');
+        console.error('sessionLocalUserId must be either a string, null, undefined or an ObjectId');
         return done('sessionLocalUserId must be either a string, null, undefined or an ObjectId');
     }
 
@@ -97,15 +97,23 @@ function authenticate(req, accessToken, refreshToken, profile, done, serviceName
       //the user is already logged in
       userRef.findOne({ '_id': sessionLocalUserId }, (err, user) => {
         if (err) {
-          console.log("Error: " + err);
+          console.error("Error: " + err);
           return done('Impossible to find a user with the specified sessionLocalUserId');
         }
         if(!user) {
-          console.log('Impossible to find an user with sessionLocalUserId');
+          console.error('Impossible to find an user with sessionLocalUserId');
           return done('Impossible to find an user with sessionLocalUserId');
         }
         console.log("User found - saving");
-        var userUpdated = updateUser(user, accessToken, profile, serviceName);
+
+        var userUpdated;
+        try {
+          userUpdated = updateUser(user, accessToken, profile, serviceName);
+        } catch(exception) {
+          console.error('Authenticate - exception in updateUser: ' + exception);
+          return done(exception);
+        }
+
         console.log("updated localuser with 3dpartyauth");
         userUpdated.save(err => {
           if (err) {
@@ -146,10 +154,17 @@ function authenticate(req, accessToken, refreshToken, profile, done, serviceName
             console.log("You aren't logged in, but I found an user on db");
             // if there is already a user id but no token (user was linked at one point and then removed)
             // just add our token and profile informations
-            var userUpdated = '';
             if (!user[serviceName].token) {
               console.log("Id is ok, but not token, updating user...");
-              userUpdated = updateUser(user, accessToken, profile, serviceName);
+
+              var userUpdated;
+              try {
+                userUpdated = updateUser(user, accessToken, profile, serviceName);
+              } catch(exception) {
+                console.error('Authenticate - exception in updateUser: ' + exception);
+                return done(exception);
+              }
+
               userUpdated.save( (err, userSaved) => {
                 if (err) {
                   throw err;
@@ -164,7 +179,15 @@ function authenticate(req, accessToken, refreshToken, profile, done, serviceName
           } else {
             //otherwise, if there is no user found with that id, create them
             console.log("User not found with that id, creating a new one...");
-            var newUser = updateUser(new userRef(), accessToken, profile, serviceName);
+
+            var newUser;
+            try {
+              newUser = updateUser(new userRef(), accessToken, profile, serviceName);
+            } catch(exception) {
+              console.error('Authenticate - exception in updateUser: ' + exception);
+              return done(exception);
+            }
+
             console.log("New user created: " + newUser);
             newUser.save( err => {
               if (err) {

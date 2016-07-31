@@ -196,7 +196,6 @@ describe('3dparty-passport', () => {
 			}
 
 			it('should authenticate, but the user is existing and you are logged in.', done => {
-				//TODO FIXME implement
 				var authenticateFunct = thirdParty.__get__('authenticate');
 
 				userDb = new User();
@@ -231,7 +230,6 @@ describe('3dparty-passport', () => {
 			});
 
 			it('should authenticate, but the user is NOT existing and you aren\'t logged in.', done => {
-				//TODO FIXME implement
 				var authenticateFunct = thirdParty.__get__('authenticate');
 
 				userDb = new User();
@@ -306,7 +304,6 @@ describe('3dparty-passport', () => {
 			});
 
 			it('should authenticate, but there is a local user already logged in.', done => {
-				//TODO FIXME implement
 				var authenticateFunct = thirdParty.__get__('authenticate');
 				userDb = new User();
 				addUserByServiceName(userDb, 'local');
@@ -426,6 +423,42 @@ describe('3dparty-passport', () => {
 					});
 				});
 			}
+
+			const mockedWrongData = [
+				{token: null, profile: profileMock, serviceName: 'github', exception: 'impossible to update because both serviceName and accessToken must be strings'},
+				{token: TOKEN, profile: profileMock, serviceName: null, exception: 'impossible to update because both serviceName and accessToken must be strings'},
+				{token: null, profile: profileMock, serviceName: null, exception: 'impossible to update because both serviceName and accessToken must be strings'},
+				{token: TOKEN, profile: null, serviceName: 'github', exception: 'impossible to update because profile must be an objects'},
+				{token: TOKEN, profile: profileMock, serviceName: 'wrong_serviceName', exception: 'impossible to update because serviceName is not recognized'}
+			];
+
+			for(let i=0; i<mockedWrongData.length; i++) {
+				it('should not authenticate (previously logged as local user), because there is an error in updateUser. Test i=' + i, done => {
+					var authenticateFunct = thirdParty.__get__('authenticate');
+					userDb = new User();
+					addUserByServiceName(userDb, 'local');
+
+					userDb.save((err, usr) => {
+						if(err) {
+							done(err);
+						}
+
+						//callback function used below
+						var callbackResponse = function(err, response) {
+							console.log("err: " + err);
+							console.log("response: " + response);
+							expect(err).to.be.equals(mockedWrongData[i].exception);
+							done();
+						};
+
+						mockedReq.session.localUserId = usr._id;
+
+						authenticateFunct(mockedReq, mockedWrongData[i].token, TOKEN,
+							mockedWrongData[i].profile, callbackResponse, mockedWrongData[i].serviceName, User);
+					});
+				});
+			}
+
 		});
 	})
 
