@@ -445,8 +445,6 @@ describe('3dparty-passport', () => {
 
 						//callback function used below
 						var callbackResponse = function(err, response) {
-							console.log("err: " + err);
-							console.log("response: " + response);
 							expect(err).to.be.equals(mockedWrongData[i].exception);
 							done();
 						};
@@ -455,6 +453,39 @@ describe('3dparty-passport', () => {
 
 						authenticateFunct(mockedReq, mockedWrongData[i].token, TOKEN,
 							mockedWrongData[i].profile, callbackResponse, mockedWrongData[i].serviceName, User);
+					});
+				});
+			}
+
+			const mockedWrongData3dparty = [
+				{token: null, profile: profileMock, serviceName: 'github', exception: 'impossible to update because both serviceName and accessToken must be strings'},
+				{token: TOKEN, profile: profileMock, serviceName: null, exception: 'impossible to update because both serviceName and accessToken must be strings'},
+				{token: null, profile: profileMock, serviceName: null, exception: 'impossible to update because both serviceName and accessToken must be strings'},
+				{token: TOKEN, profile: null, serviceName: 'github', exception: 'impossible to update because profile must be an objects'},
+				{token: TOKEN, profile: profileMock, serviceName: 'wrong_serviceName', exception: 'impossible to update because serviceName is not recognized'}
+			];
+
+			for(let i=0; i<mockedWrongData3dparty.length; i++) {
+				it('should not authenticate (previously logged as 3dparty user), because there is an error in updateUser. Test i=' + i, done => {
+					var authenticateFunct = thirdParty.__get__('authenticate');
+					userDb = new User();
+					addUserByServiceName(userDb, 'twitter');
+
+					userDb.save((err, usr) => {
+						if(err) {
+							done(err);
+						}
+
+						//callback fun ction used below
+						var callbackResponse = function(err, response) {
+							expect(err).to.be.equals(mockedWrongData3dparty[i].exception);
+							done();
+						};
+
+						mockedReq.session.localUserId = usr._id;
+
+						authenticateFunct(mockedReq, mockedWrongData3dparty[i].token, TOKEN,
+							mockedWrongData3dparty[i].profile, callbackResponse, mockedWrongData3dparty[i].serviceName, User);
 					});
 				});
 			}
