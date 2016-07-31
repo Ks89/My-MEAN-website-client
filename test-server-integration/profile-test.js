@@ -87,7 +87,7 @@ describe('profile', () => {
 	}
 
 	function dropUserCollectionTestDb(done) {
-		User.remove({}, err => { 
+		User.remove({}, err => {
 			done(err);
 		});
 	}
@@ -144,9 +144,9 @@ describe('profile', () => {
 							expect(usr.profile.visible).to.be.equals(user.profile.visible);
 
 							asyncDone(err);
-					    });	
+					    });
 					}
-				], (err, response) => done(err));				
+				], (err, response) => done(err));
 			});
 
 			afterEach(done => dropUserCollectionTestDb(done));
@@ -180,12 +180,12 @@ describe('profile', () => {
 
 			const testAggregator = [
 				{test: missingServiceNameParams, resultMsg: 'ServiceName is required'},
-				{test: missingLocalParams, resultMsg: 'LocalUserEmail is required if you pass serviceName = local'}, 
-				{test: missing3dAuthParams, resultMsg: 'id is required if you pass serviceName != local'}, 
+				{test: missingLocalParams, resultMsg: 'LocalUserEmail is required if you pass serviceName = local'},
+				{test: missing3dAuthParams, resultMsg: 'id is required if you pass serviceName != local'},
 				{test: missingProfileParams, resultMsg: 'All profile params are mandatory'}
 			];
 
-			//these are multiple tests that I'm execting for all cobinations of wrong params 
+			//these are multiple tests that I'm execting for all cobinations of wrong params
 			//(two fors because testAggregator contains test with the real array of tests)
 			for(let i = 0; i<testAggregator.length; i++) {
 				for(let j = 0; j<testAggregator[i].test.length; j++) {
@@ -209,7 +209,7 @@ describe('profile', () => {
 			}
 
 			after(done => dropUserCollectionTestDb(done));
-			
+
 		});
 
 
@@ -237,8 +237,8 @@ describe('profile', () => {
 
 			const wrongParamProfileUpdate = [ wrongLocalProfileMock, wrong3dAuthProfileMock ];
 
-			//these are multiple tests that I'm execting for all cobinations 
-			//of wrong params 
+			//these are multiple tests that I'm execting for all cobinations
+			//of wrong params
 			for(let i = 0; i<wrongParamProfileUpdate.length; i++) {
 				console.log(wrongParamProfileUpdate[i]);
 				it('should get 401 UNAUTHORIZED, because you must pass correct the email/id', done => {
@@ -259,7 +259,7 @@ describe('profile', () => {
 			}
 
 			after(done => dropUserCollectionTestDb(done));
-			
+
 		});
 	});
 

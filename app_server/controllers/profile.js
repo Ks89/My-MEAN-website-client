@@ -20,7 +20,11 @@ module.exports.update = function(req, res) {
     Utils.sendJSONres(res, 400, "id is required if you pass serviceName != local");
     return;
   }
-  if(!req.body.name || !req.body.surname || !req.body.nickname || !req.body.email) {
+
+  if((req.body.name === null || req.body.name === undefined) ||
+		(req.body.surname === null || req.body.surname === undefined) ||
+		(req.body.nickname === null || req.body.nickname === undefined) ||
+		(req.body.email === null || req.body.email === undefined)) {
     Utils.sendJSONres(res, 400, "All profile params are mandatory");
     return;
   }
