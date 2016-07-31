@@ -424,7 +424,7 @@ describe('3dparty-passport', () => {
 				});
 			}
 
-			const mockedWrongData = [
+			const mockedWrongDataLocal = [
 				{token: null, profile: profileMock, serviceName: 'github', exception: 'impossible to update because both serviceName and accessToken must be strings'},
 				{token: TOKEN, profile: profileMock, serviceName: null, exception: 'impossible to update because both serviceName and accessToken must be strings'},
 				{token: null, profile: profileMock, serviceName: null, exception: 'impossible to update because both serviceName and accessToken must be strings'},
@@ -432,7 +432,7 @@ describe('3dparty-passport', () => {
 				{token: TOKEN, profile: profileMock, serviceName: 'wrong_serviceName', exception: 'impossible to update because serviceName is not recognized'}
 			];
 
-			for(let i=0; i<mockedWrongData.length; i++) {
+			for(let i=0; i<mockedWrongDataLocal.length; i++) {
 				it('should not authenticate (previously logged as local user), because there is an error in updateUser. Test i=' + i, done => {
 					var authenticateFunct = thirdParty.__get__('authenticate');
 					userDb = new User();
@@ -445,14 +445,14 @@ describe('3dparty-passport', () => {
 
 						//callback function used below
 						var callbackResponse = function(err, response) {
-							expect(err).to.be.equals(mockedWrongData[i].exception);
+							expect(err).to.be.equals(mockedWrongDataLocal[i].exception);
 							done();
 						};
 
 						mockedReq.session.localUserId = usr._id;
 
-						authenticateFunct(mockedReq, mockedWrongData[i].token, TOKEN,
-							mockedWrongData[i].profile, callbackResponse, mockedWrongData[i].serviceName, User);
+						authenticateFunct(mockedReq, mockedWrongDataLocal[i].token, TOKEN,
+							mockedWrongDataLocal[i].profile, callbackResponse, mockedWrongDataLocal[i].serviceName, User);
 					});
 				});
 			}
@@ -486,6 +486,43 @@ describe('3dparty-passport', () => {
 
 						authenticateFunct(mockedReq, mockedWrongData3dparty[i].token, TOKEN,
 							mockedWrongData3dparty[i].profile, callbackResponse, mockedWrongData3dparty[i].serviceName, User);
+					});
+				});
+			}
+
+
+
+			const mockedWrongData3dpartyNew = [
+				{token: null, profile: profileMock, serviceName: 'github', exception: 'impossible to update because both serviceName and accessToken must be strings'},
+				{token: TOKEN, profile: profileMock, serviceName: null, exception: 'impossible to update because both serviceName and accessToken must be strings'},
+				{token: null, profile: profileMock, serviceName: null, exception: 'impossible to update because both serviceName and accessToken must be strings'},
+				{token: TOKEN, profile: profileMock, serviceName: 'wrong_serviceName', exception: 'impossible to update because serviceName is not recognized'}
+			];
+
+			for(let i=0; i<mockedWrongData3dpartyNew.length; i++) {
+				it('should not authenticate (NOT previously logged), because there is an error in updateUser. Test i=' + i, done => {
+					var authenticateFunct = thirdParty.__get__('authenticate');
+
+					userDb = new User();
+					addUserByServiceName(userDb, 'twitter');
+
+					userDb.save((err, usr) => {
+						if(err) {
+							done(err);
+						}
+
+						//callback fun ction used below
+						var callbackResponse = function(err, response) {
+							expect(err).to.be.equals(mockedWrongData3dpartyNew[i].exception);
+							done();
+						};
+
+						mockedReq.user = null;
+						let profileMockModified = _und.clone(mockedWrongData3dpartyNew[i].profile);
+						profileMockModified.id = 'not already existing token';
+
+						authenticateFunct(mockedReq, mockedWrongData3dpartyNew[i].token, TOKEN,
+							mockedWrongData3dpartyNew[i].profile, callbackResponse, mockedWrongData3dpartyNew[i].serviceName, User);
 					});
 				});
 			}
