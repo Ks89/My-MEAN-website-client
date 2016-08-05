@@ -17,9 +17,14 @@ If you are interested, please star this project on GitHub.
 Testing:
 - front-end unit: useless, because I want to rewrite the entire front-end using Angular 2
 - front-end e2e: useless, because I want to rewrite the entire front-end using Angular 2
-- back-end unit: almost done (only the necessary things)
-- back-end integration: almost done
+- back-end unit: almost done (only the necessary things)*
+- back-end integration: almost done*
 
+(*) I unit-tested only public functions and I tested all APIs (integration) except for OAUTH2/PassportJS.
+This is because, it's extremely difficult to test passportjs (for 3dparty services, not for the local auth) without to use  browsers (like Zombie or Phantom). In my opinion an integration-test for a back-end api must use only backend's code, not also a browser (browser is on client and not on server :) ).
+The problem is that to test PassportJS without a browser it's really diffult. I asked on StackOverflow [HERE](http://stackoverflow.com/questions/38169351/how-can-i-test-integration-testing-with-supertest-a-node-js-server-with-passpo), without receivend any answers.
+For this reason, I decided to unit-tests these APIs (not APIs theirself but their functions/logics).
+If you want to help me to write integration-test's case for PassportJS, check [this file](https://github.com/Ks89/My-MEAN-website/blob/master/test-server-integration/TODO-auth-3dparty.js)
 
 ## Requirements
 - Node.js
