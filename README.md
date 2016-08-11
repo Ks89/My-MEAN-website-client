@@ -4,7 +4,7 @@
 ## Informations
 My MEAN website is a web application that I'm creating as a personal website, but also for other uses.
 It's composed by:
-- a front-end in AngularJS 1
+- a front-end in AngularJS 1 (that will be replaced by a new one in Angular2 - check the branch **angular2-front-end**)
 - a back-end in Node.js + Express js (and other useful libs like Passport and so on)
 - a db in MongoDb
 - gulp + nodemon
