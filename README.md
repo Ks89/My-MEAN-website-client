@@ -2,11 +2,11 @@
 <br>
 
 ## Informations
-My MEAN website is a web application that I'm creating as a personal website, but also for other uses.
+My MEAN website is a MEAN's web application that I'm creating as a personal website, but also for other uses.
 It's composed by:
-- a front-end in AngularJS 1 (that will be replaced by a new one in Angular2 - check the branch **angular2-front-end**)
-- a back-end in Node.js + Express js (and other useful libs like Passport and so on)
-- a db in MongoDb
+- A: a front-end in AngularJS 1 (that will be replaced by a new one in Angular2 - check the branch **angular2-front-end**)
+- N + E: a back-end in Node.js + Express js (and other useful libs like PassportJs)
+- M: a MongoDb's database
 - gulp + nodemon
 
 A possible extension of this project is a configurable template to build a custom web app very quickly.
@@ -15,8 +15,8 @@ Attention! This project is still an alpha, so it's not production ready. Please 
 If you are interested, please star this project on GitHub.
 
 Testing:
-- front-end unit: useless, because I want to rewrite the entire front-end using Angular 2
-- front-end e2e: useless, because I want to rewrite the entire front-end using Angular 2
+- front-end unit: useless, because I'm rewriting the entire front-end using Angular 2
+- front-end e2e: useless, because I'm rewriting the entire front-end using Angular 2
 - back-end unit: almost done (only the necessary things)*
 - back-end integration: almost done*
 
@@ -35,8 +35,13 @@ If you want to help me to write integration-test's case for PassportJS, check [t
 
 
 ## News
-- *08/0???/2016* - **My MEAN website** Alpha 1 public release
+- *08/14/2016* - **My MEAN website** Alpha 1 public release
 
+## How to setup
+- install all necessary tools (Node.js, redis-server, mongo db)
+- run: npm install
+- start redis-server and mongodb
+- run: gulp
 
 ## Features
 Work in progress...
