@@ -34,7 +34,7 @@ const MESSAGE = 'some random words';
 describe('contact', () => {
 
 	function dropUserTestDbAndLogout(done) {
-		User.remove({}, err => { 
+		User.remove({}, err => {
 			//I want to try to logout to be able to run all tests in a clean state
 			//If this call returns 4xx or 2xx it's not important here
 			getPartialGetRequest(URL_LOGOUT)
@@ -93,7 +93,7 @@ describe('contact', () => {
 
 
 	describe('#authGithub()', () => {
-		
+
 		describe('---YES---', () => {
 
 			beforeEach(done => updateCookiesAndTokens(done));
@@ -102,44 +102,11 @@ describe('contact', () => {
 
 			// 	const recaptchaCorrectRespMock = {
 			// 		id: '6057207',
-			// 		displayName: 'Stefano Cappa',
-			// 		username: 'Ks89',
+			// 		displayName: 'Fake name
+			// 		username: 'Fakeusername',
 			// 		profileUrl: 'https://github.com/Ks89',
-			// 		emails: [ { value: 'stefano.cappa.ks89@gmail.com' } ],
-			// 		provider: 'github',
-			// 		_raw: '{"login":"Ks89","id":6057207,"avatar_url":"https://avatars.githubusercontent.com/u/6057207?v=3","gravatar_id":"","url":"https://api.github.com/users/Ks89","html_url":"https://github.com/Ks89","followers_url":"https://api.github.com/users/Ks89/followers","following_url":"https://api.github.com/users/Ks89/following{/other_user}","gists_url":"https://api.github.com/users/Ks89/gists{/gist_id}","starred_url":"https://api.github.com/users/Ks89/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/Ks89/subscriptions","organizations_url":"https://api.github.com/users/Ks89/orgs","repos_url":"https://api.github.com/users/Ks89/repos","events_url":"https://api.github.com/users/Ks89/events{/privacy}","received_events_url":"https://api.github.com/users/Ks89/received_events","type":"User","site_admin":false,"name":"Stefano Cappa","company":null,"blog":null,"location":"Milano","email":"stefano.cappa.ks89@gmail.com","hireable":true,"bio":null,"public_repos":41,"public_gists":0,"followers":11,"following":20,"created_at":"2013-11-28T08:38:12Z","updated_at":"2016-07-02T16:25:53Z"}',
-			// 		_json:
-			// 		{ 
-			// 			login: 'Ks89',
-			// 			id: 6057207,
-			// 			avatar_url: 'https://avatars.githubusercontent.com/u/6057207?v=3',
-			// 			gravatar_id: '',
-			// 			url: 'https://api.github.com/users/Ks89',
-			// 			html_url: 'https://github.com/Ks89',
-			// 			followers_url: 'https://api.github.com/users/Ks89/followers',
-			// 			following_url: 'https://api.github.com/users/Ks89/following{/other_user}',
-			// 			gists_url: 'https://api.github.com/users/Ks89/gists{/gist_id}',
-			// 			starred_url: 'https://api.github.com/users/Ks89/starred{/owner}{/repo}',
-			// 			subscriptions_url: 'https://api.github.com/users/Ks89/subscriptions',
-			// 			repos_url: 'https://api.github.com/users/Ks89/repos',
-			// 			events_url: 'https://api.github.com/users/Ks89/events{/privacy}',
-			// 			received_events_url: 'https://api.github.com/users/Ks89/received_events',
-			// 			type: 'User',
-			// 			site_admin: false,
-			// 			name: 'Stefano Cappa',
-			// 			company: null,
-			// 			blog: null,
-			// 			location: 'Milano',
-			// 			email: 'stefano.cappa.ks89@gmail.com',
-			// 			hireable: true,
-			// 			bio: null,
-			// 			public_repos: 41,
-			// 			public_gists: 0,
-			// 			followers: 11,
-			// 			following: 20,
-			// 			created_at: '2013-11-28T08:38:12Z',
-			// 			updated_at: '2016-07-02T16:25:53Z' 
-			// 		} 
+			// 		emails: [ { value: 'stefano.cappa@fake.email.it' } ],
+			// 		provider: 'github'
 			// 	};
 
    //  			console.log(connectionSid);
@@ -173,7 +140,7 @@ describe('contact', () => {
    //             	});
 
 			// 	// getPartialNockApiUrl().reply(302, recaptchaCorrectRespMock);
-			// var codeFromRedirect = '';	
+			// var codeFromRedirect = '';
 
 
 			// var r = request({
@@ -200,7 +167,7 @@ describe('contact', () => {
 			// 		method: 'POST',
 			// 		json:    {
 	  //                 client_id: '408b6ba64789e150dcc5',
-	  //                 client_secret: 'd9fdacda313d9936f9e4382a8717b4f4087c2725',
+	  //                 client_secret: 'add yout client secret',
 	  //                 code: codeFromRedirect,
 	  //                 //redirect_uri: 'http://localhost:3000/api/auth/github/callback'
 	  //               }
@@ -209,7 +176,7 @@ describe('contact', () => {
 			// 		console.log(body);
 			// 		console.log(body.access_token)
 			// 		console.log("----------**----------");
-					
+
 			// 		request({
 			// 			headers: {
 			// 					 'user-agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'
@@ -223,7 +190,7 @@ describe('contact', () => {
 
 			// 	});
 
-			    
+
 			// });
 
 	  //  //   	var re = getPartialGetRequest(GITHUB_AUTH_URL)
@@ -261,41 +228,8 @@ describe('contact', () => {
 			// 		displayName: 'Stefano Cappa',
 			// 		username: 'Ks89',
 			// 		profileUrl: 'https://github.com/Ks89',
-			// 		emails: [ { value: 'stefano.cappa.ks89@gmail.com' } ],
-			// 		provider: 'github',
-			// 		_raw: '{"login":"Ks89","id":6057207,"avatar_url":"https://avatars.githubusercontent.com/u/6057207?v=3","gravatar_id":"","url":"https://api.github.com/users/Ks89","html_url":"https://github.com/Ks89","followers_url":"https://api.github.com/users/Ks89/followers","following_url":"https://api.github.com/users/Ks89/following{/other_user}","gists_url":"https://api.github.com/users/Ks89/gists{/gist_id}","starred_url":"https://api.github.com/users/Ks89/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/Ks89/subscriptions","organizations_url":"https://api.github.com/users/Ks89/orgs","repos_url":"https://api.github.com/users/Ks89/repos","events_url":"https://api.github.com/users/Ks89/events{/privacy}","received_events_url":"https://api.github.com/users/Ks89/received_events","type":"User","site_admin":false,"name":"Stefano Cappa","company":null,"blog":null,"location":"Milano","email":"stefano.cappa.ks89@gmail.com","hireable":true,"bio":null,"public_repos":41,"public_gists":0,"followers":11,"following":20,"created_at":"2013-11-28T08:38:12Z","updated_at":"2016-07-02T16:25:53Z"}',
-			// 		_json:
-			// 		{ 
-			// 			login: 'Ks89',
-			// 			id: 6057207,
-			// 			avatar_url: 'https://avatars.githubusercontent.com/u/6057207?v=3',
-			// 			gravatar_id: '',
-			// 			url: 'https://api.github.com/users/Ks89',
-			// 			html_url: 'https://github.com/Ks89',
-			// 			followers_url: 'https://api.github.com/users/Ks89/followers',
-			// 			following_url: 'https://api.github.com/users/Ks89/following{/other_user}',
-			// 			gists_url: 'https://api.github.com/users/Ks89/gists{/gist_id}',
-			// 			starred_url: 'https://api.github.com/users/Ks89/starred{/owner}{/repo}',
-			// 			subscriptions_url: 'https://api.github.com/users/Ks89/subscriptions',
-			// 			repos_url: 'https://api.github.com/users/Ks89/repos',
-			// 			events_url: 'https://api.github.com/users/Ks89/events{/privacy}',
-			// 			received_events_url: 'https://api.github.com/users/Ks89/received_events',
-			// 			type: 'User',
-			// 			site_admin: false,
-			// 			name: 'Stefano Cappa',
-			// 			company: null,
-			// 			blog: null,
-			// 			location: 'Milano',
-			// 			email: 'stefano.cappa.ks89@gmail.com',
-			// 			hireable: true,
-			// 			bio: null,
-			// 			public_repos: 41,
-			// 			public_gists: 0,
-			// 			followers: 11,
-			// 			following: 20,
-			// 			created_at: '2013-11-28T08:38:12Z',
-			// 			updated_at: '2016-07-02T16:25:53Z' 
-			// 		} 
+			// 		emails: [ { value: 'stefano.cappa@fake.email.it' } ],
+			// 		provider: 'github'
 			// 	};
 
    //  			console.log(connectionSid);
@@ -377,7 +311,7 @@ describe('contact', () => {
 					displayName: 'Stefano Cappa',
 					username: 'Ks89',
 					profileUrl: 'https://github.com/Ks89',
-					emails: [ { value: 'stefano.cappa.ks89@gmail.com' } ]
+					emails: [ { value: 'stefano.cappa@fake.email.it' } ]
 				};
 
 	     		getPartialGetRequest('/api/auth/facebook')
@@ -417,8 +351,8 @@ describe('contact', () => {
 	});
 
 	after(done => {
-		User.remove({}, err => { 
-			console.log('collection removed') 
+		User.remove({}, err => {
+			console.log('collection removed')
 			done(err);
 		});
 	});
