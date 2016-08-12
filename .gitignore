@@ -33,6 +33,10 @@ node_modules
 
 */*/mysite.min.js
 
+app_client/node_modules
+app_client/build
+app_client/.DS_Store
+
 *.log
 
 dist

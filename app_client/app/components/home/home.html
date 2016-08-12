@@ -1,0 +1,67 @@
+<!-- <div class="row carousel-holder">
+  <div class="col-md-12">
+    <auction-carousel></auction-carousel>
+  </div>
+</div>
+<div class="row">
+  <div *ngFor="let product of products | async" class="col-sm-4 col-lg-4 col-md-4">
+    <auction-product-item [product]="product"></auction-product-item>
+  </div>
+</div> -->
+
+
+
+
+
+
+
+
+
+
+
+<div>
+	<!-- <page-header content="vm.pageHeader"></page-header> -->
+
+  <div class="row">
+    <div class="col-xs-12 col-md-12 col-lg-12">
+      <auction-carousel></auction-carousel>
+      <!-- <uib-carousel active="vm.active" interval="vm.myInterval" no-wrap="vm.noWrapSlides">
+        <uib-slide ng-repeat="slide in vm.slides track by slide.id" index="slide.id">
+          <img ng-src="{{slide.image}}" style="margin:auto;">
+          <div class="carousel-caption">
+           <h4>{{slide.header}}</h4>
+           <p>{{slide.text}}</p>
+          </div>
+        </uib-slide>
+      </uib-carousel> -->
+    </div>
+
+    <div class="container marketing">
+      <div class="row">
+        <div *ngFor="let thumb of thumbs | async">
+          <div class="col-lg-4">
+            <img class="img-thumbnail" src="{{thumb.projectHomeView.thumbImagePath}}" alt="Generic placeholder image" width="140" height="140">
+            <h2>{{thumb.name}}</h2>
+            <p>{{thumb.projectHomeView.thumbText}}</p>
+            <p><a class="btn btn-default" href="/projects/{{thumb._id}}" role="button">View details &raquo;</a></p>
+          </div>
+        </div>
+      </div>
+
+      <hr class="featurette-divider"> <!-- initial divider -->
+
+      <div *ngFor="let bigThumb of bigThumbs | async; let i = index">
+        <div class="row featurette">
+          <div class="col-md-7 {{i%2==0 ? '' : 'col-md-push-5'}}">
+            <h2 class="featurette-heading">{{bigThumb.name}} <span class="text-muted">It'll blow your mind.</span></h2>
+            <p class="lead">{{bigThumb.projectHomeView.bigThumbText}}</p>
+          </div>
+          <div class="col-md-5 {{i%2==0 ? '' : 'col-md-pull-7'}}">
+            <img class="featurette-image img-responsive center-block" src="{{bigThumb.projectHomeView.bigThumbImagePath}}" alt="Generic placeholder image">
+          </div>
+        </div>
+        <hr class="featurette-divider"> <!-- Divider -->
+      </div>
+    </div>
+  </div>
+</div>
