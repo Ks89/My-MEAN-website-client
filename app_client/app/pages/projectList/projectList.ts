@@ -7,7 +7,7 @@ import {Project, ProjectService} from '../../services/project-service';
   selector: 'projectList-page',
   providers: [],
   directives: [],
-  styleUrls: [],
+  styleUrls: ['app/pages/projectList/timeline.css'],
   templateUrl: 'app/pages/projectList/projectList.html'
 })
 export default class ProjectListComponent {

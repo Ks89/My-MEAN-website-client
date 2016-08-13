@@ -18,8 +18,22 @@ export default class HomeComponent {
   products: Observable<Project[]>;
   thumbs: Observable<Project[]>;
 
+  pageHeader: any;
+  sidebar: any;
+  message: any;
+
+
   constructor(private productService: ProjectService) {
     this.products = this.productService.getProjects();
     this.thumbs = this.productService.getProjectsForHomepage();
+
+    this.pageHeader = {
+      title: 'KS',
+      strapline: 'Welcome'
+    };
+    this.sidebar = {
+      content: "KS sidebar"
+    };
+    this.message = "Welcome to my website";
   }
 }

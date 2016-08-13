@@ -5,10 +5,10 @@ import {Observable} from "rxjs/Observable";
   selector: 'login-page',
   providers: [],
   directives: [],
-  styleUrls: [],
+  styleUrls: ['app/pages/login/login.css'],
   templateUrl: 'app/pages/login/login.html'
 })
 export default class LoginComponent {
-  
+
   constructor() {}
 }
