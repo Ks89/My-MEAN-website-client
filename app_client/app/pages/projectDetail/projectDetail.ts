@@ -7,9 +7,8 @@ import {Project, ProjectService} from '../../services/project-service';
 @Component({
   selector: 'projectDetail-page',
   providers: [],
-  // directives: [
-  // ],
-  // styleUrls: ['app/pages/projectDetail/projectDetail.css'],
+  directives: [],
+  styleUrls: [],
   templateUrl: 'app/pages/projectDetail/projectDetail.html'
 })
 export default class ProjectDetailComponent {
