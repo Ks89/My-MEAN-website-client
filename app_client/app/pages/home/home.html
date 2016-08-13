@@ -50,7 +50,7 @@
 
       <hr class="featurette-divider"> <!-- initial divider -->
 
-      <div *ngFor="let bigThumb of bigThumbs | async; let i = index">
+      <div *ngFor="let bigThumb of thumbs | async; let i = index">
         <div class="row featurette">
           <div class="col-md-7 {{i%2==0 ? '' : 'col-md-push-5'}}">
             <h2 class="featurette-heading">{{bigThumb.name}} <span class="text-muted">It'll blow your mind.</span></h2>
