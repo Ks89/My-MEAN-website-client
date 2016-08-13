@@ -12,6 +12,7 @@ import ProjectListComponent from './pages/projectList/projectList';
 import CvComponent from './pages/cv/cv';
 import AboutComponent from './pages/about/about';
 import ContactComponent from './pages/contact/contact';
+import ProjectDetailComponent from './pages/projectDetail/projectDetail';
 
 //import services
 import {ProjectService} from './services/project-service';
@@ -21,7 +22,7 @@ bootstrap(ApplicationComponent, [
   provideRouter([
     {path: '',                                component: HomeComponent},
     {path: 'projects',                        component: ProjectListComponent},
-    // {path: 'projects/:projectId',             component: ProjectDetailComponent},
+    {path: 'projects/:projectId',             component: ProjectDetailComponent},
     {path: 'cv',                              component: CvComponent},
     {path: 'contact',                         component: ContactComponent},
     {path: 'about',                           component: AboutComponent},
