@@ -1,25 +1,25 @@
 import {Component} from '@angular/core';
 import {Observable} from "rxjs/Observable";
 
-import {Project, ProductService} from '../../services/product-service';
-import CarouselComponent from '../carousel/carousel';
+import {Project, ProjectService} from '../../services/project-service';
+import CarouselComponent from '../../common/carousel/carousel';
 
 
 @Component({
-  selector: 'auction-home-page',
+  selector: 'home-page',
   providers: [],
   directives: [
     CarouselComponent
   ],
-  styleUrls: ['app/components/home/home.css'],
-  templateUrl: 'app/components/home/home.html'
+  styleUrls: ['app/pages/home/home.css'],
+  templateUrl: 'app/pages/home/home.html'
 })
 export default class HomeComponent {
   products: Observable<Project[]>;
   bigThumbs: Observable<Project[]>;
   thumbs: Observable<Project[]>;
 
-  constructor(private productService: ProductService) {
+  constructor(private productService: ProjectService) {
     this.products = this.productService.getProjects();
     this.bigThumbs = this.productService.getProjectsForHomepage();
     this.thumbs = this.productService.getProjectsForHomepage();

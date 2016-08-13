@@ -47,7 +47,7 @@ export class Project {
 }
 
 @Injectable()
-export class ProductService {
+export class ProjectService {
   searchEvent: EventEmitter = new EventEmitter();
 
   constructor(private http: Http) {}

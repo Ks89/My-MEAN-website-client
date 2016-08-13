@@ -1,11 +1,11 @@
 <!-- <div class="row carousel-holder">
   <div class="col-md-12">
-    <auction-carousel></auction-carousel>
+    <carousel></carousel>
   </div>
 </div>
 <div class="row">
-  <div *ngFor="let product of products | async" class="col-sm-4 col-lg-4 col-md-4">
-    <auction-product-item [product]="product"></auction-product-item>
+  <div *ngFor="let project of projects | async" class="col-sm-4 col-lg-4 col-md-4">
+    <project-item [project]="project"></project-item>
   </div>
 </div> -->
 
@@ -24,7 +24,7 @@
 
   <div class="row">
     <div class="col-xs-12 col-md-12 col-lg-12">
-      <auction-carousel></auction-carousel>
+      <carousel></carousel>
       <!-- <uib-carousel active="vm.active" interval="vm.myInterval" no-wrap="vm.noWrapSlides">
         <uib-slide ng-repeat="slide in vm.slides track by slide.id" index="slide.id">
           <img ng-src="{{slide.image}}" style="margin:auto;">
