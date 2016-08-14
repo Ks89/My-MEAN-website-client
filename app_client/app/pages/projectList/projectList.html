@@ -4,12 +4,11 @@
   <div class="row">
 
     <div class="col-md-7 col-lg-7">
-      <!-- <label for="filter">Filter results</label><br/>
+      <label for="filter">Filter results</label><br/>
       <div class="input-group">
         <span class="input-group-addon"><i class="glyphicon glyphicon-filter"></i></span>
-        <input id="login-username" type="text" class="form-control" name="username" ng-model="search.name"  placeholder="Write a letter to filter">
-      </div> -->
-      <input type="text" id="inputEmail" class="form-control" placeholder="Search projects by name" [(ngModel)]="prjName">
+        <input id="searchProject" type="text" class="form-control" name="username" [(ngModel)]="prjName"  placeholder="Write a letter to filter">
+      </div>
       <br>
       <div class="error">{{ message }}</div>
       <!--  | filter:search:strict-->
