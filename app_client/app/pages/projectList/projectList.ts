@@ -1,12 +1,12 @@
 import {Component} from '@angular/core';
-// import {NgIf} from '@angular/common';
 import {Observable} from "rxjs/Observable";
 import {Project, ProjectService} from '../../services/project-service';
+import PageHeaderComponent from '../../common/pageHeader/pageHeader';
 
 @Component({
   selector: 'projectList-page',
   providers: [],
-  directives: [],
+  directives: [PageHeaderComponent],
   styleUrls: ['app/pages/projectList/timeline.css'],
   templateUrl: 'app/pages/projectList/projectList.html'
 })

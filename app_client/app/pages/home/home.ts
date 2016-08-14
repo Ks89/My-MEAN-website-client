@@ -3,13 +3,14 @@ import {Observable} from "rxjs/Observable";
 
 import {Project, ProjectService} from '../../services/project-service';
 import CarouselComponent from '../../common/carousel/carousel';
-
+import PageHeaderComponent from '../../common/pageHeader/pageHeader';
 
 @Component({
   selector: 'home-page',
   providers: [],
   directives: [
-    CarouselComponent
+    CarouselComponent,
+    PageHeaderComponent
   ],
   styleUrls: ['app/pages/home/home.css'],
   templateUrl: 'app/pages/home/home.html'
@@ -31,9 +32,7 @@ export default class HomeComponent {
       title: 'KS',
       strapline: 'Welcome'
     };
-    this.sidebar = {
-      content: "KS sidebar"
-    };
+
     this.message = "Welcome to my website";
   }
 }
