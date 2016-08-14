@@ -9,10 +9,11 @@
         <span class="input-group-addon"><i class="glyphicon glyphicon-filter"></i></span>
         <input id="login-username" type="text" class="form-control" name="username" ng-model="search.name"  placeholder="Write a letter to filter">
       </div> -->
+      <input type="text" id="inputEmail" class="form-control" placeholder="Search projects by name" [(ngModel)]="prjName">
       <br>
       <div class="error">{{ message }}</div>
       <!--  | filter:search:strict-->
-      <div *ngFor="let project of projects | async">
+      <div *ngFor="let project of projects | async | projectSearchFilter:name">
         <span *ngIf="project.visible">
           <div class="media well">
             <div class="media-left media-middle">
