@@ -6,6 +6,7 @@ import {HTTP_PROVIDERS} from '@angular/http';
 
 import ApplicationComponent from './common/application/application';
 
+
 //import pages
 import HomeComponent from './pages/home/home';
 import ProjectListComponent from './pages/projectList/projectList';
