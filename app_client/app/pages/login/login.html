@@ -1,6 +1,49 @@
-<div>
+<div class="container">
   <page-header [title]="pageHeader.title" [strapline]="pageHeader.strapline"></page-header>
 
-  Not implemented yet
+  <div class="row">
+    <div class="col-xs-12 col-sm-8 col-md-6 col-lg-6 vertical-divider-right">
+      <p class="lead">Not a member? Please <a href="/#register">register</a> first.</p>
+      <form [formGroup]="formModel" (ngSubmit)="onLogin()" novalidate>
 
+          <!-- <div role="alert" ng-show="vm.formError" class="alert alert-danger">{{ vm.formError }}</div> -->
+          <div class="form-group" [class.has-error]="formModel.hasError('minlength', 'email')">
+            <label for="email">Email address</label>
+            <input type="email" class="form-control" id="email" placeholder="Enter email"
+                    minlength="3"
+                    formControlName="email">
+            <span class="help-block"
+                  [class.hidden]="!formModel.hasError('minlength', 'email')">
+              Type at least 3 characters
+            </span>
+          </div>
+          <div class="form-group" [class.has-error]="formModel.hasError('positivenumber', 'password')">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" placeholder="Password"
+                    formControlName="password">
+            <span class="help-block"
+                  [class.hidden]="!formModel.hasError('positivenumber', 'password')">
+              password is not a positive number
+            </span>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Sign in!</button>
+          <!-- TODO FIXME I removed ladda due to the upgrade to angular 2-->
+          <!-- <button type="button" ng-click="vm.onSubmit()" ladda="vm.isWaiting" data-style="slide-right" data-spinner-color="Azure" class="btn btn-primary ladda-button"><span class="ladda-label">Sign in!</span></button> -->
+
+          <a [routerLink]="['/forgot']">Forgot password?</a>
+      </form>
+    </div>
+    <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 vertical-divider-left">
+      <a class="btn btn-primary" href="{{facebookOauthUrl}}"> <span class="fa fa-facebook fa-lg"></span> Login with facebook</a>
+      <br><br>
+      <a class="btn btn-success" href="{{githubOauthUrl}}"> <span class="fa fa-github fa-lg"></span> Login with github</a>
+      <br><br>
+      <a class="btn btn-danger" href="{{googleOauthUrl}}"> <span class="fa fa-google fa-lg"></span> Login with google</a>
+      <br><br>
+      <a class="btn btn-default" href="{{linkedinOauthUrl}}"> <span class="fa fa-linkedin fa-lg"></span> Login with linkedin</a>
+      <br><br>
+      <a class="btn btn-info" href="{{twitterOauthUrl}}"> <span class="fa fa-twitter fa-lg"></span> Login with twitter</a>
+    </div>
+  </div>
 </div>
