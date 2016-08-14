@@ -12,22 +12,23 @@
 
     <div id="navbar-main" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li><a href="/#projects">Projects</a></li>
+        <li><a [routerLink]="['/projects']">Projects</a></li>
       </ul>
       <ul class="nav navbar-nav">
-        <li><a href="/#cv">CV</a></li>
+        <li><a [routerLink]="['/cv']">CV</a></li>
       </ul>
       <ul class="nav navbar-nav">
-        <li><a href="/#contact">Contact</a></li>
+        <li><a [routerLink]="['/contact']">Contact</a></li>
       </ul>
       <ul class="nav navbar-nav">
-        <li><a href="/#about">About</a></li>
+        <li><a [routerLink]="['/about']">About</a></li>
       </ul>
       <ul class="nav navbar-nav">
-        <li><a href="/#profile">Profile</a></li>
+        <li><a [routerLink]="['/profile']">Profile</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li *ngIf="!isLoggedIn"><a href="/#login/?page={{ currentPath }}">Sign in</a></li>
+        <!-- why did I use this /?page={{ currentPath }} into the login's route???-->
+        <li *ngIf="!isLoggedIn"><a [routerLink]="['/login']">Sign in</a></li>
         <li *ngIf="isLoggedIn" class="dropdown">
           <a href="" class="dropdown-toggle" data-toggle="dropdown">{{ currentUser.name }} <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
