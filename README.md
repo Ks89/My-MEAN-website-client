@@ -38,10 +38,43 @@ If you want to help me to write integration-test's case for PassportJS, check [t
 - *08/14/2016* - **My MEAN website** Alpha 1 public release
 
 ## How to setup
-- install all necessary tools (Node.js, redis-server, mongo db)
-- run: npm install
-- start redis-server and mongodb
-- run: gulp
+
+1. create a file calle ".env" into the root folder and add all these properties
+
+    JWT_SECRET=INSERT A JEW SECRET HERE
+    
+    TWITTER_CONSUMER_KEY=YOU KEY/ID
+    TWITTER_CONSUMER_SECRET=YOU KEY/ID
+    
+    FACEBOOK_APP_ID=YOU KEY/ID
+    FACEBOOK_APP_SECRET=YOU KEY/ID
+    
+    GOOGLE_CLIENT_ID=YOU KEY/ID
+    GOOGLE_CLIENT_SECRET=YOU KEY/ID
+    
+    GITHUB_CLIENT_ID=YOU KEY/ID
+    GITHUB_CLIENT_SECRET=YOU KEY/ID
+    
+    LINKEDIN_CLIENT_ID=YOU KEY/ID
+    LINKEDIN_CLIENT_SECRET=YOU KEY/ID
+    
+    USER_EMAIL=YOUR_EMAIL
+    PASS_EMAIL=YOUR_PASSWORD
+    
+    RECAPTCHA_PUBLIC=YOU KEY/ID
+    RECAPTCHA_SECRET=YOU KEY/ID
+
+    - replace 'YOU KEY/ID' with the keys obtained from facebook/github... oauth applications.
+    - replace YOUR_EMAIL and YOUR_PASSWORD with the data of your e-mail account
+    - reaplce INSERT A JEW SECRET HERE with an alphanumerical string (I'm using a random string with a length = 72)
+
+2. install all necessary tools (Node.js, redis-server, mongo db, Google Chrome)
+3. execute this command 'npm install'
+4. execute this command 'redis-server 
+5. execute this command 'mongod' (on Mac OSX use 'sudo mongod')
+6. execute this command 'gulp' to build and start this application on http://localhost:3001
+
+Attention: there are some problems with browserSync on Mac, so reload the page on Google Chrome to be able to show this application.
 
 ## Features
 Work in progress...
