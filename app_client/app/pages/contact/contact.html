@@ -1,6 +1,65 @@
-<div>
+<div class="container">
   <page-header [title]="pageHeader.title" [strapline]="pageHeader.strapline"></page-header>
 
-  Not implemented yet
+  <div class="row">
 
+  <div class="col-xs-12 col-sm-10 col-md-6 col-lg-6">
+    <p class="lead">Send me an email</p>
+    <!-- <fieldset ng-disabled="vm.formDisable"> -->
+      <form [formGroup]="formModel" (ngSubmit)="onSend()" novalidate>
+        <!-- <div role="alert" class="alert alert-{{vm.error}}">
+          {{ vm.formResultMessage }}
+        </div> -->
+        <div class="form-group" [class.has-error]="formModel.hasError('minlength', 'email')">
+          <label for="emailInput">Email</label>
+          <input type="email"
+            class="form-control"
+            id="emailInput"
+            required="required"
+            placeholder="Email"
+            minlength="3"
+            formControlName="email">
+            <span class="help-block"
+                  [class.hidden]="!formModel.hasError('minlength', 'email')">
+              Type at least 3 characters
+            </span>
+        </div>
+        <div class="form-group" [class.has-error]="formModel.hasError('minlength', 'subject')">
+          <label for="subjectInput">Subject</label>
+          <input class="form-control"
+            id="subjectInput"
+            required="required"
+            placeholder="Subject"
+            minlength="3"
+            formControlName="subject">
+            <span class="help-block"
+                  [class.hidden]="!formModel.hasError('minlength', 'subject')">
+              Type at least 3 characters
+            </span>
+        </div>
+        <div class="form-group" [class.has-error]="formModel.hasError('minlength', 'message')">
+          <label for="textInput">Message</label>
+          <textarea class="form-control"
+            id="textInput"
+            name="messageText"
+            rows="5"
+            required="required"
+            placeholder="Message text"
+            minlength="3"
+            formControlName="message"></textarea>
+            <span class="help-block"
+                  [class.hidden]="!formModel.hasError('minlength', 'message')">
+              Type at least 3 characters
+            </span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Send</button>
+        <!-- <button type="button" ng-click="vm.onSubmit()" ladda="vm.isWaiting" data-style="slide-right" data-spinner-color="Azure" class="btn btn-primary ladda-button"><span class="ladda-label">Submit</span></button> -->
+
+        <!-- The recaptcha.
+        Remember to include into index.html the api js file from google server!!!-->
+        <!-- <div class="g-recaptcha pull-right" data-sitekey="{{vm.publicKey}}"></div> -->
+      </form>
+    <!-- </fieldset> -->
+  </div>
 </div>
