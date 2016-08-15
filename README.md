@@ -31,15 +31,16 @@ If you want to help me to write integration-test's case for PassportJS, check [t
 - MongoDB
 - redis
 - npm
-- work in progress...
+- Google Chrome
+- work in progress... (this is only an alpha, please be patient)
 
 
 ## News
-- *08/14/2016* - **My MEAN website** Alpha 1 public release
+- *08/15/2016* - **My MEAN website** Alpha 1 public release
 
 ## How to setup
 
-1. create a file calle ".env" into the root folder and add all these properties
+1. create a file called ".env" into the root folder and add all these properties
 
     JWT_SECRET=INSERT A JEW SECRET HERE
     
@@ -77,19 +78,19 @@ If you want to help me to write integration-test's case for PassportJS, check [t
 Attention: there are some problems with browserSync on Mac, so reload the page on Google Chrome to be able to show this application.
 
 ## Features
-Work in progress...
+Work in progress... (this is only an alpha, please be patient)
 
 
 ## Future extensions
-Work in progress...
+Work in progress... (this is only an alpha, please be patient)
 
 
 ## Images
-Work in progress...
+Work in progress... (this is only an alpha, please be patient)
 
 
 ## Configuration
-Work in progress...
+Work in progress... (this is only an alpha, please be patient)
 
 
 ## License
