@@ -7,7 +7,7 @@ It's composed by:
 - A: a front-end in AngularJS 1 (that will be replaced by a new one in Angular2 - check the branch **angular2-front-end**)
 - N + E: a back-end in Node.js + Express js (and other useful libs like PassportJs)
 - M: a MongoDb's database
-- gulp + nodemon (I'm also experimenting Wepack  [HERE](https://github.com/Ks89/My-MEAN-website/tree/webpack-angular2-front-end))
+- gulp + nodemon
 
 A possible extension of this project is a configurable template to build a custom web app very quickly.
 
@@ -44,37 +44,36 @@ If you want to help me to write integration-test's case for PassportJS, check [t
 1. create a file called ".env" into the root folder and add all these properties
 
     JWT_SECRET=INSERT A JEW SECRET HERE
-    
+<<<<<<< HEAD
+
     TWITTER_CONSUMER_KEY=YOU KEY/ID
     TWITTER_CONSUMER_SECRET=YOU KEY/ID
-    
+
     FACEBOOK_APP_ID=YOU KEY/ID
     FACEBOOK_APP_SECRET=YOU KEY/ID
-    
+
     GOOGLE_CLIENT_ID=YOU KEY/ID
     GOOGLE_CLIENT_SECRET=YOU KEY/ID
-    
+
     GITHUB_CLIENT_ID=YOU KEY/ID
     GITHUB_CLIENT_SECRET=YOU KEY/ID
-    
+
     LINKEDIN_CLIENT_ID=YOU KEY/ID
     LINKEDIN_CLIENT_SECRET=YOU KEY/ID
-    
+
     USER_EMAIL=YOUR_EMAIL
     PASS_EMAIL=YOUR_PASSWORD
-    
-    RECAPTCHA_PUBLIC=YOU KEY/ID
-    RECAPTCHA_SECRET=YOU KEY/ID
 
     - replace 'YOU KEY/ID' with the keys obtained from facebook/github... oauth applications.
     - replace YOUR_EMAIL and YOUR_PASSWORD with the data of your e-mail account
     - reaplce INSERT A JEW SECRET HERE with an alphanumerical string (I'm using a random string with a length = 72)
 
 2. install all necessary tools (Node.js, redis-server, mongo db, Google Chrome)
-3. execute this command 'npm install'
-4. execute this command 'redis-server 
+3. execute this command 'npm install' into the root folder
+4. execute this command 'npm install' into the app_client folder
+4. execute this command 'redis-server
 5. execute this command 'mongod' (on Mac OSX use 'sudo mongod')
-6. execute this command 'gulp' to build and start this application on http://localhost:3001
+6. execute this command 'nodemon' to start this application on http://localhost:3000 (as you can see this branch doesn't use gulp, at the moment. I want to replace gulp with another tool).
 
 Attention: there are some problems with browserSync on Mac, so reload the page on Google Chrome to be able to show this application.
 
