@@ -57,11 +57,8 @@
         <!-- TODO FIXME I removed ladda due to the upgrade to angular 2-->
         <!-- <button type="button" ng-click="vm.onSubmit()" ladda="vm.isWaiting" data-style="slide-right" data-spinner-color="Azure" class="btn btn-primary ladda-button"><span class="ladda-label">Submit</span></button> -->
 
-        <!-- The recaptcha.
-        Remember to include into index.html the api js file from google server!!!-->
-        <!-- <re-captcha site_key="{{publicKey}}"></re-captcha> -->
-        <!-- <div class="g-recaptcha pull-right" data-sitekey="6Lf0jxQTAAAAAIDxhvAqGseKy_KV2_4iViVeQWYi"></div> -->
-        <!-- <div class="g-recaptcha pull-right" data-sitekey="{{vm.publicKey}}"></div> -->
+        <!-- The recaptcha2's directive. site_key is the publickey, so don't be scared-->
+        <re-captcha (captchaResponse)="handleCorrectCaptcha($event)" site_key="6Lf0jxQTAAAAAIDxhvAqGseKy_KV2_4iViVeQWYi"></re-captcha>
       </form>
     <!-- </fieldset> -->
   </div>

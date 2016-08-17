@@ -16,9 +16,7 @@ import {
 })
 export default class ContactComponent {
   pageHeader: any;
-
-  publicKey: string = "6Lf0jxQTAAAAAIDxhvAqGseKy_KV2_4iViVeQWYi"; //not secret, no problem ;)
-
+  
   formModel: FormGroup;
 
   constructor() {
@@ -33,6 +31,10 @@ export default class ContactComponent {
       'subject': [null, Validators.minLength(3)],
       'message': [null, Validators.minLength(3)],
     });
+  }
+
+  handleCorrectCaptcha(captchaResponse: string) {
+    console.log(`Resolved captcha with response ${captchaResponse}:`);
   }
 
   onSend() {

@@ -26,6 +26,8 @@ import NavbarComponent from './common/navbar/navbar';
 import PageHeaderComponent from './common/pageHeader/pageHeader';
 import {ProjectSearchFilter} from './common/projectSearch/projectSearchFilter';
 
+import {ReCaptchaComponent} from 'angular2-recaptcha/angular2-recaptcha';
+
 
 import {ProjectService} from './services/project-service';
 import {SERVICES} from './services/services';
@@ -69,7 +71,8 @@ import {SERVICES} from './services/services';
     FooterComponent,
     NavbarComponent,
     PageHeaderComponent,
-    ProjectSearchFilter
+    ProjectSearchFilter,
+    ReCaptchaComponent
   ],
   providers: [
       { provide: LocationStrategy, useClass: HashLocationStrategy },
