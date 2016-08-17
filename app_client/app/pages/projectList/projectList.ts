@@ -1,23 +1,16 @@
 import {Component} from '@angular/core';
 import {Observable} from "rxjs/Observable";
 import {Project, ProjectService} from '../../services/project-service';
-import PageHeaderComponent from '../../common/pageHeader/pageHeader';
-import {ROUTER_DIRECTIVES} from '@angular/router';
-import {ProjectSearchFilter} from '../../common/projectSearch/projectSearchFilter';
 import {
     FormControl,
     FormGroup,
     FormBuilder,
-    Validators,
-    REACTIVE_FORM_DIRECTIVES,
-    FORM_DIRECTIVES
+    Validators
 } from '@angular/forms';
 
 @Component({
   selector: 'projectList-page',
-  pipes: [ProjectSearchFilter],
   providers: [],
-  directives: [ROUTER_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, PageHeaderComponent],
   styleUrls: ['app/pages/projectList/timeline.css'],
   templateUrl: 'app/pages/projectList/projectList.html'
 })

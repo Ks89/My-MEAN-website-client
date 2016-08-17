@@ -1,21 +1,16 @@
 import {Component} from '@angular/core';
 import {Observable} from "rxjs/Observable";
-import PageHeaderComponent from '../../common/pageHeader/pageHeader';
-import {ROUTER_DIRECTIVES} from '@angular/router';
+
 import {
     FormControl,
     FormGroup,
     FormBuilder,
-    Validators,
-    REACTIVE_FORM_DIRECTIVES
+    Validators
 } from '@angular/forms';
-// import {ReCaptchaComponent} from 'angular2-recaptcha/angular2-recaptcha';
 
 @Component({
   selector: 'contact-page',
   providers: [],
-  directives: [ROUTER_DIRECTIVES, REACTIVE_FORM_DIRECTIVES,
-               PageHeaderComponent/*, ReCaptchaComponent*/],
   // styleUrls: ['app/pages/contact/contact.css'],
   templateUrl: 'app/pages/contact/contact.html'
 })

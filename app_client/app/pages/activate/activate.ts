@@ -1,12 +1,10 @@
 import {Component} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Observable} from "rxjs/Observable";
-import PageHeaderComponent from '../../common/pageHeader/pageHeader';
 
 @Component({
   selector: 'activate-page',
   providers: [],
-  directives: [PageHeaderComponent],
   styleUrls: [],
   templateUrl: 'app/pages/activate/activate.html'
 })

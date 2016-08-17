@@ -1,20 +1,16 @@
 import {Component} from '@angular/core';
 import {Observable} from "rxjs/Observable";
-import PageHeaderComponent from '../../common/pageHeader/pageHeader';
-import {ROUTER_DIRECTIVES} from '@angular/router';
 import {Project} from '../../services/project-service';
 import {
     FormControl,
     FormGroup,
     FormBuilder,
-    Validators,
-    REACTIVE_FORM_DIRECTIVES
+    Validators
 } from '@angular/forms';
 
 @Component({
   selector: 'login-page',
   providers: [],
-  directives: [ROUTER_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, PageHeaderComponent],
   styleUrls: ['app/pages/login/login.css'],
   templateUrl: 'app/pages/login/login.html'
 })

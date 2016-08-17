@@ -1,15 +1,11 @@
 import {Component} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Observable} from "rxjs/Observable";
-import PageHeaderComponent from '../../common/pageHeader/pageHeader';
 import {Project, ProjectService} from '../../services/project-service';
-import {MyNgInclude} from '../../common/htmlInclude/htmlInclude';
-//import {ImageModal} from '../../../node_modules/angular2-image-popup/directives/angular2-image-popup/image-modal-popup';
 
 @Component({
   selector: 'projectDetail-page',
   providers: [],
-  directives: [PageHeaderComponent, MyNgInclude /*, ImageModal*/],
   styleUrls: ['app/pages/projectDetail/bs_doc.css'],
   templateUrl: 'app/pages/projectDetail/projectDetail.html'
 })
