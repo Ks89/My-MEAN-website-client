@@ -7,7 +7,6 @@
     "target": "ES5"
   },
   "exclude": [
-    "node_modules",
-    "client"
+    "node_modules"
   ]
 }

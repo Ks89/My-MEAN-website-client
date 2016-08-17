@@ -2,16 +2,10 @@ import {Component} from '@angular/core';
 import {Observable} from "rxjs/Observable";
 
 import {Project, ProjectService} from '../../services/project-service';
-import CarouselComponent from '../../common/carousel/carousel';
-import PageHeaderComponent from '../../common/pageHeader/pageHeader';
 
 @Component({
   selector: 'home-page',
   providers: [],
-  directives: [
-    CarouselComponent,
-    PageHeaderComponent
-  ],
   styleUrls: ['app/pages/home/home.css'],
   templateUrl: 'app/pages/home/home.html'
 })

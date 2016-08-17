@@ -3,26 +3,28 @@
 <head>
   <title>My M.E.A.N. website</title>
   <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
-  <script src="node_modules/zone.js/dist/zone.js"></script>
-  <script src="node_modules/typescript/lib/typescript.js"></script>
   <script src="node_modules/jquery/dist/jquery.js"></script>
   <script src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
+
+  <script src="node_modules/zone.js/dist/zone.js"></script>
+  <script src="node_modules/typescript/lib/typescript.js"></script>
   <script src="node_modules/reflect-metadata/Reflect.js"></script>
   <script src="node_modules/systemjs/dist/system.src.js"></script>
 
   <!-- angular2-image-popup: https://github.com/vimalavinisha/angular2-image-popup -->
-  <link rel="stylesheet" type="text/css" href="node_modules/angular2-image-popup/directives/angular2-image-popup/css/style.css">
+  <!-- <link rel="stylesheet" type="text/css" href="node_modules/angular2-image-popup/directives/angular2-image-popup/css/style.css">
   <link rel="stylesheet" type="text/css" href="node_modules/font-awesome/css/font-awesome.css">
-  <link rel="stylesheet" type="text/css" href="node_modules/angular2-image-popup/app/assets/css/main.css">
+  <link rel="stylesheet" type="text/css" href="node_modules/angular2-image-popup/app/assets/css/main.css"> -->
 
+  <!-- SystemJS -->
   <script src="systemjs.config.js"></script>
+  <script>System.import('app')</script>
 </head>
 <body>
   <br>
 
   <!-- Include application here -->
   <my-application>Loading...</my-application>
-
-  <script>System.import('app')</script>
+  
 </body>
 </html>
