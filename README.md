@@ -115,6 +115,10 @@ Note: multiple account connected (Facebook and Github)
 Work in progress... (this is only an alpha, please be patient)
 
 
+## Thanks
+A special thanks to the authors of these books, because very useful to understand how to develop a modern web application: [BOOK1](https://www.manning.com/books/getting-mean-with-mongo-express-angular-and-node) and [BOOK2](https://www.manning.com/books/angular-2-development-with-typescript)
+
+
 ## License
 
 Copyright 2015-2016 Stefano Cappa
