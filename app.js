@@ -49,14 +49,14 @@ var app = express();
 */
 //The other features NOT included by default are:
 /*
-  -hpkp for HTTP Public Key Pinning 
+  -hpkp for HTTP Public Key Pinning
   -contentSecurityPolicy for setting Content Security Policy
   -noCache to disable client-side caching => I don't want this for better performances
 */
 var helmet = require('helmet');
 app.use(helmet());
 
-// [Public Key Pinning: hpkp] HTTPS certificates can be forged, allowing man-in-the middle attacks. 
+// [Public Key Pinning: hpkp] HTTPS certificates can be forged, allowing man-in-the middle attacks.
 //                      HTTP Public Key Pinning aims to help that.
 var ninetyDaysInMilliseconds = 7776000000;
 app.use(helmet.hpkp({
@@ -73,23 +73,24 @@ app.use(helmet.hpkp({
   }
 }));
 
-// [CSP - Content Security Policy] Trying to prevent: Injecting anything unintended into our page. 
+// [CSP - Content Security Policy] Trying to prevent: Injecting anything unintended into our page.
 //                   That could cause XSS vulnerabilities, unintended tracking, malicious frames, and more.
 app.use(helmet.contentSecurityPolicy({
   // Specify directives as normal.
   directives: {
     defaultSrc: ["'self'", 'localhost:3000', 'localhost:3001', 'www.google.com', 'www.youtube.com'],
-    scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", 'maxcdn.bootstrapcdn.com', 
-                'ajax.googleapis.com', 'cdnjs.cloudflare.com', 
+    scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", 'maxcdn.bootstrapcdn.com',
+                'ajax.googleapis.com', 'cdnjs.cloudflare.com',
                 'code.jquery.com', 'www.google.com',
                 'www.gstatic.com'],
     styleSrc: ["'self'", 'ajax.googleapis.com', 'maxcdn.bootstrapcdn.com', 'cdnjs.cloudflare.com', "'unsafe-inline'"],
     fontSrc: ['maxcdn.bootstrapcdn.com'],
-    imgSrc: ["'self'", 'localhost:3000', 'localhost:3001', 
+    imgSrc: ["'self'", 'localhost:3000', 'localhost:3001',
               'placehold.it', 'placeholdit.imgix.net', 'camo.githubusercontent.com',
               's3.amazonaws.com', 'cdnjs.cloudflare.com'],
     sandbox: ['allow-forms', 'allow-scripts', 'allow-same-origin', 'allow-popups'],
-    frameSrc : ["'self'", 'www.google.com', 'www.youtube.com'],
+    frameSrc : ["'self'", 'www.google.com', 'www.youtube.com'], //frame-src is deprecated
+    childSrc : ["'self'", 'www.google.com', 'www.youtube.com'],
     connectSrc: [
         "'self'",
         "cdnjs.cloudflare.com",
@@ -130,7 +131,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 //[http params pollution] activate http parameters pollution
 //use this ALWAYS AFTER app.use(bodyParser.urlencoded())
-app.use(hpp()); 
+app.use(hpp());
 
 // Express Session
 app.use(session({
@@ -158,7 +159,7 @@ var loggerApi = require('./app_server/routes/log-api')(express);
 app.use('/api/log', loggerApi);
 
 // enable middleware CSRF by csurf package
-// before app.use('/api', routesApi); to protect their, 
+// before app.use('/api', routesApi); to protect their,
 // but after session and/or cookie initialization
 app.use(csrf());
 app.use(function (req, res, next) {

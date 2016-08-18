@@ -8,7 +8,8 @@ System.config({
     'app'     : 'app',
     'rxjs'    : 'node_modules/rxjs',
     '@angular': 'node_modules/@angular',
-    'angular2-recaptcha': 'node_modules/angular2-recaptcha'
+    'angular2-recaptcha': 'node_modules/angular2-recaptcha',
+    'angular2-image-popup': 'node_modules/angular2-image-popup'
   },
   paths: {
     'node_modules/@angular/*': 'node_modules/@angular/*/bundles'
@@ -27,6 +28,7 @@ System.config({
     '@angular/platform-browser'        : {main: 'platform-browser.umd.min.js'},
     '@angular/platform-browser-dynamic': {main: 'platform-browser-dynamic.umd.min.js'},
     '@angular/router'                  : {main: 'router.umd.min.js'},
-    'angular2-recaptcha'                : {defaultExtension: 'ts'}
+    'angular2-recaptcha'               : {defaultExtension: 'ts'},
+    'angular2-image-popup'             : {main: 'app/main', defaultExtension: 'ts'}
   }
 });

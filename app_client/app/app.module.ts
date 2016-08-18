@@ -27,7 +27,7 @@ import PageHeaderComponent from './common/pageHeader/pageHeader';
 import {ProjectSearchFilter} from './common/projectSearch/projectSearchFilter';
 
 import {ReCaptchaComponent} from 'angular2-recaptcha/angular2-recaptcha';
-
+import {ImageModal} from 'angular2-image-popup/directives/angular2-image-popup/image-modal-popup';
 
 import {ProjectService} from './services/project-service';
 import {SERVICES} from './services/services';
@@ -72,7 +72,8 @@ import {SERVICES} from './services/services';
     NavbarComponent,
     PageHeaderComponent,
     ProjectSearchFilter,
-    ReCaptchaComponent
+    ReCaptchaComponent,
+    ImageModal
   ],
   providers: [
       { provide: LocationStrategy, useClass: HashLocationStrategy },
