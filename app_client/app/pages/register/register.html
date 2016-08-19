@@ -1,6 +1,46 @@
-<div>
+<div class="container">
   <page-header [title]="pageHeader.title" [strapline]="pageHeader.strapline"></page-header>
 
-  Not implemented yet
+  <div class="row">
+    <div class="col-md-6 col-sm-12">
+      <p class="lead">Already a member? Please <a [routerLink]="['/login']">log in</a> instead.</p>
 
+      <form [formGroup]="formModel" (ngSubmit)="onRegister()" novalidate>
+        <!-- <div role="alert" ng-show="vm.formError" class="alert alert-danger">{{ vm.formError }}</div> -->
+
+        <div class="form-group" [class.has-error]="formModel.hasError('minlength', 'name')">
+          <label for="name">Full name</label>
+          <input type="text" class="form-control" id="name" placeholder="Enter your name"
+                  minlength="3"
+                  formControlName="name">
+          <span class="help-block"
+                [class.hidden]="!formModel.hasError('minlength', 'name')">
+            Type at least 3 characters
+          </span>
+        </div>
+        <div class="form-group" [class.has-error]="formModel.hasError('minlength', 'email')">
+          <label for="email">Email address</label>
+          <input type="email" class="form-control" id="email" placeholder="Email address"
+                  minlength="3"
+                  formControlName="email">
+          <span class="help-block"
+                [class.hidden]="!formModel.hasError('minlength', 'email')">
+            Type at least 3 characters
+          </span>
+        </div>
+        <div class="form-group" [class.has-error]="formModel.hasError('minlength', 'password')">
+          <label for="password">Password</label>
+          <input type="password" class="form-control" id="password" placeholder="Password"
+                  minlength="3"
+                  formControlName="password">
+          <span class="help-block"
+                [class.hidden]="!formModel.hasError('minlength', 'password')">
+            Type at least 3 characters
+          </span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Register!</button>
+      </form>
+    </div>
+  </div>
 </div>
