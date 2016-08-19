@@ -1,6 +1,12 @@
 import {Component} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Observable} from "rxjs/Observable";
+import {
+    FormControl,
+    FormGroup,
+    FormBuilder,
+    Validators
+} from '@angular/forms';
 
 @Component({
   selector: 'reset-page',
@@ -9,8 +15,9 @@ import {Observable} from "rxjs/Observable";
   templateUrl: 'app/pages/reset/reset.html'
 })
 export default class ResetComponent {
-  emailToken: string;
   pageHeader: any;
+  formModel: FormGroup;
+  emailToken: string;
 
   constructor(route: ActivatedRoute) {
     this.emailToken = route.snapshot.params['emailToken'];
@@ -19,5 +26,17 @@ export default class ResetComponent {
       title: 'Password reset',
       strapline: ''
     };
+
+    const fb = new FormBuilder();
+    this.formModel = fb.group({
+      'password': [null, Validators.minLength(3)]
+    })
+  }
+
+  onReset() {
+    if (this.formModel.valid) {
+      console.log("Calling reset...");
+      //this.authService.resetEvent.emit(this.formModel.value);
+    }
   }
 }
