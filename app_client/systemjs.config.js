@@ -9,7 +9,8 @@ System.config({
     'rxjs'    : 'node_modules/rxjs',
     '@angular': 'node_modules/@angular',
     'angular2-recaptcha': 'node_modules/angular2-recaptcha',
-    'angular2-image-popup': 'node_modules/angular2-image-popup'
+    'angular2-image-popup': 'node_modules/angular2-image-popup',
+    'moment': 'node_modules/moment/moment.js'
   },
   paths: {
     'node_modules/@angular/*': 'node_modules/@angular/*/bundles'
