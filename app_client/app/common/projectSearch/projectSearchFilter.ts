@@ -1,5 +1,5 @@
 import {Injectable, Pipe, PipeTransform} from '@angular/core';
-import {Project} from '../../services/project-service';
+import {Project} from '../services/projects';
 
 @Pipe({
   name: 'projectSearchFilter'

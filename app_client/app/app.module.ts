@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
 import {HTTP_PROVIDERS} from '@angular/http';
 
-import ApplicationComponent from './common/application/application';
+import ApplicationComponent from './application/application';
 import HomeComponent from './pages/home/home';
 import ProjectListComponent from './pages/projectList/projectList';
 import CvComponent from './pages/cv/cv';
@@ -29,8 +29,8 @@ import {ProjectSearchFilter} from './common/projectSearch/projectSearchFilter';
 import {ReCaptchaComponent} from 'angular2-recaptcha/angular2-recaptcha';
 import {ImageModal} from 'angular2-image-popup/directives/angular2-image-popup/image-modal-popup';
 
-import {ProjectService} from './services/project-service';
-import {SERVICES} from './services/services';
+import {ProjectService} from './common/services/projects';
+import {SERVICES} from './common/services/services';
 
 @NgModule({
   imports: [BrowserModule,

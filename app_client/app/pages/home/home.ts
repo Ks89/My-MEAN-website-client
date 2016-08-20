@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {Observable} from "rxjs/Observable";
 
-import {Project, ProjectService} from '../../services/project-service';
+import {Project, ProjectService} from '../../common/services/projects';
 
 @Component({
   selector: 'home-page',
