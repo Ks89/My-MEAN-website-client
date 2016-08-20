@@ -13,9 +13,8 @@ export default class HomeComponent {
   products: Observable<Project[]>;
   thumbs: Observable<Project[]>;
 
-  pageHeader: any;
-  sidebar: any;
-  message: any;
+  pageHeader: Object;
+  message: string;
 
 
   constructor(private productService: ProjectService) {
