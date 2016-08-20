@@ -16,13 +16,7 @@ export default class ProjectDetailComponent {
   projectId: string;
   pageHeader: any;
 
-  images = [
-    { thumb: 'assets/images/projects/byamanager/2.png', img: 'assets/images/projects/byamanager/2.png', description: 'Image 1' },
-    { thumb: 'assets/images/projects/byamanager/3.png', img: 'assets/images/projects/byamanager/3.png', description: 'Image 2' },
-    { thumb: 'assets/images/projects/byamanager/4.png', img: 'assets/images/projects/byamanager/4.png', description: 'Image 3' },
-    { thumb: 'assets/images/projects/byamanager/5.png', img: 'assets/images/projects/byamanager/5.png', description: 'Image 4' },
-    { thumb: 'assets/images/projects/byamanager/6.png', img: 'assets/images/projects/byamanager/6.png', description: 'Image 5' }
-  ];
+  images: Object[];
 
   private subscription: Subscription;
 
@@ -37,6 +31,7 @@ export default class ProjectDetailComponent {
     this.projectService.getProjectsById(this.projectId).subscribe(
       project => {
         this.project = project;
+        this.images = project.gallery;
         this.pageHeader.title = this.project.name;
       }, error => console.error(error)
     );
