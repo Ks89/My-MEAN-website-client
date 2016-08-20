@@ -20,11 +20,11 @@ import ForgotComponent from './pages/forgot/forgot';
 import ActivateComponent from './pages/activate/activate';
 import ProfileComponent from './pages/profile/profile';
 
-import CarouselComponent from './common/carousel/carousel';
-import FooterComponent from './common/footer/footer';
-import NavbarComponent from './common/navbar/navbar';
-import PageHeaderComponent from './common/pageHeader/pageHeader';
-import {ProjectSearchFilter} from './common/projectSearch/projectSearchFilter';
+import CarouselComponent from './common/components/carousel/carousel';
+import FooterComponent from './common/components/footer/footer';
+import NavbarComponent from './common/components/navbar/navbar';
+import PageHeaderComponent from './common/components/pageHeader/pageHeader';
+import {ProjectSearchPipe} from './common/pipes/projectSearch/projectSearch';
 
 import {ReCaptchaComponent} from 'angular2-recaptcha/angular2-recaptcha';
 import {ImageModal} from 'angular2-image-popup/directives/angular2-image-popup/image-modal-popup';
@@ -71,7 +71,7 @@ import {SERVICES} from './common/services/services';
     FooterComponent,
     NavbarComponent,
     PageHeaderComponent,
-    ProjectSearchFilter,
+    ProjectSearchPipe,
     ReCaptchaComponent,
     ImageModal
   ],

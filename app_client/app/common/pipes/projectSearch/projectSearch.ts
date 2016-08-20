@@ -1,11 +1,11 @@
 import {Injectable, Pipe, PipeTransform} from '@angular/core';
-import {Project} from '../services/projects';
+import {Project} from '../../services/projects';
 
 @Pipe({
-  name: 'projectSearchFilter'
+  name: 'projectSearchPipe'
 })
 @Injectable()
-export class ProjectSearchFilter implements PipeTransform {
+export class ProjectSearchPipe implements PipeTransform {
   transform(projects: Project[], args: string): any {
     if(projects === null || projects.length == 0) {
       return projects;
