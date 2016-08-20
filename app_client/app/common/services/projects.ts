@@ -71,7 +71,7 @@ export class ProjectService {
       .map(response => response.json());
   }
 
-  getProjectsById(projectid: number): Observable<Project> {
+  getProjectsById(projectid: string): Observable<Project> {
     return this.http.get(`/api/projects/${projectid}`)
       .map(response => response.json());
   }
