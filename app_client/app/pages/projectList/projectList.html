@@ -7,12 +7,11 @@
       <label for="filter">Filter results</label><br/>
       <div class="input-group">
         <span class="input-group-addon"><i class="glyphicon glyphicon-filter"></i></span>
-        <input id="searchProject" type="text" class="form-control" name="username" [(ngModel)]="prjName"  placeholder="Write a letter to filter">
+        <input type="text" class="form-control" [(ngModel)]="searchInput" placeholder="Write a text to filter projects">
       </div>
       <br>
-      <div class="error">{{ message }}</div>
-      <!--  | filter:search:strict-->
-      <div *ngFor="let project of projects | async | projectSearchFilter:name">
+      <!-- <div class="error">{{ message }}</div> -->
+      <div *ngFor="let project of projects | async | projectSearchFilter:searchInput">
         <span *ngIf="project.visible">
           <div class="media well">
             <div class="media-left media-middle">

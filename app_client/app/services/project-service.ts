@@ -6,7 +6,7 @@ import 'rxjs/add/operator/map';
 
 export class ProjectHomeView {
   constructor(
-    _id: number,
+    _id: string,
     carouselImagePath: string,
     carouselText: string,
     thumbImagePath: string,
@@ -18,37 +18,51 @@ export class ProjectHomeView {
 
 export class ProjectGallery {
   constructor(
-    _id: number,
+    _id: string,
     thumb: string,
     img: string,
     description: string) {
   }
 }
 
+export class Author {
+  constructor(
+    _id: string,
+    name: string,
+    surname: string,
+    url: string,
+    urlAvailable: boolean) {
+  }
+}
+
 
 export class Project {
   constructor(
-    _id: number,
+    public _id: string,
     public name: string,
-    public iconPath: string,
-    public projectHomeView: Array<ProjectHomeView>,
     public url: string,
+    public iconPath: string,
     public description: string,
-    public tags: Array<string>,
-    public changelog: Array<string>,
-    public releases: Array<string>,
-    public features: Array<string>,
-    public futureExtensions: Array<string>,
-    public gallery: Array<ProjectGallery>,
-    public filePaths: Array<string>,
+    public shortDescription: string,
     public license: string,
-    public visible: boolean) {
+    public licenseText: string,
+    public visible: boolean,
+    public projectHomeView: Array<ProjectHomeView>,
+    public lastUpdate: string,
+    public filePaths: Array<string>,
+    public gallery: Array<ProjectGallery>,
+    public futureExtensions: Array<string>,
+    public features: Array<string>,
+    public releases: Array<string>,
+    public changelog: Array<string>,
+    public tags: Array<string>,
+    public authors: Array<Author>) {
   }
 }
 
 @Injectable()
 export class ProjectService {
-  searchEvent: EventEmitter = new EventEmitter();
+  searchEvent: EventEmitter<any> = new EventEmitter();
 
   constructor(private http: Http) {}
 

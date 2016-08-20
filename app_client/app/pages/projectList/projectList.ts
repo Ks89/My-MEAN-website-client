@@ -20,7 +20,7 @@ export default class ProjectListComponent {
   sidebar: any;
   sidebarTitle: string;
   message: string;
-  prjName: string = '';
+  searchInput: string = ''; //both not null and not undefined
 
   constructor(private projectService: ProjectService) {
     this.projects = this.projectService.getProjects();
