@@ -17,11 +17,11 @@ export default class ProjectDetailComponent {
   // openModalWindow:boolean=false;
   // imagePointer:number;
   images = [
-    { thumb: '../../../../public/images/projects/byamanager/2.png', img: '../../../../public/images/projects/byamanager/2.png', description: 'Image 1' },
-    { thumb: '../../../../public/images/projects/byamanager/3.png', img: '../../../../public/images/projects/byamanager/3.png', description: 'Image 2' },
-    { thumb: '../../../../public/images/projects/byamanager/4.png', img: '../../../../public/images/projects/byamanager/4.png', description: 'Image 3' },
-    { thumb: '../../../../public/images/projects/byamanager/5.png', img: '../../../../public/images/projects/byamanager/5.png', description: 'Image 4' },
-    { thumb: '../../../../public/images/projects/byamanager/6.png', img: '../../../../public/images/projects/byamanager/6.png', description: 'Image 5' }
+    { thumb: 'assets/images/projects/byamanager/2.png', img: 'assets/images/projects/byamanager/2.png', description: 'Image 1' },
+    { thumb: 'assets/images/projects/byamanager/3.png', img: 'assets/images/projects/byamanager/3.png', description: 'Image 2' },
+    { thumb: 'assets/images/projects/byamanager/4.png', img: 'assets/images/projects/byamanager/4.png', description: 'Image 3' },
+    { thumb: 'assets/images/projects/byamanager/5.png', img: 'assets/images/projects/byamanager/5.png', description: 'Image 4' },
+    { thumb: 'assets/images/projects/byamanager/6.png', img: 'assets/images/projects/byamanager/6.png', description: 'Image 5' }
   ];
 
   constructor(route: ActivatedRoute, private projectService: ProjectService) {

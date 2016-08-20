@@ -16,7 +16,6 @@ export default class HomeComponent {
   pageHeader: Object;
   message: string;
 
-
   constructor(private productService: ProjectService) {
     this.products = this.productService.getProjects();
     this.thumbs = this.productService.getProjectsForHomepage();
