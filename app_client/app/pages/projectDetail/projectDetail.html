@@ -7,51 +7,33 @@
         <section id="Description">
             <h3>Description</h3>
             <!-- http://plnkr.co/edit/OjxKE9HWnDInKojuhhk8?p=preview -->
-            <!-- <div ng-include src="vm.data.project.description"></div> -->
-            <!-- <my-ng-include src="./description.html"></my-ng-include> -->
+            <!-- <my-html-include [src]="{{project.description}} | async"></my-html-include> -->
+            <div *componentOutlet="descriptionUrl; context: self; selector:'my-component'"></div>
         </section>
         <section id="News">
             <h3>News</h3>
             <div id="Changelog">
                 <h4>Changelog</h4>
-                <!-- <div ng-include src="vm.data.project.changelog"></div> -->
-                <!-- <ul>
-                  <li ng-repeat="changelog in vm.data.project.changelog">
-                    {{changelog}}
-                  </li>
-                </ul> -->
+                <div *componentOutlet="changelogUrl; context: self; selector:'my-component'"></div>
+                <!-- <my-html-include src="project.changelog"></my-html-include> -->
             </div>
             <div id="Releases">
                 <h4>Releases</h4>
-                <!-- <div ng-include src="vm.data.project.releases"></div> -->
-                <!-- <ul>
-                  <li ng-repeat="release in vm.data.project.releases">
-                    {{release}}
-                  </li>
-              </ul> -->
+                <div *componentOutlet="releasesUrl; context: self; selector:'my-component'"></div>
             </div>
         </section>
         <section id="Features">
             <h3>Features</h3>
-            <!-- <div ng-include src="vm.data.project.features"></div> -->
-            <!-- <ul>
-              <li ng-repeat="feature in vm.data.project.features">
-                {{feature}}
-              </li>
-            </ul> -->
+            <div *componentOutlet="featuresUrl; context: self; selector:'my-component'"></div>
+            <!-- <my-html-include src="project.features"></my-html-include> -->
         </section>
         <section id="FutureExtensions">
             <h3>Future extensions</h3>
-            <!-- <div ng-include src="vm.data.project.futureExtensions"></div> -->
-            <!-- <ul>
-              <li ng-repeat="futureExtension in vm.data.project.futureExtensions">
-                {{futureExtension}}
-              </li>
-            </ul> -->
+            <div *componentOutlet="futureExtensionsUrl; context: self; selector:'my-component'"></div>
+            <!-- <my-html-include src="project.futureExtensions"></my-html-include> -->
         </section>
         <section id="Video">
             <h3>Video</h3>
-            <!-- 16:9 aspect ratio -->
             <div class="embed-responsive embed-responsive-16by9">
               <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/98BvBs4RfMQ" frameborder="0" allowfullscreen></iframe>
             </div>
@@ -64,7 +46,8 @@
         </section>
         <section id="License">
             <h3>License</h3>
-            <!-- <div ng-include src="vm.data.project.licenseText"></div> -->
+            <div *componentOutlet="licenseUrl; context: self; selector:'my-component'"></div>
+            <!-- <my-html-include src="project.licenseText"></my-html-include> -->
         </section>
     </div>
 

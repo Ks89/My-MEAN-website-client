@@ -25,6 +25,7 @@ import FooterComponent from './common/components/footer/footer';
 import NavbarComponent from './common/components/navbar/navbar';
 import PageHeaderComponent from './common/components/pageHeader/pageHeader';
 import {ProjectSearchPipe} from './common/pipes/projectSearch/projectSearch';
+import {ComponentOutlet} from 'angular2-component-outlet';
 
 import {ReCaptchaComponent} from 'angular2-recaptcha/angular2-recaptcha';
 import {ImageModal} from 'angular2-image-popup/directives/angular2-image-popup/image-modal-popup';
