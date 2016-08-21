@@ -1,6 +1,8 @@
 import {Component} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Observable} from "rxjs/Observable";
+import {Profile, ProfileService} from '../../common/services/profile';
+import {Subscription} from 'rxjs/Subscription';
 
 import {
     FormControl,
@@ -42,7 +44,9 @@ export default class ProfileComponent {
   twitter: Object;
   linkedin: Object;
 
-  constructor(route: ActivatedRoute) {
+  private subscription: Subscription;
+
+  constructor(private profileService: ProfileService, route: ActivatedRoute) {
     this.token = route.snapshot.params['token'];
 
     this.pageHeader = {
@@ -68,7 +72,22 @@ export default class ProfileComponent {
   onProfileUpdate() {
     if (this.formModel.valid) {
       console.log("Calling updateProfile...");
+      console.log(this.formModel.value);
+      this.profileService.update(this.formModel.value).subscribe(
+        response => {
+          console.log("Response");
+          console.log(response);
+        },
+        (err)=>console.error(err),
+        ()=>console.log("Done")
+      );
       //this.authService.loginEvent.emit(this.formModel.value);
+    }
+  }
+
+  ngOnDestroy(): any {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
     }
   }
 }

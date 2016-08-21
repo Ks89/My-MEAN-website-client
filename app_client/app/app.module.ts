@@ -31,6 +31,7 @@ import {ReCaptchaComponent} from 'angular2-recaptcha/angular2-recaptcha';
 import {ImageModal} from 'angular2-image-popup/directives/angular2-image-popup/image-modal-popup';
 
 import {ProjectService} from './common/services/projects';
+import {ProfileService} from './common/services/profile';
 import {SERVICES} from './common/services/services';
 
 @NgModule({
@@ -79,6 +80,7 @@ import {SERVICES} from './common/services/services';
   providers: [
       { provide: LocationStrategy, useClass: HashLocationStrategy },
       ProjectService,
+      ProfileService,
       HTTP_PROVIDERS,
       SERVICES
   ],

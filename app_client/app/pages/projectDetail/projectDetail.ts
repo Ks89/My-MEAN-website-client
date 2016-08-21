@@ -4,14 +4,12 @@ import {Subscription} from 'rxjs/Subscription';
 import {Observable} from "rxjs/Observable";
 
 import {Project, ProjectService} from '../../common/services/projects';
-import {ComponentOutlet} from 'angular2-component-outlet';
 
 @Component({
   selector: 'projectDetail-page',
   providers: [],
   styleUrls: ['app/pages/projectDetail/bs_doc.css'],
   templateUrl: 'app/pages/projectDetail/projectDetail.html',
-  directives: [ComponentOutlet]
 })
 export default class ProjectDetailComponent {
   project: Project;
