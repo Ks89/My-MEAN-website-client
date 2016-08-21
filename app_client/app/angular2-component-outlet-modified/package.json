@@ -1,0 +1,87 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "angular2-component-outlet",
+        "scope": null,
+        "escapedName": "angular2-component-outlet",
+        "name": "angular2-component-outlet",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "/Users/Ks89/git/MyWebsite/app_client"
+    ]
+  ],
+  "_from": "angular2-component-outlet@latest",
+  "_id": "angular2-component-outlet@0.0.4",
+  "_inCache": true,
+  "_installable": true,
+  "_location": "/angular2-component-outlet",
+  "_nodeVersion": "5.12.0",
+  "_npmOperationalInternal": {
+    "host": "packages-12-west.internal.npmjs.com",
+    "tmp": "tmp/angular2-component-outlet-0.0.4.tgz_1470493796592_0.2016692569013685"
+  },
+  "_npmUser": {
+    "name": "laco0416",
+    "email": "laco0416@gmail.com"
+  },
+  "_npmVersion": "3.8.6",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "angular2-component-outlet",
+    "scope": null,
+    "escapedName": "angular2-component-outlet",
+    "name": "angular2-component-outlet",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/angular2-component-outlet/-/angular2-component-outlet-0.0.4.tgz",
+  "_shasum": "f8fb8a1e783f0ae1adda97c7823a4f9e356cf0ac",
+  "_shrinkwrap": null,
+  "_spec": "angular2-component-outlet",
+  "_where": "/Users/Ks89/git/MyWebsite/app_client",
+  "authors": [
+    "Suguru Inatomi"
+  ],
+  "dependencies": {},
+  "description": "Angular2 Component Outlet",
+  "devDependencies": {
+    "tsconfig-cli": "^2.0.0",
+    "typescript": "^1.9.0-dev"
+  },
+  "directories": {},
+  "dist": {
+    "shasum": "f8fb8a1e783f0ae1adda97c7823a4f9e356cf0ac",
+    "tarball": "https://registry.npmjs.org/angular2-component-outlet/-/angular2-component-outlet-0.0.4.tgz"
+  },
+  "gitHead": "96fc8c9e03383e89b1475acb262c6aa0e279e90b",
+  "license": "MIT",
+  "main": "index.js",
+  "maintainers": [
+    {
+      "name": "laco0416",
+      "email": "laco0416@gmail.com"
+    }
+  ],
+  "name": "angular2-component-outlet",
+  "optionalDependencies": {},
+  "peerDependencies": {
+    "@angular/compiler": "^2.0.0-rc.4",
+    "@angular/core": "^2.0.0-rc.4"
+  },
+  "readme": "ERROR: No README data found!",
+  "scripts": {
+    "_tsconfig": "tsconfig -u tsconfig.json",
+    "build": "npm run _tsconfig && npm run tsc",
+    "prepublish": "npm run build",
+    "tsc": "tsc -p ."
+  },
+  "version": "0.0.4"
+}
