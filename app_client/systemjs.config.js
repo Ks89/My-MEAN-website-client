@@ -12,7 +12,7 @@ System.config({
     'angular2-image-popup': 'node_modules/angular2-image-popup',
     'moment': 'node_modules/moment/moment.js', //used by ng2-bootstrap
     //modified by myself to be able to use templateUrl instead of template
-    'angular2-component-outlet': 'app/angular2-component-outlet-modified'
+    'angular2-component-outlet-modified': 'app/angular2-component-outlet-modified'
   },
   paths: {
     'node_modules/@angular/*': 'node_modules/@angular/*/bundles'
@@ -33,6 +33,6 @@ System.config({
     '@angular/router'                  : {main: 'router.umd.min.js'},
     'angular2-recaptcha'               : {defaultExtension: 'ts'},
     'angular2-image-popup'             : {main: 'app/main', defaultExtension: 'ts'},
-    'angular2-component-outlet'        : {main: 'index.js'}
+    'angular2-component-outlet-modified': {main: 'index.js'}
   }
 });

@@ -9,7 +9,7 @@ import {Project, ProjectService} from '../../common/services/projects';
   selector: 'projectDetail-page',
   providers: [],
   styleUrls: ['app/pages/projectDetail/bs_doc.css'],
-  templateUrl: 'app/pages/projectDetail/projectDetail.html',
+  templateUrl: 'app/pages/projectDetail/projectDetail.html'
 })
 export default class ProjectDetailComponent {
   project: Project;
