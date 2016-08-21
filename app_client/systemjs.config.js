@@ -11,7 +11,6 @@ System.config({
     'angular2-recaptcha': 'node_modules/angular2-recaptcha',
     'angular2-image-popup': 'node_modules/angular2-image-popup',
     'moment': 'node_modules/moment/moment.js', //used by ng2-bootstrap
-
     //modified by myself to be able to use templateUrl instead of template
     'angular2-component-outlet': 'app/angular2-component-outlet-modified'
   },
