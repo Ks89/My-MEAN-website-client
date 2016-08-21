@@ -1,7 +1,138 @@
-<div>
+<!-- Modal dialog html page-->
+<!-- <script type="text/ng-template" id="myModalContent.html">
+	<div class="modal-header">
+		<h3 class="modal-title">Whould you really destroy your account?</h3>
+	</div>
+	<div class="modal-body">
+		If you unlink the last service, <strong>you won't be able to login again</strong> to this account.<br>
+		All your saved data will be quicky destroyed.
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" type="button" (click)="modalDialogOk()">OK</button>
+		<button class="btn btn-warning" type="button" (click)="modalDialogCancel()">Cancel</button>
+	</div>
+</script> -->
+
+<!-- Real webpage -->
+<div class="container">
   <page-header [title]="pageHeader.title" [strapline]="pageHeader.strapline"></page-header>
 
-  Profile with token {{token}}
-  Not implemented yet
+	<div class="row">
+		<div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+			<div class="row">
+				<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+					<img class="img-thumbnail" src="{{bigProfileImage}}" alt="Profile image" width="140" height="140">
+				</div>
+				<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+					<h3>Connected services</h3>
+					&nbsp;<span class="fa fa-user fa-2x" *ngIf="local.email.length > 0">&nbsp;</span>
+					<span class="fa fa-facebook fa-2x" *ngIf="facebook.email.length > 0">&nbsp;</span>
+					<span class="fa fa-github fa-2x" *ngIf="github.email.length > 0">&nbsp;</span>
+					<span class="fa fa-google fa-2x" *ngIf="google.email.length > 0">&nbsp;</span>
+					<span class="fa fa-linkedin fa-2x" *ngIf="linkedin.email.length > 0">&nbsp;</span>
+					<span class="fa fa-twitter fa-2x" *ngIf="twitter.name.length > 0 || twitter.email.length > 0">&nbsp;</span>
+				</div>
+			</div>
 
+			<br>
+
+			<div class="col-md-6 col-sm-12">
+		  	<p class="lead">Update your profile</p>
+        <form [formGroup]="formModel" (ngSubmit)="onProfileUpdate()" novalidate>
+		      <!-- <div role="alert" ng-show="formMessage" class="alert alert-{{formStatus}}">{{ formMessage}}</div> -->
+          <div class="form-group" [class.has-error]="formModel.hasError('minlength', 'name')">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" placeholder="Enter your name"
+                    minlength="3" formControlName="name">
+            <span class="help-block" [class.hidden]="!formModel.hasError('minlength', 'name')">
+              Type at least 3 characters
+            </span>
+          </div>
+          <div class="form-group" [class.has-error]="formModel.hasError('minlength', 'surname')">
+            <label for="surname">Surname</label>
+            <input type="text" class="form-control" id="surname" placeholder="Enter your surname"
+                    minlength="3" formControlName="surname">
+            <span class="help-block" [class.hidden]="!formModel.hasError('minlength', 'surname')">
+              Type at least 3 characters
+            </span>
+          </div>
+          <div class="form-group" [class.has-error]="formModel.hasError('minlength', 'nickname')">
+            <label for="nickname">Nickname</label>
+            <input type="text" class="form-control" id="nickname" placeholder="Enter your nickname"
+                    minlength="3" formControlName="nickname">
+            <span class="help-block" [class.hidden]="!formModel.hasError('minlength', 'nickname')">
+              Type at least 3 characters
+            </span>
+          </div>
+          <div class="form-group" [class.has-error]="formModel.hasError('minlength', 'email')">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" placeholder="Enter your email"
+                    minlength="3" formControlName="email">
+            <span class="help-block" [class.hidden]="!formModel.hasError('minlength', 'email')">
+              Type at least 3 characters
+            </span>
+          </div>
+          <button type="submit" class="btn btn-primary">Update!</button>
+		    </form>
+		  </div>
+		</div>
+
+		<div class="col-xs-12 col-sm-3 col-md-2 col-lg-2">
+      <page-header [title]="sidebar.title" [strapline]="sidebar.strapline"></page-header>
+			<h6>
+				Connect this account with other services!
+				You'll be able to access to the same account with many services.
+			</h6>
+			<div *ngIf="facebook.email.length === 0">
+				<a class="btn btn-primary" href="{{facebookConnectOauthUrl}}"> <span class="fa fa-facebook fa-lg"></span> connect</a>
+				<br><br>
+			</div>
+			<div *ngIf="github.email.length === 0">
+				<a class="btn btn-primary" href="{{githubConnectOauthUrl}}"> <span class="fa fa-github fa-lg"></span> connect</a>
+				<br><br>
+			</div>
+			<div *ngIf="google.email.length === 0">
+				<a class="btn btn-primary" href="{{googleConnectOauthUrl}}"> <span class="fa fa-google fa-lg"></span> connect</a>
+				<br><br>
+			</div>
+			<div *ngIf="twitter.name.length === 0 && twitter.email.length === 0">
+				<a class="btn btn-primary" href="{{twitterConnectOauthUrl}}"> <span class="fa fa-twitter fa-lg"></span> connect</a>
+				<br><br>
+			</div>
+			<div *ngIf="linkedin.email.length === 0">
+				<a class="btn btn-primary" href="{{linkedinConnectOauthUrl}}"> <span class="fa fa-linkedin fa-lg"></span> connect</a>
+				<br><br>
+			</div>
+			<br><br>
+			<h6>
+				Unlink a service from this account!
+				You won't be able to login anymore with that service.
+			</h6>
+
+			<div *ngIf="local.email.length > 0">
+				<a class="btn btn-primary" (click)="unlink('local')"> <span class="fa fa-user fa-lg"></span> unlink</a>
+				<br><br>
+			</div>
+			<div *ngIf="facebook.email.length > 0">
+				<a class="btn btn-primary" (click)="unlink('facebook')"> <span class="fa fa-facebook fa-lg"></span> unlink</a>
+				<br><br>
+			</div>
+			<div *ngIf="github.email.length > 0">
+				<a class="btn btn-primary" (click)="unlink('github')"> <span class="fa fa-github fa-lg"></span> unlink</a>
+				<br><br>
+			</div>
+			<div *ngIf="google.email.length > 0">
+				<a class="btn btn-primary" (click)="unlink('google')"> <span class="fa fa-google fa-lg"></span> unlink</a>
+				<br><br>
+			</div>
+			<div *ngIf="twitter.name.length > 0 && twitter.email.length > 0">
+				<a class="btn btn-primary" (click)="unlink('twitter')"> <span class="fa fa-twitter fa-lg"></span> unlink</a>
+				<br><br>
+			</div>
+			<div *ngIf="linkedin.email.length > 0">
+				<a class="btn btn-primary" (click)="unlink('linkedin')"> <span class="fa fa-linkedin fa-lg"></span> unlink</a>
+				<br><br>
+			</div>
+		</div>
+	</div>
 </div>
