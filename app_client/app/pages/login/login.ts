@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {Observable} from "rxjs/Observable";
+import {AuthService} from '../../common/services/auth';
 
 import {
     FormControl,
@@ -25,7 +26,7 @@ export default class LoginComponent {
   linkedinOauthUrl: string = 'api/auth/linkedin';
   twitterOauthUrl: string = 'api/auth/twitter';
 
-  constructor() {
+  constructor(private authService: AuthService) {
     this.pageHeader = {
       title: 'Sign in',
       strapline: ''
@@ -41,7 +42,19 @@ export default class LoginComponent {
   onLogin() {
     if (this.formModel.valid) {
       console.log("Calling login...");
-      //this.authService.loginEvent.emit(this.formModel.value);
+
+
+      this.authService.login({
+        email: this.formModel.value.email,
+        password: this.formModel.value.password
+      }).subscribe(
+        response => {
+          console.log("Response");
+          console.log(response);
+        },
+        (err)=>console.error(err),
+        ()=>console.log("Done")
+      );
     }
   }
 }

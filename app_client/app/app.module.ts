@@ -32,6 +32,8 @@ import {ComponentOutlet} from 'angular2-component-outlet-modified';
 
 import {ProjectService} from './common/services/projects';
 import {ProfileService} from './common/services/profile';
+import {ContactService} from './common/services/contact';
+import {AuthService} from './common/services/auth';
 import {SERVICES} from './common/services/services';
 
 @NgModule({
@@ -82,6 +84,8 @@ import {SERVICES} from './common/services/services';
       { provide: LocationStrategy, useClass: HashLocationStrategy },
       ProjectService,
       ProfileService,
+      ContactService,
+      AuthService,
       HTTP_PROVIDERS,
       SERVICES
   ],
