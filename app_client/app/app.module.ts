@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Provider } from '@angular/core';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -35,6 +35,15 @@ import {ProfileService} from './common/services/profile';
 import {ContactService} from './common/services/contact';
 import {AuthService} from './common/services/auth';
 import {SERVICES} from './common/services/services';
+
+import { LocalStorageService, LOCAL_STORAGE_SERVICE_CONFIG } from 'angular-2-local-storage';
+
+let localStorageServiceConfig = {
+    prefix: 'my-app',
+    storageType: 'localStorage'
+};
+const LOCAL_STORAGE_CONFIG_PROVIDER = { provide: LOCAL_STORAGE_SERVICE_CONFIG, useValue: localStorageServiceConfig};
+
 
 @NgModule({
   imports: [BrowserModule,
@@ -87,6 +96,8 @@ import {SERVICES} from './common/services/services';
       ContactService,
       AuthService,
       HTTP_PROVIDERS,
+      LocalStorageService,
+      LOCAL_STORAGE_CONFIG_PROVIDER,
       SERVICES
   ],
   bootstrap: [ ApplicationComponent ]

@@ -26,6 +26,7 @@ export default class LoginComponent {
   linkedinOauthUrl: string = 'api/auth/linkedin';
   twitterOauthUrl: string = 'api/auth/twitter';
 
+
   constructor(private authService: AuthService) {
     this.pageHeader = {
       title: 'Sign in',
@@ -42,8 +43,6 @@ export default class LoginComponent {
   onLogin() {
     if (this.formModel.valid) {
       console.log("Calling login...");
-
-
       this.authService.login({
         email: this.formModel.value.email,
         password: this.formModel.value.password

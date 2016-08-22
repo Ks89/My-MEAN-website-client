@@ -12,7 +12,8 @@ System.config({
     'angular2-image-popup': 'node_modules/angular2-image-popup',
     'moment': 'node_modules/moment/moment.js', //used by ng2-bootstrap
     //modified by myself to be able to use templateUrl instead of template
-    'angular2-component-outlet-modified': 'app/angular2-component-outlet-modified'
+    'angular2-component-outlet-modified': 'app/angular2-component-outlet-modified',
+    'angular-2-local-storage': 'node_modules/angular-2-local-storage/src'
   },
   paths: {
     'node_modules/@angular/*': 'node_modules/@angular/*/bundles'
@@ -21,18 +22,19 @@ System.config({
     '@angular/*': {'format': 'cjs'}
   },
   packages: {
-    'app'                              : {main: 'main', defaultExtension: 'ts'},
-    'rxjs'                             : {main: 'index'},
-    '@angular/http'                    : {main: 'http.umd.min.js'},
-    '@angular/common'                  : {main: 'common.umd.min.js'},
-    '@angular/compiler'                : {main: 'compiler.umd.min.js'},
-    '@angular/core'                    : {main: 'core.umd.min.js'},
-    '@angular/forms'                   : {main: 'forms.umd.min.js'},
-    '@angular/platform-browser'        : {main: 'platform-browser.umd.min.js'},
-    '@angular/platform-browser-dynamic': {main: 'platform-browser-dynamic.umd.min.js'},
-    '@angular/router'                  : {main: 'router.umd.min.js'},
-    'angular2-recaptcha'               : {defaultExtension: 'ts'},
-    'angular2-image-popup'             : {main: 'app/main', defaultExtension: 'ts'},
-    'angular2-component-outlet-modified': {main: 'index.js'}
+    'app'                                : {main: 'main', defaultExtension: 'ts'},
+    'rxjs'                               : {main: 'index'},
+    '@angular/http'                      : {main: 'http.umd.min.js'},
+    '@angular/common'                    : {main: 'common.umd.min.js'},
+    '@angular/compiler'                  : {main: 'compiler.umd.min.js'},
+    '@angular/core'                      : {main: 'core.umd.min.js'},
+    '@angular/forms'                     : {main: 'forms.umd.min.js'},
+    '@angular/platform-browser'          : {main: 'platform-browser.umd.min.js'},
+    '@angular/platform-browser-dynamic'  : {main: 'platform-browser-dynamic.umd.min.js'},
+    '@angular/router'                    : {main: 'router.umd.min.js'},
+    'angular2-recaptcha'                 : {defaultExtension: 'ts'},
+    'angular2-image-popup'               : {main: 'app/main', defaultExtension: 'ts'},
+    'angular2-component-outlet-modified' : {main: 'index.js'},
+    'angular-2-local-storage'            : {main: 'angular-2-local-storage.js', defaultExtension: 'js' }
   }
 });
