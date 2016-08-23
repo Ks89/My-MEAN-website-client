@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {Observable} from "rxjs/Observable";
 import {AuthService} from '../../common/services/auth';
+import {LocalStorage, SessionStorage} from "h5webstorage";
 
 import {
     FormControl,
@@ -27,7 +28,10 @@ export default class LoginComponent {
   twitterOauthUrl: string = 'api/auth/twitter';
 
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService,
+    private localStorage: LocalStorage,
+    private sessionStorage: SessionStorage) {
+
     this.pageHeader = {
       title: 'Sign in',
       strapline: ''

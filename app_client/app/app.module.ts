@@ -36,14 +36,7 @@ import {ContactService} from './common/services/contact';
 import {AuthService} from './common/services/auth';
 import {SERVICES} from './common/services/services';
 
-import { LocalStorageService, LOCAL_STORAGE_SERVICE_CONFIG } from 'angular-2-local-storage';
-
-let localStorageServiceConfig = {
-    prefix: 'my-app',
-    storageType: 'localStorage'
-};
-const LOCAL_STORAGE_CONFIG_PROVIDER = { provide: LOCAL_STORAGE_SERVICE_CONFIG, useValue: localStorageServiceConfig};
-
+import {LocalStorage, SessionStorage, SESSION_STROAGE_PROVIDER, LOCAL_STORAGE_PROVIDER, WEB_STORAGE_PROVIDERS} from 'h5webstorage';
 
 @NgModule({
   imports: [BrowserModule,
@@ -96,8 +89,7 @@ const LOCAL_STORAGE_CONFIG_PROVIDER = { provide: LOCAL_STORAGE_SERVICE_CONFIG, u
       ContactService,
       AuthService,
       HTTP_PROVIDERS,
-      LocalStorageService,
-      LOCAL_STORAGE_CONFIG_PROVIDER,
+      WEB_STORAGE_PROVIDERS, SESSION_STROAGE_PROVIDER, LOCAL_STORAGE_PROVIDER,
       SERVICES
   ],
   bootstrap: [ ApplicationComponent ]
