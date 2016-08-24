@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 
 @Component({
   selector: 'navigation',
-  styleUrls: ['app/common/components/navbar/navbar.css'],
+  styleUrls: [],
   templateUrl: 'app/common/components/navbar/navbar.html',
 })
 export default class NavbarComponent {
