@@ -13,8 +13,8 @@
           <input type="text" class="form-control" id="name" placeholder="Enter your name"
                   minlength="3"
                   formControlName="name">
-          <span class="help-block"
-                [class.hidden]="!formModel.hasError('minlength', 'name')">
+          <span class="form-text text-muted"
+                [class.invisible]="!formModel.hasError('minlength', 'name')">
             Type at least 3 characters
           </span>
         </div>
@@ -23,8 +23,8 @@
           <input type="email" class="form-control" id="email" placeholder="Email address"
                   minlength="3"
                   formControlName="email">
-          <span class="help-block"
-                [class.hidden]="!formModel.hasError('minlength', 'email')">
+          <span class="form-text text-muted"
+                [class.invisible]="!formModel.hasError('minlength', 'email')">
             Type at least 3 characters
           </span>
         </div>
@@ -33,8 +33,8 @@
           <input type="password" class="form-control" id="password" placeholder="Password"
                   minlength="3"
                   formControlName="password">
-          <span class="help-block"
-                [class.hidden]="!formModel.hasError('minlength', 'password')">
+          <span class="form-text text-muted"
+                [class.invisible]="!formModel.hasError('minlength', 'password')">
             Type at least 3 characters
           </span>
         </div>

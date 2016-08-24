@@ -17,8 +17,8 @@
           <input type="password" class="form-control" id="password" placeholder="Enter your password"
                   minlength="3"
                   formControlName="password">
-          <span class="help-block"
-                [class.hidden]="!formModel.hasError('minlength', 'password')">
+          <span class="form-text text-muted"
+                [class.invisible]="!formModel.hasError('minlength', 'password')">
             Type at least 3 characters
           </span>
         </div>

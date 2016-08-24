@@ -41,7 +41,9 @@ export default class LoginComponent {
     this.formModel = fb.group({
       'email': [null, Validators.minLength(3)],
       'password': [null, positiveNumberValidator]
-    })
+    });
+
+
   }
 
   onLogin() {

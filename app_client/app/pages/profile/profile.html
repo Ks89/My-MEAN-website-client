@@ -45,7 +45,7 @@
             <label for="name">Name</label>
             <input type="text" class="form-control" id="name" placeholder="Enter your name"
                     minlength="3" formControlName="name">
-            <span class="help-block" [class.hidden]="!formModel.hasError('minlength', 'name')">
+            <span class="form-text text-muted" [class.invisible]="!formModel.hasError('minlength', 'name')">
               Type at least 3 characters
             </span>
           </div>
@@ -53,7 +53,7 @@
             <label for="surname">Surname</label>
             <input type="text" class="form-control" id="surname" placeholder="Enter your surname"
                     minlength="3" formControlName="surname">
-            <span class="help-block" [class.hidden]="!formModel.hasError('minlength', 'surname')">
+            <span class="form-text text-muted" [class.invisible]="!formModel.hasError('minlength', 'surname')">
               Type at least 3 characters
             </span>
           </div>
@@ -61,7 +61,7 @@
             <label for="nickname">Nickname</label>
             <input type="text" class="form-control" id="nickname" placeholder="Enter your nickname"
                     minlength="3" formControlName="nickname">
-            <span class="help-block" [class.hidden]="!formModel.hasError('minlength', 'nickname')">
+            <span class="form-text text-muted" [class.invisible]="!formModel.hasError('minlength', 'nickname')">
               Type at least 3 characters
             </span>
           </div>
@@ -69,7 +69,7 @@
             <label for="email">Email</label>
             <input type="email" class="form-control" id="email" placeholder="Enter your email"
                     minlength="3" formControlName="email">
-            <span class="help-block" [class.hidden]="!formModel.hasError('minlength', 'email')">
+            <span class="form-text text-muted" [class.invisible]="!formModel.hasError('minlength', 'email')">
               Type at least 3 characters
             </span>
           </div>

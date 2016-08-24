@@ -19,8 +19,8 @@
             placeholder="Email"
             minlength="3"
             formControlName="email">
-            <span class="help-block"
-                  [class.hidden]="!formModel.hasError('minlength', 'email')">
+            <span class="form-text text-muted"
+                  [class.invisible]="!formModel.hasError('minlength', 'email')">
               Type at least 3 characters
             </span>
         </div>
@@ -32,8 +32,8 @@
             placeholder="Subject"
             minlength="3"
             formControlName="subject">
-            <span class="help-block"
-                  [class.hidden]="!formModel.hasError('minlength', 'subject')">
+            <span class="form-text text-muted"
+                  [class.invisible]="!formModel.hasError('minlength', 'subject')">
               Type at least 3 characters
             </span>
         </div>
@@ -47,8 +47,8 @@
             placeholder="Message text"
             minlength="3"
             formControlName="message"></textarea>
-            <span class="help-block"
-                  [class.hidden]="!formModel.hasError('minlength', 'message')">
+            <span class="form-text text-muted"
+                  [class.invisible]="!formModel.hasError('minlength', 'message')">
               Type at least 3 characters
             </span>
         </div>

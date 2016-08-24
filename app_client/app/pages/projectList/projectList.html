@@ -6,7 +6,7 @@
     <div class="col-md-7 col-lg-7">
       <label for="filter">Filter results</label><br/>
       <div class="input-group">
-        <span class="input-group-addon"><i class="glyphicon glyphicon-filter"></i></span>
+        <span class="input-group-addon"><i class="fa fa-filter" aria-hidden="true"></i></span>
         <input type="text" class="form-control" [(ngModel)]="searchInput" placeholder="Write a text to filter projects">
       </div>
       <br>
@@ -55,7 +55,7 @@
       </div>
       <ul class="timeline" *ngFor="let time of sidebar.timeline; let i = index">
         <li class="{{i%2==0 ? '' : 'timeline-inverted'}}">
-          <div class="timeline-badge {{time.color}}"><i class="glyphicon glyphicon-{{time.icon}}"></i></div>
+          <div class="timeline-badge {{time.color}}"><i class="fa fa-{{time.icon}}"></i></div>
           <div class="timeline-panel">
             <div class="timeline-heading">
               <h4 class="timeline-title">{{time.title}}</h4>

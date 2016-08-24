@@ -38,6 +38,8 @@ import {SERVICES} from './common/services/services';
 
 import {LocalStorage, SessionStorage, SESSION_STROAGE_PROVIDER, LOCAL_STORAGE_PROVIDER, WEB_STORAGE_PROVIDERS} from 'h5webstorage';
 
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+
 @NgModule({
   imports: [BrowserModule,
             HttpModule,
@@ -58,6 +60,7 @@ import {LocalStorage, SessionStorage, SESSION_STROAGE_PROVIDER, LOCAL_STORAGE_PR
               //TODO in angular2 '?' isn't working -> replace with an optional queryParam
               {path: 'profile/:token?',                 component: ProfileComponent}
             ]),
+            NgbModule
   ],
   declarations: [
     ApplicationComponent,

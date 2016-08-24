@@ -12,8 +12,8 @@
           <input type="email" class="form-control" id="email" placeholder="Enter your email address"
                   minlength="3"
                   formControlName="email">
-          <span class="help-block"
-                [class.hidden]="!formModel.hasError('minlength', 'email')">
+          <span class="form-text text-muted"
+                [class.invisible]="!formModel.hasError('minlength', 'email')">
             Type at least 3 characters
           </span>
         </div>

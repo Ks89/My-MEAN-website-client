@@ -12,8 +12,8 @@
             <input type="email" class="form-control" id="email" placeholder="Enter email"
                     minlength="3"
                     formControlName="email">
-            <span class="help-block"
-                  [class.hidden]="!formModel.hasError('minlength', 'email')">
+            <span class="form-text text-muted"
+                  [class.invisible]="!formModel.hasError('minlength', 'email')">
               Type at least 3 characters
             </span>
           </div>
@@ -21,8 +21,8 @@
             <label for="password">Password</label>
             <input type="password" class="form-control" id="password" placeholder="Password"
                     formControlName="password">
-            <span class="help-block"
-                  [class.hidden]="!formModel.hasError('positivenumber', 'password')">
+            <span class="form-text text-muted"
+                  [class.invisible]="!formModel.hasError('positivenumber', 'password')">
               password is not a positive number
             </span>
           </div>
