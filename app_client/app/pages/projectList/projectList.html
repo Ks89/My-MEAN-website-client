@@ -13,8 +13,9 @@
       <!-- <div class="error">{{ message }}</div> -->
       <div *ngFor="let project of projects | async | projectSearchPipe:searchInput">
         <span *ngIf="project.visible">
-          <div class="media well">
-            <div class="media-left media-middle">
+          <div class="media card card-outline-primary card-default">
+            <br/>
+            <div class="media-left">
               <a [routerLink]="['/projects', project._id]">
                 <img class="media-object" src={{project.iconPath}} alt="iconPath">
               </a>
@@ -25,7 +26,7 @@
                   <h4 class="media-heading"><a href="{{project.url}}"> <span class="fa fa-github" style="color:ligthblue"></span></a>&nbsp;&nbsp;&nbsp;<a  [routerLink]="['/projects', project._id]">{{ project.name }}</a></h4>
                   <p class="name">{{ project.shortDescription }}</p>
                   <p>
-                    <span class="label label-warning label-facility" *ngFor="let tag of project.tags">
+                    <span class="tag tag-pill tag-warning" *ngFor="let tag of project.tags">
                       {{ tag }}
                     </span>
                   </p>
