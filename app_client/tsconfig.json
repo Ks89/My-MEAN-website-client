@@ -5,20 +5,11 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
-    "noEmitHelpers": true,
     "sourceMap": true,
     "target": "ES5",
-    "strictNullChecks": false,
-    "paths": [
-    ],
-    "lib": [
-      "dom",
-      "es6"
-    ],
     "types": [
       "es6-shim",
       "core-js",
-      "jasmine",
       "node",
       "source-map",
       "uglify-js",
@@ -29,10 +20,6 @@
     "node_modules",
     "dist"
   ],
-  "awesomeTypescriptLoaderOptions": {
-    "forkChecker": true,
-    "useWebpackText": true
-  },
   "compileOnSave": false,
   "buildOnSave": false,
   "atom": { "rewriteTsconfig": false }
