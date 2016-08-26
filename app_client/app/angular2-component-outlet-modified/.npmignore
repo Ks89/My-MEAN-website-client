@@ -1,9 +1,0 @@
-*.ts
-!*.d.ts
-
-/node_modules/
-/typings/
-/.vscode/
-/.idea/
-npm-debug.log
-

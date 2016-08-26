@@ -3,7 +3,7 @@ import {Observable} from "rxjs/Observable";
 
 @Component({
   selector: 'cv-page',
-  templateUrl: 'app/pages/cv/cv.html'
+  template: require('./cv.html')
 })
 export default class CvComponent {
   pageHeader: any;

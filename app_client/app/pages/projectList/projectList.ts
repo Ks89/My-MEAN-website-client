@@ -10,8 +10,8 @@ import {
 
 @Component({
   selector: 'projectList-page',
-  styleUrls: ['app/pages/projectList/timeline.css'],
-  templateUrl: 'app/pages/projectList/projectList.html'
+  styles: [require('./timeline.css')],
+  template: require('./projectList.html')
 })
 export default class ProjectListComponent {
   projects: Observable<Project[]>;

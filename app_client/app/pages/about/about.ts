@@ -3,7 +3,7 @@ import {Observable} from "rxjs/Observable";
 
 @Component({
   selector: 'about-page',
-  templateUrl: 'app/pages/about/about.html'
+  template: require('./about.html')
 })
 export default class AboutComponent {
   pageHeader: any;

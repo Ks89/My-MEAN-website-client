@@ -13,7 +13,7 @@ import {
 
 @Component({
   selector: 'reset-page',
-  templateUrl: 'app/pages/reset/reset.html'
+  template: require('./reset.html')
 })
 export default class ResetComponent {
   pageHeader: Object;

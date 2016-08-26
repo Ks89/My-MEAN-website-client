@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 @Component({
   selector: 'my-application',
-  templateUrl: 'app/application/application.html',
+  template: require('./application.html'),
 })
 export default class ApplicationComponent {}

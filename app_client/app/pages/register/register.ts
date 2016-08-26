@@ -11,7 +11,7 @@ import {
 
 @Component({
   selector: 'register-page',
-  templateUrl: 'app/pages/register/register.html'
+  template: require('./register.html')
 })
 export default class RegisterComponent {
   pageHeader: Object;

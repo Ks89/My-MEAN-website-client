@@ -4,8 +4,8 @@ import {Project, ProjectService} from '../../services/projects';
 
 @Component({
   selector: 'carousel',
-  styleUrls: ['app/common/components/carousel/carousel.css'],
-  templateUrl: 'app/common/components/carousel/carousel.html'
+  styles: [require('./carousel.css')],
+  template: require('./carousel.html')
 })
 export default class CarouselComponent {
   thumbs: Observable<Project[]>;

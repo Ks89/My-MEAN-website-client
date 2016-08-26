@@ -3,8 +3,8 @@ import {Component, Input} from '@angular/core';
 @Component({
   selector: 'page-header',
   properties: ['title', 'strapline'],
-  styleUrls: ['app/common/components/pageHeader/pageHeader.css'],
-  templateUrl: 'app/common/components/pageHeader/pageHeader.html'
+  styles: [require('./pageHeader.css')],
+  template: require('./pageHeader.html')
 })
 export default class PageHeaderComponent {
   title: string;

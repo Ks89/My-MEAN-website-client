@@ -10,8 +10,8 @@ import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
 
 @Component({
   selector: 'profile-page',
-  styleUrls: ['app/pages/profile/profile.css'],
-  templateUrl: 'app/pages/profile/profile.html'
+  styles: [require('./profile.css')],
+  template: require('./profile.html')
 })
 export default class ProfileComponent implements OnInit {
   private subscription: Subscription;
