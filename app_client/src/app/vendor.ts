@@ -16,9 +16,9 @@ import 'rxjs';
 
 //---------------------------------------------------------------
 //TODO FIXME - BROKEN PACKAGE temporary removed
-//import 'angular2-recaptcha/components/captcha'; --- STILL BROKEN
 //import 'angular2-image-popup/app/main.ts';  --- STILL BROKEN
 //---------------------------------------------------------------
+// import 'angular2-recaptcha/angular2-recaptcha'; --IT SHOULD WORK, I don't know it returns an error
 import 'h5webstorage';
 import '@ng-bootstrap/ng-bootstrap';
 import 'angular2-component-outlet-modified/index.js';

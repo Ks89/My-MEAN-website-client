@@ -3,8 +3,8 @@ import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 import {Observable} from "rxjs/Observable";
 import {Router} from '@angular/router';
-import {SimplePageScroll} from 'ng2-simple-page-scroll';
 
+import {ViewChild, ElementRef, AfterViewInit} from '@angular/core';
 import {Project, ProjectService} from '../../common/services/projects';
 
 @Component({
@@ -58,6 +58,7 @@ export default class ProjectDetailComponent {
   getInnerUrl(anchor: string) {
     console.log(this.router.url);
     return this.router.url + '#' + anchor;
+
   }
 
   ngOnDestroy(): any {
