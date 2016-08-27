@@ -31,10 +31,10 @@ node_modules
 .DS_Store
 .env
 
+#deprecated file with the new angular2 implementation
 */*/mysite.min.js
 
-app_client/node_modules
-app_client/build
+app_client/src/node_modules
 app_client/.DS_Store
 
 *.log
