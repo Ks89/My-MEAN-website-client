@@ -84,7 +84,7 @@ app.use(helmet.contentSecurityPolicy({
                 'code.jquery.com', 'www.google.com',
                 'www.gstatic.com'],
     styleSrc: ["'self'", 'ajax.googleapis.com', 'maxcdn.bootstrapcdn.com', 'cdnjs.cloudflare.com', "'unsafe-inline'"],
-    fontSrc: ['maxcdn.bootstrapcdn.com'],
+    fontSrc: ["'self'", 'maxcdn.bootstrapcdn.com'],
     imgSrc: ["'self'", 'localhost:3000', 'localhost:3001',
               'placehold.it', 'placeholdit.imgix.net', 'camo.githubusercontent.com',
               's3.amazonaws.com', 'cdnjs.cloudflare.com'],

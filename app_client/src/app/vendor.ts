@@ -14,8 +14,11 @@ import '@angular/router';
 // RxJS
 import 'rxjs';
 
-// import 'angular2-recaptcha/components/captcha'; --- STILL BROKEN
+//---------------------------------------------------------------
+//TODO FIXME - BROKEN PACKAGE temporary removed
+//import 'angular2-recaptcha/components/captcha'; --- STILL BROKEN
 //import 'angular2-image-popup/app/main.ts';  --- STILL BROKEN
+//---------------------------------------------------------------
 import 'h5webstorage';
 import '@ng-bootstrap/ng-bootstrap';
 import 'angular2-component-outlet-modified/index.js';
@@ -25,6 +28,15 @@ import 'angular2-component-outlet-modified/index.js';
 import 'jquery';
 import 'tether/dist/js/tether.min.js';
 import 'bootstrap/dist/js/bootstrap.min.js';
+
+//-------------------------------------------------------------------------
+//TODO FIXME remove bootstrap.min.css from index.html and switch to bootstrap-loader,
+// using this package https://github.com/shakacode/bootstrap-loader
 // import 'bootstrap/dist/css/bootstrap.min.css';
+//-------------------------------------------------------------------------
+
+//-------------------------------------------------------------------------
+//TODO FIXME add this css files when angular2-image-popup will work.
 // import 'angular2-image-popup/directives/angular2-image-popup/css/style.css';
 // import 'angular2-image-popup/app/assets/css/main.css';
+//-------------------------------------------------------------------------

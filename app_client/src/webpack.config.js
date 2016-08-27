@@ -50,14 +50,19 @@ module.exports = {
     ]
   },
   output: {
-    path    : './dist',
+    path    : '../',
     filename: 'bundle.js'
   },
   plugins: [
     new CommonsChunkPlugin({name: 'vendor', filename: 'vendor.bundle.js', minChunks: Infinity}),
     new CopyWebpackPlugin([{from: './index.html', to: 'index.html'}]),
     new DefinePlugin({'webpack': {'ENV': JSON.stringify(metadata.ENV)}}),
-    new ProvidePlugin({jQuery: 'jquery', jquery: 'jquery', $: 'jquery'})
+    new ProvidePlugin({
+      jQuery: 'jquery',
+      jquery: 'jquery',
+      $: 'jquery',
+      "Tether": 'tether',
+      "window.Tether": "tether"})
   ],
   resolve: {
     extensions: ['', '.ts', '.js']
