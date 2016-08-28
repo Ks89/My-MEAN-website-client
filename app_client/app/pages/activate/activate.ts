@@ -27,6 +27,27 @@ export default class ActivateComponent {
     };
 
     this.onActivate();
+
+    this.authService.getUserByToken('auth')
+    .subscribe(response => {
+        console.log("Response");
+        console.log(response);
+      },
+      (err)=>console.error(err),
+      ()=>console.log("Done")
+    );
+
+    this.authService.isLoggedIn()
+    .subscribe(response => {
+        console.log("isLoggedIn called successfully");
+        console.log(response);
+      },
+      (err)=>{
+        console.error("isLoggedIn called with error");
+        console.error(err);
+      },
+      ()=>console.log("isLoggedIn done")
+    );
   }
 
   onActivate() {

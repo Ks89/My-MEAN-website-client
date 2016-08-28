@@ -2,8 +2,8 @@ import {EventEmitter, Injectable} from '@angular/core';
 import { Http } from '@angular/http';
 import { Headers, RequestOptions } from '@angular/http';
 
-import {Observable} from "rxjs/Observable";
-import 'rxjs/add/operator/map';
+import {Observable} from 'rxjs/Observable';
+import {forkJoin} from 'rxjs/observable/forkJoin';
 
 import {LocalStorage, SessionStorage} from "h5webstorage";
 
@@ -70,10 +70,18 @@ export class AuthService {
     .map(response => response.json());
   };
 
+  isAuthLocalLoggedIn(): Observable<any> {
+    console.log("isAuthLocalLoggedIn - reading token: ");
+    return this.getUserByToken('auth');
+  }
+
   //-----------------------------
   //--- 3dauth authentication ---
   //-----------------------------
-
+  isAuth3dLoggedIn(): Observable<any> {
+    console.log("isAuth3dLoggedIn - reading token: ");
+    return this.getUserByToken('auth');
+  }
 
 
 
@@ -93,17 +101,58 @@ export class AuthService {
     //call REST service to remove session data from redis
     return this.http.get('/api/logout')
     .map(response => response.json());
-  };
+  }
+
+  isLoggedIn(): Observable<any> {
+    return Observable.forkJoin([this.isAuthLocalLoggedIn(),this.isAuth3dLoggedIn()]);
+
+    // $q.all([isAuthLocalLoggedIn(), isAuth3dLoggedIn()])
+    // .then(function(results) {
+    //   console.log("Isloggedin called");
+    //   var r0 = results[0];
+    //   var r1 = results[1];
+    //   console.log(r0);
+    //   console.log(r1);
+    //   console.log('isLoggedIn - r0: ' + r0 + ', r1: ' + r1 + '. Returning ' + r0 || r1);
+    //   deferred.resolve(r0 || r1);
+    //   //return false;
+    // }, function(err) {
+    //   console.log('isLoggedIn err - returning false');
+    //   deferred.reject(err);
+    //   //return false;
+    // }).catch(function(err){
+    //   console.log('isLoggedIn exception catched - returning false');
+    //   deferred.reject(err);
+    // });
+    // return deferred.promise;
+  }
 
   getTokenRedis(): Observable<any> {
     return this.http.get('/api/sessionToken')
     .map(response => response.json());
-  };
+  }
 
   decodeJwtToken(jwtToken: string): Observable<any> {
     //TODO add an if(jwtToken) or something like that
     return this.http.get(`/api/decodeToken/${jwtToken}`)
     .map(response => response.json());
-  };
+  }
+
+  //-----------------------------------
+  //--- others functions - not exposed
+  //-----------------------------------
+  getUserByToken(key: string): Observable<any> {
+    console.log("getUserByToken called method");
+    console.log("sessionStorage: ");
+    console.log(this.sessionStorage.getItem(key));
+    var sessionToken = this.sessionStorage.getItem(key);
+    if(sessionToken) {
+      console.log("getUserByToken sessionToken " + sessionToken);
+      return this.decodeJwtToken(sessionToken);
+    } else {
+      console.log("getUserByToken sessionToken null or empty");
+      return Observable.create(observer => observer.complete());
+    }
+  }
 
 };
