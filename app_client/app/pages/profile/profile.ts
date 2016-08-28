@@ -49,6 +49,12 @@ export default class ProfileComponent {
   constructor(private profileService: ProfileService, route: ActivatedRoute) {
     this.token = route.snapshot.params['token'];
 
+    if(this.token == null || this.token == undefined ) {
+      console.log("profile page loaded without token");
+    } else {
+      console.log(`Profile page loaded with token ${this.token}`);
+    }
+
     this.pageHeader = {
       title: 'Profile',
       strapline: 'Welcome'
