@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {Observable} from "rxjs/Observable";
 import {AuthService} from '../../common/services/auth';
-import {LocalStorage, SessionStorage} from "h5webstorage";
+import {Router} from '@angular/router';
 
 import {
     FormControl,
@@ -29,8 +29,7 @@ export default class LoginComponent {
 
 
   constructor(private authService: AuthService,
-    private localStorage: LocalStorage,
-    private sessionStorage: SessionStorage) {
+              private router: Router) {
 
     this.pageHeader = {
       title: 'Sign in',
@@ -56,6 +55,8 @@ export default class LoginComponent {
         response => {
           console.log("Response");
           console.log(response);
+          //redirect to profile page
+          this.router.navigate(['/profile']);
         },
         (err)=>console.error(err),
         ()=>console.log("Done")

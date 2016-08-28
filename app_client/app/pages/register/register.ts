@@ -1,5 +1,7 @@
 import {Component} from '@angular/core';
 import {Observable} from "rxjs/Observable";
+import {AuthService} from '../../common/services/auth';
+import {Router} from '@angular/router';
 import {
     FormControl,
     FormGroup,
@@ -17,7 +19,8 @@ export default class RegisterComponent {
   pageHeader: any;
   formModel: FormGroup;
 
-  constructor() {
+  constructor(private authService: AuthService,
+              private router: Router) {
     this.pageHeader = {
       title: 'Create a new accout',
       strapline: ''
@@ -34,7 +37,20 @@ export default class RegisterComponent {
   onRegister() {
     if (this.formModel.valid) {
       console.log("Calling register...");
-      //this.authService.registerEvent.emit(this.formModel.value);
+      this.authService.register({
+        name: this.formModel.value.name,
+        email: this.formModel.value.email,
+        password: this.formModel.value.password
+      }).subscribe(
+        response => {
+          console.log("Response");
+          console.log(response);
+          //redirect to login page
+          this.router.navigate(['/login']);
+        },
+        (err)=>console.error(err),
+        ()=>console.log("Done")
+      );
     }
   }
 }

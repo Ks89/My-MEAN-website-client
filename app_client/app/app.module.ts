@@ -57,7 +57,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
               {path: 'reset/:emailToken',               component: ResetComponent},
               {path: 'forgot',                          component: ForgotComponent},
               {path: 'activate/:emailToken/:userName',  component: ActivateComponent},
-              //TODO in angular2 '?' isn't working -> find a better approach
+              //TODO in angular2 '?' isn't working -> find a better approach to do that
               {path: 'profile',                         component: ProfileComponent },
               {path: 'profile/:token',                  component: ProfileComponent }
             ]),

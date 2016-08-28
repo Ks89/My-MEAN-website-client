@@ -9,22 +9,36 @@ import {LocalStorage, SessionStorage} from "h5webstorage";
 
 @Injectable()
 export class AuthService {
+  private headers = new Headers({ 'Content-Type': 'application/json' });
+  private options = new RequestOptions({ headers: this.headers });
+
   constructor(private http: Http,
     private localStorage: LocalStorage,
     private sessionStorage: SessionStorage) {}
 
-  login(user: any): Observable<any> {
-    let headers = new Headers({ 'Content-Type': 'application/json' });
-    let options = new RequestOptions({ headers: headers });
+    //----------------------------
+    //--- local authentication ---
+    //----------------------------
 
-    this.localStorage.setItem("auth","local");
-    this.sessionStorage.setItem("auth", "session");
+    login(user: any): Observable<any> {
+      this.localStorage.setItem("auth","test");
 
-    return this.http.post('/api/login', user, options)
+      return this.http.post('/api/login', user, this.options)
       .map(response => {
         // saveToken('auth', data.token);
-        this.localStorage.setItem('auth', response.json().token);
+        this.sessionStorage.setItem('auth', response.json().token);
         response.json();
       });
-  }
-};
+    }
+
+    register(user: any): Observable<any> {
+      this.localStorage.setItem("auth","test");
+
+      return this.http.post('/api/register', user, this.options)
+      .map(response => {
+        // saveToken('auth', data.token);
+        this.sessionStorage.setItem('auth', response.json().token);
+        response.json();
+      });
+    }
+  };
