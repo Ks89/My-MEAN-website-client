@@ -7,12 +7,13 @@ It's composed by:
 - A: a front-end in AngularJS 1 (that will be replaced by a new one in Angular2 - check the branch **angular2-front-end**)
 - N + E: a back-end in Node.js + Express js (and other useful libs like PassportJs)
 - M: a MongoDb's database
-- gulp + nodemon
+- gulp + nodemon (I'm also experimenting Wepack  [HERE](https://github.com/Ks89/My-MEAN-website/tree/webpack-angular2-front-end))
 
 A possible extension of this project is a configurable template to build a custom web app very quickly.
 
 Attention! This project is still an alpha, so it's not production ready. Please be careful.
-If you are interested, please star this project on GitHub.
+If you are interested, star this project on GitHub.
+**All features that I'm developing will be merged into master as soon as possible**. Please be patient.
 
 Testing:
 - front-end unit: useless, because I'm rewriting the entire front-end using Angular 2
