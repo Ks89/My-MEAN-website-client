@@ -1,5 +1,8 @@
 import {Component} from '@angular/core';
 import {Observable} from "rxjs/Observable";
+import {AuthService} from '../../common/services/auth';
+import {Router} from '@angular/router';
+
 import {
     FormControl,
     FormGroup,
@@ -17,7 +20,10 @@ export default class ForgotComponent {
   pageHeader: any;
   formModel: FormGroup;
 
-  constructor() {
+  //this class is used when you click on the "forgot password" to reset your password
+
+  constructor(private authService: AuthService,
+              private router: Router) {
     this.pageHeader = {
       title: 'Forgot',
       strapline: ''
@@ -31,8 +37,15 @@ export default class ForgotComponent {
 
   onForgot() {
     if (this.formModel.valid) {
-      console.log("Calling forgot...");
-      //this.authService.forgotEvent.emit(this.formModel.value);
+      console.log("Calling forgot password...");
+      this.authService.forgot(this.formModel.value.email)
+      .subscribe(response => {
+          console.log("Response");
+          console.log(response);
+        },
+        (err)=>console.error(err),
+        ()=>console.log("Done")
+      );
     }
   }
 }
