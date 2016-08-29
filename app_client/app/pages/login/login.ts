@@ -53,9 +53,9 @@ export default class LoginComponent {
         password: this.formModel.value.password
       }).subscribe(
         response => {
-          console.log("Response");
+          console.log("Response login");
           console.log(response);
-          //redirect to profile page
+
           this.router.navigate(['/profile']);
         },
         (err)=>console.error(err),

@@ -12,10 +12,10 @@
     navvm.currentPath = $location.path();
 
     navvm.currentUser = {
-      'name' : '' 
+      'name' : ''
     };
 
-    navvm.isActive = function (viewLocation) { 
+    navvm.isActive = function (viewLocation) {
         return viewLocation === navvm.currentPath;
     };
 

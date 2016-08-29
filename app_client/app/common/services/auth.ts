@@ -4,6 +4,8 @@ import { Headers, RequestOptions } from '@angular/http';
 
 import {Observable} from 'rxjs/Observable';
 import {forkJoin} from 'rxjs/observable/forkJoin';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/reduce';
 
 import {LocalStorage, SessionStorage} from "h5webstorage";
 
@@ -104,27 +106,10 @@ export class AuthService {
   }
 
   isLoggedIn(): Observable<any> {
-    return Observable.forkJoin([this.isAuthLocalLoggedIn(),this.isAuth3dLoggedIn()]);
-
-    // $q.all([isAuthLocalLoggedIn(), isAuth3dLoggedIn()])
-    // .then(function(results) {
-    //   console.log("Isloggedin called");
-    //   var r0 = results[0];
-    //   var r1 = results[1];
-    //   console.log(r0);
-    //   console.log(r1);
-    //   console.log('isLoggedIn - r0: ' + r0 + ', r1: ' + r1 + '. Returning ' + r0 || r1);
-    //   deferred.resolve(r0 || r1);
-    //   //return false;
-    // }, function(err) {
-    //   console.log('isLoggedIn err - returning false');
-    //   deferred.reject(err);
-    //   //return false;
-    // }).catch(function(err){
-    //   console.log('isLoggedIn exception catched - returning false');
-    //   deferred.reject(err);
-    // });
-    // return deferred.promise;
+    return Observable.forkJoin(
+      [this.isAuthLocalLoggedIn(),
+        this.isAuth3dLoggedIn()]
+    ).reduce((acc, x: boolean) => acc || x, false);
   }
 
   getTokenRedis(): Observable<any> {
