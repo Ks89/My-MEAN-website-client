@@ -41,8 +41,6 @@ export default class LoginComponent {
       'email': [null, Validators.minLength(3)],
       'password': [null, positiveNumberValidator]
     });
-
-
   }
 
   onLogin() {
@@ -56,7 +54,19 @@ export default class LoginComponent {
           console.log("Response login");
           console.log(response);
 
-          this.router.navigate(['/profile']);
+          this.authService.getLoggedUser().subscribe(
+            response => {
+
+              console.log("**************************");
+              console.log(response);
+              console.log("**************************");
+
+              this.authService.loginEvent.emit(response);
+              this.router.navigate(['/profile']);
+            },
+            (err)=>console.error(err),
+            ()=>console.log("Done")
+          );
         },
         (err)=>console.error(err),
         ()=>console.log("Done")

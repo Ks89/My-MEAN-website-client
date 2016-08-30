@@ -8,19 +8,24 @@ import {AuthService} from '../../services/auth';
 })
 export default class NavbarComponent {
 
+  //TODO FIXME replace with a real impl calling the service
   isLoggedIn: boolean = false;
   currentUser: any = {name : 'fake'};
   currentPath: string = 'fakeString';
 
-  // this.authService.isLoggedIn().subscribe(
-  //   x => {
-  //     console.log('Next: ' + x)
-  //   },
-  //   err => {
-  //     console.log('Error: ' + err)
-  //   },
-  //   () => {
-  //     console.log('Completed')
-  //   });
-  // }
+  constructor(private authService: AuthService) {
+
+    this.authService.loginEvent
+        .subscribe(res =>
+        {
+          console.log("NAVIGATION: ");
+          console.log(res);
+
+          this.currentUser = {name: res.local.name};
+          this.isLoggedIn = true;
+
+        },err =>  console.log("Can't get logged user"),
+        () => console.log('DONE')
+      );
+  }
 }

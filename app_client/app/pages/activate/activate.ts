@@ -36,18 +36,6 @@ export default class ActivateComponent {
       (err)=>console.error(err),
       ()=>console.log("Done")
     );
-
-    this.authService.isLoggedIn()
-    .subscribe(response => {
-        console.log("isLoggedIn called successfully");
-        console.log(response);
-      },
-      (err)=>{
-        console.error("isLoggedIn called with error");
-        console.error(err);
-      },
-      ()=>console.log("isLoggedIn done")
-    );
   }
 
   onActivate() {

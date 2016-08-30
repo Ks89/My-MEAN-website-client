@@ -4,6 +4,7 @@ import { Headers, RequestOptions } from '@angular/http';
 
 import {Observable} from 'rxjs/Observable';
 import {forkJoin} from 'rxjs/observable/forkJoin';
+import {of} from 'rxjs/observable/of';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/reduce';
 
@@ -13,6 +14,8 @@ import {LocalStorage, SessionStorage} from "h5webstorage";
 export class AuthService {
   private headers = new Headers({ 'Content-Type': 'application/json' });
   private options = new RequestOptions({ headers: this.headers });
+
+  loginEvent: EventEmitter<any> = new EventEmitter();
 
   constructor(private http: Http,
     private localStorage: LocalStorage,
@@ -26,7 +29,11 @@ export class AuthService {
     return this.http.post('/api/login', user, this.options)
     .map(response => {
       this.sessionStorage.setItem('auth', response.json().token);
-      response.json();
+      return response.json();
+    }).map(res => {
+      // this.loginStatus = res;
+      console.log('Result is: ' + res);
+      return res;
     }); //on error removeToken('auth');
   }
 
@@ -35,7 +42,7 @@ export class AuthService {
     .map(response => {
       // saveToken('auth', data.token);
       this.sessionStorage.setItem('auth', response.json().token);
-      response.json();
+      return response.json();
     }); //on error removeToken('auth');
   }
 
@@ -48,7 +55,7 @@ export class AuthService {
     .map(response => {
       // saveToken('auth', data.token);
       this.sessionStorage.setItem('auth', response.json().token);
-      response.json();
+      return response.json();
     });
   }
 
@@ -74,7 +81,7 @@ export class AuthService {
 
   isAuthLocalLoggedIn(): Observable<any> {
     console.log("isAuthLocalLoggedIn - reading token: ");
-    return this.getUserByToken('auth');
+    return this.getUserFromSessionStorage('auth');
   }
 
   //-----------------------------
@@ -82,7 +89,7 @@ export class AuthService {
   //-----------------------------
   isAuth3dLoggedIn(): Observable<any> {
     console.log("isAuth3dLoggedIn - reading token: ");
-    return this.getUserByToken('auth');
+    return this.getUserFromSessionStorage('auth');
   }
 
 
@@ -106,10 +113,18 @@ export class AuthService {
   }
 
   isLoggedIn(): Observable<any> {
-    return Observable.forkJoin(
-      [this.isAuthLocalLoggedIn(),
-        this.isAuth3dLoggedIn()]
-    ).reduce((acc, x: boolean) => acc || x, false);
+    // return Observable.forkJoin(
+    //   [this.isAuthLocalLoggedIn(),
+    //     this.isAuth3dLoggedIn()]
+    // ).reduce((acc, x: boolean) => acc || x, false)
+    //TODO FIXME remove isAuth3dLoggedIn and rename isAuthLocalLoggedIn to isAuthLoggedIn
+    return this.isAuthLocalLoggedIn()
+    .map(res => {
+      // this.loginStatus = res;
+      console.log('Result is: ');
+      console.log(res);
+      return res;
+    });
   }
 
   getTokenRedis(): Observable<any> {
@@ -126,7 +141,9 @@ export class AuthService {
   //-----------------------------------
   //--- others functions - not exposed
   //-----------------------------------
-  getUserByToken(key: string): Observable<any> {
+  //it uses the sessionStorage's jwt token as parameter of decodeJwtToken rest service
+  //to be able to return the decoded json user
+  getUserFromSessionStorage(key: string): Observable<any> {
     console.log("getUserByToken called method");
     console.log("sessionStorage: ");
     console.log(this.sessionStorage.getItem(key));
@@ -140,4 +157,59 @@ export class AuthService {
     }
   }
 
-};
+  getLoggedUser(): Observable<any> {
+    return this.getUserFromSessionStorage('auth')
+    .map(res => {
+      if(res == null || res === 'invalid-data') {
+        this.sessionStorage.removeItem('auth');
+        //TODO remove session data with logout
+        console.log('INVALID DATA !!!!');
+        // return Observable.throw(new Error('Invalid data!'));
+        return "INVALID DATA";
+      } else {
+        var userData = JSON.parse(res);
+        console.log(userData);
+        var user = userData.user;
+        console.log(user);
+        return user;
+      }
+    });
+  }
+
+  // getLoggedUser(): Observable<any>|void {
+  //
+  //   this.getUserFromSessionStorage('auth').subscribe(
+  //     result => {
+  //       console.log(result);
+  //
+  //       this.decodeJwtToken(result).map(
+  //         value => {
+  //           if(value !== null && value === 'invalid-data') {
+  //             this.sessionStorage.removeItem('auth');
+  //             //TODO remove session data with logout
+  //             console.log('INVALID DATA !!!!');
+  //             return null;
+  //           }
+  //           if(value) {
+  //             var userData = JSON.parse(value);
+  //             console.log(userData);
+  //             var user = userData.user;
+  //             console.log(user);
+  //             return value;
+  //           } else {
+  //             this.sessionStorage.removeItem('auth');
+  //             //TODO remove session data with logout
+  //             console.log('INVALID DATA !!!!');
+  //             return null;
+  //           }
+  //         }
+  //       )
+  //     },err => {
+  //       console.error(err);
+  //       return err;
+  //     },() => {
+  //       console.log("done");
+  //     }
+  //   );
+  // }
+}
