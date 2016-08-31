@@ -80,8 +80,7 @@ export class AuthService {
 
   unlink(serviceName: string): Observable<any> {
     console.log("Called unlink " + serviceName);
-    return this.http.get(`/api/unlink/${serviceName}`)
-    .map(response => response.json());
+    return this.http.get(`/api/unlink/${serviceName}`);
   };
 
   isAuthLocalLoggedIn(): Observable<any> {

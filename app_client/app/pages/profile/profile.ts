@@ -4,6 +4,7 @@ import {Observable} from "rxjs/Observable";
 import {Profile, ProfileService} from '../../common/services/profile';
 import {Subscription} from 'rxjs/Subscription';
 import {AuthService} from '../../common/services/auth';
+import {Router} from '@angular/router';
 
 import {
     FormControl,
@@ -57,6 +58,7 @@ export default class ProfileComponent implements OnInit {
 
   constructor(private profileService: ProfileService,
               route: ActivatedRoute,
+              private router: Router,
               private authService: AuthService) {
     this.token = route.snapshot.params['token'];
 
@@ -157,6 +159,65 @@ export default class ProfileComponent implements OnInit {
       this.subscription.unsubscribe();
     }
   }
+
+
+  unlink (serviceName: string): any {
+    console.log("unlink " + serviceName + " called");
+
+    if(checkIfLastUnlinkProfile(serviceName)) {
+      console.log('Last unlink - processing...');
+      this.authService.unlink(serviceName)
+      .subscribe(
+        result => {
+          console.log('Unlinked: ' + result);
+          this.authService.logout()
+          .subscribe(
+            result => {
+              console.log('Logged out: ' + result);
+              this.router.navigate(['/home']);
+            },
+            err => {
+              //logServer.error("profile impossible to logout", err);
+              console.log('Impossible to logout: ' + err);
+              this.router.navigate(['/home']);
+            },
+            () => console.log("Last unlink - unlink done")
+          )
+        },
+        err => {
+          //logServer.error("profile error unlink", err);
+          console.log('Impossible to unlink: ' + err);
+        },
+        () => console.log("Last unlink - unlink done")
+      );
+    } else {
+      console.log('NOT last unlink - checking...');
+      if(serviceName=='facebook' || serviceName=='google' ||
+        serviceName=='github' || serviceName=='local' ||
+        serviceName=='linkedin' || serviceName=='twitter') {
+          console.log('NOT last unlink - but service recognized, processing...');
+          this.authService.unlink(serviceName)
+          .subscribe(
+            result => {
+              console.log(serviceName + ' Unlinked with result user: ');
+              console.log(result);
+              this.router.navigate(['/profile']);
+              console.log("redirected to profile");
+            },
+            err => {
+              //logServer.error("profile impossible to unlink", reason);
+              console.log('Impossible to unlink: ' + err);
+              this.router.navigate(['/home']);
+            },
+            () => console.log("not last unlink: done")
+          );
+      } else {
+        //logServer.error("Unknown service. Aborting operation!");
+        console.error("Unknown service. Aborting operation!");
+      }
+    }
+  }
+
 }
 
 function buildJsonUserData(): any {
@@ -168,6 +229,23 @@ function buildJsonUserData(): any {
   };
 }
 
-function unlink (serviceName: string): any {
-
+function checkIfLastUnlinkProfile(serviceName) {
+  switch(serviceName) {
+    case 'github':
+      return this.facebook.name=='' && this.google.name=='' && this.local.name=='' && this.linkedin.name=='' && this.twitter.name=='';
+    case 'google':
+      return this.github.name=='' && this.facebook.name=='' && this.local.name=='' && this.linkedin.name=='' && this.twitter.name=='';
+    case 'facebook':
+      return this.github.name=='' && this.google.name=='' && this.local.name=='' && this.linkedin.name=='' && this.twitter.name=='';
+    case 'local':
+      return this.github.name=='' && this.facebook.name=='' && this.google.name=='' && this.linkedin.name=='' && this.twitter.name=='';
+    case 'linkedin':
+      return this.facebook.name=='' && this.google.name=='' && this.local.name=='' && this.github.name=='' && this.twitter.name=='';
+    case 'twitter':
+      return this.facebook.name=='' && this.google.name=='' && this.local.name=='' && this.github.name=='' && this.linkedin.name=='';
+    default:
+      //logServer.error("Service name not recognized in profile checkIfLastUnlink");
+      console.log('Service name not recognized in profile checkIfLastUnlink');
+      return false;
+  }
 }
