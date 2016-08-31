@@ -15,10 +15,10 @@ var logger = require('../../../utils/logger.js');
 //   which, in this example, will redirect the user to destination page.
 //-----------------------------------------
 
-var redirectFailure = { failureRedirect: '/login' };
+var redirectFailure = { failureRedirect: '/#/login' };
 
 var connectRedirect = {
-	successRedirect : '/profile',
+	successRedirect : '/#/profile',
 	failureRedirect : '/'
 };
 
@@ -73,9 +73,9 @@ function redirectToProfile(user, res, req) {
 		req.session.authToken = authCommon.generateSessionJwtToken(user);
 	} catch(e) {
 		logger.error(e);
-		res.redirect('/home');
+		res.redirect('/#/home');
 	}
-	res.redirect('/profile');
+	res.redirect('/#/profile');
 }
 
 

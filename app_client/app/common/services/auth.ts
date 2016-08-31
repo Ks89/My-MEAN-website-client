@@ -7,6 +7,11 @@ import {forkJoin} from 'rxjs/observable/forkJoin';
 import {of} from 'rxjs/observable/of';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/reduce';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/observable/from';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/concatMap';
+import 'rxjs/add/operator/share';
 
 import {LocalStorage, SessionStorage} from "h5webstorage";
 

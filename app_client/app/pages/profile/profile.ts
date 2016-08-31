@@ -1,8 +1,9 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Observable} from "rxjs/Observable";
 import {Profile, ProfileService} from '../../common/services/profile';
 import {Subscription} from 'rxjs/Subscription';
+import {AuthService} from '../../common/services/auth';
 
 import {
     FormControl,
@@ -13,11 +14,10 @@ import {
 
 @Component({
   selector: 'profile-page',
-  providers: [],
   styleUrls: [],
   templateUrl: 'app/pages/profile/profile.html'
 })
-export default class ProfileComponent {
+export default class ProfileComponent implements OnInit {
   pageHeader: any;
   formModel: FormGroup;
   token: string;
@@ -38,15 +38,26 @@ export default class ProfileComponent {
     name: '',
     email: ''
   };
-  github: Object;
-  google: Object;
-  facebook: Object;
-  twitter: Object;
-  linkedin: Object;
+  credentials: Object = {
+    localUserEmail: "",
+    id: "",
+    serviceName: "",
+    name : "",
+    surname: "",
+    nickname: "",
+    email : ""
+  };
+  github: Object = buildJsonUserData();
+  google: Object = buildJsonUserData();
+  facebook: Object = buildJsonUserData();
+  twitter: Object = buildJsonUserData();
+  linkedin: Object = buildJsonUserData();
 
   private subscription: Subscription;
 
-  constructor(private profileService: ProfileService, route: ActivatedRoute) {
+  constructor(private profileService: ProfileService,
+              route: ActivatedRoute,
+              private authService: AuthService) {
     this.token = route.snapshot.params['token'];
 
     if(this.token == null || this.token == undefined ) {
@@ -73,6 +84,56 @@ export default class ProfileComponent {
     this.facebook = buildJsonUserData();
     this.twitter = buildJsonUserData();
     this.linkedin = buildJsonUserData();
+  }
+
+  ngOnInit() {
+    console.log('INIT');
+    //3dparty authentication
+    this.authService.post3dAuthAfterCallback().subscribe(
+      jwtTokenAsString => {
+        console.log("**************************");
+        console.log(jwtTokenAsString);
+        console.log("**************************");
+        this.authService.getLoggedUser().subscribe(
+          user => {
+            console.log("#########################");
+            console.log(user);
+            console.log("#########################");
+
+            console.log("setting data.........................");
+            setObjectValuesLocal(user.local, this.local);
+            setObjectValues(user.github, this.github);
+            setObjectValues(user.facebook, this.facebook);
+            setObjectValues(user.google, this.google);
+            setObjectValues(user.twitter, this.twitter);
+            setObjectValues(user.linkedin, this.linkedin);
+            if(user.profile) {
+              this.credentials = user.profile;
+            }
+            console.log("---------------setted----------------");
+
+            this.authService.loginEvent.emit(user);
+          }
+        );
+      },
+      (err)=>console.error(err),
+      ()=>console.log("Done")
+    );
+
+    function setObjectValues(originData, destData) {
+      if(originData) {
+        destData.id = originData.id;
+        destData.email = originData.email;
+        destData.name = originData.name ? originData.name : originData.username;
+        destData.token = originData.token;
+      }
+    }
+    function setObjectValuesLocal(originData, destData) {
+      if(originData) {
+        destData.email = originData.email;
+        destData.name = originData.name;
+      }
+    }
   }
 
   onProfileUpdate() {
