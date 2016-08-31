@@ -28,7 +28,7 @@ export class AuthService {
   login(user: any): Observable<any> {
     return this.http.post('/api/login', user, this.options)
     .map(response => {
-      this.sessionStorage.setItem('auth', response.json().token);
+      this.saveToken('auth', response.json().token);
       return response.json();
     }).map(res => {
       // this.loginStatus = res;
@@ -41,7 +41,7 @@ export class AuthService {
     return this.http.post('/api/register', user, this.options)
     .map(response => {
       // saveToken('auth', data.token);
-      this.sessionStorage.setItem('auth', response.json().token);
+      this.saveToken('auth', response.json().token);
       return response.json();
     }); //on error removeToken('auth');
   }
@@ -54,7 +54,7 @@ export class AuthService {
     return this.http.post('/api/resetNewPassword', data, this.options)
     .map(response => {
       // saveToken('auth', data.token);
-      this.sessionStorage.setItem('auth', response.json().token);
+      this.saveToken('auth', response.json().token);
       return response.json();
     });
   }
@@ -105,7 +105,7 @@ export class AuthService {
 
   logout(): Observable<any> {
     console.log("Called authentication logout");
-    this.sessionStorage.removeItem('auth');
+    this.removeToken('auth');
 
     //call REST service to remove session data from redis
     return this.http.get('/api/logout')
@@ -127,6 +127,11 @@ export class AuthService {
     });
   }
 
+  saveToken(key, token) {
+    console.log('saving token with key: ' + key);
+    this.sessionStorage.setItem(key, token);
+  };
+
   getTokenRedis(): Observable<any> {
     return this.http.get('/api/sessionToken')
     .map(response => response.json());
@@ -138,30 +143,32 @@ export class AuthService {
     .map(response => response.json());
   }
 
-  //-----------------------------------
-  //--- others functions - not exposed
-  //-----------------------------------
-  //it uses the sessionStorage's jwt token as parameter of decodeJwtToken rest service
-  //to be able to return the decoded json user
-  getUserFromSessionStorage(key: string): Observable<any> {
-    console.log("getUserByToken called method");
-    console.log("sessionStorage: ");
-    console.log(this.sessionStorage.getItem(key));
-    var sessionToken = this.sessionStorage.getItem(key);
-    if(sessionToken) {
-      console.log("getUserByToken sessionToken " + sessionToken);
-      return this.decodeJwtToken(sessionToken);
-    } else {
-      console.log("getUserByToken sessionToken null or empty");
-      return Observable.create(observer => observer.complete());
-    }
+  //For 3dauth I must save the auth token, before that I can call isLoggedIn.
+  //Obviously, with local auth I can manage all the process by myself, but for 3dauth after the callback
+  //I haven't anything and I must call this method to finish this process.
+  post3dAuthAfterCallback(): Observable<any> {
+    return this.getTokenRedis()
+    .map(tokenData => {
+      console.log('token obtained from redis');
+      console.log("sessionToken " + tokenData);
+      if(!tokenData) return "sessionToken not valid";
+      var tokenObj = JSON.parse(tokenData);
+      console.log("tokenobj: " + tokenObj);
+      if(tokenObj && tokenObj.token) {
+        console.log("real token is: " + tokenObj.token);
+        this.saveToken('auth', tokenObj.token);
+        return tokenObj.token;
+      } else {
+        return "sessionToken not valid. Cannot obtain token";
+      }
+    });
   }
 
   getLoggedUser(): Observable<any> {
     return this.getUserFromSessionStorage('auth')
     .map(res => {
       if(res == null || res === 'invalid-data') {
-        this.sessionStorage.removeItem('auth');
+        this.removeToken('auth');
         //TODO remove session data with logout
         console.log('INVALID DATA !!!!');
         // return Observable.throw(new Error('Invalid data!'));
@@ -176,40 +183,30 @@ export class AuthService {
     });
   }
 
-  // getLoggedUser(): Observable<any>|void {
-  //
-  //   this.getUserFromSessionStorage('auth').subscribe(
-  //     result => {
-  //       console.log(result);
-  //
-  //       this.decodeJwtToken(result).map(
-  //         value => {
-  //           if(value !== null && value === 'invalid-data') {
-  //             this.sessionStorage.removeItem('auth');
-  //             //TODO remove session data with logout
-  //             console.log('INVALID DATA !!!!');
-  //             return null;
-  //           }
-  //           if(value) {
-  //             var userData = JSON.parse(value);
-  //             console.log(userData);
-  //             var user = userData.user;
-  //             console.log(user);
-  //             return value;
-  //           } else {
-  //             this.sessionStorage.removeItem('auth');
-  //             //TODO remove session data with logout
-  //             console.log('INVALID DATA !!!!');
-  //             return null;
-  //           }
-  //         }
-  //       )
-  //     },err => {
-  //       console.error(err);
-  //       return err;
-  //     },() => {
-  //       console.log("done");
-  //     }
-  //   );
-  // }
+  //-----------------------------------
+  //--- others functions - not exposed
+  //-----------------------------------
+  getToken(key): string {
+    return this.sessionStorage.getItem(key);
+  }
+
+  //it uses the sessionStorage's jwt token as parameter of decodeJwtToken rest service
+  //to be able to return the decoded json user
+  private getUserFromSessionStorage(key: string): Observable<any> {
+    console.log("getUserFromSessionStorage called method");
+    console.log("sessionStorage: ");
+    console.log(this.getToken(key));
+    var sessionToken = this.getToken(key);
+    if(sessionToken) {
+      console.log("getUserFromSessionStorage sessionToken " + sessionToken);
+      return this.decodeJwtToken(sessionToken);
+    } else {
+      console.log("getUserFromSessionStorage sessionToken null or empty");
+      return Observable.create(observer => observer.complete());
+    }
+  }
+
+  removeToken(key) {
+    this.sessionStorage.removeItem(key);
+  }
 }
