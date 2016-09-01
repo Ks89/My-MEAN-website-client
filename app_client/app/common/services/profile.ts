@@ -12,11 +12,10 @@ export class ProfileService {
   constructor(private http: Http) {}
 
   update(profile: any): Observable<Profile> {
-    let body = JSON.stringify({ profile });
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
 
-    return this.http.post('/api/profile', body, options)
+    return this.http.post('/api/profile', profile, options)
       .map(response => response.json());
   }
 }

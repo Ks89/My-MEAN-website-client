@@ -29,17 +29,7 @@ export default class ProfileComponent implements OnInit {
     strapline: ' '
   };
 
-  facebookConnectOauthUrl: Object = 'api/connect/facebook';
-  googleConnectOauthUrl: Object = 'api/connect/google';
-  githubConnectOauthUrl: Object = 'api/connect/github';
-  twitterConnectOauthUrl: Object = 'api/connect/twitter';
-  linkedinConnectOauthUrl: Object = 'api/connect/linkedin';
-
-  local: Object = {
-    name: '',
-    email: ''
-  };
-  credentials: Object = {
+  profileData = {
     localUserEmail: "",
     id: "",
     serviceName: "",
@@ -48,11 +38,22 @@ export default class ProfileComponent implements OnInit {
     nickname: "",
     email : ""
   };
-  github: Object = buildJsonUserData();
-  google: Object = buildJsonUserData();
-  facebook: Object = buildJsonUserData();
-  twitter: Object = buildJsonUserData();
-  linkedin: Object = buildJsonUserData();
+
+  facebookConnectOauthUrl: Object = 'api/connect/facebook';
+  googleConnectOauthUrl: Object = 'api/connect/google';
+  githubConnectOauthUrl: Object = 'api/connect/github';
+  twitterConnectOauthUrl: Object = 'api/connect/twitter';
+  linkedinConnectOauthUrl: Object = 'api/connect/linkedin';
+
+  local: any = {
+    name: '',
+    email: ''
+  };
+  github: any = buildJsonUserData();
+  google: any = buildJsonUserData();
+  facebook: any = buildJsonUserData();
+  twitter: any = buildJsonUserData();
+  linkedin: any = buildJsonUserData();
 
   private subscription: Subscription;
 
@@ -110,7 +111,11 @@ export default class ProfileComponent implements OnInit {
             setObjectValues(user.twitter, this.twitter);
             setObjectValues(user.linkedin, this.linkedin);
             if(user.profile) {
-              this.credentials = user.profile;
+              console.log(this.formModel.get("name"));
+              this.formModel.get("name").setValue(user.profile.name);
+              this.formModel.get("surname").setValue(user.profile.surname);
+              this.formModel.get("nickname").setValue(user.profile.nickname);
+              this.formModel.get("email").setValue(user.profile.email);
             }
             console.log("---------------setted----------------");
 
@@ -140,9 +145,35 @@ export default class ProfileComponent implements OnInit {
 
   onProfileUpdate() {
     if (this.formModel.valid) {
+
+      this.profileData.name = this.formModel.value.name;
+      this.profileData.surname = this.formModel.value.surname;
+      this.profileData.nickname = this.formModel.value.nickname;
+      this.profileData.email = this.formModel.value.email;
+
+      if(this.local.email) {
+        this.profileData.localUserEmail = this.local.email;
+        this.profileData.serviceName = 'local';
+      } else if(this.facebook.id) {
+        this.profileData.id = this.facebook.id;
+        this.profileData.serviceName = 'facebook';
+      } else if(this.google.id) {
+        this.profileData.id = this.google.id;
+        this.profileData.serviceName = 'google';
+      } else if(this.github.id) {
+        this.profileData.id = this.github.id;
+        this.profileData.serviceName = 'github';
+      } else if(this.linkedin.id) {
+        this.profileData.id = this.linkedin.id;
+        this.profileData.serviceName = 'linkedin';
+      } else if(this.twitter.id) {
+        this.profileData.id = this.twitter.id;
+        this.profileData.serviceName = 'twitter';
+      }
+
       console.log("Calling updateProfile...");
-      console.log(this.formModel.value);
-      this.profileService.update(this.formModel.value).subscribe(
+      console.log(this.profileData);
+      this.profileService.update(this.profileData).subscribe(
         response => {
           console.log("Response");
           console.log(response);
