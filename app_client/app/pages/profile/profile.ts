@@ -49,11 +49,12 @@ export default class ProfileComponent implements OnInit {
     name: '',
     email: ''
   };
-  github: any = buildJsonUserData();
-  google: any = buildJsonUserData();
-  facebook: any = buildJsonUserData();
-  twitter: any = buildJsonUserData();
-  linkedin: any = buildJsonUserData();
+
+  github: any = this.buildJsonUserData();
+  google: any = this.buildJsonUserData();
+  facebook: any = this.buildJsonUserData();
+  twitter: any = this.buildJsonUserData();
+  linkedin: any = this.buildJsonUserData();
 
   private subscription: Subscription;
 
@@ -81,12 +82,6 @@ export default class ProfileComponent implements OnInit {
       'nickname': [null, Validators.minLength(3)],
       'email': [null, Validators.minLength(3)]
     })
-
-    this.github = buildJsonUserData();
-    this.google = buildJsonUserData();
-    this.facebook = buildJsonUserData();
-    this.twitter = buildJsonUserData();
-    this.linkedin = buildJsonUserData();
   }
 
   ngOnInit() {
@@ -106,12 +101,10 @@ export default class ProfileComponent implements OnInit {
             console.log("setting data.........................");
             setObjectValuesLocal(user.local, this.local);
             setObjectValues(user.github, this.github);
-            setObjectValues(user.facebook, this.facebook);
             setObjectValues(user.google, this.google);
             setObjectValues(user.twitter, this.twitter);
             setObjectValues(user.linkedin, this.linkedin);
             if(user.profile) {
-              console.log(this.formModel.get("name"));
               this.formModel.get("name").setValue(user.profile.name);
               this.formModel.get("surname").setValue(user.profile.surname);
               this.formModel.get("nickname").setValue(user.profile.nickname);
@@ -142,6 +135,8 @@ export default class ProfileComponent implements OnInit {
       }
     }
   }
+
+
 
   onProfileUpdate() {
     if (this.formModel.valid) {
@@ -195,7 +190,7 @@ export default class ProfileComponent implements OnInit {
   unlink (serviceName: string): any {
     console.log("unlink " + serviceName + " called");
 
-    if(checkIfLastUnlinkProfile(serviceName)) {
+    if(this.checkIfLastUnlinkProfile(serviceName)) {
       console.log('Last unlink - processing...');
       this.authService.unlink(serviceName)
       .subscribe(
@@ -249,34 +244,36 @@ export default class ProfileComponent implements OnInit {
     }
   }
 
-}
 
-function buildJsonUserData(): any {
-  return {
-    id : '',
-    email : '',
-    name : '',
-    token : '',
-  };
-}
-
-function checkIfLastUnlinkProfile(serviceName) {
-  switch(serviceName) {
-    case 'github':
-      return this.facebook.name=='' && this.google.name=='' && this.local.name=='' && this.linkedin.name=='' && this.twitter.name=='';
-    case 'google':
-      return this.github.name=='' && this.facebook.name=='' && this.local.name=='' && this.linkedin.name=='' && this.twitter.name=='';
-    case 'facebook':
-      return this.github.name=='' && this.google.name=='' && this.local.name=='' && this.linkedin.name=='' && this.twitter.name=='';
-    case 'local':
-      return this.github.name=='' && this.facebook.name=='' && this.google.name=='' && this.linkedin.name=='' && this.twitter.name=='';
-    case 'linkedin':
-      return this.facebook.name=='' && this.google.name=='' && this.local.name=='' && this.github.name=='' && this.twitter.name=='';
-    case 'twitter':
-      return this.facebook.name=='' && this.google.name=='' && this.local.name=='' && this.github.name=='' && this.linkedin.name=='';
-    default:
-      //logServer.error("Service name not recognized in profile checkIfLastUnlink");
-      console.log('Service name not recognized in profile checkIfLastUnlink');
-      return false;
+  private buildJsonUserData(): any {
+    return {
+      id : '',
+      email : '',
+      name : '',
+      token : '',
+    };
   }
+
+  private checkIfLastUnlinkProfile(serviceName) {
+    console.log("checkIfLastUnlinkProfile with serviceName: " + serviceName);
+    switch(serviceName) {
+      case 'github':
+        return this.facebook.name=='' && this.google.name=='' && this.local.name=='' && this.linkedin.name=='' && this.twitter.name=='';
+      case 'google':
+        return this.github.name=='' && this.facebook.name=='' && this.local.name=='' && this.linkedin.name=='' && this.twitter.name=='';
+      case 'facebook':
+        return this.github.name=='' && this.google.name=='' && this.local.name=='' && this.linkedin.name=='' && this.twitter.name=='';
+      case 'local':
+        return this.github.name=='' && this.facebook.name=='' && this.google.name=='' && this.linkedin.name=='' && this.twitter.name=='';
+      case 'linkedin':
+        return this.facebook.name=='' && this.google.name=='' && this.local.name=='' && this.github.name=='' && this.twitter.name=='';
+      case 'twitter':
+        return this.facebook.name=='' && this.google.name=='' && this.local.name=='' && this.github.name=='' && this.linkedin.name=='';
+      default:
+        //logServer.error("Service name not recognized in profile checkIfLastUnlink");
+        console.log('Service name not recognized in profile checkIfLastUnlink');
+        return false;
+    }
+  }
+
 }
