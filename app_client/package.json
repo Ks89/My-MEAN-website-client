@@ -20,6 +20,7 @@
     "@angular/router": "3.0.0-rc.1",
     "@ng-bootstrap/ng-bootstrap": "^1.0.0-alpha.3",
     "angular2-component-outlet": "0.0.4",
+    "angular2-image-popup": "^1.1.0",
     "angular2-ladda": "0.0.7",
     "angular2-recaptcha": "^0.1.3",
     "bootstrap": "^4.0.0-alpha.3",
