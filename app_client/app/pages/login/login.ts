@@ -19,6 +19,7 @@ export default class LoginComponent {
   pageHeader: Object;
   formModel: FormGroup;
   loginAlert: Object = { visible: false }; //hidden by default
+  isWaiting: boolean = false; //enable button's spinner
 
   facebookOauthUrl: string = 'api/auth/facebook';
   googleOauthUrl: string = 'api/auth/google';
@@ -42,6 +43,7 @@ export default class LoginComponent {
 
   onLogin() {
     if (this.formModel.valid) {
+      this.isWaiting = true;
       console.log("Calling login...");
       this.authService.login({
         email: this.formModel.value.email,
@@ -50,7 +52,7 @@ export default class LoginComponent {
         response => {
           console.log("Response login");
           console.log(response);
-
+          this.isWaiting = false;
           this.authService.getLoggedUser().subscribe(
             response => {
 
@@ -63,8 +65,7 @@ export default class LoginComponent {
                 status: 'success',
                 strong : 'Success',
                 message: response.message
-              }
-
+              };
               this.authService.loginEvent.emit(response);
               this.router.navigate(['/profile']);
             },
@@ -79,7 +80,8 @@ export default class LoginComponent {
             status: 'danger',
             strong : 'Danger',
             message: err
-          }
+          };
+          this.isWaiting = false;
         },
         () => console.log("Done")
       );

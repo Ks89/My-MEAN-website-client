@@ -20,6 +20,7 @@ export default class ResetComponent {
   formModel: FormGroup;
   emailToken: string;
   resetAlert: Object = { visible: false }; //hidden by default
+  isWaiting: boolean = false; //enable button's spinner
 
   //this class is used when you click on the email to reset your password
 
@@ -41,8 +42,8 @@ export default class ResetComponent {
 
   onReset() {
     if (this.formModel.valid) {
+      this.isWaiting = true;
       console.log("Calling reset...");
-
       this.authService.reset(this.emailToken, this.formModel.value.password).subscribe(
         response => {
           console.log("Response");
@@ -53,6 +54,7 @@ export default class ResetComponent {
             strong : 'Success',
             message: response.message
           };
+          this.isWaiting = false;
         },
         err => {
           console.error(err);
@@ -62,6 +64,7 @@ export default class ResetComponent {
             strong : 'Danger',
             message: err
           };
+          this.isWaiting = false;
         },
         () => console.log("Done")
       );

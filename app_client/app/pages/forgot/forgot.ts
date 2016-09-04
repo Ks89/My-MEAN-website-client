@@ -18,6 +18,7 @@ export default class ForgotComponent {
   pageHeader: Object;
   formModel: FormGroup;
   forgotAlert: Object = { visible: false }; //hidden by default
+  isWaiting: boolean = false; //enable button's spinner
 
   //this class is used when you click on the "forgot password" to reset your password
 
@@ -36,6 +37,7 @@ export default class ForgotComponent {
 
   onForgot() {
     if (this.formModel.valid) {
+      this.isWaiting = true;
       console.log("Calling forgot password...");
       this.authService.forgot(this.formModel.value.email).subscribe(
         response => {
@@ -46,7 +48,8 @@ export default class ForgotComponent {
             status: 'success',
             strong : 'Success',
             message: response.message
-          }
+          };
+          this.isWaiting = false;
           this.router.navigate(['/login']);
         },
         err => {
@@ -56,9 +59,10 @@ export default class ForgotComponent {
             status: 'danger',
             strong : 'Danger',
             message: err
-          }
+          };
+          this.isWaiting = false;
         },
-        ()=>console.log("Done")
+        () => console.log("Done")
       );
     }
   }

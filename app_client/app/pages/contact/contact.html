@@ -5,11 +5,10 @@
 
   <div class="col-xs-12 col-sm-10 col-md-6 col-lg-6">
     <p class="lead">Send me an email</p>
-    <!-- <fieldset ng-disabled="vm.formDisable"> -->
       <form [formGroup]="formModel" (ngSubmit)="onSend()" novalidate>
-        <!-- <div role="alert" class="alert alert-{{vm.error}}">
-          {{ vm.formResultMessage }}
-        </div> -->
+        <div *ngIf="contactAlert.visible" class="alert alert-{{contactAlert.status}}" role="alert">
+          <strong>{{contactAlert.strong}}</strong> {{contactAlert.message}}
+        </div>
         <div class="form-group" [class.has-error]="formModel.hasError('minlength', 'email')">
           <label for="emailInput">Email</label>
           <input type="email"
@@ -52,14 +51,10 @@
               Type at least 3 characters
             </span>
         </div>
-
-        <button type="submit" class="btn btn-primary">Send</button>
-        <!-- TODO FIXME I removed ladda due to the upgrade to angular 2-->
-        <!-- <button type="button" ng-click="vm.onSubmit()" ladda="vm.isWaiting" data-style="slide-right" data-spinner-color="Azure" class="btn btn-primary ladda-button"><span class="ladda-label">Submit</span></button> -->
+        <button type="submit" [ladda]='isWaiting' data-style="slide-right" data-spinner-color="White" class="btn btn-primary ladda-button"><span class="ladda-label">Send</span></button>
 
         <!-- The recaptcha2's directive. site_key is the publickey, so don't be scared-->
         <re-captcha (captchaResponse)="handleCorrectCaptcha($event)" site_key="6Lf0jxQTAAAAAIDxhvAqGseKy_KV2_4iViVeQWYi"></re-captcha>
       </form>
-    <!-- </fieldset> -->
   </div>
 </div>

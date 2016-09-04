@@ -19,8 +19,8 @@ export default class ProfileComponent implements OnInit {
   formModel: FormGroup;
   token: string;
   bigProfileImage: string = 'assets/images/profile/bigProfile.png';
-
   profileAlert: Object = { visible: false }; //hidden by default
+  isWaiting: boolean = false; //enable button's spinner
 
   sidebar: Object = {
     title: 'Other services',
@@ -140,12 +140,11 @@ export default class ProfileComponent implements OnInit {
 
     onProfileUpdate() {
       if (this.formModel.valid) {
-
+        this.isWaiting = true;
         this.profileData.name = this.formModel.value.name;
         this.profileData.surname = this.formModel.value.surname;
         this.profileData.nickname = this.formModel.value.nickname;
         this.profileData.email = this.formModel.value.email;
-
         if(this.local.email) {
           this.profileData.localUserEmail = this.local.email;
           this.profileData.serviceName = 'local';
@@ -178,6 +177,7 @@ export default class ProfileComponent implements OnInit {
               strong : 'Success',
               message: response.message
             };
+            this.isWaiting = false;
           },
           err => {
             console.error(err);
@@ -187,8 +187,9 @@ export default class ProfileComponent implements OnInit {
               strong : 'Error',
               message: err
             };
+            this.isWaiting = false;
           },
-          ()=>console.log("Done")
+          () => console.log("Done")
         );
       }
     }

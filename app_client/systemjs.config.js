@@ -14,7 +14,10 @@ System.config({
     'angular2-component-outlet-modified': 'app/angular2-component-outlet-modified',
     'h5webstorage': 'node_modules/h5webstorage',
     'ng2-simple-page-scroll': 'node_modules/ng2-simple-page-scroll',
-    '@ng-bootstrap/ng-bootstrap': 'node_modules/@ng-bootstrap/ng-bootstrap'
+    '@ng-bootstrap/ng-bootstrap': 'node_modules/@ng-bootstrap/ng-bootstrap',
+    'angular2-ladda':             'node_modules/angular2-ladda',
+    'ladda':                      'node_modules/ladda/js',
+    'spin':                       'node_modules/ladda/js/spin.js',
   },
   paths: {
     'node_modules/@angular/*': 'node_modules/@angular/*/bundles',
@@ -40,6 +43,8 @@ System.config({
     'angular2-component-outlet-modified' : {main: 'index.js'},
     'h5webstorage'                       : {main: 'index.js', defaultExtension: 'js'},
     'ng2-simple-page-scroll'             : {main: 'ng2-simple-page-scroll', defaultExtension: 'ts'},
-    '@ng-bootstrap/ng-bootstrap'         : {main: 'index.js'}
+    '@ng-bootstrap/ng-bootstrap'         : {main: 'index.js'},
+    'angular2-ladda'                     : {main: 'index.js', defaultExtension: 'js'},
+    'ladda'                              : {main: 'ladda.js', defaultExtension: 'js'}
   }
 });

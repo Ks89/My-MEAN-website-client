@@ -17,6 +17,7 @@ export default class RegisterComponent {
   pageHeader: Object;
   formModel: FormGroup;
   registerAlert: Object = { visible: false }; //hidden by default
+  isWaiting: boolean = false; //enable button's spinner
 
   constructor(private authService: AuthService,
               private router: Router) {
@@ -35,6 +36,7 @@ export default class RegisterComponent {
 
   onRegister() {
     if (this.formModel.valid) {
+      this.isWaiting = true;
       console.log("Calling register...");
       this.authService.register({
         name: this.formModel.value.name,
@@ -50,6 +52,7 @@ export default class RegisterComponent {
             strong : 'Success',
             message: response.message
           };
+          this.isWaiting = false;
           this.router.navigate(['/login']);
         },
         err => {
@@ -60,6 +63,7 @@ export default class RegisterComponent {
             strong : 'Danger',
             message: err
           };
+          this.isWaiting = false;
         },
         ()=>console.log("Done")
       );

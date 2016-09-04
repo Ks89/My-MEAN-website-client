@@ -40,7 +40,7 @@ import {ComponentOutlet} from 'angular2-component-outlet-modified';
 import {LocalStorage, SessionStorage, SESSION_STROAGE_PROVIDER, LOCAL_STORAGE_PROVIDER, WEB_STORAGE_PROVIDERS} from 'h5webstorage';
 import {SimplePageScroll} from 'ng2-simple-page-scroll';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-// import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { LaddaModule } from 'angular2-ladda';
 
 @NgModule({
   imports: [BrowserModule,
@@ -65,7 +65,8 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
               {path: 'profile/:token',                  component: ProfileComponent, canActivate: [AuthGuard] },
               {path: 'post3dauth',                      component: Post3dAuthComponent}
             ]),
-            NgbModule
+            NgbModule,
+            LaddaModule
   ],
   declarations: [
     ApplicationComponent,

@@ -15,8 +15,10 @@ import {
   templateUrl: 'app/pages/contact/contact.html'
 })
 export default class ContactComponent {
-  pageHeader: any;
+  pageHeader: Object;
   formModel: FormGroup;
+  contactAlert: Object = { visible: false }; //hidden by default
+  isWaiting: boolean = false; //enable button's spinner
   private subscription: Subscription;
   private recaptchaResponse: any;
 
@@ -41,26 +43,43 @@ export default class ContactComponent {
 
   onSend() {
     if (this.formModel.valid) {
-        console.log("Sending email...");
-        console.log(this.formModel.value);
-        let dataToSend = {
-            response: this.recaptchaResponse,
-            emailFormData: {
-              email : this.formModel.value.email,
-              messageText : this.formModel.value.message,
-              object : this.formModel.value.subject
-            }
-        };
-        this.contactService.sendFormWithCaptcha(dataToSend).subscribe(
-          response => {
-            console.log("Response");
-            console.log(response);
-          },
-          (err)=>console.error(err),
-          ()=>console.log("Done")
-        );
-      }
+      this.isWaiting = true;
+      console.log("Sending email...");
+      console.log(this.formModel.value);
+      let dataToSend = {
+          response: this.recaptchaResponse,
+          emailFormData: {
+            email : this.formModel.value.email,
+            messageText : this.formModel.value.message,
+            object : this.formModel.value.subject
+          }
+      };
+      this.contactService.sendFormWithCaptcha(dataToSend).subscribe(
+        response => {
+          console.log("Response");
+          console.log(response);
+          this.contactAlert = {
+            visible: true,
+            status: 'success',
+            strong : 'Success',
+            message: response.message
+          };
+          this.isWaiting = false;
+        },
+        err => {
+          console.error(err);
+          this.contactAlert = {
+            visible: true,
+            status: 'danger',
+            strong : 'Danger',
+            message: err
+          };
+          this.isWaiting = false;
+        },
+        () => console.log("Done")
+      );
     }
+  }
 
   ngOnDestroy(): any {
     if (this.subscription) {
