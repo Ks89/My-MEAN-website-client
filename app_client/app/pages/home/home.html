@@ -21,7 +21,7 @@
         <div *ngFor="let thumb of thumbs | async">
           <div class="col-lg-4">
             <div class="card">
-              <img class="card-img-top" src="{{thumb.projectHomeView.thumbImagePath}}" alt="Generic placeholder image">
+              <img class="card-img-top img-fluid" src="{{thumb.projectHomeView.thumbImagePath}}" alt="Generic placeholder image">
               <div class="card-block text-xs-center">
                 <h4 class="card-title">{{thumb.name}}</h4>
                 <p class="card-text">{{thumb.projectHomeView.thumbText}}</p>
