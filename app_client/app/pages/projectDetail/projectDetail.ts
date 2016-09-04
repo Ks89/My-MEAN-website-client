@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 import {Observable} from "rxjs/Observable";
+import {Router} from '@angular/router';
 
 import {Project, ProjectService} from '../../common/services/projects';
 
@@ -29,6 +30,7 @@ export default class ProjectDetailComponent {
   constructor(
     route: ActivatedRoute,
     private projectService: ProjectService,
+    private router: Router
   ) {
 
     this.projectId = route.snapshot.params['projectId'];
@@ -51,6 +53,11 @@ export default class ProjectDetailComponent {
         this.licenseUrl = this.project.licenseText;
       }, error => console.error(error)
     );
+  }
+
+  getInnerUrl(anchor: string) {
+    console.log(this.router.url);
+    return this.router.url + '#' + anchor;
   }
 
   ngOnDestroy(): any {

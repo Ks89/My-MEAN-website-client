@@ -82,22 +82,7 @@ export class AuthService {
     console.log("Called unlink " + serviceName);
     return this.http.get(`/api/unlink/${serviceName}`);
   };
-
-  isAuthLocalLoggedIn(): Observable<any> {
-    console.log("isAuthLocalLoggedIn - reading token: ");
-    return this.getUserFromSessionStorage('auth');
-  }
-
-  //-----------------------------
-  //--- 3dauth authentication ---
-  //-----------------------------
-  isAuth3dLoggedIn(): Observable<any> {
-    console.log("isAuth3dLoggedIn - reading token: ");
-    return this.getUserFromSessionStorage('auth');
-  }
-
-
-
+  
   //---------------------------------------
   //--- local and 3dauth authentication ---
   //---------------------------------------
@@ -114,21 +99,6 @@ export class AuthService {
     //call REST service to remove session data from redis
     return this.http.get('/api/logout')
     .map(response => response.json());
-  }
-
-  isLoggedIn(): Observable<any> {
-    // return Observable.forkJoin(
-    //   [this.isAuthLocalLoggedIn(),
-    //     this.isAuth3dLoggedIn()]
-    // ).reduce((acc, x: boolean) => acc || x, false)
-    //TODO FIXME remove isAuth3dLoggedIn and rename isAuthLocalLoggedIn to isAuthLoggedIn
-    return this.isAuthLocalLoggedIn()
-    .map(res => {
-      // this.loginStatus = res;
-      console.log('Result is: ');
-      console.log(res);
-      return res;
-    });
   }
 
   saveToken(key, token) {
@@ -168,22 +138,33 @@ export class AuthService {
     });
   }
 
+  //Used to know if you are logged in or not
   getLoggedUser(): Observable<any> {
+    console.log("getLoggedUser entered");
     return this.getUserFromSessionStorage('auth')
     .map(res => {
+      console.log("getLoggedUser map res entered");
+      console.log(res);
       if(res == null || res === 'invalid-data') {
+        console.log("getLoggedUser invalid");
         this.removeToken('auth');
         //TODO remove session data with logout
         console.log('INVALID DATA !!!!');
         // return Observable.throw(new Error('Invalid data!'));
         return "INVALID DATA";
       } else {
+        console.log("getLoggedUser valid");
         var userData = JSON.parse(res);
         console.log(userData);
         var user = userData.user;
         console.log(user);
         return user;
       }
+    },
+    err => {
+        console.log("getLoggedUser error ");
+        console.log(err);
+        return "getLoggedUser error";
     });
   }
 
@@ -206,7 +187,7 @@ export class AuthService {
       return this.decodeJwtToken(sessionToken);
     } else {
       console.log("getUserFromSessionStorage sessionToken null or empty");
-      return Observable.create(observer => observer.complete());
+      return Observable.of(null);
     }
   }
 

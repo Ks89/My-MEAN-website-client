@@ -40,6 +40,8 @@ import {LocalStorage, SessionStorage, SESSION_STROAGE_PROVIDER, LOCAL_STORAGE_PR
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
+import {AuthGuard} from './common/services/authGuard';
+
 @NgModule({
   imports: [BrowserModule,
             HttpModule,
@@ -58,8 +60,8 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
               {path: 'forgot',                          component: ForgotComponent},
               {path: 'activate/:emailToken/:userName',  component: ActivateComponent},
               //TODO in angular2 '?' isn't working -> find a better approach to do that
-              {path: 'profile',                         component: ProfileComponent },
-              {path: 'profile/:token',                  component: ProfileComponent }
+              {path: 'profile',                         component: ProfileComponent, canActivate: [AuthGuard] },
+              {path: 'profile/:token',                  component: ProfileComponent, canActivate: [AuthGuard] }
             ]),
             NgbModule
   ],
@@ -94,7 +96,8 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
       AuthService,
       HTTP_PROVIDERS,
       WEB_STORAGE_PROVIDERS, SESSION_STROAGE_PROVIDER, LOCAL_STORAGE_PROVIDER,
-      SERVICES
+      SERVICES,
+      AuthGuard
   ],
   bootstrap: [ ApplicationComponent ]
 })

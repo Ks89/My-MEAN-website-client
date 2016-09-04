@@ -67,7 +67,7 @@ module.exports.register = (req, res) => {
     (token, done) => {
       const encodedUserName = encodeURI(req.body.name);
       console.log('Encoded userName: ' + encodedUserName);
-      const link = 'http://' + req.headers.host + '/activate/' + token + '/' + encodedUserName;
+      const link = 'http://' + req.headers.host + '/#/activate/' + token + '/' + encodedUserName;
       User.findOne({ 'local.email': req.body.email }, (err, user) => {
         if (err) {
           console.log('Internal error');
@@ -172,7 +172,7 @@ module.exports.reset = (req, res) => {
   async.waterfall([
     createRandomToken,
     (token, done) => {
-      const link = 'http://' + req.headers.host + '/reset/' + token;
+      const link = 'http://' + req.headers.host + '/#/reset/' + token;
       User.findOne({ 'local.email': req.body.email }, (err, user) => {
         if (!user || err) {
           Utils.sendJSONres(res, 404, 'No account with that email address exists.');
