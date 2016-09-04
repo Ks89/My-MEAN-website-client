@@ -43,12 +43,13 @@ export class AuthService {
   }
 
   register(user: any): Observable<any> {
-    return this.http.post('/api/register', user, this.options)
-    .map(response => {
-      // saveToken('auth', data.token);
-      this.saveToken('auth', response.json().token);
-      return response.json();
-    }); //on error removeToken('auth');
+    return this.http.post('/api/register', user, this.options).map(
+      response => {
+        console.log("Done register");
+        console.log(response);
+        this.saveToken('auth', response.json().token);
+        return response;
+      }); //removetoken on error
   }
 
   reset(emailToken: any, newPassword: any): Observable<any> {
@@ -82,7 +83,7 @@ export class AuthService {
     console.log("Called unlink " + serviceName);
     return this.http.get(`/api/unlink/${serviceName}`);
   };
-  
+
   //---------------------------------------
   //--- local and 3dauth authentication ---
   //---------------------------------------

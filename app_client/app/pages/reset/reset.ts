@@ -16,9 +16,10 @@ import {
   templateUrl: 'app/pages/reset/reset.html'
 })
 export default class ResetComponent {
-  pageHeader: any;
+  pageHeader: Object;
   formModel: FormGroup;
   emailToken: string;
+  resetAlert: Object = { visible: false }; //hidden by default
 
   //this class is used when you click on the email to reset your password
 
@@ -42,13 +43,27 @@ export default class ResetComponent {
     if (this.formModel.valid) {
       console.log("Calling reset...");
 
-      this.authService.reset(this.emailToken, this.formModel.value.password)
-      .subscribe(response => {
+      this.authService.reset(this.emailToken, this.formModel.value.password).subscribe(
+        response => {
           console.log("Response");
           console.log(response);
+          this.resetAlert = {
+            visible: true,
+            status: 'success',
+            strong : 'Success',
+            message: response.message
+          };
         },
-        (err)=>console.error(err),
-        ()=>console.log("Done")
+        err => {
+          console.error(err);
+          this.resetAlert = {
+            visible: true,
+            status: 'danger',
+            strong : 'Danger',
+            message: err
+          };
+        },
+        () => console.log("Done")
       );
     }
   }

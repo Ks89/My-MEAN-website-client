@@ -1,14 +1,15 @@
 <div class="container-fluid">
   <page-header [title]="pageHeader.title" [strapline]="pageHeader.strapline"></page-header>
-  
+
   <div class="row">
     <div class="col-md-12 col-sm-12">
 
       <h4>Type a new password</h4><br><br>
 
       <form [formGroup]="formModel" (ngSubmit)="onReset()" novalidate>
-
-        <!-- <div role="alert" ng-show="vm.message" class="alert alert-{{vm.status}}">{{ vm.message }}</div> -->
+        <div *ngIf="resetAlert.visible" class="alert alert-{{resetAlert.status}}" role="alert">
+          <strong>{{resetAlert.strong}}</strong> {{resetAlert.message}}
+        </div>
         <div class="form-group" [class.has-error]="formModel.hasError('minlength', 'password')">
           <label for="password">New Password</label>
           <input type="password" class="form-control" id="password" placeholder="Enter your password"

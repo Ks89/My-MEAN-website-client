@@ -15,8 +15,9 @@ import {
   templateUrl: 'app/pages/forgot/forgot.html'
 })
 export default class ForgotComponent {
-  pageHeader: any;
+  pageHeader: Object;
   formModel: FormGroup;
+  forgotAlert: Object = { visible: false }; //hidden by default
 
   //this class is used when you click on the "forgot password" to reset your password
 
@@ -36,12 +37,27 @@ export default class ForgotComponent {
   onForgot() {
     if (this.formModel.valid) {
       console.log("Calling forgot password...");
-      this.authService.forgot(this.formModel.value.email)
-      .subscribe(response => {
+      this.authService.forgot(this.formModel.value.email).subscribe(
+        response => {
           console.log("Response");
           console.log(response);
+          this.forgotAlert = {
+            visible: true,
+            status: 'success',
+            strong : 'Success',
+            message: response.message
+          }
+          this.router.navigate(['/login']);
         },
-        (err)=>console.error(err),
+        err => {
+          console.error(err);
+          this.forgotAlert = {
+            visible: true,
+            status: 'danger',
+            strong : 'Danger',
+            message: err
+          }
+        },
         ()=>console.log("Done")
       );
     }

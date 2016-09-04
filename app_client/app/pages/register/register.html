@@ -6,8 +6,9 @@
       <p class="lead">Already a member? Please <a [routerLink]="['/login']">log in</a> instead.</p>
 
       <form [formGroup]="formModel" (ngSubmit)="onRegister()" novalidate>
-        <!-- <div role="alert" ng-show="vm.formError" class="alert alert-danger">{{ vm.formError }}</div> -->
-
+        <div *ngIf="registerAlert.visible" class="alert alert-{{registerAlert.status}}" role="alert">
+          <strong>{{registerAlert.strong}}</strong> {{registerAlert.message}}
+        </div>
         <div class="form-group" [class.has-error]="formModel.hasError('minlength', 'name')">
           <label for="name">Full name</label>
           <input type="text" class="form-control" id="name" placeholder="Enter your name"

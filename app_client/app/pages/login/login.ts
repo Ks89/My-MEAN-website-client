@@ -16,9 +16,9 @@ import {
   templateUrl: 'app/pages/login/login.html'
 })
 export default class LoginComponent {
-  pageHeader: any;
-
+  pageHeader: Object;
   formModel: FormGroup;
+  loginAlert: Object = { visible: false }; //hidden by default
 
   facebookOauthUrl: string = 'api/auth/facebook';
   googleOauthUrl: string = 'api/auth/google';
@@ -26,9 +26,7 @@ export default class LoginComponent {
   linkedinOauthUrl: string = 'api/auth/linkedin';
   twitterOauthUrl: string = 'api/auth/twitter';
 
-
-  constructor(private authService: AuthService,
-              private router: Router) {
+  constructor(private authService: AuthService, private router: Router) {
 
     this.pageHeader = {
       title: 'Sign in',
@@ -60,6 +58,13 @@ export default class LoginComponent {
               console.log(response);
               console.log("**************************");
 
+              this.loginAlert = {
+                visible: true,
+                status: 'success',
+                strong : 'Success',
+                message: response.message
+              }
+
               this.authService.loginEvent.emit(response);
               this.router.navigate(['/profile']);
             },
@@ -67,8 +72,16 @@ export default class LoginComponent {
             ()=>console.log("Done")
           );
         },
-        (err)=>console.error(err),
-        ()=>console.log("Done")
+        err => {
+          console.error(err);
+          this.loginAlert = {
+            visible: true,
+            status: 'danger',
+            strong : 'Danger',
+            message: err
+          }
+        },
+        () => console.log("Done")
       );
     }
   }

@@ -1,6 +1,6 @@
 <!-- Angular2 ng-bootstrap's modal dialog START-->
 <!-- To use this, I also defined a <template ngbModalContainer></template> into application.html-->
-<template #content let-c="close" let-d="dismiss">
+<template #modalDialogContent let-c="close" let-d="dismiss">
   <div class="modal-header">
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
       <span aria-hidden="true">&times;</span>
@@ -13,7 +13,7 @@
   </div>
   <div class="modal-footer">
     <button class="btn btn-primary" type="button" (click)="c('Confirm click')">OK</button>
-		<button class="btn btn-warning" type="button" (click)="d('Close click')">Cancel</button>
+		<button class="btn btn-danger" type="button" (click)="d('Close click')">Cancel</button>
   </div>
 </template>
 <!-- Angular2 ng-bootstrap's modal dialog END-->
@@ -44,6 +44,10 @@
 			<div class="col-md-6 col-sm-12">
 		  	<p class="lead">Update your profile</p>
         <form [formGroup]="formModel" (ngSubmit)="onProfileUpdate()" novalidate>
+          <div *ngIf="profileAlert.visible" class="alert alert-{{profileAlert.status}}" role="alert">
+            <strong>{{profileAlert.strong}}</strong> {{profileAlert.message}}
+          </div>
+
 		      <!-- <div role="alert" ng-show="formMessage" class="alert alert-{{formStatus}}">{{ formMessage}}</div> -->
           <div class="form-group" [class.has-error]="formModel.hasError('minlength', 'name')">
             <label for="name">Name</label>

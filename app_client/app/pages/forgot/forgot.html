@@ -6,22 +6,24 @@
 
       <h4>Type the email used to create your account</h4><br><br>
       <form [formGroup]="formModel" (ngSubmit)="onForgot()" novalidate>
-        <!-- <div role="alert" ng-show="vm.message" class="alert alert-{{vm.status}}">{{ vm.message }}</div> -->
+        <div *ngIf="forgotAlert.visible" class="alert alert-{{forgotAlert.status}}" role="alert">
+          <strong>{{forgotAlert.strong}}</strong> {{forgotAlert.message}}
+        </div>
         <div class="form-group" [class.has-error]="formModel.hasError('minlength', 'email')">
           <label for="email">Email address</label>
           <input type="email" class="form-control" id="email" placeholder="Enter your email address"
-                  minlength="3"
-                  formControlName="email">
+          minlength="3"
+          formControlName="email">
           <span class="form-text text-muted"
-                [class.invisible]="!formModel.hasError('minlength', 'email')">
-            Type at least 3 characters
-          </span>
-        </div>
-        <button type="submit" class="btn btn-primary">Reset password!</button>
-      </form>
-      <br>
-      <br>
-      <p> Back to <a [routerLink]="['/login']">login</a></p>
-    </div>
+          [class.invisible]="!formModel.hasError('minlength', 'email')">
+          Type at least 3 characters
+        </span>
+      </div>
+      <button type="submit" class="btn btn-primary">Reset password!</button>
+    </form>
+    <br>
+    <br>
+    <p> Back to <a [routerLink]="['/login']">login</a></p>
   </div>
+</div>
 </div>

@@ -9,9 +9,10 @@ import {Router} from '@angular/router';
   templateUrl: 'app/pages/activate/activate.html'
 })
 export default class ActivateComponent {
+  pageHeader: Object;
   emailToken: string;
   userName: string;
-  pageHeader: any;
+  activateAlert: Object = { visible: false }; //hidden by default
 
   constructor(private authService: AuthService,
               route: ActivatedRoute,
@@ -34,9 +35,23 @@ export default class ActivateComponent {
     .subscribe(response => {
         console.log("Response");
         console.log(response);
+        this.activateAlert = {
+          visible: true,
+          status: 'success',
+          strong : 'Success',
+          message: response.message
+        }
       },
-      (err)=>console.error(err),
-      ()=>console.log("Done")
+      err => {
+        console.error(err);
+        this.activateAlert = {
+          visible: true,
+          status: 'danger',
+          strong : 'Danger',
+          message: err
+        }
+      },
+      () => console.log("Done")
     );
   }
 }

@@ -14,8 +14,9 @@ import {
   templateUrl: 'app/pages/register/register.html'
 })
 export default class RegisterComponent {
-  pageHeader: any;
+  pageHeader: Object;
   formModel: FormGroup;
+  registerAlert: Object = { visible: false }; //hidden by default
 
   constructor(private authService: AuthService,
               private router: Router) {
@@ -43,10 +44,23 @@ export default class RegisterComponent {
         response => {
           console.log("Response");
           console.log(response);
-          //redirect to login page
+          this.registerAlert = {
+            visible: true,
+            status: 'success',
+            strong : 'Success',
+            message: response.message
+          };
           this.router.navigate(['/login']);
         },
-        (err)=>console.error(err),
+        err => {
+          console.error(err);
+          this.registerAlert = {
+            visible: true,
+            status: 'danger',
+            strong : 'Danger',
+            message: err
+          };
+        },
         ()=>console.log("Done")
       );
     }

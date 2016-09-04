@@ -8,8 +8,11 @@
 
       <br><br>
 
-	    <!-- <div role="alert" ng-show="vm.message" class="alert alert-{{vm.status}}">{{ vm.message }}</div> -->
-	    <br>
+      <div *ngIf="activateAlert.visible" class="alert alert-{{activateAlert.status}}" role="alert">
+        <strong>{{activateAlert.strong}}</strong> {{activateAlert.message}}
+      </div>
+
+      <br>
 	    <br>
 	  	<p> Back to <a [routerLink]="['/login']">login</a></p>
 
