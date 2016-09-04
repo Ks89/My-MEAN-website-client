@@ -8,7 +8,6 @@ import {Project, ProjectService} from '../../common/services/projects';
 
 @Component({
   selector: 'projectDetail-page',
-  providers: [],
   styleUrls: ['app/pages/projectDetail/bs_doc.css'],
   templateUrl: 'app/pages/projectDetail/projectDetail.html'
 })

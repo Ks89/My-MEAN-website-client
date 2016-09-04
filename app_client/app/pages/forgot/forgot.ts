@@ -12,8 +12,6 @@ import {
 
 @Component({
   selector: 'forgot-page',
-  providers: [],
-  styleUrls: [],
   templateUrl: 'app/pages/forgot/forgot.html'
 })
 export default class ForgotComponent {

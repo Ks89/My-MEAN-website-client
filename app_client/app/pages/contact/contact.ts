@@ -12,8 +12,6 @@ import {
 
 @Component({
   selector: 'contact-page',
-  providers: [],
-  // styleUrls: ['app/pages/contact/contact.css'],
   templateUrl: 'app/pages/contact/contact.html'
 })
 export default class ContactComponent {

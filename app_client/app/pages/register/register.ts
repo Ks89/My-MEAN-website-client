@@ -11,8 +11,6 @@ import {
 
 @Component({
   selector: 'register-page',
-  providers: [],
-  styleUrls: [],
   templateUrl: 'app/pages/register/register.html'
 })
 export default class RegisterComponent {

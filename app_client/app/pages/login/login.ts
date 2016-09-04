@@ -12,7 +12,6 @@ import {
 
 @Component({
   selector: 'login-page',
-  providers: [],
   styleUrls: ['app/pages/login/login.css'],
   templateUrl: 'app/pages/login/login.html'
 })

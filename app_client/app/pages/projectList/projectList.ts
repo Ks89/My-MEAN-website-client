@@ -10,7 +10,6 @@ import {
 
 @Component({
   selector: 'projectList-page',
-  providers: [],
   styleUrls: ['app/pages/projectList/timeline.css'],
   templateUrl: 'app/pages/projectList/projectList.html'
 })

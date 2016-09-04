@@ -6,13 +6,10 @@ import {Router} from '@angular/router';
 
 @Component({
   selector: 'post3d-auth-page',
-  providers: [],
   styleUrls: [],
   templateUrl: 'app/pages/post3dAuth/post3dAuth.html'
 })
 export default class Post3dAuthComponent {
-  emailToken: string;
-  userName: string;
   pageHeader: any;
 
   constructor(private authService: AuthService,
@@ -23,7 +20,6 @@ export default class Post3dAuthComponent {
       strapline: ''
     };
   }
-
 
   ngOnInit() {
     console.log('INIT post3dAuth');

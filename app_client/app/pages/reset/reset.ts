@@ -13,8 +13,6 @@ import {
 
 @Component({
   selector: 'reset-page',
-  providers: [],
-  styleUrls: [],
   templateUrl: 'app/pages/reset/reset.html'
 })
 export default class ResetComponent {

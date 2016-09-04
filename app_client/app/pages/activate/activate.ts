@@ -6,8 +6,6 @@ import {Router} from '@angular/router';
 
 @Component({
   selector: 'activate-page',
-  providers: [],
-  styleUrls: [],
   templateUrl: 'app/pages/activate/activate.html'
 })
 export default class ActivateComponent {

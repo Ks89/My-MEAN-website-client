@@ -5,7 +5,6 @@ import {Project, ProjectService} from '../../common/services/projects';
 
 @Component({
   selector: 'home-page',
-  providers: [],
   styleUrls: ['app/pages/home/home.css'],
   templateUrl: 'app/pages/home/home.html'
 })
