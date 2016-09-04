@@ -40,7 +40,7 @@ import {SERVICES} from './common/services/services';
 import {LocalStorage, SessionStorage, SESSION_STROAGE_PROVIDER, LOCAL_STORAGE_PROVIDER, WEB_STORAGE_PROVIDERS} from 'h5webstorage';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-
+import {SimplePageScroll} from 'ng2-simple-page-scroll';
 import {AuthGuard} from './common/services/authGuard';
 
 @NgModule({
@@ -89,7 +89,8 @@ import {AuthGuard} from './common/services/authGuard';
     ProjectSearchPipe,
     ReCaptchaComponent,
     ImageModal,
-    ComponentOutlet
+    ComponentOutlet,
+    SimplePageScroll
   ],
   providers: [
       { provide: LocationStrategy, useClass: HashLocationStrategy },

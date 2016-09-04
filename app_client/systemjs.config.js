@@ -13,6 +13,7 @@ System.config({
     //angular2-component-outlet-modified: modified by myself to be able to use templateUrl instead of template
     'angular2-component-outlet-modified': 'app/angular2-component-outlet-modified',
     'h5webstorage': 'node_modules/h5webstorage',
+    'ng2-simple-page-scroll': 'node_modules/ng2-simple-page-scroll',
     '@ng-bootstrap/ng-bootstrap': 'node_modules/@ng-bootstrap/ng-bootstrap'
   },
   paths: {
@@ -38,6 +39,7 @@ System.config({
     'angular2-image-popup'               : {main: 'app/main', defaultExtension: 'ts'},
     'angular2-component-outlet-modified' : {main: 'index.js'},
     'h5webstorage'                       : {main: 'index.js', defaultExtension: 'js'},
+    'ng2-simple-page-scroll'             : {main: 'ng2-simple-page-scroll', defaultExtension: 'ts'},
     '@ng-bootstrap/ng-bootstrap'         : {main: 'index.js'}
   }
 });

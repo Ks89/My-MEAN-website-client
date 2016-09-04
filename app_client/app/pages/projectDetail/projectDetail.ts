@@ -3,6 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 import {Observable} from "rxjs/Observable";
 import {Router} from '@angular/router';
+import {SimplePageScroll} from 'ng2-simple-page-scroll';
 
 import {Project, ProjectService} from '../../common/services/projects';
 
