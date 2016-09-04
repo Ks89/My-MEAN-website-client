@@ -6,32 +6,44 @@ import {Subscription} from 'rxjs/Subscription';
 import {AuthService} from '../../common/services/auth';
 import {Router} from '@angular/router';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
-
-import {
-    FormControl,
-    FormGroup,
-    FormBuilder,
-    Validators
-} from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'profile-page',
-  styleUrls: [],
   templateUrl: 'app/pages/profile/profile.html'
 })
 export default class ProfileComponent implements OnInit {
+  private subscription: Subscription;
   pageHeader: any;
   formModel: FormGroup;
   token: string;
   bigProfileImage: string = 'assets/images/profile/bigProfile.png';
-
-  closeResult: string;
 
   sidebar: Object = {
     title: 'Other services',
     strapline: ' '
   };
 
+  //3dparty connect links
+  facebookConnectOauthUrl: Object = 'api/connect/facebook';
+  googleConnectOauthUrl: Object = 'api/connect/google';
+  githubConnectOauthUrl: Object = 'api/connect/github';
+  twitterConnectOauthUrl: Object = 'api/connect/twitter';
+  linkedinConnectOauthUrl: Object = 'api/connect/linkedin';
+
+  //local model
+  local: any = {
+    name: '',
+    email: ''
+  };
+  //3dparty model
+  github: any = this.buildJsonUserData();
+  google: any = this.buildJsonUserData();
+  facebook: any = this.buildJsonUserData();
+  twitter: any = this.buildJsonUserData();
+  linkedin: any = this.buildJsonUserData();
+
+  //profile model
   profileData = {
     localUserEmail: "",
     id: "",
@@ -42,30 +54,12 @@ export default class ProfileComponent implements OnInit {
     email : ""
   };
 
-  facebookConnectOauthUrl: Object = 'api/connect/facebook';
-  googleConnectOauthUrl: Object = 'api/connect/google';
-  githubConnectOauthUrl: Object = 'api/connect/github';
-  twitterConnectOauthUrl: Object = 'api/connect/twitter';
-  linkedinConnectOauthUrl: Object = 'api/connect/linkedin';
-
-  local: any = {
-    name: '',
-    email: ''
-  };
-
-  github: any = this.buildJsonUserData();
-  google: any = this.buildJsonUserData();
-  facebook: any = this.buildJsonUserData();
-  twitter: any = this.buildJsonUserData();
-  linkedin: any = this.buildJsonUserData();
-
-  private subscription: Subscription;
+  //used to get a reference to the modal dialog content
+  @ViewChild('content') content;
 
   constructor(private profileService: ProfileService,
-              route: ActivatedRoute,
-              private router: Router,
-              private authService: AuthService,
-              private modalService: NgbModal) {
+              route: ActivatedRoute, private router: Router,
+              private authService: AuthService, private modalService: NgbModal) {
     this.token = route.snapshot.params['token'];
 
     if(this.token == null || this.token == undefined ) {
@@ -87,16 +81,6 @@ export default class ProfileComponent implements OnInit {
       'email': [null, Validators.minLength(3)]
     })
   }
-
- private getDismissReason(reason: any): string {
-   if (reason === ModalDismissReasons.ESC) {
-     return 'by pressing ESC';
-   } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-     return 'by clicking on a backdrop';
-   } else {
-     return  `with: ${reason}`;
-   }
- }
 
   ngOnInit() {
     console.log('INIT');
@@ -198,8 +182,6 @@ export default class ProfileComponent implements OnInit {
     }
   }
 
-  @ViewChild('content') content;
-
   unlink (serviceName: string): any {
     console.log("unlink " + serviceName + " called");
 
@@ -235,7 +217,7 @@ export default class ProfileComponent implements OnInit {
         );
 
       }, (reason) => {
-        console.log(`Dismissed ${this.getDismissReason(reason)}`);
+        console.log(`Dismissed ${reason}`);
       });
     } else {
       console.log('NOT last unlink - checking...');
@@ -264,7 +246,6 @@ export default class ProfileComponent implements OnInit {
       }
     }
   }
-
 
   private buildJsonUserData(): any {
     return {
@@ -296,5 +277,4 @@ export default class ProfileComponent implements OnInit {
         return false;
     }
   }
-
 }
