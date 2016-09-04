@@ -8,8 +8,6 @@ import {Router} from '@angular/router';
   templateUrl: 'app/common/components/navbar/navbar.html',
 })
 export default class NavbarComponent {
-
-  //TODO FIXME replace with a real impl calling the service
   isLoggedIn: boolean = false;
   currentUser: any = {name : ''}
   currentPath: string = 'fakeString';
@@ -53,6 +51,10 @@ export default class NavbarComponent {
       };
     }
   }
+
+  isNavItemActive(location) {
+    return location == this.router.url ? 'active' : '';
+  };
 
   logout() {
     this.authService.logout()
