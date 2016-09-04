@@ -49,6 +49,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
             ReactiveFormsModule,
             RouterModule.forRoot([
               {path: '',                                component: HomeComponent},
+              {path: 'home',                            component: HomeComponent},
               {path: 'projects',                        component: ProjectListComponent},
               {path: 'projects/:projectId',             component: ProjectDetailComponent},
               {path: 'cv',                              component: CvComponent},

@@ -20,23 +20,28 @@ export default class NavbarComponent {
     .subscribe(user => {
         console.log("NAVIGATION: ");
         console.log(user);
-        //this.currentUser = {name: user.local.name};
-        this.isLoggedIn = true;
 
-        if(user.local) {
-          this.setCurrentUser(user.local);
-        } else if(user.github) {
-          this.setCurrentUser(user.github);
-        } else if(user.facebook) {
-          this.setCurrentUser(user.facebook);
-        } else if(user.google) {
-          this.setCurrentUser(user.google);
-        } else if(user.twitter) {
-          this.setCurrentUser(user.twitter);
-        } else if(user.linkedin) {
-          this.setCurrentUser(user.linkedin);
+        if(user==null) {
+          this.isLoggedIn = false;
+          this.currentUser = {name : ''};
+        } else {
+          this.isLoggedIn = true;
+          if(user.local) {
+            this.setCurrentUser(user.local);
+          } else if(user.github) {
+            this.setCurrentUser(user.github);
+          } else if(user.facebook) {
+            this.setCurrentUser(user.facebook);
+          } else if(user.google) {
+            this.setCurrentUser(user.google);
+          } else if(user.twitter) {
+            this.setCurrentUser(user.twitter);
+          } else if(user.linkedin) {
+            this.setCurrentUser(user.linkedin);
+          }
         }
-      },err =>  console.log("Can't get logged user"),
+      },
+      err => console.log("Can't get logged user"),
       () => console.log('DONE')
     );
   }

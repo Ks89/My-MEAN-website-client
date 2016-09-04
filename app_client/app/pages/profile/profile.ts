@@ -212,16 +212,17 @@ export default class ProfileComponent implements OnInit {
         .subscribe(
           result => {
             console.log('Unlinked: ' + result);
+            this.authService.loginEvent.emit(null);
             this.authService.logout()
             .subscribe(
               result => {
                 console.log('Logged out: ' + result);
-                this.router.navigate(['/home']);
+                this.router.navigate(['/']);
               },
               err => {
                 //logServer.error("profile impossible to logout", err);
                 console.log('Impossible to logout: ' + err);
-                this.router.navigate(['/home']);
+                this.router.navigate(['/']);
               },
               () => console.log("Last unlink - unlink done")
             )
@@ -253,7 +254,7 @@ export default class ProfileComponent implements OnInit {
             err => {
               //logServer.error("profile impossible to unlink", reason);
               console.log('Impossible to unlink: ' + err);
-              this.router.navigate(['/home']);
+              this.router.navigate(['/']);
             },
             () => console.log("not last unlink: done")
           );
