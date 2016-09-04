@@ -230,7 +230,7 @@ export default class ProfileComponent implements OnInit {
             result => {
               console.log(serviceName + ' Unlinked with result user: ');
               console.log(result);
-              this.router.navigate(['/profile']);
+              this.router.navigate(['/post3dauth']);
               console.log("redirected to profile");
             },
             err => {
