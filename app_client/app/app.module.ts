@@ -19,6 +19,7 @@ import ResetComponent from './pages/reset/reset';
 import ForgotComponent from './pages/forgot/forgot';
 import ActivateComponent from './pages/activate/activate';
 import ProfileComponent from './pages/profile/profile';
+import Post3dAuthComponent from './pages/post3dAuth/post3dAuth';
 
 import CarouselComponent from './common/components/carousel/carousel';
 import FooterComponent from './common/components/footer/footer';
@@ -61,7 +62,8 @@ import {AuthGuard} from './common/services/authGuard';
               {path: 'activate/:emailToken/:userName',  component: ActivateComponent},
               //TODO in angular2 '?' isn't working -> find a better approach to do that
               {path: 'profile',                         component: ProfileComponent, canActivate: [AuthGuard] },
-              {path: 'profile/:token',                  component: ProfileComponent, canActivate: [AuthGuard] }
+              {path: 'profile/:token',                  component: ProfileComponent, canActivate: [AuthGuard] },
+              {path: 'post3dauth',                      component: Post3dAuthComponent}
             ]),
             NgbModule
   ],
@@ -79,6 +81,7 @@ import {AuthGuard} from './common/services/authGuard';
     ForgotComponent,
     ActivateComponent,
     ProfileComponent,
+    Post3dAuthComponent,
     CarouselComponent,
     FooterComponent,
     NavbarComponent,

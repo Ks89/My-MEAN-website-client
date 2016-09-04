@@ -18,7 +18,7 @@ var logger = require('../../../utils/logger.js');
 var redirectFailure = { failureRedirect: '/#/login' };
 
 var connectRedirect = {
-	successRedirect : '/#/profile',
+	successRedirect : '/#/post3dauth',
 	failureRedirect : '/'
 };
 
@@ -75,7 +75,7 @@ function redirectToProfile(user, res, req) {
 		logger.error(e);
 		res.redirect('/#/home');
 	}
-	res.redirect('/#/profile');
+	res.redirect('/#/post3dauth');
 }
 
 
