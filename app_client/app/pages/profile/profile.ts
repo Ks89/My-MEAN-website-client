@@ -100,6 +100,7 @@ export default class ProfileComponent implements OnInit {
 
             console.log("setting data.........................");
             setObjectValuesLocal(user.local, this.local);
+            setObjectValues(user.facebook, this.facebook);
             setObjectValues(user.github, this.github);
             setObjectValues(user.google, this.google);
             setObjectValues(user.twitter, this.twitter);
