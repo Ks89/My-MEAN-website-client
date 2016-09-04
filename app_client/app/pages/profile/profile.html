@@ -14,6 +14,24 @@
 	</div>
 </script> -->
 
+<template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h3 class="modal-title">Whould you really destroy your account?</h3>
+  </div>
+  <div class="modal-body">
+    If you unlink the last service, <strong>you won't be able to login again</strong> to this account.<br>
+		All your saved data will be quicky destroyed.
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" type="button" (click)="c('Confirm click')">OK</button>
+		<button class="btn btn-warning" type="button" (click)="d('Close click')">Cancel</button>
+  </div>
+</template>
+
+
 <!-- Real webpage -->
 <div class="container-fluid">
   <page-header [title]="pageHeader.title" [strapline]="pageHeader.strapline"></page-header>

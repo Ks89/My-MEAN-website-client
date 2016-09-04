@@ -27,21 +27,20 @@ import NavbarComponent from './common/components/navbar/navbar';
 import PageHeaderComponent from './common/components/pageHeader/pageHeader';
 import {ProjectSearchPipe} from './common/pipes/projectSearch/projectSearch';
 
-import {ReCaptchaComponent} from 'angular2-recaptcha/angular2-recaptcha';
-import {ImageModal} from 'angular2-image-popup/directives/angular2-image-popup/image-modal-popup';
-import {ComponentOutlet} from 'angular2-component-outlet-modified';
-
 import {ProjectService} from './common/services/projects';
 import {ProfileService} from './common/services/profile';
 import {ContactService} from './common/services/contact';
 import {AuthService} from './common/services/auth';
+import {AuthGuard} from './common/services/authGuard';
 import {SERVICES} from './common/services/services';
 
+import {ReCaptchaComponent} from 'angular2-recaptcha/angular2-recaptcha';
+import {ImageModal} from 'angular2-image-popup/directives/angular2-image-popup/image-modal-popup';
+import {ComponentOutlet} from 'angular2-component-outlet-modified';
 import {LocalStorage, SessionStorage, SESSION_STROAGE_PROVIDER, LOCAL_STORAGE_PROVIDER, WEB_STORAGE_PROVIDERS} from 'h5webstorage';
-
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {SimplePageScroll} from 'ng2-simple-page-scroll';
-import {AuthGuard} from './common/services/authGuard';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+// import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   imports: [BrowserModule,
