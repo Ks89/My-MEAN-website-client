@@ -89,23 +89,23 @@
 				You'll be able to access to the same account with many services.
 			</h6>
 			<div *ngIf="facebook.email.length === 0">
-				<a class="btn btn-primary" href="{{facebookConnectOauthUrl}}"> <span class="fa fa-facebook fa-lg"></span> connect</a>
+				<a class="btn btn-primary white-button" href="{{facebookConnectOauthUrl}}"> <span class="fa fa-facebook fa-lg"></span> connect</a>
 				<br><br>
 			</div>
 			<div *ngIf="github.email.length === 0">
-				<a class="btn btn-primary" href="{{githubConnectOauthUrl}}"> <span class="fa fa-github fa-lg"></span> connect</a>
+				<a class="btn btn-primary white-button" href="{{githubConnectOauthUrl}}"> <span class="fa fa-github fa-lg"></span> connect</a>
 				<br><br>
 			</div>
 			<div *ngIf="google.email.length === 0">
-				<a class="btn btn-primary" href="{{googleConnectOauthUrl}}"> <span class="fa fa-google fa-lg"></span> connect</a>
+				<a class="btn btn-primary white-button" href="{{googleConnectOauthUrl}}"> <span class="fa fa-google fa-lg"></span> connect</a>
 				<br><br>
 			</div>
 			<div *ngIf="twitter.name.length === 0 && twitter.email.length === 0">
-				<a class="btn btn-primary" href="{{twitterConnectOauthUrl}}"> <span class="fa fa-twitter fa-lg"></span> connect</a>
+				<a class="btn btn-primary white-button" href="{{twitterConnectOauthUrl}}"> <span class="fa fa-twitter fa-lg"></span> connect</a>
 				<br><br>
 			</div>
 			<div *ngIf="linkedin.email.length === 0">
-				<a class="btn btn-primary" href="{{linkedinConnectOauthUrl}}"> <span class="fa fa-linkedin fa-lg"></span> connect</a>
+				<a class="btn btn-primary white-button" href="{{linkedinConnectOauthUrl}}"> <span class="fa fa-linkedin fa-lg"></span> connect</a>
 				<br><br>
 			</div>
 			<br><br>
@@ -115,27 +115,27 @@
 			</h6>
 
 			<div *ngIf="local.email.length > 0">
-				<a class="btn btn-primary" (click)="unlink('local')"> <span class="fa fa-user fa-lg"></span> unlink</a>
+				<a class="btn btn-primary white-button" (click)="unlink('local')"> <span class="fa fa-user fa-lg"></span> unlink</a>
 				<br><br>
 			</div>
 			<div *ngIf="facebook.email.length > 0">
-				<a class="btn btn-primary" (click)="unlink('facebook')"> <span class="fa fa-facebook fa-lg"></span> unlink</a>
+				<a class="btn btn-primary white-button" (click)="unlink('facebook')"> <span class="fa fa-facebook fa-lg"></span> unlink</a>
 				<br><br>
 			</div>
 			<div *ngIf="github.email.length > 0">
-				<a class="btn btn-primary" (click)="unlink('github')"> <span class="fa fa-github fa-lg"></span> unlink</a>
+				<a class="btn btn-primary white-button" (click)="unlink('github')"> <span class="fa fa-github fa-lg"></span> unlink</a>
 				<br><br>
 			</div>
 			<div *ngIf="google.email.length > 0">
-				<a class="btn btn-primary" (click)="unlink('google')"> <span class="fa fa-google fa-lg"></span> unlink</a>
+				<a class="btn btn-primary white-button" (click)="unlink('google')"> <span class="fa fa-google fa-lg"></span> unlink</a>
 				<br><br>
 			</div>
 			<div *ngIf="twitter.name.length > 0 && twitter.email.length > 0">
-				<a class="btn btn-primary" (click)="unlink('twitter')"> <span class="fa fa-twitter fa-lg"></span> unlink</a>
+				<a class="btn btn-primary white-button" (click)="unlink('twitter')"> <span class="fa fa-twitter fa-lg"></span> unlink</a>
 				<br><br>
 			</div>
 			<div *ngIf="linkedin.email.length > 0">
-				<a class="btn btn-primary" (click)="unlink('linkedin')"> <span class="fa fa-linkedin fa-lg"></span> unlink</a>
+				<a class="btn btn-primary white-button" (click)="unlink('linkedin')"> <span class="fa fa-linkedin fa-lg"></span> unlink</a>
 				<br><br>
 			</div>
 		</div>
