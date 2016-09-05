@@ -69,7 +69,16 @@ export default class LoginComponent {
               this.authService.loginEvent.emit(response);
               this.router.navigate(['/profile']);
             },
-            (err)=>console.error(err),
+            err => {
+              console.error(err);
+              this.loginAlert = {
+                visible: true,
+                status: 'danger',
+                strong : 'Danger',
+                message: JSON.parse(err._body).message
+              };
+              this.isWaiting = false;
+            },
             ()=>console.log("Done")
           );
         },
@@ -79,7 +88,7 @@ export default class LoginComponent {
             visible: true,
             status: 'danger',
             strong : 'Danger',
-            message: err
+            message: JSON.parse(err._body).message
           };
           this.isWaiting = false;
         },

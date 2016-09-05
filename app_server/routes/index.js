@@ -1,6 +1,14 @@
 module.exports = function (express) {
+	var multer  = require('multer');
+	var upload = multer({ dest: '/Users/Ks89/Downloads/', fileFilter:
+			function(req,file,cb){
+        console.log('file is',file)
+        cb(null,true);
+			}
+	});
 	var app = express();
 	var router = express.Router();
+	var Utils = require('../utils/util');
 
 	var restAuthMiddleware = require('./rest-auth-middleware');
 
@@ -11,7 +19,7 @@ module.exports = function (express) {
 	var ctrlContact = require('../controllers/contact');
 	var ctrlUser = require('../controllers/users');
 	var ctrlProfile = require('../controllers/profile');
-	
+
 	// projects
 	router.get('/projects', ctrlProjects.projectsList);
 	router.get('/projecthome', ctrlProjects.projectsListHomepage);
@@ -54,10 +62,20 @@ module.exports = function (express) {
 	//profile
 	router.post('/profile', ctrlProfile.update);
 
+	app.post('/profilephoto', upload.single('avatar'), function (req, res, next) {
+		console.log(req);
+		console.log(req.file);
+		console.log(req.body);
+		// req.file is the `avatar` file
+		// req.body will hold the text fields, if there were any
+		Utils.sendJSONres(res, 200, "OK");
+	})
+
+
 	//common - 3dparty + local
 	router.get('/logout', ctrlAuthCommon.logout);
 	router.get('/sessionToken', ctrlAuthCommon.sessionToken);
-	router.get('/decodeToken/:token', ctrlAuthCommon.decodeToken); 
+	router.get('/decodeToken/:token', ctrlAuthCommon.decodeToken);
 
 	//3dparty auth - authorize (already logged in/connecting other social account)
 	router.get('/connect/github', ctrlAuth3dParty.connectGithub);

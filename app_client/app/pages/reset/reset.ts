@@ -62,7 +62,7 @@ export default class ResetComponent {
             visible: true,
             status: 'danger',
             strong : 'Danger',
-            message: err
+            message: JSON.parse(err._body).message
           };
           this.isWaiting = false;
         },

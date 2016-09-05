@@ -48,7 +48,7 @@ export default class ActivateComponent {
           visible: true,
           status: 'danger',
           strong : 'Danger',
-          message: err
+          message: JSON.parse(err._body).message
         }
       },
       () => console.log("Done")

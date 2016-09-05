@@ -41,6 +41,7 @@ import {LocalStorage, SessionStorage, SESSION_STROAGE_PROVIDER, LOCAL_STORAGE_PR
 import {SimplePageScroll} from 'ng2-simple-page-scroll';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { LaddaModule } from 'angular2-ladda';
+import { UPLOAD_DIRECTIVES } from 'ng2-uploader/ng2-uploader';
 
 @NgModule({
   imports: [BrowserModule,
@@ -91,7 +92,8 @@ import { LaddaModule } from 'angular2-ladda';
     ReCaptchaComponent,
     ImageModal,
     ComponentOutlet,
-    SimplePageScroll
+    SimplePageScroll,
+    UPLOAD_DIRECTIVES
   ],
   providers: [
       { provide: LocationStrategy, useClass: HashLocationStrategy },

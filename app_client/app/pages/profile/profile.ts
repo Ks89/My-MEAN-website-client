@@ -85,6 +85,22 @@ export default class ProfileComponent implements OnInit {
       })
     }
 
+    // private zone: NgZone;
+    //  private basicOptions: Object;
+    //  private progress: number = 0;
+    //  private response: any = {};
+    //add these two lines in ngOnInit
+    //  this.zone = new NgZone({ enableLongStackTrace: false });
+    //  this.basicOptions = {
+    //    url: 'http://localhost:3000/api/profilephoto'
+    //  };
+    // handleUpload(data: any): void {
+    //   this.zone.run(() => {
+    //     this.response = data;
+    //     this.progress = data.progress.percent / 100;
+    //   });
+    // }
+
     ngOnInit() {
       console.log('INIT');
       //3dparty authentication
@@ -185,7 +201,7 @@ export default class ProfileComponent implements OnInit {
               visible: true,
               status: 'danger',
               strong : 'Error',
-              message: err
+              message: JSON.parse(err._body).message
             };
             this.isWaiting = false;
           },

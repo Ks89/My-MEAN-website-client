@@ -58,7 +58,7 @@ export default class ForgotComponent {
             visible: true,
             status: 'danger',
             strong : 'Danger',
-            message: err
+            message: JSON.parse(err._body).message
           };
           this.isWaiting = false;
         },

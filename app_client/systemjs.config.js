@@ -18,6 +18,7 @@ System.config({
     'angular2-ladda':             'node_modules/angular2-ladda',
     'ladda':                      'node_modules/ladda/js',
     'spin':                       'node_modules/ladda/js/spin.js',
+    'ng2-uploader':               'node_modules/ng2-uploader'
   },
   paths: {
     'node_modules/@angular/*': 'node_modules/@angular/*/bundles',
@@ -45,6 +46,7 @@ System.config({
     'ng2-simple-page-scroll'             : {main: 'ng2-simple-page-scroll', defaultExtension: 'ts'},
     '@ng-bootstrap/ng-bootstrap'         : {main: 'index.js'},
     'angular2-ladda'                     : {main: 'index.js', defaultExtension: 'js'},
-    'ladda'                              : {main: 'ladda.js', defaultExtension: 'js'}
+    'ladda'                              : {main: 'ladda.js', defaultExtension: 'js'},
+    'ng2-uploader'                       : {main: 'ng2-uploader.js', defaultExtension: 'js'},
   }
 });

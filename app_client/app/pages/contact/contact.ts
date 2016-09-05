@@ -56,7 +56,7 @@ export default class ContactComponent {
       };
       this.contactService.sendFormWithCaptcha(dataToSend).subscribe(
         response => {
-          console.log("Response");
+          console.log("/api/email called -> OK");
           console.log(response);
           this.contactAlert = {
             visible: true,
@@ -67,12 +67,13 @@ export default class ContactComponent {
           this.isWaiting = false;
         },
         err => {
+          console.log("/api/email called -> ERROR");
           console.error(err);
           this.contactAlert = {
             visible: true,
             status: 'danger',
             strong : 'Danger',
-            message: err
+            message: JSON.parse(err._body).message
           };
           this.isWaiting = false;
         },
