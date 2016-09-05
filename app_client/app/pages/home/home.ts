@@ -15,9 +15,9 @@ export default class HomeComponent {
   pageHeader: Object;
   message: string;
 
-  constructor(private productService: ProjectService) {
-    this.products = this.productService.getProjects();
-    this.thumbs = this.productService.getProjectsForHomepage();
+  constructor(private projectService: ProjectService) {
+    this.products = this.projectService.getProjects();
+    this.thumbs = this.projectService.getProjectsForHomepage().share();
 
     this.pageHeader = {
       title: 'KS',

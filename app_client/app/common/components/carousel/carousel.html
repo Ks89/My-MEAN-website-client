@@ -5,6 +5,14 @@
     <li data-target="#carousel-example-generic" data-slide-to="2"></li>
   </ol>
   <div class="carousel-inner" role="listbox">
+    <!-- <div *ngFor="let slide of thumbs | async" class="carousel-item">
+      <img [src]="slide.carouselImagePath" alt="Slide alt --- todo">
+      <div class="carousel-caption">
+        <h3>{{slide.carouselText}}</h3>
+        <p>{{slide.carouselText}} description</p>
+      </div>
+    </div> -->
+
     <div class="carousel-item active">
       <img src="http://placehold.it/1000x400" alt="TODO add slides dynamically passing data from HomeComponent">
       <div class="carousel-caption">
