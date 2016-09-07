@@ -21,7 +21,7 @@ import 'rxjs';
 // import 'angular2-recaptcha/angular2-recaptcha'; --IT SHOULD WORK, I don't know it returns an error
 import 'h5webstorage';
 import '@ng-bootstrap/ng-bootstrap';
-import 'angular2-component-outlet-modified/index.js';
+//import 'angular2-component-outlet-modified/index.js';
 
 
 // Other vendor libraries
