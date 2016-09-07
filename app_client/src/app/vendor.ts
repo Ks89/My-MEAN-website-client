@@ -16,13 +16,15 @@ import 'rxjs';
 
 //---------------------------------------------------------------
 //TODO FIXME - BROKEN PACKAGE temporary removed
-//import 'angular2-image-popup/app/main.ts';  --- STILL BROKEN
+// import 'ng2-simple-page-scroll/ng2-simple-page-scroll';
+// import 'angular2-component-outlet-modified/index.js';
+// import "angular2-image-popup/app/main";
+
 //---------------------------------------------------------------
-// import 'angular2-recaptcha/angular2-recaptcha'; --IT SHOULD WORK, I don't know it returns an error
+import 'angular2-recaptcha/angular2-recaptcha'; //IT SHOULD WORK, I don't know it returns an error
 import 'h5webstorage';
 import '@ng-bootstrap/ng-bootstrap';
-//import 'angular2-component-outlet-modified/index.js';
-
+import 'angular2-ladda';
 
 // Other vendor libraries
 import 'jquery';

@@ -82,6 +82,7 @@
     "gulp-sourcemaps": "^2.0.0-alpha",
     "gulp-uglify": "^1.5.4",
     "gulp-util": "^3.0.7",
+    "gulp-webpack": "^1.5.0",
     "jasmine-core": "^2.4.1",
     "jshint": "^2.9.2",
     "karma": "^1.1.0",

@@ -27,8 +27,16 @@ module.exports = {
   metadata: metadata,
   module: {
     loaders: [
-      {test: /\.css$/,   loader: 'to-string!css', exclude: /node_modules/},
-      {test: /\.css$/,   loader: 'style!css', exclude: /src/},
+      // {test: /\.css$/,   loader: 'raw', exclude: /node_modules/},
+      // {test: /\.css$/,   loader: 'style!css?-minimize', exclude: /app/},
+
+
+
+      //{test: /\.css$/,   loader: 'to-string!css', exclude: /node_modules/},
+      {test: /\.css$/,   loader: 'raw', exclude: /node_modules/},
+
+      {test: /\.css$/,   loader: 'style!css', exclude: /app/},
+      {test: /\.css$/,   loader: 'style-loader!css-loader'},
       {test: /\.html$/,  loader: 'html?caseSensitive=true'},
       {test: /\.ts$/,    loader: 'ts', query: {compilerOptions: {noEmit: false}}},
       {test: /\.woff$/,  loader: "url?limit=10000&minetype=application/font-woff"},
@@ -39,7 +47,7 @@ module.exports = {
     ]
   },
   output: {
-    path    : './dist',
+    path    : '../',
     filename: 'bundle.js'
   },
   plugins: [
@@ -53,7 +61,12 @@ module.exports = {
       compress : {screw_ie8 : true},
       mangle: {screw_ie8 : true }
     }),
-    new ProvidePlugin({jQuery: 'jquery', jquery: 'jquery', $: 'jquery'})
+    new ProvidePlugin({
+      jQuery: 'jquery',
+      jquery: 'jquery',
+      $: 'jquery',
+      "Tether": 'tether',
+      "window.Tether": "tether"})
   ],
   resolve: {
     extensions: ['', '.ts', '.js']

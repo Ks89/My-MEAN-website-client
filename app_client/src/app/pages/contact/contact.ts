@@ -62,7 +62,7 @@ export default class ContactComponent {
             visible: true,
             status: 'success',
             strong : 'Success',
-            message: response.message
+            message: response['message']
           };
           this.isWaiting = false;
         },

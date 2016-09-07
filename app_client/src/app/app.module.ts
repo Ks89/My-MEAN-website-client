@@ -34,14 +34,14 @@ import {AuthService} from './common/services/auth';
 import {AuthGuard} from './common/services/authGuard';
 import {SERVICES} from './common/services/services';
 
-import {ReCaptchaComponent} from 'angular2-recaptcha/angular2-recaptcha';
-import {ImageModal} from 'angular2-image-popup/directives/angular2-image-popup/image-modal-popup';
-import {ComponentOutlet} from 'angular2-component-outlet-modified';
+import {ReCaptchaModule} from 'angular2-recaptcha/angular2-recaptcha';
+// import {ImageModal} from 'angular2-image-popup/directives/angular2-image-popup/image-modal-popup';
+// import {ComponentOutlet} from 'angular2-component-outlet-modified';
 import {LocalStorage, SessionStorage, SESSION_STROAGE_PROVIDER, LOCAL_STORAGE_PROVIDER, WEB_STORAGE_PROVIDERS} from 'h5webstorage';
-import {SimplePageScroll} from 'ng2-simple-page-scroll';
+// import {SimplePageScroll} from 'ng2-simple-page-scroll';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { LaddaModule } from 'angular2-ladda';
-import { UPLOAD_DIRECTIVES } from 'ng2-uploader/ng2-uploader';
+// import { UPLOAD_DIRECTIVES } from 'ng2-uploader/ng2-uploader';
 
 @NgModule({
   imports: [BrowserModule,
@@ -67,7 +67,8 @@ import { UPLOAD_DIRECTIVES } from 'ng2-uploader/ng2-uploader';
               {path: 'post3dauth',                      component: Post3dAuthComponent}
             ]),
             NgbModule,
-            LaddaModule
+            LaddaModule,
+            ReCaptchaModule
   ],
   declarations: [
     ApplicationComponent,
@@ -89,11 +90,10 @@ import { UPLOAD_DIRECTIVES } from 'ng2-uploader/ng2-uploader';
     NavbarComponent,
     PageHeaderComponent,
     ProjectSearchPipe,
-    ReCaptchaComponent,
-    ImageModal,
-    ComponentOutlet,
-    SimplePageScroll,
-    UPLOAD_DIRECTIVES
+    // ImageModal,
+    // ComponentOutlet,
+    // SimplePageScroll,
+  //  UPLOAD_DIRECTIVES
   ],
   providers: [
       { provide: LocationStrategy, useClass: HashLocationStrategy },

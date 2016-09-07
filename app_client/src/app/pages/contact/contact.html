@@ -54,7 +54,7 @@
         <button type="submit" [ladda]='isWaiting' data-style="slide-right" data-spinner-color="White" class="btn btn-primary ladda-button"><span class="ladda-label">Send</span></button>
 
         <!-- The recaptcha2's directive. site_key is the publickey, so don't be scared-->
-        <!-- <re-captcha (captchaResponse)="handleCorrectCaptcha($event)" site_key="6Lf0jxQTAAAAAIDxhvAqGseKy_KV2_4iViVeQWYi"></re-captcha> -->
+        <re-captcha (captchaResponse)="handleCorrectCaptcha($event)" site_key="6Lf0jxQTAAAAAIDxhvAqGseKy_KV2_4iViVeQWYi"></re-captcha>
       </form>
   </div>
 </div>
