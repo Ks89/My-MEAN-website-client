@@ -100,8 +100,8 @@ import { LaddaModule } from 'angular2-ladda';
       ProfileService,
       ContactService,
       AuthService,
-      HTTP_PROVIDERS,
       SERVICES,
+      HTTP_PROVIDERS,
       AuthGuard
   ],
   bootstrap: [ ApplicationComponent ]
