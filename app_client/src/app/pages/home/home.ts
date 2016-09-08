@@ -5,8 +5,8 @@ import {Project, ProjectService} from '../../common/services/projects';
 
 @Component({
   selector: 'home-page',
-  styles: [require('./home.css')],
-  template: require('./home.html')
+  styleUrls: ['home.css'],
+  templateUrl: 'home.html'
 })
 export default class HomeComponent {
   products: Observable<Project[]>;

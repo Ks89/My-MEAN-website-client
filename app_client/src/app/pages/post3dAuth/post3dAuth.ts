@@ -6,8 +6,7 @@ import {Router} from '@angular/router';
 
 @Component({
   selector: 'post3d-auth-page',
-  styleUrls: [],
-  templateUrl: 'app/pages/post3dAuth/post3dAuth.html'
+  templateUrl: 'post3dAuth.html'
 })
 export default class Post3dAuthComponent {
   pageHeader: any;

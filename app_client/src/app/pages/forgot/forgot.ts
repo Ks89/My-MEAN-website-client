@@ -12,7 +12,7 @@ import {
 
 @Component({
   selector: 'forgot-page',
-  template: require('./forgot.html')
+  templateUrl: 'forgot.html'
 })
 export default class ForgotComponent {
   pageHeader: Object;

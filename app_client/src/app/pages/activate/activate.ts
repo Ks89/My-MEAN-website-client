@@ -6,7 +6,7 @@ import {Router} from '@angular/router';
 
 @Component({
   selector: 'activate-page',
-  template: require('./activate.html')
+  templateUrl: 'activate.html'
 })
 export default class ActivateComponent {
   pageHeader: Object;

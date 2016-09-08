@@ -12,8 +12,8 @@ import {
 
 @Component({
   selector: 'login-page',
-  styles: [require('./login.css')],
-  template: require('./login.html')
+  styleUrls: ['login.css'],
+  templateUrl: 'login.html'
 })
 export default class LoginComponent {
   pageHeader: Object;

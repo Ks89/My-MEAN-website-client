@@ -9,8 +9,8 @@ import {Project, ProjectService} from '../../common/services/projects';
 
 @Component({
   selector: 'projectDetail-page',
-  styles: [require('./bs_doc.css')],
-  template: require('./projectDetail.html')
+  styleUrls: ['bs_doc.css'],
+  templateUrl: 'projectDetail.html'
 })
 export default class ProjectDetailComponent {
   project: Project;

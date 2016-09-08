@@ -12,7 +12,7 @@ import {
 
 @Component({
   selector: 'contact-page',
-  template: require('./contact.html')
+  templateUrl: 'contact.html'
 })
 export default class ContactComponent {
   pageHeader: Object;

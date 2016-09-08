@@ -1,5 +1,5 @@
 import 'zone.js/dist/zone';
-import 'reflect-metadata';
+import 'reflect-metadata/Reflect.js';
 
 // Angular modules
 import '@angular/core';
@@ -29,7 +29,8 @@ import 'angular2-ladda';
 // Other vendor libraries
 import 'jquery';
 import 'tether/dist/js/tether.min.js';
-import 'bootstrap/dist/js/bootstrap.min.js';
+// import 'bootstrap/dist/js/bootstrap.min.js';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 
 //-------------------------------------------------------------------------
 //TODO FIXME remove bootstrap.min.css from index.html and switch to bootstrap-loader,

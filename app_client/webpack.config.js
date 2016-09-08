@@ -19,7 +19,7 @@ const metadata = {
 module.exports = {
   debug: true,
   devServer: {
-    contentBase: 'app',
+    contentBase: 'src',
     historyApiFallback: true,
     host: metadata.host,
     port: metadata.port,
@@ -32,30 +32,36 @@ module.exports = {
   },
   devtool: 'source-map',
   entry: {
-    'main'  : './app/main.ts',
-    'vendor': './app/vendor.ts'
+    'main'  : './src/main.ts',
+    'vendor': './src/vendor.ts'
   },
   module: {
     loaders: [
       {test: /\.css$/,   loader: 'raw', exclude: /node_modules/},
-      {test: /\.css$/,   loader: 'style!css?-minimize', exclude: /app/},
-      {test: /\.css$/,   loader: 'style-loader!css-loader'},
+      {test: /\.css$/,   loader: 'style!css?-minimize', exclude: /src/},
       {test: /\.html$/,  loader: 'raw'},
-      {test: /\.ts$/,    loader: 'ts', query: {compilerOptions: {noEmit: false}}},
+      {test: /\.ts$/,   loaders: [
+        {loader: 'ts', query: {compilerOptions: {noEmit: false}}},
+        {loader: 'angular2-template'}
+      ]},
       {test: /\.woff$/,  loader: 'url?limit=10000&mimetype=application/font-woff'},
       {test: /\.woff2$/, loader: 'url?limit=10000&mimetype=application/font-woff'},
       {test: /\.ttf$/,   loader: 'url?limit=10000&mimetype=application/octet-stream'},
       {test: /\.svg$/,   loader: 'url?limit=10000&mimetype=image/svg+xml'},
       {test: /\.eot$/,   loader: 'file'}
+
+      // {test: /\.css$/,   loader: 'raw', exclude: /node_modules/},
+      // {test: /\.css$/,   loader: 'style!css?-minimize', exclude: /app/},
+      // {test: /\.css$/,   loader: 'style-loader!css-loader'},
     ]
   },
   output: {
-    path    : '../',
+    path    : './dist',
     filename: 'bundle.js'
   },
   plugins: [
     new CommonsChunkPlugin({name: 'vendor', filename: 'vendor.bundle.js', minChunks: Infinity}),
-    new CopyWebpackPlugin([{from: './index.html', to: 'index.html'}]),
+    new CopyWebpackPlugin([{from: './src/index.html', to: 'index.html'}]),
     new DefinePlugin({'webpack': {'ENV': JSON.stringify(metadata.ENV)}}),
     new ProvidePlugin({
       jQuery: 'jquery',

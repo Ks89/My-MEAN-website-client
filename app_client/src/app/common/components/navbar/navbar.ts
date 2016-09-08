@@ -4,7 +4,7 @@ import {Router} from '@angular/router';
 
 @Component({
   selector: 'navigation',
-  template: require('./navbar.html'),
+  templateUrl: 'navbar.html',
 })
 export default class NavbarComponent {
   isLoggedIn: boolean = false;

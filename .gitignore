@@ -34,14 +34,11 @@ node_modules
 #deprecated file with the new angular2 implementation
 */*/mysite.min.js
 
-app_client/src/node_modules
+#app_client/src/node_modules
+app_client/node_modules
 app_client/.DS_Store
 
 *.log
 
 # Compiled front-end files
-app_client/bundle.js
-app_client/bundle.js.map
-app_client/vendor.bundle.js
-app_client/vendor.bundle.js.map
-app_client/index.html
+app_client/dist
