@@ -37,7 +37,6 @@ import {SERVICES} from './common/services/services';
 import {ReCaptchaModule} from 'angular2-recaptcha/angular2-recaptcha';
 // import {ImageModal} from 'angular2-image-popup/directives/angular2-image-popup/image-modal-popup';
 // import {ComponentOutlet} from 'angular2-component-outlet-modified';
-import {LocalStorage, SessionStorage, SESSION_STROAGE_PROVIDER, LOCAL_STORAGE_PROVIDER, WEB_STORAGE_PROVIDERS} from 'h5webstorage';
 // import {SimplePageScroll} from 'ng2-simple-page-scroll';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { LaddaModule } from 'angular2-ladda';
@@ -102,7 +101,6 @@ import { LaddaModule } from 'angular2-ladda';
       ContactService,
       AuthService,
       HTTP_PROVIDERS,
-      WEB_STORAGE_PROVIDERS, SESSION_STROAGE_PROVIDER, LOCAL_STORAGE_PROVIDER,
       SERVICES,
       AuthGuard
   ],

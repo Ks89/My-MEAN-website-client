@@ -13,8 +13,6 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/concatMap';
 import 'rxjs/add/operator/share';
 
-import {LocalStorage, SessionStorage} from "h5webstorage";
-
 @Injectable()
 export class AuthService {
   private headers = new Headers({ 'Content-Type': 'application/json' });
@@ -22,9 +20,7 @@ export class AuthService {
 
   loginEvent: EventEmitter<any> = new EventEmitter();
 
-  constructor(private http: Http,
-    private localStorage: LocalStorage,
-    private sessionStorage: SessionStorage) {}
+  constructor(private http: Http) {}
 
   //----------------------------------------------------------
   //------------------ local authentication ------------------
@@ -104,7 +100,7 @@ export class AuthService {
 
   saveToken(key, token) {
     console.log('saving token with key: ' + key);
-    this.sessionStorage.setItem(key, token);
+    window.sessionStorage.setItem(key, token);
   };
 
   getTokenRedis(): Observable<any> {
@@ -173,7 +169,7 @@ export class AuthService {
   //--- others functions - not exposed
   //-----------------------------------
   getToken(key): string {
-    return this.sessionStorage.getItem(key);
+    return window.sessionStorage.getItem(key);
   }
 
   //it uses the sessionStorage's jwt token as parameter of decodeJwtToken rest service
@@ -193,6 +189,6 @@ export class AuthService {
   }
 
   removeToken(key) {
-    this.sessionStorage.removeItem(key);
+    window.sessionStorage.removeItem(key);
   }
 }

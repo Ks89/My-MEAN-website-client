@@ -33,7 +33,6 @@
     "bootstrap": "^4.0.0-alpha.4",
     "core-js": "^2.4.1",
     "es6-shim": "^0.35.1",
-    "h5webstorage": "^0.5.2",
     "jquery": "^3.1.0",
     "ng2-simple-page-scroll": "^1.0.3-beta",
     "reflect-metadata": "^0.1.8",
