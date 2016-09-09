@@ -42,21 +42,26 @@ module.exports = {
     ]
   },
   output: {
-    path    : './dist',
+    path    : './',
     filename: 'bundle.js'
   },
   plugins: [
     new CommonsChunkPlugin({name: 'vendor', filename: 'vendor.bundle.js', minChunks: Infinity}),
     new CompressionPlugin({regExp: /\.css$|\.html$|\.js$|\.map$/, threshold: 1500}),
     new CopyWebpackPlugin([{from: './src/index.html', to: 'index.html'}]),
-//     new DedupePlugin(), broken in in RC.6
+//     new DedupePlugin(), broken in RC.6
     new DefinePlugin({'webpack': {'ENV': JSON.stringify(metadata.ENV)}}),
     new OccurrenceOrderPlugin(true),
     new UglifyJsPlugin({
       compress : {screw_ie8 : true},
       mangle: {screw_ie8 : true, keep_fnames: true}
     }),
-    new ProvidePlugin({jQuery: 'jquery', jquery: 'jquery', $: 'jquery'})
+    new ProvidePlugin({
+      jQuery: 'jquery',
+      jquery: 'jquery',
+      $: 'jquery',
+      "Tether": 'tether',
+      "window.Tether": "tether"})
   ],
   resolve: {
     extensions: ['', '.ts', '.js']

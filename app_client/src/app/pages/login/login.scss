@@ -1,8 +1,10 @@
+$padding: 40px;
+
 .vertical-divider-right {
-	padding-right: 40px;
+	padding-right: $padding;
 }
 
 .vertical-divider-left {
-	padding-left: 40px;
+	padding-left: $padding;
 	border-left: 1px solid #ccc;
 }

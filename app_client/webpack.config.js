@@ -39,6 +39,11 @@ module.exports = {
     loaders: [
       {test: /\.css$/,   loader: 'raw', exclude: /node_modules/},
       {test: /\.css$/,   loader: 'style!css?-minimize', exclude: /src/},
+      {
+        test: /\.scss$/,  
+        exclude: /node_modules/,
+        loaders: ['raw-loader', 'sass-loader']
+      },
       {test: /\.html$/,  loader: 'raw'},
       {test: /\.ts$/,   loaders: [
         {loader: 'ts', query: {compilerOptions: {noEmit: false}}},
@@ -56,7 +61,7 @@ module.exports = {
     ]
   },
   output: {
-    path    : './dist',
+    path    : './',
     filename: 'bundle.js'
   },
   plugins: [

@@ -12,7 +12,7 @@ import {
 
 @Component({
   selector: 'login-page',
-  styleUrls: ['login.css'],
+  styleUrls: ['login.scss'],
   templateUrl: 'login.html'
 })
 export default class LoginComponent {
