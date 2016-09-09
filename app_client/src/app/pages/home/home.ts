@@ -5,7 +5,7 @@ import {Project, ProjectService} from '../../common/services/projects';
 
 @Component({
   selector: 'home-page',
-  styleUrls: ['home.css'],
+  styleUrls: ['home.scss'],
   templateUrl: 'home.html'
 })
 export default class HomeComponent {

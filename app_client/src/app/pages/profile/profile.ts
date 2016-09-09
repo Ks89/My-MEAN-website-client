@@ -10,7 +10,7 @@ import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
 
 @Component({
   selector: 'profile-page',
-  styleUrls: ['profile.css'],
+  styleUrls: ['profile.scss'],
   templateUrl: 'profile.html'
 })
 export default class ProfileComponent implements OnInit {
