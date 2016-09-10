@@ -36,7 +36,7 @@ import {SERVICES} from './common/services/services';
 import {ReCaptchaModule} from 'angular2-recaptcha/angular2-recaptcha';
 // import {ImageModal} from 'angular2-image-popup/directives/angular2-image-popup/image-modal-popup';
 // import {ComponentOutlet} from 'angular2-component-outlet-modified';
-// import {SimplePageScroll} from 'ng2-simple-page-scroll';
+import {SimplePageScroll} from 'ng2-simple-page-scroll';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 // import { LaddaModule } from 'angular2-ladda';
 // import { UPLOAD_DIRECTIVES } from 'ng2-uploader/ng2-uploader';
@@ -90,7 +90,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     ProjectSearchPipe,
     // ImageModal,
     // ComponentOutlet,
-    // SimplePageScroll,
+    SimplePageScroll,
   //  UPLOAD_DIRECTIVES
   ],
   providers: [

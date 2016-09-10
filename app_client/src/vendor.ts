@@ -44,7 +44,7 @@ import 'rxjs';
 
 //---------------------------------------------------------------
 //TODO FIXME - BROKEN PACKAGE temporary removed
-// import 'ng2-simple-page-scroll/ng2-simple-page-scroll';
+import 'ng2-simple-page-scroll';
 // import 'angular2-component-outlet-modified/index.js';
 // import "angular2-image-popup/app/main";
 
