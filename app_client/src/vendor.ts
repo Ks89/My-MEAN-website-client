@@ -21,21 +21,20 @@ import 'core-js/es6/weak-map';
 import 'core-js/es6/weak-set';
 import 'core-js/es6/typed';
 import 'core-js/es6/reflect';
-// see issue https://github.com/AngularClass/angular2-webpack-starter/issues/709
-// import 'core-js/es6/promise';
+import 'core-js/es6/promise';
 
 import 'core-js/es7/reflect';
 import 'zone.js/dist/zone';
 import 'zone.js/dist/long-stack-trace-zone';
 
-// import 'reflect-metadata/Reflect.js';
+import 'reflect-metadata/Reflect.js';
 
 // Angular modules
-import '@angular/core';
-import '@angular/common';
-import '@angular/compiler';
+// import '@angular/core';
+// import '@angular/common';
+// import '@angular/compiler';
 import '@angular/forms';
-import '@angular/platform-browser';
+// import '@angular/platform-browser';
 import '@angular/platform-browser-dynamic';
 import '@angular/http';
 import '@angular/router';
@@ -52,13 +51,11 @@ import 'rxjs';
 //---------------------------------------------------------------
 import 'angular2-recaptcha/angular2-recaptcha'; //IT SHOULD WORK, I don't know it returns an error
 import '@ng-bootstrap/ng-bootstrap';
-import 'angular2-ladda';
+// import 'angular2-ladda';
 
 // Other vendor libraries
 import 'jquery';
 import 'tether/dist/js/tether.min.js';
-// import 'bootstrap/dist/js/bootstrap.min.js';
-// import 'bootstrap/dist/css/bootstrap.min.css';
 
 //-------------------------------------------------------------------------
 //TODO FIXME remove bootstrap.min.css from index.html and switch to bootstrap-loader,

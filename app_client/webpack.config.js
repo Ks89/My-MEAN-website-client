@@ -40,7 +40,7 @@ module.exports = {
       {test: /\.css$/,   loader: 'raw', exclude: /node_modules/},
       {test: /\.css$/,   loader: 'style!css?-minimize', exclude: /src/},
       {
-        test: /\.scss$/,  
+        test: /\.scss$/,
         exclude: /node_modules/,
         loaders: ['raw-loader', 'sass-loader']
       },

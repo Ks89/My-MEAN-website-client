@@ -4,7 +4,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
-import {HTTP_PROVIDERS} from '@angular/http';
 
 import ApplicationComponent from './application/application';
 import HomeComponent from './pages/home/home';
@@ -39,7 +38,7 @@ import {ReCaptchaModule} from 'angular2-recaptcha/angular2-recaptcha';
 // import {ComponentOutlet} from 'angular2-component-outlet-modified';
 // import {SimplePageScroll} from 'ng2-simple-page-scroll';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import { LaddaModule } from 'angular2-ladda';
+// import { LaddaModule } from 'angular2-ladda';
 // import { UPLOAD_DIRECTIVES } from 'ng2-uploader/ng2-uploader';
 
 @NgModule({
@@ -66,7 +65,7 @@ import { LaddaModule } from 'angular2-ladda';
               {path: 'post3dauth',                      component: Post3dAuthComponent}
             ]),
             NgbModule,
-            LaddaModule,
+            // LaddaModule,
             ReCaptchaModule
   ],
   declarations: [
@@ -101,7 +100,6 @@ import { LaddaModule } from 'angular2-ladda';
       ContactService,
       AuthService,
       SERVICES,
-      HTTP_PROVIDERS,
       AuthGuard
   ],
   bootstrap: [ ApplicationComponent ]
