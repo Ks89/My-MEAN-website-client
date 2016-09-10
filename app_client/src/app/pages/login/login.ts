@@ -36,7 +36,7 @@ export default class LoginComponent {
 
     const fb = new FormBuilder();
     this.formModel = fb.group({
-      'email': [null, Validators.minLength(3)],
+      'email': [null, [Validators.maxLength(10),  Validators.minLength(3)]],
       'password': [null, positiveNumberValidator]
     });
   }
