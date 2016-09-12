@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {Observable} from "rxjs/Observable";
 import {Subscription} from 'rxjs/Subscription';
 import {ContactService} from '../../common/services/contact';
+import { EmailValidators } from 'ng2-validators';
 
 import {
     FormControl,
@@ -19,6 +20,7 @@ export default class ContactComponent {
   formModel: FormGroup;
   contactAlert: Object = { visible: false }; //hidden by default
   isWaiting: boolean = false; //enable button's spinner
+  showFormError: boolean = false;
   private subscription: Subscription;
   private recaptchaResponse: any;
 
@@ -30,9 +32,9 @@ export default class ContactComponent {
 
     const fb = new FormBuilder();
     this.formModel = fb.group({
-      'email': [null, Validators.minLength(3)],
-      'subject': [null, Validators.minLength(3)],
-      'message': [null, Validators.minLength(3)],
+      'email': [null, EmailValidators.simple()],
+      'subject': [null, Validators.compose([Validators.required, Validators.minLength(4)])],
+      'message': [null, Validators.compose([Validators.required, Validators.minLength(15)])],
     });
   }
 
@@ -65,6 +67,7 @@ export default class ContactComponent {
             message: response['message']
           };
           this.isWaiting = false;
+          this.showFormError = false;
         },
         err => {
           console.log("/api/email called -> ERROR");
@@ -72,10 +75,11 @@ export default class ContactComponent {
           this.contactAlert = {
             visible: true,
             status: 'danger',
-            strong : 'Danger',
+            strong : 'Error',
             message: JSON.parse(err._body).message
           };
           this.isWaiting = false;
+          this.showFormError = true;
         },
         () => console.log("Done")
       );

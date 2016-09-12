@@ -9,48 +9,30 @@
         <div *ngIf="contactAlert.visible" class="alert alert-{{contactAlert.status}}" role="alert">
           <strong>{{contactAlert.strong}}</strong> {{contactAlert.message}}
         </div>
-        <div class="form-group" [class.has-error]="formModel.hasError('minlength', 'email')">
+        <div class="form-group" [class.has-warning]="!formModel.controls.email.valid" [class.has-danger]="showFormError">
           <label for="emailInput">Email</label>
-          <input type="email"
-            class="form-control"
-            id="emailInput"
-            required="required"
-            placeholder="Email"
-            minlength="3"
-            formControlName="email">
-            <span class="form-text text-muted"
-                  [class.invisible]="!formModel.hasError('minlength', 'email')">
-              Type at least 3 characters
+          <input type="email" class="form-control" id="emailInput" placeholder="Email" formControlName="email">
+            <span class="form-text text-muted" *ngIf="!formModel.controls.email.valid">
+              A valid email address is required
             </span>
         </div>
-        <div class="form-group" [class.has-error]="formModel.hasError('minlength', 'subject')">
+        <div class="form-group" [class.has-warning]="!formModel.controls.subject.valid" [class.has-danger]="showFormError">
           <label for="subjectInput">Subject</label>
-          <input class="form-control"
-            id="subjectInput"
-            required="required"
-            placeholder="Subject"
-            minlength="3"
-            formControlName="subject">
-            <span class="form-text text-muted"
-                  [class.invisible]="!formModel.hasError('minlength', 'subject')">
-              Type at least 3 characters
+          <input class="form-control" id="subjectInput" placeholder="Subject" formControlName="subject">
+            <span class="form-text text-muted" *ngIf="!formModel.controls.subject.valid">
+              Type at least 4 characters
             </span>
         </div>
-        <div class="form-group" [class.has-error]="formModel.hasError('minlength', 'message')">
+        <div class="form-group" [class.has-warning]="!formModel.controls.message.valid" [class.has-danger]="showFormError">
           <label for="textInput">Message</label>
-          <textarea class="form-control"
-            id="textInput"
-            name="messageText"
-            rows="5"
-            required="required"
-            placeholder="Message text"
-            minlength="3"
-            formControlName="message"></textarea>
-            <span class="form-text text-muted"
-                  [class.invisible]="!formModel.hasError('minlength', 'message')">
-              Type at least 3 characters
-            </span>
+          <textarea class="form-control" id="textInput" name="messageText" rows="5"
+                placeholder="Message text" formControlName="message">
+          </textarea>
+          <span class="form-text text-muted" *ngIf="!formModel.controls.message.valid">
+            Type at least 15 characters
+          </span>
         </div>
+        <button type="submit" class="btn btn-primary">Send</button>
         <!-- <button type="submit" [ladda]='isWaiting' data-style="slide-right" data-spinner-color="White" class="btn btn-primary ladda-button"><span class="ladda-label">Send</span></button> -->
 
         <!-- The recaptcha2's directive. site_key is the publickey, so don't be scared-->
