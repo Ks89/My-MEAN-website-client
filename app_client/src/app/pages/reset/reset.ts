@@ -3,6 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 import {Observable} from "rxjs/Observable";
 import {AuthService} from '../../common/services/auth';
 import {Router} from '@angular/router';
+import { EmailValidators } from 'ng2-validators';
 
 import {
     FormControl,
@@ -21,6 +22,7 @@ export default class ResetComponent {
   emailToken: string;
   resetAlert: Object = { visible: false }; //hidden by default
   isWaiting: boolean = false; //enable button's spinner
+  showFormError: boolean = false;
 
   //this class is used when you click on the email to reset your password
 
@@ -36,7 +38,7 @@ export default class ResetComponent {
 
     const fb = new FormBuilder();
     this.formModel = fb.group({
-      'password': [null, Validators.minLength(3)]
+      'password': [null, Validators.compose([Validators.required, Validators.minLength(8)])]
     })
   }
 
@@ -55,6 +57,7 @@ export default class ResetComponent {
             message: response.message
           };
           this.isWaiting = false;
+          this.showFormError = false;
         },
         err => {
           console.error(err);
@@ -65,6 +68,7 @@ export default class ResetComponent {
             message: JSON.parse(err._body).message
           };
           this.isWaiting = false;
+          this.showFormError = true;
         },
         () => console.log("Done")
       );

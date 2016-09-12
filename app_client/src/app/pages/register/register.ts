@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {Observable} from "rxjs/Observable";
 import {AuthService} from '../../common/services/auth';
 import {Router} from '@angular/router';
-import { EmailValidators, UniversalValidators } from 'ng2-validators';
+import { EmailValidators } from 'ng2-validators';
 import {
     FormControl,
     FormGroup,
