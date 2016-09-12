@@ -9,36 +9,28 @@
         <div *ngIf="registerAlert.visible" class="alert alert-{{registerAlert.status}}" role="alert">
           <strong>{{registerAlert.strong}}</strong> {{registerAlert.message}}
         </div>
-        <div class="form-group" [class.has-error]="formModel.hasError('minlength', 'name')">
+        <div class="form-group" [class.has-warning]="!formModel.controls.name.valid" [class.has-danger]="showFormError">
           <label for="name">Full name</label>
-          <input type="text" class="form-control" id="name" placeholder="Enter your name"
-                  minlength="3"
-                  formControlName="name">
-          <span class="form-text text-muted"
-                [class.invisible]="!formModel.hasError('minlength', 'name')">
-            Type at least 3 characters
+          <input type="text" class="form-control" id="name" placeholder="Enter your name" formControlName="name">
+          <span class="form-text text-muted" *ngIf="!formModel.controls.name.valid">
+            Type at least 3 characters and at maximum 30
           </span>
         </div>
-        <div class="form-group" [class.has-error]="formModel.hasError('minlength', 'email')">
+        <div class="form-group" [class.has-warning]="!formModel.controls.email.valid" [class.has-danger]="showFormError">
           <label for="email">Email address</label>
-          <input type="email" class="form-control" id="email" placeholder="Email address"
-                  minlength="3"
-                  formControlName="email">
-          <span class="form-text text-muted"
-                [class.invisible]="!formModel.hasError('minlength', 'email')">
-            Type at least 3 characters
+          <input type="email" class="form-control" id="email" placeholder="Email address" formControlName="email">
+          <span class="form-text text-muted" *ngIf="!formModel.controls.email.valid">
+            A valid email address is required
           </span>
         </div>
-        <div class="form-group" [class.has-error]="formModel.hasError('minlength', 'password')">
+        <div class="form-group" [class.has-warning]="!formModel.controls.password.valid" [class.has-danger]="showFormError">
           <label for="password">Password</label>
-          <input type="password" class="form-control" id="password" placeholder="Password"
-                  minlength="3"
-                  formControlName="password">
-          <span class="form-text text-muted"
-                [class.invisible]="!formModel.hasError('minlength', 'password')">
-            Type at least 3 characters
+          <input type="password" class="form-control" id="password" placeholder="Password" formControlName="password">
+          <span class="form-text text-muted" *ngIf="!formModel.controls.password.valid">
+            Type at least 8 characters
           </span>
         </div>
+        <button type="submit" class="btn btn-primary">Register!</button>
         <!-- <button type="submit" [ladda]='isWaiting' data-style="slide-right" data-spinner-color="White" class="btn btn-primary ladda-button"><span class="ladda-label">Register!</span></button> -->
       </form>
     </div>

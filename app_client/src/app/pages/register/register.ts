@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {Observable} from "rxjs/Observable";
 import {AuthService} from '../../common/services/auth';
 import {Router} from '@angular/router';
+import { EmailValidators, UniversalValidators } from 'ng2-validators';
 import {
     FormControl,
     FormGroup,
@@ -17,6 +18,7 @@ export default class RegisterComponent {
   pageHeader: Object;
   formModel: FormGroup;
   registerAlert: Object = { visible: false }; //hidden by default
+  showFormError: boolean = false;
   isWaiting: boolean = false; //enable button's spinner
 
   constructor(private authService: AuthService,
@@ -28,9 +30,9 @@ export default class RegisterComponent {
 
     const fb = new FormBuilder();
     this.formModel = fb.group({
-      'name': [null, Validators.minLength(3)],
-      'email': [null, Validators.minLength(3)],
-      'password': [null, Validators.minLength(3)]
+      'name': [null, Validators.compose([Validators.required, Validators.minLength(3)])],
+      'email': [null, EmailValidators.simple()],
+      'password': [null, Validators.compose([Validators.required, Validators.minLength(8)])],
     })
   }
 
@@ -53,6 +55,7 @@ export default class RegisterComponent {
             message: response.message
           };
           this.isWaiting = false;
+          this.showFormError = false;
           this.router.navigate(['/login']);
         },
         err => {
@@ -64,6 +67,7 @@ export default class RegisterComponent {
             message: JSON.parse(err._body).message
           };
           this.isWaiting = false;
+          this.showFormError = true;
         },
         ()=>console.log("Done")
       );

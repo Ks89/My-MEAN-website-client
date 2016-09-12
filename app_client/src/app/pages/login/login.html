@@ -8,23 +8,13 @@
         <div *ngIf="loginAlert.visible" class="alert alert-{{loginAlert.status}}" role="alert">
           <strong>{{loginAlert.strong}}</strong> {{loginAlert.message}}
         </div>
-        <div class="form-group" [class.has-warning]="!formModel.controls.email.valid" [class.has-danger]="showFormError">
+        <div class="form-group" [class.has-danger]="showFormError">
           <label for="email">Email address</label>
-          <input type="email" class="form-control" id="email" placeholder="Enter email"
-          minlength="3"
-          minlength="10"
-          formControlName="email">
-          <span class="form-text text-muted" *ngIf="!formModel.controls.email.valid">
-            A valid email address is required
-          </span>
+          <input type="email" class="form-control" id="email" placeholder="Enter email" formControlName="email">
         </div>
         <div class="form-group" [class.has-danger]="showFormError">
           <label for="password">Password</label>
-          <input type="password" class="form-control" id="password" placeholder="Password"
-          formControlName="password">
-          <!-- <span class="form-text text-muted" *ngIf="!formModel.controls.password.valid">
-            Password is required
-          </span> -->
+          <input type="password" class="form-control" id="password" placeholder="Password" formControlName="password">
         </div>
         <!-- <button type="submit" [ladda]='isWaiting' data-style="slide-right" data-spinner-color="White" class="btn btn-primary ladda-button"><span class="ladda-label">Sign in!</span></button> -->
         <button type="submit" class="btn btn-primary">Sign in!</button>

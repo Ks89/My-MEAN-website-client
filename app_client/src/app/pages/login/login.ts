@@ -37,7 +37,7 @@ export default class LoginComponent {
 
     const fb = new FormBuilder();
     this.formModel = fb.group({
-      'email': [null, EmailValidators.simple],
+      'email': [null, null],
       'password': [null, null]
     });
   }
@@ -75,7 +75,7 @@ export default class LoginComponent {
               this.loginAlert = {
                 visible: true,
                 status: 'danger',
-                strong : 'Danger',
+                strong : 'Error',
                 message: JSON.parse(err._body).message
               };
               this.isWaiting = false;
@@ -89,7 +89,7 @@ export default class LoginComponent {
           this.loginAlert = {
             visible: true,
             status: 'danger',
-            strong : 'Danger',
+            strong : 'Error',
             message: JSON.parse(err._body).message
           };
           this.isWaiting = false;

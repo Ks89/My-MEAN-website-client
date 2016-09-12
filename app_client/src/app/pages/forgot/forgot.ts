@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {Observable} from "rxjs/Observable";
 import {AuthService} from '../../common/services/auth';
 import {Router} from '@angular/router';
+import { EmailValidators } from 'ng2-validators';
 
 import {
     FormControl,
@@ -19,7 +20,7 @@ export default class ForgotComponent {
   formModel: FormGroup;
   forgotAlert: Object = { visible: false }; //hidden by default
   isWaiting: boolean = false; //enable button's spinner
-
+  showFormError: boolean = false;
   //this class is used when you click on the "forgot password" to reset your password
 
   constructor(private authService: AuthService,
@@ -31,7 +32,7 @@ export default class ForgotComponent {
 
     const fb = new FormBuilder();
     this.formModel = fb.group({
-      'email': [null, Validators.minLength(3)]
+      'email': [null, EmailValidators.simple()]
     })
   }
 
@@ -50,6 +51,7 @@ export default class ForgotComponent {
             message: response.message
           };
           this.isWaiting = false;
+          this.showFormError = false;
           this.router.navigate(['/login']);
         },
         err => {
@@ -61,6 +63,7 @@ export default class ForgotComponent {
             message: JSON.parse(err._body).message
           };
           this.isWaiting = false;
+          this.showFormError = true;
         },
         () => console.log("Done")
       );
