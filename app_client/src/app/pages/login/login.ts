@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {Observable} from "rxjs/Observable";
 import {AuthService} from '../../common/services/auth';
 import {Router} from '@angular/router';
-import { CustomValidators } from 'ng2-validation';
+import { EmailValidators } from 'ng2-validators';
 import {
     FormControl,
     FormGroup,
@@ -20,6 +20,7 @@ export default class LoginComponent {
   formModel: FormGroup;
   loginAlert: Object = { visible: false }; //hidden by default
   isWaiting: boolean = false; //enable button's spinner
+  showFormError: boolean = false;
 
   facebookOauthUrl: string = 'api/auth/facebook';
   googleOauthUrl: string = 'api/auth/google';
@@ -36,8 +37,8 @@ export default class LoginComponent {
 
     const fb = new FormBuilder();
     this.formModel = fb.group({
-      'email': [null, CustomValidators.email],
-      'password': [null, positiveNumberValidator]
+      'email': [null, EmailValidators.simple],
+      'password': [null, null]
     });
   }
 
@@ -78,6 +79,7 @@ export default class LoginComponent {
                 message: JSON.parse(err._body).message
               };
               this.isWaiting = false;
+              this.showFormError = true;
             },
             ()=>console.log("Done")
           );
@@ -91,18 +93,10 @@ export default class LoginComponent {
             message: JSON.parse(err._body).message
           };
           this.isWaiting = false;
+          this.showFormError = true;
         },
         () => console.log("Done")
       );
     }
   }
-}
-
-function positiveNumberValidator(control: FormControl): any {
-  return true;
-  // if (!control.value) return null;
-  // const price = parseInt(control.value);
-  // return price === null ||
-  // typeof price === 'number' &&
-  // price > 0 ? null : {positivenumber: true};
 }

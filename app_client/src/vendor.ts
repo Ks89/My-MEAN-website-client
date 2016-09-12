@@ -52,7 +52,7 @@ import 'ng2-simple-page-scroll';
 import 'angular2-recaptcha/angular2-recaptcha'; //IT SHOULD WORK, I don't know it returns an error
 import '@ng-bootstrap/ng-bootstrap';
 // import 'angular2-ladda';
-import 'ng2-validation';
+import 'ng2-validators';
 
 // Other vendor libraries
 import 'jquery';
