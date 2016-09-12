@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {Observable} from "rxjs/Observable";
 import {AuthService} from '../../common/services/auth';
 import {Router} from '@angular/router';
-import { EmailValidators } from 'ng2-validators';
+import { EmailValidators, PasswordValidators } from 'ng2-validators';
 import {
     FormControl,
     FormGroup,
@@ -28,11 +28,21 @@ export default class RegisterComponent {
       strapline: ''
     };
 
+    const passwordValidator = Validators.compose([
+      PasswordValidators.alphabeticalCharacterRule(1),
+      PasswordValidators.digitCharacterRule(1),
+      PasswordValidators.lowercaseCharacterRule(1),
+      PasswordValidators.uppercaseCharacterRule(1),
+      PasswordValidators.repeatCharacterRegexRule(3),
+      Validators.minLength(8)]);
+
     const fb = new FormBuilder();
     this.formModel = fb.group({
       'name': [null, Validators.compose([Validators.required, Validators.minLength(3)])],
       'email': [null, EmailValidators.simple()],
-      'password': [null, Validators.compose([Validators.required, Validators.minLength(8)])],
+      'emailConfirm': [null, EmailValidators.simple()],
+      'password': [null, null],
+      'passwordConfirm': [null, null]
     })
   }
 

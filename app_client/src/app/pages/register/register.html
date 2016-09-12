@@ -23,11 +23,25 @@
             A valid email address is required
           </span>
         </div>
+        <div class="form-group" [class.has-warning]="!formModel.controls.emailConfirm.valid" [class.has-danger]="showFormError">
+          <label for="email">Confirm email address</label>
+          <input type="email" class="form-control" id="emailConfirm" placeholder="Confirm email address" formControlName="emailConfirm">
+          <span class="form-text text-muted" *ngIf="!formModel.controls.emailConfirm.valid">
+            Retype the same email address
+          </span>
+        </div>
         <div class="form-group" [class.has-warning]="!formModel.controls.password.valid" [class.has-danger]="showFormError">
           <label for="password">Password</label>
           <input type="password" class="form-control" id="password" placeholder="Password" formControlName="password">
           <span class="form-text text-muted" *ngIf="!formModel.controls.password.valid">
             Type at least 8 characters
+          </span>
+        </div>
+        <div class="form-group" [class.has-warning]="!formModel.controls.passwordConfirm.valid" [class.has-danger]="showFormError">
+          <label for="passwordConfirm">Confirm password</label>
+          <input type="password" class="form-control" id="passwordConfirm" placeholder="Confirm password" formControlName="passwordConfirm">
+          <span class="form-text text-muted" *ngIf="!formModel.controls.passwordConfirm.valid">
+            Retype the same password
           </span>
         </div>
         <button type="submit" class="btn btn-primary">Register!</button>
