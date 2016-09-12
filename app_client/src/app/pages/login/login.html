@@ -8,14 +8,14 @@
         <div *ngIf="loginAlert.visible" class="alert alert-{{loginAlert.status}}" role="alert">
           <strong>{{loginAlert.strong}}</strong> {{loginAlert.message}}
         </div>
-        <div class="form-group" [class.has-error]="formModel.hasError('minlength', 'email') || formModel.hasError('maxLength', 'email')">
+        <div class="form-group" [class.has-error]="formModel.hasError('validateEmail', 'email')">
           <label for="email">Email address</label>
           <input type="email" class="form-control" id="email" placeholder="Enter email"
           minlength="3"
           minlength="10"
           formControlName="email">
           <span class="form-text text-muted"
-            [class.invisible]="!formModel.hasError('minlength', 'email') && !formModel.hasError('maxLength', 'email')">
+            [class.invisible]="!formModel.hasError('email', 'email')">
             Type at least 3 characters
           </span>
         </div>

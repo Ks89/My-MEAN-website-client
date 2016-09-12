@@ -42,9 +42,9 @@ import '@angular/router';
 // RxJS
 import 'rxjs';
 
-//---------------------------------------------------------------
-//TODO FIXME - BROKEN PACKAGE temporary removed
 import 'ng2-simple-page-scroll';
+
+//TODO FIXME - BROKEN PACKAGE temporary removed
 // import 'angular2-component-outlet-modified/index.js';
 // import "angular2-image-popup/app/main";
 
@@ -52,6 +52,7 @@ import 'ng2-simple-page-scroll';
 import 'angular2-recaptcha/angular2-recaptcha'; //IT SHOULD WORK, I don't know it returns an error
 import '@ng-bootstrap/ng-bootstrap';
 // import 'angular2-ladda';
+import 'ng2-validation';
 
 // Other vendor libraries
 import 'jquery';

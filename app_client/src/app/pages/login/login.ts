@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {Observable} from "rxjs/Observable";
 import {AuthService} from '../../common/services/auth';
 import {Router} from '@angular/router';
-
+import { CustomValidators } from 'ng2-validation';
 import {
     FormControl,
     FormGroup,
@@ -36,7 +36,7 @@ export default class LoginComponent {
 
     const fb = new FormBuilder();
     this.formModel = fb.group({
-      'email': [null, [Validators.maxLength(10),  Validators.minLength(3)]],
+      'email': [null, CustomValidators.email],
       'password': [null, positiveNumberValidator]
     });
   }
