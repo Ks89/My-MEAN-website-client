@@ -41,8 +41,8 @@ export default class RegisterComponent {
       'name': [null, Validators.compose([Validators.required, Validators.minLength(3)])],
       'email': [null, EmailValidators.simple()],
       'emailConfirm': [null, EmailValidators.simple()],
-      'password': [null, null],
-      'passwordConfirm': [null, null]
+      'password': [null, null], //TODO FIXME
+      'passwordConfirm': [null, null] //TODO FIXME
     })
   }
 
