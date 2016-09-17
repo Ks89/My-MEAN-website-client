@@ -41,13 +41,36 @@ export default class RegisterComponent {
       'name': [null, Validators.compose([Validators.required, Validators.minLength(3)])],
       'email': [null, EmailValidators.simple()],
       'emailConfirm': [null, EmailValidators.simple()],
-      'password': [null, null], //TODO FIXME
-      'passwordConfirm': [null, null] //TODO FIXME
+      'password': [null, passwordValidator],
+      'passwordConfirm': [null, null]
     })
   }
 
   onRegister() {
     if (this.formModel.valid) {
+      if(this.formModel.value.password != this.formModel.value.passwordConfirm) {
+        this.registerAlert = {
+          visible: true,
+          status: 'danger',
+          strong : 'Danger',
+          message: 'Password and Password confirm must be equals'
+        };
+        this.isWaiting = false;
+        this.showFormError = true;
+        return;
+      }
+      if(this.formModel.value.email != this.formModel.value.emailConfirm) {
+        this.registerAlert = {
+          visible: true,
+          status: 'danger',
+          strong : 'Danger',
+          message: 'Email and Email confirm must be equals'
+        };
+        this.isWaiting = false;
+        this.showFormError = true;
+        return;
+      }
+
       this.isWaiting = true;
       console.log("Calling register...");
       this.authService.register({
