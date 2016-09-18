@@ -1,0 +1,116 @@
+{ 
+    "_id" : ObjectId("57cc7a3bc46682bf7c4a66d7"), 
+    "__v" : NumberInt(0), 
+    "google" : {
+        "email" : "stefano.cappa.ks89@gmail.com", 
+        "id" : "105151560202467598897", 
+        "name" : "Stefano Cappa", 
+        "token" : "ya29.CjRUA_1cQTSRu83KR-Cd5maYnJPiy_eJo2UqSN8H2SbpGqJPTRc_dQ5MSEuPSUAPRga19WIe"
+    }, 
+    "profile" : {
+        "name" : "gybhunj", 
+        "surname" : "vgbhjn", 
+        "nickname" : "vghbjn", 
+        "email" : "vghbjn", 
+        "updated" : ISODate("2016-09-08T21:25:49.384+0000"), 
+        "visible" : true, 
+        "_id" : ObjectId("57d1d75d6008865d1a41a0cd")
+    }
+}
+{ 
+    "_id" : ObjectId("57cc7cb4f538ff567d3e54db"), 
+    "__v" : NumberInt(0), 
+    "google" : {
+        "email" : "stefano.cappa.ks89@gmail.com", 
+        "id" : "105151560202467598897", 
+        "name" : "Stefano Cappa", 
+        "token" : "ya29.CjRUAxKYA-2-hhvW2huvUS-weJCC3mGH3K2pAyM7TsSEgS4IFoDYhKlzTFItT58-cEwwvFHH"
+    }, 
+    "profile" : {
+        "name" : "fghvbjn", 
+        "surname" : "fcghvbjnkm", 
+        "nickname" : "gvhbjnkm", 
+        "email" : "asas@asas.it", 
+        "updated" : ISODate("2016-09-04T19:49:32.324+0000"), 
+        "visible" : true, 
+        "_id" : ObjectId("57cc7acc042c04307dea24d6")
+    }
+}
+{ 
+    "_id" : ObjectId("57cc94e489375041823fa6e2"), 
+    "local" : {
+        "hash" : "$2a$10$o6rL1pcpd3oTnbMsWIz6de2iuiX/YdUHf5CAEnS3eVL0Ja.bwrWAy", 
+        "email" : "stefano.cappa@yahoo.it", 
+        "name" : "123"
+    }, 
+    "__v" : NumberInt(0), 
+    "profile" : {
+        "name" : "ghjk", 
+        "surname" : "ghjbkl", 
+        "nickname" : "ghjk", 
+        "email" : "hjk", 
+        "updated" : ISODate("2016-09-04T22:57:08.977+0000"), 
+        "visible" : true, 
+        "_id" : ObjectId("57cca6c4b36d45c584d19430")
+    }
+}
+{ 
+    "_id" : ObjectId("57cc8d097c6b695481ff88d3"), 
+    "github" : {
+        "email" : "stefano.cappa.ks89@gmail.com", 
+        "profileUrl" : "https://github.com/Ks89", 
+        "username" : "Ks89", 
+        "name" : "Stefano Cappa", 
+        "token" : "7d577f5329b04e55f253c8e2e8b85e0645d7f736", 
+        "id" : "6057207"
+    }, 
+    "__v" : NumberInt(0), 
+    "profile" : {
+        "name" : "gybhunj", 
+        "surname" : "vgbhjn", 
+        "nickname" : "vghbjn", 
+        "email" : "vghbjn", 
+        "updated" : ISODate("2016-09-05T19:23:48.008+0000"), 
+        "visible" : true, 
+        "_id" : ObjectId("57cdc644c10c6f77081e1f12")
+    }, 
+    "google" : {
+        "email" : "stefano.cappa.ks89@gmail.com", 
+        "id" : "105151560202467598897", 
+        "name" : "Stefano Cappa", 
+        "token" : "ya29.CjRVA5B_1p9S1EaD8h1bvvJK51tZqsBlZTultQs7KKKtfEyt385UHcg_7FsQfMzTc76dWmFf"
+    }
+}
+{ 
+    "_id" : ObjectId("57d71fd2732f1a3d34c1d37f"), 
+    "local" : {
+        "activateAccountExpires" : ISODate("2016-09-13T21:36:18.407+0000"), 
+        "activateAccountToken" : "c0c1a30f2129c60b5a05cc1101e286f4f0030b97490ffa8c871e44e2525d2dd60f0eef50f0e8373b5add18f965e99cd85b4c3c175b8dd26c96828380e7823f9a", 
+        "hash" : "$2a$10$0gNDZNcsb/7i648z4FJSF.9ln8jsXCe3fT2QqA.QHpSxxjMRNfMeG", 
+        "email" : "stefano.cappa.ks89@gmail.com", 
+        "name" : "stefa"
+    }, 
+    "__v" : NumberInt(0)
+}
+{ 
+    "_id" : ObjectId("57dda5bc2f06214c16965a87"), 
+    "local" : {
+        "activateAccountExpires" : ISODate("2016-09-18T20:21:16.311+0000"), 
+        "activateAccountToken" : "bb12df740ac55fc9f5d0768e2c29f8e5396cc5bd994170f14d766a133e8972be6f9254ffb8e6795f362a8484f0b0e5e4b031d280514c876b23c8f6a7ed3ffc9e", 
+        "hash" : "$2a$10$enKIj2bMyJXlqDoe7APdJ./MTrdLIBAQj.jDce3Zzeg6rHx.iW/2S", 
+        "email" : "a@a.it", 
+        "name" : "fghjklghjk"
+    }, 
+    "__v" : NumberInt(0)
+}
+{ 
+    "_id" : ObjectId("57ddaacccba921dd16269587"), 
+    "local" : {
+        "activateAccountExpires" : ISODate("2016-09-18T20:42:52.813+0000"), 
+        "activateAccountToken" : "47bc2bfbe91e68740bd30eb26ff84f9ac5252413f7b4d393547e572511d4f786574d7587b7107f3fd3ae73b389013e7532a99d11a90e1174b477d603e208b64c", 
+        "hash" : "$2a$10$v.KWIJ/tmPDi02VLwLtVRut6Js8N6ntreBpxkE0UqVQH0oWKDmcJq", 
+        "email" : "aa@a.it", 
+        "name" : "dfghjklò"
+    }, 
+    "__v" : NumberInt(0)
+}

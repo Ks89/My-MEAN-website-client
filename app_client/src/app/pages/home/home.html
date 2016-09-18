@@ -7,9 +7,9 @@
 
       <hr class="featurette-divider">
 
-      <div *ngFor="let thumb of thumbs | async">
-        <div class="col-lg-4">
-          <div class="card">
+      <div class="card-deck-wrapper">
+        <div class="card-deck">
+          <div class="card" *ngFor="let thumb of thumbs | async">
             <img class="card-img-top img-fluid" src="{{thumb.projectHomeView.thumbImagePath}}" alt="Generic placeholder image">
             <div class="card-block text-xs-center">
               <h4 class="card-title">{{thumb.name}}</h4>
