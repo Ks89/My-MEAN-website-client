@@ -33,8 +33,8 @@ export default class ContactComponent {
     const fb = new FormBuilder();
     this.formModel = fb.group({
       'email': [null, EmailValidators.simple()],
-      'subject': [null, Validators.compose([Validators.required, Validators.minLength(4)])],
-      'message': [null, Validators.compose([Validators.required, Validators.minLength(15)])],
+      'subject': [null, Validators.minLength(4)],
+      'message': [null, Validators.minLength(15)],
     });
   }
 
