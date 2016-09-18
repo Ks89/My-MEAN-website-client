@@ -27,6 +27,7 @@ The problem is that to test PassportJS without a browser it's really diffult. I 
 For this reason, I decided to unit-tests these APIs (not APIs theirself but their functions/logics).
 If you want to help me to write integration-test's case for PassportJS, check [this file](https://github.com/Ks89/My-MEAN-website/blob/master/test-server-integration/TODO-auth-3dparty.js)
 
+
 ## Requirements
 - Node.js
 - MongoDB
@@ -38,6 +39,7 @@ If you want to help me to write integration-test's case for PassportJS, check [t
 
 ## News
 - *08/15/2016* - **My MEAN website** Alpha 1 public release
+
 
 ## How to setup
 
@@ -76,6 +78,21 @@ If you want to help me to write integration-test's case for PassportJS, check [t
 6. execute this command 'nodemon' to start this application on http://localhost:3000 (as you can see this branch doesn't use gulp, at the moment. I want to replace gulp with another tool).
 
 Attention: there are some problems with browserSync on Mac, so reload the page on Google Chrome to be able to show this application.
+
+
+## How to run tests (server-side)
+If you want to run server's tests execute these commands:
+1. mocha test-server-integration
+2. mocha test-client-unit/3dparty-passport-test.js
+3. mocha test-client-unit/auth-experimental-collapse-db.js
+4. mocha test-client-unit/auth-util-test.js
+5. mocha test-client-unit/users-test.js
+6. mocha test-client-unit/util-test.js
+
+
+## How to run tests (client-side)
+Still work in progress...
+
 
 ## Features
 Work in progress... (this is only an alpha, please be patient)
