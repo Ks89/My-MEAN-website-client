@@ -4,7 +4,6 @@ import {Project, ProjectService} from '../../services/projects';
 
 @Component({
   selector: 'carousel',
-  styleUrls: ['carousel.css'],
   templateUrl: 'carousel.html'
 })
 export default class CarouselComponent {

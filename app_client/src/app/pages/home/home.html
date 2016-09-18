@@ -1,28 +1,26 @@
 <div>
   <page-header [title]="pageHeader.title" [strapline]="pageHeader.strapline"></page-header>
 
-  <div class="row">
-    <div class="col-xs-12 col-md-12 col-lg-12">
+  <div class="container-fluid">
+    <div class="row">
       <carousel></carousel>
-    </div>
 
-    <div class="container-fluid">
-      <div class="row">
-        <div *ngFor="let thumb of thumbs | async">
-          <div class="col-lg-4">
-            <div class="card">
-              <img class="card-img-top img-fluid" src="{{thumb.projectHomeView.thumbImagePath}}" alt="Generic placeholder image">
-              <div class="card-block text-xs-center">
-                <h4 class="card-title">{{thumb.name}}</h4>
-                <p class="card-text">{{thumb.projectHomeView.thumbText}}</p>
-                <a class="btn btn-default" href="/#projects/{{thumb._id}}" class="btn btn-primary">View details &raquo;</a>
-              </div>
+      <hr class="featurette-divider">
+
+      <div *ngFor="let thumb of thumbs | async">
+        <div class="col-lg-4">
+          <div class="card">
+            <img class="card-img-top img-fluid" src="{{thumb.projectHomeView.thumbImagePath}}" alt="Generic placeholder image">
+            <div class="card-block text-xs-center">
+              <h4 class="card-title">{{thumb.name}}</h4>
+              <p class="card-text">{{thumb.projectHomeView.thumbText}}</p>
+              <a class="btn btn-default" href="/#projects/{{thumb._id}}" class="btn btn-primary">View details &raquo;</a>
             </div>
           </div>
         </div>
       </div>
 
-      <hr class="featurette-divider"> <!-- initial divider -->
+      <hr class="featurette-divider">
 
       <div *ngFor="let bigThumb of thumbs | async; let i = index">
         <div class="row featurette">
