@@ -12,7 +12,7 @@ const ProvidePlugin         = require('webpack/lib/ProvidePlugin');
 const UglifyJsPlugin        = require('webpack/lib/optimize/UglifyJsPlugin');
 var HtmlWebpackPlugin       = require('html-webpack-plugin');
 var ManifestPlugin          = require('webpack-manifest-plugin');
-var ChunkManifestPlugin           = require('chunk-manifest-webpack-plugin');
+// var ChunkManifestPlugin           = require('chunk-manifest-webpack-plugin');
 var InlineManifestWebpackPlugin   = require('inline-manifest-webpack-plugin');
 var WebpackMd5HashPlugin          = require('webpack-md5-hash');
 
