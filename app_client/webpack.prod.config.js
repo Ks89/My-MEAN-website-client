@@ -10,6 +10,11 @@ const DefinePlugin          = require('webpack/lib/DefinePlugin');
 const OccurrenceOrderPlugin = require('webpack/lib/optimize/OccurrenceOrderPlugin');
 const ProvidePlugin         = require('webpack/lib/ProvidePlugin');
 const UglifyJsPlugin        = require('webpack/lib/optimize/UglifyJsPlugin');
+var HtmlWebpackPlugin       = require('html-webpack-plugin');
+var ManifestPlugin          = require('webpack-manifest-plugin');
+var ChunkManifestPlugin           = require('chunk-manifest-webpack-plugin');
+var InlineManifestWebpackPlugin   = require('inline-manifest-webpack-plugin');
+var WebpackMd5HashPlugin          = require('webpack-md5-hash');
 
 const ENV = process.env.NODE_ENV = 'production';
 const metadata = {
@@ -18,52 +23,68 @@ const metadata = {
 };
 
 module.exports = {
-  debug: false,
   devtool: 'source-map',
   entry: {
     'main'  : './src/main.ts',
     'vendor': './src/vendor.ts'
   },
-  metadata: metadata,
   module: {
     loaders: [
-      {test: /\.css$/,   loader: 'to-string!css', exclude: /node_modules/},
-      {test: /\.css$/,   loader: 'style!css', exclude: /src/},
-      {test: /\.html$/,  loader: 'html?caseSensitive=true'},
+      {test: /\.css$/,   loader: 'raw', exclude: /node_modules/},
+      {test: /\.css$/,   loader: 'style!css?-minimize', exclude: /src/},
+      {
+        test: /\.scss$/,
+        exclude: /node_modules/,
+        loaders: ['raw-loader', 'sass-loader']
+      },
+      {test: /\.html$/,  loader: 'raw'},
       {test: /\.ts$/,   loaders: [
         {loader: 'ts', query: {compilerOptions: {noEmit: false}}},
         {loader: 'angular2-template'}
       ]},
-      {test: /\.woff$/,  loader: "url?limit=10000&minetype=application/font-woff"},
-      {test: /\.woff2$/, loader: "url?limit=10000&minetype=application/font-woff"},
-      {test: /\.ttf$/,   loader: "url?limit=10000&minetype=application/octet-stream"},
-      {test: /\.svg$/,   loader: "url?limit=10000&minetype=image/svg+xml"},
-      {test: /\.eot$/,   loader: "file"}
+      {test: /\.woff$/,  loader: 'url?limit=10000&mimetype=application/font-woff'},
+      {test: /\.woff2$/, loader: 'url?limit=10000&mimetype=application/font-woff'},
+      {test: /\.ttf$/,   loader: 'url?limit=10000&mimetype=application/octet-stream'},
+      {test: /\.svg$/,   loader: 'url?limit=10000&mimetype=image/svg+xml'},
+      {test: /\.eot$/,   loader: 'file'}
+
+      // {test: /\.css$/,   loader: 'raw', exclude: /node_modules/},
+      // {test: /\.css$/,   loader: 'style!css?-minimize', exclude: /app/},
+      // {test: /\.css$/,   loader: 'style-loader!css-loader'},
     ]
   },
   output: {
-    path    : './',
-    filename: 'bundle.js'
+    path    : './build',
+    filename: '[name].[chunkhash].js',
+    chunkFilename: '[name].[chunkhash].js'
   },
   plugins: [
-    new CommonsChunkPlugin({name: 'vendor', filename: 'vendor.bundle.js', minChunks: Infinity}),
-    new CompressionPlugin({regExp: /\.css$|\.html$|\.js$|\.map$/, threshold: 1500}),
-    new CopyWebpackPlugin([{from: './src/index.html', to: 'index.html'}]),
-//     new DedupePlugin(), broken in RC.6
-    new DefinePlugin({'webpack': {'ENV': JSON.stringify(metadata.ENV)}}),
-    new OccurrenceOrderPlugin(true),
-    new UglifyJsPlugin({
-      compress : {screw_ie8 : true},
-      mangle: {screw_ie8 : true, keep_fnames: true}
+    new CommonsChunkPlugin({
+      name: 'vendor',
+      minChunks: Infinity
     }),
+    new WebpackMd5HashPlugin(),
+    new ManifestPlugin(),
+    new InlineManifestWebpackPlugin(),
+    new HtmlWebpackPlugin({
+      title: 'My MEAN Website',
+      template: 'src/index.html', // Load a custom template
+      inject: 'body' // Inject all scripts into the body
+    }),
+    // new ChunkManifestPlugin({
+    //   filename: "manifest.json",
+    //   manifestVariable: "webpackManifest"
+    // }),
+    new CopyWebpackPlugin([{from: './src/index.html', to: 'index.html'}]),
+    new DefinePlugin({'webpack': {'ENV': JSON.stringify(metadata.ENV)}}),
     new ProvidePlugin({
       jQuery: 'jquery',
       jquery: 'jquery',
       $: 'jquery',
       "Tether": 'tether',
       "window.Tether": "tether"})
-  ],
-  resolve: {
-    extensions: ['', '.ts', '.js']
-  }
-};
+    ],
+    resolve: {
+      extensions: ['', '.ts', '.js']
+    }
+  };

@@ -4,6 +4,9 @@ const CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
 const CopyWebpackPlugin  = require('copy-webpack-plugin');
 const DefinePlugin       = require('webpack/lib/DefinePlugin');
 const ProvidePlugin      = require('webpack/lib/ProvidePlugin');
+var HtmlWebpackPlugin       = require('html-webpack-plugin');
+var ManifestPlugin          = require('webpack-manifest-plugin');
+var InlineManifestWebpackPlugin   = require('inline-manifest-webpack-plugin');
 
 const ENV  = process.env.NODE_ENV = 'development';
 const HOST = process.env.HOST || 'localhost';
@@ -61,11 +64,22 @@ module.exports = {
     ]
   },
   output: {
-    path    : './',
-    filename: 'bundle.js'
+    path    : './build',
+    filename: '[name].js',
+    chunkFilename: '[name].js'
   },
   plugins: [
-    new CommonsChunkPlugin({name: 'vendor', filename: 'vendor.bundle.js', minChunks: Infinity}),
+    new CommonsChunkPlugin({
+      name: 'vendor',
+      minChunks: Infinity
+    }),
+    new ManifestPlugin(),
+    new InlineManifestWebpackPlugin(),
+    new HtmlWebpackPlugin({
+      title: 'Custom template',
+      template: 'src/index.html', // Load a custom template
+      inject: 'body' // Inject all scripts into the body
+    }),
     new CopyWebpackPlugin([{from: './src/index.html', to: 'index.html'}]),
     new DefinePlugin({'webpack': {'ENV': JSON.stringify(metadata.ENV)}}),
     new ProvidePlugin({
@@ -74,8 +88,8 @@ module.exports = {
       $: 'jquery',
       "Tether": 'tether',
       "window.Tether": "tether"})
-  ],
-  resolve: {
-    extensions: ['', '.ts', '.js']
-  }
-};
+    ],
+    resolve: {
+      extensions: ['', '.ts', '.js']
+    }
+  };
