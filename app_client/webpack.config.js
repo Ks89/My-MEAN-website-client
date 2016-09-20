@@ -39,6 +39,9 @@ module.exports = {
     'vendor': './src/vendor.ts'
   },
   module: {
+    // preLoaders: [
+    //  { test: /\.ts$/, exclude: /node_modules/, loader: "tslint"}
+    // ],
     loaders: [
       {test: /\.css$/,   loader: 'raw', exclude: /node_modules/},
       {test: /\.css$/,   loader: 'style!css?-minimize', exclude: /src/},
@@ -57,11 +60,8 @@ module.exports = {
       {test: /\.ttf$/,   loader: 'url?limit=10000&mimetype=application/octet-stream'},
       {test: /\.svg$/,   loader: 'url?limit=10000&mimetype=image/svg+xml'},
       {test: /\.eot$/,   loader: 'file'}
-
-      // {test: /\.css$/,   loader: 'raw', exclude: /node_modules/},
-      // {test: /\.css$/,   loader: 'style!css?-minimize', exclude: /app/},
-      // {test: /\.css$/,   loader: 'style-loader!css-loader'},
-    ]
+    ],
+    noParse: [path.join(__dirname, 'node_modules', 'angular2', 'bundles')]
   },
   output: {
     path    : './',

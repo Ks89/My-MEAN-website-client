@@ -46,12 +46,9 @@ module.exports = {
       {test: /\.woff2$/, loader: 'url?limit=10000&mimetype=application/font-woff'},
       {test: /\.ttf$/,   loader: 'url?limit=10000&mimetype=application/octet-stream'},
       {test: /\.svg$/,   loader: 'url?limit=10000&mimetype=image/svg+xml'},
-      {test: /\.eot$/,   loader: 'file'}
-
-      // {test: /\.css$/,   loader: 'raw', exclude: /node_modules/},
-      // {test: /\.css$/,   loader: 'style!css?-minimize', exclude: /app/},
-      // {test: /\.css$/,   loader: 'style-loader!css-loader'},
-    ]
+      {test: /\.eot$/,   loader: 'file'},
+    ],
+    noParse: [path.join(__dirname, 'node_modules', 'angular2', 'bundles')]
   },
   output: {
     path    : './',
@@ -71,12 +68,24 @@ module.exports = {
       template: 'src/index.html', // Load a custom template
       inject: 'body' // Inject all scripts into the body
     }),
-    // new ChunkManifestPlugin({
+
+    // new ChunkManifestPlugin({ //BROKEN WITH WEBPACK 2
     //   filename: "manifest.json",
     //   manifestVariable: "webpackManifest"
     // }),
+
+    new CompressionPlugin({regExp: /\.css$|\.html$|\.js$|\.map$/}),
     new CopyWebpackPlugin([{from: './src/index.html', to: 'index.html'}]),
+
+    // new DedupePlugin(),  //BROKEN WITH ANGULAR 2 RC6 OR HIGHER
     new DefinePlugin({'webpack': {'ENV': JSON.stringify(metadata.ENV)}}),
+
+    new OccurrenceOrderPlugin(true),
+    new UglifyJsPlugin({
+      compress: {screw_ie8 : true},
+      mangle: {screw_ie8 : true}
+    }),
+
     new ProvidePlugin({
       jQuery: 'jquery',
       jquery: 'jquery',
