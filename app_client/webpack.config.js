@@ -64,7 +64,7 @@ module.exports = {
     ]
   },
   output: {
-    path    : './build',
+    path    : './',
     filename: '[name].js',
     chunkFilename: '[name].js'
   },
@@ -76,7 +76,7 @@ module.exports = {
     new ManifestPlugin(),
     new InlineManifestWebpackPlugin(),
     new HtmlWebpackPlugin({
-      title: 'Custom template',
+      title: 'My MEAN Website',
       template: 'src/index.html', // Load a custom template
       inject: 'body' // Inject all scripts into the body
     }),

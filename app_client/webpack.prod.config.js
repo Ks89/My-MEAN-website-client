@@ -54,7 +54,7 @@ module.exports = {
     ]
   },
   output: {
-    path    : './build',
+    path    : './',
     filename: '[name].[chunkhash].js',
     chunkFilename: '[name].[chunkhash].js'
   },
