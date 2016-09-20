@@ -45,13 +45,13 @@ import 'rxjs';
 import 'ng2-simple-page-scroll';
 
 //TODO FIXME - BROKEN PACKAGE temporary removed
-// import 'angular2-component-outlet-modified/index.js';
+import 'angular2-component-outlet';
 // import "angular2-image-popup/app/main";
 
 //---------------------------------------------------------------
 import 'angular2-recaptcha/angular2-recaptcha'; //IT SHOULD WORK, I don't know it returns an error
 import '@ng-bootstrap/ng-bootstrap';
-// import 'angular2-ladda';
+// import 'angular2-ladda';  //TEMPORARY BROKEN WITH webpack2.1-beta22
 import 'ng2-validators';
 
 // Other vendor libraries
