@@ -3,7 +3,6 @@ import {Http, URLSearchParams } from '@angular/http';
 import {Observable} from "rxjs/Observable";
 import 'rxjs/add/operator/map';
 
-
 export class ProjectHomeView {
   constructor(
     _id: string,
@@ -62,22 +61,22 @@ export class Project {
 
 @Injectable()
 export class ProjectService {
-  searchEvent: EventEmitter<any> = new EventEmitter();
+  public searchEvent: EventEmitter<any> = new EventEmitter();
 
-  constructor(private http: Http) {}
+  constructor(private _http: Http) {}
 
   getProjects(): Observable<Project[]> {
-    return this.http.get('/api/projects')
+    return this._http.get('/api/projects')
       .map(response => response.json());
   }
 
   getProjectsById(projectid: string): Observable<Project> {
-    return this.http.get(`/api/projects/${projectid}`)
+    return this._http.get(`/api/projects/${projectid}`)
       .map(response => response.json());
   }
 
   getProjectsForHomepage(): Observable<Project[]> {
-    return this.http.get('/api/projecthome')
+    return this._http.get('/api/projecthome')
       .map(response => response.json());
   }
 

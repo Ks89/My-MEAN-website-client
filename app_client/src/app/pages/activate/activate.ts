@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Observable} from "rxjs/Observable";
 import {AuthService} from '../../common/services/auth';
@@ -8,30 +8,32 @@ import {Router} from '@angular/router';
   selector: 'activate-page',
   templateUrl: 'activate.html'
 })
-export default class ActivateComponent {
-  pageHeader: Object;
-  emailToken: string;
-  userName: string;
-  activateAlert: Object = { visible: false }; //hidden by default
+export default class ActivateComponent implements OnInit {
+  public pageHeader: Object;
+  public emailToken: string;
+  public userName: string;
+  public activateAlert: Object = { visible: false }; //hidden by default
 
-  constructor(private authService: AuthService,
-              route: ActivatedRoute,
-              private router: Router) {
-    this.emailToken = route.snapshot.params['emailToken'];
-    this.userName = route.snapshot.params['userName'];
+  constructor(private _authService: AuthService,
+              private _route: ActivatedRoute,
+              private _router: Router) {
+    this.emailToken = _route.snapshot.params['emailToken'];
+    this.userName = _route.snapshot.params['userName'];
 
     this.pageHeader = {
       title: 'Activate',
       strapline: ''
     };
+  }
 
+  ngOnInit(){
     this.onActivate();
   }
 
   onActivate() {
     console.log("Calling activate...");
 
-    this.authService.activate(this.emailToken, this.userName)
+    this._authService.activate(this.emailToken, this.userName)
     .subscribe(response => {
         console.log("Response");
         console.log(response);

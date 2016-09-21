@@ -7,12 +7,12 @@ import "rxjs/add/operator/take";
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private _authService: AuthService, private _router: Router) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | boolean {
-      return this.authService.getLoggedUser()
+      return this._authService.getLoggedUser()
       .map(
         data => {
           console.log("canActivate data is: ");
@@ -24,13 +24,13 @@ export class AuthGuard implements CanActivate {
             return true;
           } else {
             console.log("canActivate data is false ");
-            this.router.navigate(['/login']);
+            this._router.navigate(['/login']);
             return false;
           }
         },
         error => {
           console.log("canActivate error ");
-          this.router.navigate(['/login']);
+          this._router.navigate(['/login']);
           return false
         }
       )

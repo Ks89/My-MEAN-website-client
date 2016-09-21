@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Observable} from "rxjs/Observable";
 import {AuthService} from '../../common/services/auth';
 import {Router} from '@angular/router';
@@ -15,21 +15,20 @@ import {
   styleUrls: ['login.scss'],
   templateUrl: 'login.html'
 })
-export default class LoginComponent {
-  pageHeader: Object;
-  formModel: FormGroup;
-  loginAlert: Object = { visible: false }; //hidden by default
-  isWaiting: boolean = false; //enable button's spinner
-  showFormError: boolean = false;
+export default class LoginComponent implements OnInit {
+  public pageHeader: Object;
+  public formModel: FormGroup;
+  public loginAlert: Object = { visible: false }; //hidden by default
+  public isWaiting: boolean = false; //enable button's spinner
+  public showFormError: boolean = false;
 
-  facebookOauthUrl: string = 'api/auth/facebook';
-  googleOauthUrl: string = 'api/auth/google';
-  githubOauthUrl: string = 'api/auth/github';
-  linkedinOauthUrl: string = 'api/auth/linkedin';
-  twitterOauthUrl: string = 'api/auth/twitter';
+  public facebookOauthUrl: string = 'api/auth/facebook';
+  public googleOauthUrl: string = 'api/auth/google';
+  public githubOauthUrl: string = 'api/auth/github';
+  public linkedinOauthUrl: string = 'api/auth/linkedin';
+  public twitterOauthUrl: string = 'api/auth/twitter';
 
-  constructor(private authService: AuthService, private router: Router) {
-
+  constructor(private _authService: AuthService, private _router: Router) {
     this.pageHeader = {
       title: 'Sign in',
       strapline: ''
@@ -42,11 +41,15 @@ export default class LoginComponent {
     });
   }
 
+  ngOnInit(){
+
+  }
+
   onLogin() {
     if (this.formModel.valid) {
       this.isWaiting = true;
       console.log("Calling login...");
-      this.authService.login({
+      this._authService.login({
         email: this.formModel.value.email,
         password: this.formModel.value.password
       }).subscribe(
@@ -54,7 +57,7 @@ export default class LoginComponent {
           console.log("Response login");
           console.log(response);
           this.isWaiting = false;
-          this.authService.getLoggedUser().subscribe(
+          this._authService.getLoggedUser().subscribe(
             response => {
 
               console.log("**************************");
@@ -67,8 +70,8 @@ export default class LoginComponent {
                 strong : 'Success',
                 message: response.message
               };
-              this.authService.loginEvent.emit(response);
-              this.router.navigate(['/profile']);
+              this._authService.loginEvent.emit(response);
+              this._router.navigate(['/profile']);
             },
             err => {
               console.error(err);

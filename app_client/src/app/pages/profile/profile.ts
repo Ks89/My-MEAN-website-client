@@ -14,40 +14,40 @@ import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
   templateUrl: 'profile.html'
 })
 export default class ProfileComponent implements OnInit {
-  private subscription: Subscription;
-  pageHeader: Object;
-  formModel: FormGroup;
-  token: string;
-  bigProfileImage: string = 'assets/images/profile/bigProfile.png';
-  profileAlert: Object = { visible: false }; //hidden by default
-  isWaiting: boolean = false; //enable button's spinner
+  private _subscription: Subscription;
+  public pageHeader: Object;
+  public formModel: FormGroup;
+  public token: string;
+  public bigProfileImage: string = 'assets/images/profile/bigProfile.png';
+  public profileAlert: Object = { visible: false }; //hidden by default
+  public isWaiting: boolean = false; //enable button's spinner
 
-  sidebar: Object = {
+  public sidebar: Object = {
     title: 'Other services',
     strapline: ' '
   };
 
   //3dparty connect links
-  facebookConnectOauthUrl: Object = 'api/connect/facebook';
-  googleConnectOauthUrl: Object = 'api/connect/google';
-  githubConnectOauthUrl: Object = 'api/connect/github';
-  twitterConnectOauthUrl: Object = 'api/connect/twitter';
-  linkedinConnectOauthUrl: Object = 'api/connect/linkedin';
+  public facebookConnectOauthUrl: Object = 'api/connect/facebook';
+  public googleConnectOauthUrl: Object = 'api/connect/google';
+  public githubConnectOauthUrl: Object = 'api/connect/github';
+  public twitterConnectOauthUrl: Object = 'api/connect/twitter';
+  public linkedinConnectOauthUrl: Object = 'api/connect/linkedin';
 
   //local model
-  local: any = {
+  public local: any = {
     name: '',
     email: ''
   };
   //3dparty model
-  github: any = this.buildJsonUserData();
-  google: any = this.buildJsonUserData();
-  facebook: any = this.buildJsonUserData();
-  twitter: any = this.buildJsonUserData();
-  linkedin: any = this.buildJsonUserData();
+  public github: any = this.buildJsonUserData();
+  public google: any = this.buildJsonUserData();
+  public facebook: any = this.buildJsonUserData();
+  public twitter: any = this.buildJsonUserData();
+  public linkedin: any = this.buildJsonUserData();
 
   //profile model
-  profileData = {
+  public profileData = {
     localUserEmail: "",
     id: "",
     serviceName: "",
@@ -60,10 +60,10 @@ export default class ProfileComponent implements OnInit {
   //used to get a reference to the modal dialog content
   @ViewChild('modalDialogContent') modalDialogContent;
 
-  constructor(private profileService: ProfileService,
-    route: ActivatedRoute, private router: Router,
-    private authService: AuthService, private modalService: NgbModal) {
-      this.token = route.snapshot.params['token'];
+  constructor(private _profileService: ProfileService,
+    private _route: ActivatedRoute, private _router: Router,
+    private _authService: AuthService, private _modalService: NgbModal) {
+      this.token = _route.snapshot.params['token'];
 
       if(this.token == null || this.token == undefined ) {
         console.log("profile page loaded without token");
@@ -85,31 +85,15 @@ export default class ProfileComponent implements OnInit {
       })
     }
 
-    // private zone: NgZone;
-    //  private basicOptions: Object;
-    //  private progress: number = 0;
-    //  private response: any = {};
-    //add these two lines in ngOnInit
-    //  this.zone = new NgZone({ enableLongStackTrace: false });
-    //  this.basicOptions = {
-    //    url: 'http://localhost:3000/api/profilephoto'
-    //  };
-    // handleUpload(data: any): void {
-    //   this.zone.run(() => {
-    //     this.response = data;
-    //     this.progress = data.progress.percent / 100;
-    //   });
-    // }
-
     ngOnInit() {
       console.log('INIT');
       //3dparty authentication
-      this.authService.post3dAuthAfterCallback().subscribe(
+      this._authService.post3dAuthAfterCallback().subscribe(
         jwtTokenAsString => {
           console.log("**************************");
           console.log(jwtTokenAsString);
           console.log("**************************");
-          this.authService.getLoggedUser().subscribe(
+          this._authService.getLoggedUser().subscribe(
             user => {
               console.log("#########################");
               console.log(user);
@@ -130,7 +114,7 @@ export default class ProfileComponent implements OnInit {
               }
               console.log("---------------setted----------------");
 
-              this.authService.loginEvent.emit(user);
+              this._authService.loginEvent.emit(user);
             }
           );
         },
@@ -183,7 +167,7 @@ export default class ProfileComponent implements OnInit {
 
         console.log("Calling updateProfile...");
         console.log(this.profileData);
-        this.profileService.update(this.profileData).subscribe(
+        this._profileService.update(this.profileData).subscribe(
           response => {
             console.log("Response");
             console.log(response);
@@ -211,8 +195,8 @@ export default class ProfileComponent implements OnInit {
     }
 
     ngOnDestroy(): any {
-      if (this.subscription) {
-        this.subscription.unsubscribe();
+      if (this._subscription) {
+        this._subscription.unsubscribe();
       }
     }
 
@@ -222,23 +206,23 @@ export default class ProfileComponent implements OnInit {
       if(this.checkIfLastUnlinkProfile(serviceName)) {
         console.log('Last unlink - processing...');
 
-        this.modalService.open(this.modalDialogContent).result.then((result) => {
+        this._modalService.open(this.modalDialogContent).result.then((result) => {
           console.log(`Closed with: ${result}`);
-          this.authService.unlink(serviceName)
+          this._authService.unlink(serviceName)
           .subscribe(
             result => {
               console.log('Unlinked: ' + result);
-              this.authService.loginEvent.emit(null);
-              this.authService.logout()
+              this._authService.loginEvent.emit(null);
+              this._authService.logout()
               .subscribe(
                 result => {
                   console.log('Logged out: ' + result);
-                  this.router.navigate(['/']);
+                  this._router.navigate(['/']);
                 },
                 err => {
                   //logServer.error("profile impossible to logout", err);
                   console.log('Impossible to logout: ' + err);
-                  this.router.navigate(['/']);
+                  this._router.navigate(['/']);
                 },
                 () => console.log("Last unlink - unlink done")
               )
@@ -259,18 +243,18 @@ export default class ProfileComponent implements OnInit {
         serviceName=='github' || serviceName=='local' ||
         serviceName=='linkedin' || serviceName=='twitter') {
           console.log('NOT last unlink - but service recognized, processing...');
-          this.authService.unlink(serviceName)
+          this._authService.unlink(serviceName)
           .subscribe(
             result => {
               console.log(serviceName + ' Unlinked with result user: ');
               console.log(result);
-              this.router.navigate(['/post3dauth']);
+              this._router.navigate(['/post3dauth']);
               console.log("redirected to profile");
             },
             err => {
               //logServer.error("profile impossible to unlink", reason);
               console.log('Impossible to unlink: ' + err);
-              this.router.navigate(['/']);
+              this._router.navigate(['/']);
             },
             () => console.log("not last unlink: done")
           );

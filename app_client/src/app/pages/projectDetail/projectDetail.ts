@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 import {Observable} from "rxjs/Observable";
@@ -12,35 +12,37 @@ import {Project, ProjectService} from '../../common/services/projects';
   styleUrls: ['bs_doc.css'],
   templateUrl: 'projectDetail.html'
 })
-export default class ProjectDetailComponent {
-  project: Project;
-  projectId: string;
-  pageHeader: any;
-  images: Object[];
-  private subscription: Subscription;
+export default class ProjectDetailComponent implements OnInit {
+  public project: Project;
+  public projectId: string;
+  public pageHeader: any;
+  public images: Object[];
+  private _subscription: Subscription;
 
-  self = this;
-  descriptionUrl : any;
-  changelogUrl : any;
-  releasesUrl : any;
-  featuresUrl : any;
-  futureExtensionsUrl : any;
-  licenseUrl : any;
+  public self = this;
+  public descriptionUrl : any;
+  public changelogUrl : any;
+  public releasesUrl : any;
+  public featuresUrl : any;
+  public futureExtensionsUrl : any;
+  public licenseUrl : any;
 
   constructor(
-    route: ActivatedRoute,
-    private projectService: ProjectService,
-    private router: Router
+    private _route: ActivatedRoute,
+    private _projectService: ProjectService,
+    private _router: Router
   ) {
 
-    this.projectId = route.snapshot.params['projectId'];
+    this.projectId = _route.snapshot.params['projectId'];
 
     this.pageHeader = {
       title: 'Project', //that will be replaced by the projectName
       strapline: ''
     };
+  }
 
-    this.projectService.getProjectsById(this.projectId).subscribe(
+  ngOnInit(){
+    this._projectService.getProjectsById(this.projectId).subscribe(
       project => {
         this.project = project;
         this.images = project.gallery;
@@ -56,14 +58,14 @@ export default class ProjectDetailComponent {
   }
 
   getInnerUrl(anchor: string) {
-    console.log(this.router.url);
-    return this.router.url + '#' + anchor;
+    console.log(this._router.url);
+    return this._router.url + '#' + anchor;
 
   }
 
   ngOnDestroy(): any {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+    if (this._subscription) {
+      this._subscription.unsubscribe();
     }
   }
 }

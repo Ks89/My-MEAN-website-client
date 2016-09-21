@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Observable} from "rxjs/Observable";
 import {Subscription} from 'rxjs/Subscription';
 import {ContactService} from '../../common/services/contact';
@@ -15,16 +15,16 @@ import {
   selector: 'contact-page',
   templateUrl: 'contact.html'
 })
-export default class ContactComponent {
-  pageHeader: Object;
-  formModel: FormGroup;
-  contactAlert: Object = { visible: false }; //hidden by default
-  isWaiting: boolean = false; //enable button's spinner
-  showFormError: boolean = false;
-  private subscription: Subscription;
-  private recaptchaResponse: any;
+export default class ContactComponent implements OnInit {
+  public pageHeader: Object;
+  public formModel: FormGroup;
+  public contactAlert: Object = { visible: false }; //hidden by default
+  public isWaiting: boolean = false; //enable button's spinner
+  public showFormError: boolean = false;
+  private _subscription: Subscription;
+  private _recaptchaResponse: any;
 
-  constructor(private contactService: ContactService) {
+  constructor(private _contactService: ContactService) {
     this.pageHeader = {
       title: 'Contact',
       strapline: ''
@@ -38,9 +38,13 @@ export default class ContactComponent {
     });
   }
 
+  ngOnInit(){
+
+  }
+
   handleCorrectCaptcha(captchaResponse: string) {
     console.log(`Resolved captcha with response ${captchaResponse}:`);
-    this.recaptchaResponse = captchaResponse;
+    this._recaptchaResponse = captchaResponse;
   }
 
   onSend() {
@@ -49,14 +53,14 @@ export default class ContactComponent {
       console.log("Sending email...");
       console.log(this.formModel.value);
       let dataToSend = {
-          response: this.recaptchaResponse,
+          response: this._recaptchaResponse,
           emailFormData: {
             email : this.formModel.value.email,
             messageText : this.formModel.value.message,
             object : this.formModel.value.subject
           }
       };
-      this.contactService.sendFormWithCaptcha(dataToSend).subscribe(
+      this._contactService.sendFormWithCaptcha(dataToSend).subscribe(
         response => {
           console.log("/api/email called -> OK");
           console.log(response);
@@ -87,8 +91,8 @@ export default class ContactComponent {
   }
 
   ngOnDestroy(): any {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+    if (this._subscription) {
+      this._subscription.unsubscribe();
     }
   }
 }

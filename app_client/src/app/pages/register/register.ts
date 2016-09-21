@@ -1,28 +1,23 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Observable} from "rxjs/Observable";
 import {AuthService} from '../../common/services/auth';
 import {Router} from '@angular/router';
 import { EmailValidators, PasswordValidators } from 'ng2-validators';
-import {
-    FormControl,
-    FormGroup,
-    FormBuilder,
-    Validators
-} from '@angular/forms';
+import {FormGroup,FormBuilder,Validators} from '@angular/forms';
 
 @Component({
   selector: 'register-page',
   templateUrl: 'register.html'
 })
-export default class RegisterComponent {
-  pageHeader: Object;
-  formModel: FormGroup;
-  registerAlert: Object = { visible: false }; //hidden by default
-  showFormError: boolean = false;
-  isWaiting: boolean = false; //enable button's spinner
+export default class RegisterComponent implements OnInit {
+  public pageHeader: Object;
+  public formModel: FormGroup;
+  public registerAlert: Object = { visible: false }; //hidden by default
+  public showFormError: boolean = false;
+  public isWaiting: boolean = false; //enable button's spinner
 
-  constructor(private authService: AuthService,
-              private router: Router) {
+  constructor(private _authService: AuthService,
+              private _router: Router) {
     this.pageHeader = {
       title: 'Create a new accout',
       strapline: ''
@@ -44,6 +39,10 @@ export default class RegisterComponent {
       'password': [null, passwordValidator],
       'passwordConfirm': [null, null]
     })
+  }
+
+  ngOnInit(){
+
   }
 
   onRegister() {
@@ -73,7 +72,7 @@ export default class RegisterComponent {
 
       this.isWaiting = true;
       console.log("Calling register...");
-      this.authService.register({
+      this._authService.register({
         name: this.formModel.value.name,
         email: this.formModel.value.email,
         password: this.formModel.value.password
@@ -89,7 +88,7 @@ export default class RegisterComponent {
           };
           this.isWaiting = false;
           this.showFormError = false;
-          this.router.navigate(['/login']);
+          this._router.navigate(['/login']);
         },
         err => {
           console.error(err);

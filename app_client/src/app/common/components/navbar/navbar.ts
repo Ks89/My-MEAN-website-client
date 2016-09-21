@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../../services/auth';
 import {Router} from '@angular/router';
 
@@ -6,14 +6,15 @@ import {Router} from '@angular/router';
   selector: 'navigation',
   templateUrl: 'navbar.html',
 })
-export default class NavbarComponent {
-  isLoggedIn: boolean = false;
-  currentUser: any = {name : ''}
-  currentPath: string = 'fakeString';
+export default class NavbarComponent implements OnInit {
+  public isLoggedIn: boolean = false;
+  public currentUser: any = {name : ''}
+  public currentPath: string = 'fakeString';
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private _authService: AuthService, private _router: Router) {}
 
-    this.authService.loginEvent
+  ngOnInit(){
+    this._authService.loginEvent
     .subscribe(user => {
         console.log("NAVIGATION: ");
         console.log(user);
@@ -52,11 +53,11 @@ export default class NavbarComponent {
   }
 
   isNavItemActive(location) {
-    return location == this.router.url ? 'active' : '';
+    return location == this._router.url ? 'active' : '';
   };
 
   logout() {
-    this.authService.logout()
+    this._authService.logout()
     .subscribe(
       result => {
         console.log('Logout result: ');
@@ -69,7 +70,7 @@ export default class NavbarComponent {
         this.currentUser = null;
       }, () => {
         console.log("logout finished");
-        this.router.navigate(['/']);
+        this._router.navigate(['/']);
       }
     );
   }

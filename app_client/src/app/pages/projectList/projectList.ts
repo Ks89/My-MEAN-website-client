@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Observable} from "rxjs/Observable";
 import {Project, ProjectService} from '../../common/services/projects';
 import {
@@ -13,16 +13,16 @@ import {
   styleUrls: ['timeline.css'],
   templateUrl: 'projectList.html'
 })
-export default class ProjectListComponent {
-  projects: Observable<Project[]>;
-  pageHeader: any;
-  sidebar: any;
-  sidebarTitle: string;
-  message: string;
-  searchInput: string = ''; //both not null and not undefined
+export default class ProjectListComponent implements OnInit {
+  public projects: Observable<Project[]>;
+  public pageHeader: any;
+  public sidebar: any;
+  public sidebarTitle: string;
+  public message: string;
+  public searchInput: string = ''; //both not null and not undefined
 
-  constructor(private projectService: ProjectService) {
-    this.projects = this.projectService.getProjects();
+  constructor(private _projectService: ProjectService) {
+    this.projects = this._projectService.getProjects();
 
     this.pageHeader = {
       title: 'Projects',
@@ -66,5 +66,9 @@ export default class ProjectListComponent {
       ]};
 
       this.message = "Searching for projects";
+  }
+
+  ngOnInit(){
+    
   }
 }
