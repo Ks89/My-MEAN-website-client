@@ -1,9 +1,9 @@
 import { NgModule, Provider } from '@angular/core';
-import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
+import { routing, appRoutingProviders }  from './app.routing';
 
 import ApplicationComponent from './application/application';
 import HomeComponent from './pages/home/home';
@@ -42,31 +42,15 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 // import { UPLOAD_DIRECTIVES } from 'ng2-uploader/ng2-uploader';
 
 @NgModule({
-  imports: [BrowserModule,
-            HttpModule,
-            FormsModule,
-            ReactiveFormsModule,
-            RouterModule.forRoot([
-              {path: '',                                component: HomeComponent},
-              {path: 'home',                            component: HomeComponent},
-              {path: 'projects',                        component: ProjectListComponent},
-              {path: 'projects/:projectId',             component: ProjectDetailComponent},
-              {path: 'cv',                              component: CvComponent},
-              {path: 'contact',                         component: ContactComponent},
-              {path: 'about',                           component: AboutComponent},
-              {path: 'register',                        component: RegisterComponent},
-              {path: 'login',                           component: LoginComponent},
-              {path: 'reset/:emailToken',               component: ResetComponent},
-              {path: 'forgot',                          component: ForgotComponent},
-              {path: 'activate/:emailToken/:userName',  component: ActivateComponent},
-              //TODO in angular2 '?' isn't working -> find a better approach to do that
-              {path: 'profile',                         component: ProfileComponent, canActivate: [AuthGuard] },
-              {path: 'profile/:token',                  component: ProfileComponent, canActivate: [AuthGuard] },
-              {path: 'post3dauth',                      component: Post3dAuthComponent}
-            ]),
-            NgbModule,
-            // LaddaModule,
-            ReCaptchaModule
+  imports: [
+    BrowserModule,
+    HttpModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgbModule,
+    // LaddaModule,
+    ReCaptchaModule,
+    routing
   ],
   declarations: [
     ApplicationComponent,
@@ -94,13 +78,13 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
   //  UPLOAD_DIRECTIVES
   ],
   providers: [
-      { provide: LocationStrategy, useClass: HashLocationStrategy },
-      ProjectService,
-      ProfileService,
-      ContactService,
-      AuthService,
-      SERVICES,
-      AuthGuard
+    appRoutingProviders,
+    ProjectService,
+    ProfileService,
+    ContactService,
+    AuthService,
+    SERVICES,
+    AuthGuard
   ],
   bootstrap: [ ApplicationComponent ]
 })
