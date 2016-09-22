@@ -1,6 +1,4 @@
-const path = require('path');
-
-// Webpack and its plugins
+const path                  = require('path');
 const webpack               = require('webpack');
 const CommonsChunkPlugin    = require('webpack/lib/optimize/CommonsChunkPlugin');
 const CompressionPlugin     = require('compression-webpack-plugin');
@@ -26,8 +24,9 @@ const metadata = {
 module.exports = {
   devtool: 'source-map',
   entry: {
-    'main'  : './src/main.ts',
-    'vendor': './src/vendor.ts'
+    'polyfills': './src/polyfills.ts',
+    'vendor': './src/vendor.ts',
+    'main'  : './src/main.ts'
   },
   module: {
     loaders: [
@@ -58,12 +57,13 @@ module.exports = {
   output: {
     path    : './',
     filename: '[name].[chunkhash].js',
-    chunkFilename: '[name].[chunkhash].js'
+    chunkFilename: '[name].[chunkhash].js',
+    publicPath: './'
   },
   postcss: [autoprefixer],
   plugins: [
     new CommonsChunkPlugin({
-      name: 'vendor',
+      name: ['main', 'vendor', 'polyfills'],
       minChunks: Infinity
     }),
     new WebpackMd5HashPlugin(),
@@ -71,8 +71,8 @@ module.exports = {
     new InlineManifestWebpackPlugin(),
     new HtmlWebpackPlugin({
       title: 'My MEAN Website',
-      template: 'src/index.html', // Load a custom template
-      inject: 'body' // Inject all scripts into the body
+      template: './src/index.ejs', // Load a custom template
+      inject: true
     }),
 
     // new ChunkManifestPlugin({ //BROKEN WITH WEBPACK 2
@@ -81,7 +81,7 @@ module.exports = {
     // }),
 
     new CompressionPlugin({regExp: /\.css$|\.html$|\.js$|\.map$/}),
-    new CopyWebpackPlugin([{from: './src/index.html', to: 'index.html'}]),
+    // new CopyWebpackPlugin([{from: './src/index.html', to: 'index.html'}]),
 
     // new DedupePlugin(),  //BROKEN WITH ANGULAR 2 RC6 OR HIGHER
     new DefinePlugin({'webpack': {'ENV': JSON.stringify(metadata.ENV)}}),

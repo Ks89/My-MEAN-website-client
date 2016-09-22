@@ -1,9 +1,9 @@
-const path               = require('path');
-const webpack            = require('webpack');
-const CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
-const CopyWebpackPlugin  = require('copy-webpack-plugin');
-const DefinePlugin       = require('webpack/lib/DefinePlugin');
-const ProvidePlugin      = require('webpack/lib/ProvidePlugin');
+const path                  = require('path');
+const webpack               = require('webpack');
+const CommonsChunkPlugin    = require('webpack/lib/optimize/CommonsChunkPlugin');
+const CopyWebpackPlugin     = require('copy-webpack-plugin');
+const DefinePlugin          = require('webpack/lib/DefinePlugin');
+const ProvidePlugin         = require('webpack/lib/ProvidePlugin');
 var HtmlWebpackPlugin       = require('html-webpack-plugin');
 var ManifestPlugin          = require('webpack-manifest-plugin');
 var InlineManifestWebpackPlugin   = require('inline-manifest-webpack-plugin');
@@ -36,8 +36,9 @@ module.exports = {
   },
   devtool: 'source-map',
   entry: {
-    'main'  : './src/main.ts',
-    'vendor': './src/vendor.ts'
+    'polyfills': './src/polyfills.ts',
+    'vendor': './src/vendor.ts',
+    'main'  : './src/main.ts'
   },
   module: {
     // preLoaders: [
@@ -70,22 +71,23 @@ module.exports = {
   output: {
     path    : './',
     filename: '[name].js',
-    chunkFilename: '[name].js'
+    chunkFilename: '[name].js',
+    publicPath: './'
   },
   postcss: [autoprefixer],
   plugins: [
     new CommonsChunkPlugin({
-      name: 'vendor',
+      name: ['main', 'vendor', 'polyfills'],
       minChunks: Infinity
     }),
     new ManifestPlugin(),
     new InlineManifestWebpackPlugin(),
     new HtmlWebpackPlugin({
       title: 'My MEAN Website',
-      template: 'src/index.html', // Load a custom template
-      inject: 'body' // Inject all scripts into the body
+      template: './src/index.ejs', // Load a custom template
+      inject: true
     }),
-    new CopyWebpackPlugin([{from: './src/index.html', to: 'index.html'}]),
+    // new CopyWebpackPlugin([{from: './src/index.html', to: 'index.html'}]),
     new DefinePlugin({'webpack': {'ENV': JSON.stringify(metadata.ENV)}}),
     new ProvidePlugin({
       jQuery: 'jquery',
@@ -114,4 +116,4 @@ module.exports = {
     resolve: {
       extensions: ['', '.ts', '.js', '.json', '.css', '.html']
     }
-  };
+};
