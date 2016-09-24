@@ -10,8 +10,6 @@ var ManifestPlugin          = require('webpack-manifest-plugin');
 var InlineManifestWebpackPlugin   = require('inline-manifest-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 
-var helpers = require('./webpack.helpers');
-
 module.exports = {
   entry: {
     'polyfills': './src/polyfills.ts',

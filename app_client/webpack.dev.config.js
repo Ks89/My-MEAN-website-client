@@ -5,7 +5,6 @@ const DefinePlugin          = require('webpack/lib/DefinePlugin');
 const ProvidePlugin         = require('webpack/lib/ProvidePlugin');
 var webpackMerge = require('webpack-merge');
 var commonConfig = require('./webpack.common.config.js');
-var helpers = require('./webpack.helpers.js');
 
 const ENV  = process.env.NODE_ENV = 'development';
 const HOST = process.env.HOST || 'localhost';
@@ -37,7 +36,7 @@ module.exports = webpackMerge(commonConfig, {
     path    : './',
     filename: '[name].js',
     chunkFilename: '[name].js',
-    publicPath: './',
+    publicPath: './'
   },
   plugins: [
     new DefinePlugin({'webpack': {'ENV': JSON.stringify(metadata.ENV)}})
