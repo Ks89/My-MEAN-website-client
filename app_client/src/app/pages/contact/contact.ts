@@ -1,25 +1,19 @@
-import {Component, OnInit} from '@angular/core';
-import {Observable} from "rxjs/Observable";
-import {Subscription} from 'rxjs/Subscription';
-import {ContactService} from '../../common/services/contact';
+import { Component, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
 import { EmailValidators } from 'ng2-validators';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import {
-    FormControl,
-    FormGroup,
-    FormBuilder,
-    Validators
-} from '@angular/forms';
+import { ContactService } from '../../common/services/contact';
 
 @Component({
-  selector: 'contact-page',
+  selector: 'mmw-contact-page',
   templateUrl: 'contact.html'
 })
-export default class ContactComponent implements OnInit {
+export default class ContactComponent implements OnDestroy {
   public pageHeader: Object;
   public formModel: FormGroup;
-  public contactAlert: Object = { visible: false }; //hidden by default
-  public isWaiting: boolean = false; //enable button's spinner
+  public contactAlert: Object = { visible: false }; // hidden by default
+  public isWaiting: boolean = false; // enable button's spinner
   public showFormError: boolean = false;
   private _subscription: Subscription;
   private _recaptchaResponse: any;
@@ -38,10 +32,6 @@ export default class ContactComponent implements OnInit {
     });
   }
 
-  ngOnInit(){
-
-  }
-
   handleCorrectCaptcha(captchaResponse: string) {
     console.log(`Resolved captcha with response ${captchaResponse}:`);
     this._recaptchaResponse = captchaResponse;
@@ -50,7 +40,7 @@ export default class ContactComponent implements OnInit {
   onSend() {
     if (this.formModel.valid) {
       this.isWaiting = true;
-      console.log("Sending email...");
+      console.log('Sending email...');
       console.log(this.formModel.value);
       let dataToSend = {
           response: this._recaptchaResponse,
@@ -62,7 +52,7 @@ export default class ContactComponent implements OnInit {
       };
       this._contactService.sendFormWithCaptcha(dataToSend).subscribe(
         response => {
-          console.log("/api/email called -> OK");
+          console.log('/api/email called -> OK');
           console.log(response);
           this.contactAlert = {
             visible: true,
@@ -74,7 +64,7 @@ export default class ContactComponent implements OnInit {
           this.showFormError = false;
         },
         err => {
-          console.log("/api/email called -> ERROR");
+          console.log('/api/email called -> ERROR');
           console.error(err);
           this.contactAlert = {
             visible: true,
@@ -85,7 +75,7 @@ export default class ContactComponent implements OnInit {
           this.isWaiting = false;
           this.showFormError = true;
         },
-        () => console.log("Done")
+        () => console.log('Done')
       );
     }
   }

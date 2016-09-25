@@ -1,20 +1,20 @@
-import {Component, OnInit} from '@angular/core';
-import {Observable} from "rxjs/Observable";
-import {AuthService} from '../../common/services/auth';
-import {Router} from '@angular/router';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { EmailValidators, PasswordValidators } from 'ng2-validators';
-import {FormGroup,FormBuilder,Validators} from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+
+import { AuthService } from '../../common/services/auth';
 
 @Component({
-  selector: 'register-page',
+  selector: 'mmw-register-page',
   templateUrl: 'register.html'
 })
-export default class RegisterComponent implements OnInit {
+export default class RegisterComponent {
   public pageHeader: Object;
   public formModel: FormGroup;
-  public registerAlert: Object = { visible: false }; //hidden by default
+  public registerAlert: Object = { visible: false }; // hidden by default
   public showFormError: boolean = false;
-  public isWaiting: boolean = false; //enable button's spinner
+  public isWaiting: boolean = false; // enable button's spinner
 
   constructor(private _authService: AuthService,
               private _router: Router) {
@@ -38,16 +38,12 @@ export default class RegisterComponent implements OnInit {
       'emailConfirm': [null, EmailValidators.simple()],
       'password': [null, passwordValidator],
       'passwordConfirm': [null, null]
-    })
-  }
-
-  ngOnInit(){
-
+    });
   }
 
   onRegister() {
     if (this.formModel.valid) {
-      if(this.formModel.value.password != this.formModel.value.passwordConfirm) {
+      if (this.formModel.value.password !== this.formModel.value.passwordConfirm) {
         this.registerAlert = {
           visible: true,
           status: 'danger',
@@ -58,7 +54,7 @@ export default class RegisterComponent implements OnInit {
         this.showFormError = true;
         return;
       }
-      if(this.formModel.value.email != this.formModel.value.emailConfirm) {
+      if (this.formModel.value.email !== this.formModel.value.emailConfirm) {
         this.registerAlert = {
           visible: true,
           status: 'danger',
@@ -71,14 +67,14 @@ export default class RegisterComponent implements OnInit {
       }
 
       this.isWaiting = true;
-      console.log("Calling register...");
+      console.log('Calling register...');
       this._authService.register({
         name: this.formModel.value.name,
         email: this.formModel.value.email,
         password: this.formModel.value.password
       }).subscribe(
         response => {
-          console.log("Response");
+          console.log('Response');
           console.log(response);
           this.registerAlert = {
             visible: true,
@@ -101,7 +97,7 @@ export default class RegisterComponent implements OnInit {
           this.isWaiting = false;
           this.showFormError = true;
         },
-        ()=>console.log("Done")
+        () => console.log('Done')
       );
     }
   }

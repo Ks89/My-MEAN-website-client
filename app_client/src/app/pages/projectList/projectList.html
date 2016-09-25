@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <page-header [title]="pageHeader.title" [strapline]="pageHeader.strapline"></page-header>
+  <mmw-page-header [title]="pageHeader.title" [strapline]="pageHeader.strapline"></mmw-page-header>
 
   <div class="row">
 
@@ -11,7 +11,7 @@
       </div>
       <br>
       <!-- <div class="error">{{ message }}</div> -->
-      <div *ngFor="let project of projects | async | projectSearchPipe:searchInput">
+      <div *ngFor="let project of projects | async | mmwProjectSearchPipe:searchInput">
         <span *ngIf="project.visible">
           <div class="media card card-outline-primary card-default">
             <br/>

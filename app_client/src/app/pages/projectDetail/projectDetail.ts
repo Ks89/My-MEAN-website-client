@@ -1,31 +1,30 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {Subscription} from 'rxjs/Subscription';
-import {Observable} from "rxjs/Observable";
-import {Router} from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
+import { Router } from '@angular/router';
 
-import {ViewChild, ElementRef, AfterViewInit} from '@angular/core';
-import {Project, ProjectService} from '../../common/services/projects';
+import { Project, ProjectService } from '../../common/services/projects';
 
 @Component({
-  selector: 'projectDetail-page',
+  selector: 'mmw-project-detail-page',
   styleUrls: ['bs_doc.css'],
   templateUrl: 'projectDetail.html'
 })
-export default class ProjectDetailComponent implements OnInit {
+export default class ProjectDetailComponent implements OnInit, OnDestroy {
   public project: Project;
   public projectId: string;
   public pageHeader: any;
   public images: Object[];
-  private _subscription: Subscription;
 
   public self = this;
-  public descriptionUrl : any;
-  public changelogUrl : any;
-  public releasesUrl : any;
-  public featuresUrl : any;
-  public futureExtensionsUrl : any;
-  public licenseUrl : any;
+  public descriptionUrl: any;
+  public changelogUrl: any;
+  public releasesUrl: any;
+  public featuresUrl: any;
+  public futureExtensionsUrl: any;
+  public licenseUrl: any;
+
+  private _subscription: Subscription;
 
   constructor(
     private _route: ActivatedRoute,
@@ -36,17 +35,17 @@ export default class ProjectDetailComponent implements OnInit {
     this.projectId = _route.snapshot.params['projectId'];
 
     this.pageHeader = {
-      title: 'Project', //that will be replaced by the projectName
+      title: 'Project', // that will be replaced by the projectName
       strapline: ''
     };
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this._projectService.getProjectsById(this.projectId).subscribe(
       project => {
         this.project = project;
         this.images = project.gallery;
-        this.pageHeader.title = this.project.name; //replace pageHeader's title with projectName
+        this.pageHeader.title = this.project.name; // replace pageHeader's title with projectName
         this.descriptionUrl = this.project.description;
         this.changelogUrl = this.project.changelog;
         this.releasesUrl = this.project.releases;

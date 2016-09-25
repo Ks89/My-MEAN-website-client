@@ -1,12 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'page-header',
+  selector: 'mmw-page-header',
   templateUrl: 'pageHeader.html'
 })
-export default class PageHeaderComponent implements OnInit {
+export default class PageHeaderComponent {
   @Input() title: string;
   @Input() strapline: string;
-
-  ngOnInit(){}
 }

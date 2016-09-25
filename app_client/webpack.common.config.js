@@ -16,16 +16,16 @@ module.exports = {
     'vendor': './src/vendor.ts',
     'app': './src/main.ts'
   },
-
   resolve: {
     extensions: ['', '.ts', '.js', '.json', '.css', '.html']
-    //extensions: ['', '.js', '.ts']
   },
-
   module: {
-    // preLoaders: [
-    //  { test: /\.ts$/, exclude: /node_modules/, loader: "tslint"}
-    // ],
+    preLoaders: [
+      {
+        test: /\.ts$/,
+        loader: 'tslint'
+      }
+    ],
     loaders: [
       {test: /\.css$/,   loader: 'raw', exclude: /node_modules/},
       {test: /\.css$/,   loader: 'style!css?-minimize', exclude: /src/},
@@ -111,5 +111,10 @@ module.exports = {
       Util: "exports?Util!bootstrap/js/dist/util"
       //---------------------------------------------------
     })
-  ]
+  ],
+  tslint: {
+    emitErrors: false,
+    failOnHint: false,
+    resourcePath: 'src'
+  }
 };

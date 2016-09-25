@@ -1,25 +1,19 @@
-import {Component, OnInit} from '@angular/core';
-import {Observable} from "rxjs/Observable";
-import {AuthService} from '../../common/services/auth';
-import {Router} from '@angular/router';
-import { EmailValidators } from 'ng2-validators';
-import {
-    FormControl,
-    FormGroup,
-    FormBuilder,
-    Validators
-} from '@angular/forms';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { FormGroup, FormBuilder } from '@angular/forms';
+
+import { AuthService } from '../../common/services/auth';
 
 @Component({
-  selector: 'login-page',
+  selector: 'mmw-login-page',
   styleUrls: ['login.scss'],
   templateUrl: 'login.html'
 })
-export default class LoginComponent implements OnInit {
+export default class LoginComponent {
   public pageHeader: Object;
   public formModel: FormGroup;
-  public loginAlert: Object = { visible: false }; //hidden by default
-  public isWaiting: boolean = false; //enable button's spinner
+  public loginAlert: Object = { visible: false }; // hidden by default
+  public isWaiting: boolean = false; // enable button's spinner
   public showFormError: boolean = false;
 
   public facebookOauthUrl: string = 'api/auth/facebook';
@@ -41,28 +35,24 @@ export default class LoginComponent implements OnInit {
     });
   }
 
-  ngOnInit(){
-
-  }
-
   onLogin() {
     if (this.formModel.valid) {
       this.isWaiting = true;
-      console.log("Calling login...");
+      console.log('Calling login...');
       this._authService.login({
         email: this.formModel.value.email,
         password: this.formModel.value.password
       }).subscribe(
         response => {
-          console.log("Response login");
+          console.log('Response login');
           console.log(response);
           this.isWaiting = false;
           this._authService.getLoggedUser().subscribe(
             response => {
 
-              console.log("**************************");
+              console.log('**************************');
               console.log(response);
-              console.log("**************************");
+              console.log('**************************');
 
               this.loginAlert = {
                 visible: true,
@@ -84,7 +74,7 @@ export default class LoginComponent implements OnInit {
               this.isWaiting = false;
               this.showFormError = true;
             },
-            ()=>console.log("Done")
+            () => console.log('Done')
           );
         },
         err => {
@@ -98,7 +88,7 @@ export default class LoginComponent implements OnInit {
           this.isWaiting = false;
           this.showFormError = true;
         },
-        () => console.log("Done")
+        () => console.log('Done')
       );
     }
   }

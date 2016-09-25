@@ -1,11 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import {Observable} from "rxjs/Observable";
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'cv-page',
+  selector: 'mmw-cv-page',
   templateUrl: 'cv.html'
 })
-export default class CvComponent implements OnInit {
+export default class CvComponent {
   public pageHeader: any;
 
   constructor() {
@@ -13,9 +12,5 @@ export default class CvComponent implements OnInit {
       title: 'CV',
       strapline: ''
     };
-  }
-
-  ngOnInit(){
-
   }
 }

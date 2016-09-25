@@ -1,10 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'footer-generic',
+  selector: 'mmw-footer',
   styleUrls: ['footer.css'],
   templateUrl: 'footer.html'
 })
-export default class FooterComponent implements OnInit {
-  ngOnInit(){}
-}
+export default class FooterComponent {}

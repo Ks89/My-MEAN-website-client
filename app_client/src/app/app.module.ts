@@ -1,7 +1,6 @@
-import { NgModule, Provider } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
 import { routing, appRoutingProviders }  from './app.routing';
 
@@ -24,20 +23,20 @@ import CarouselComponent from './common/components/carousel/carousel';
 import FooterComponent from './common/components/footer/footer';
 import NavbarComponent from './common/components/navbar/navbar';
 import PageHeaderComponent from './common/components/pageHeader/pageHeader';
-import {ProjectSearchPipe} from './common/pipes/projectSearch/projectSearch';
+import { ProjectSearchPipe } from './common/pipes/projectSearch/projectSearch';
 
-import {ProjectService} from './common/services/projects';
-import {ProfileService} from './common/services/profile';
-import {ContactService} from './common/services/contact';
-import {AuthService} from './common/services/auth';
-import {AuthGuard} from './common/services/authGuard';
-import {SERVICES} from './common/services/services';
+import { ProjectService } from './common/services/projects';
+import { ProfileService } from './common/services/profile';
+import { ContactService } from './common/services/contact';
+import { AuthService } from './common/services/auth';
+import { AuthGuard } from './common/services/authGuard';
+import { SERVICES } from './common/services/services';
 
-import {ReCaptchaModule} from 'angular2-recaptcha/angular2-recaptcha';
-import {ImageModal} from 'angular2-image-popup/directives/angular2-image-popup/image-modal-popup';
-// import {ComponentOutlet} from 'angular2-component-outlet';
-import {SimplePageScroll} from 'ng2-simple-page-scroll';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { ReCaptchaModule } from 'angular2-recaptcha/angular2-recaptcha';
+import { ImageModal } from 'angular2-image-popup/directives/angular2-image-popup/image-modal-popup';
+// import { ComponentOutlet } from 'angular2-component-outlet';
+import { SimplePageScroll } from 'ng2-simple-page-scroll';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 // import { LaddaModule } from 'angular2-ladda';
 // import { UPLOAD_DIRECTIVES } from 'ng2-uploader/ng2-uploader';
 

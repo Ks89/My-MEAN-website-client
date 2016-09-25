@@ -16,7 +16,7 @@ import ActivateComponent from './pages/activate/activate';
 import ProfileComponent from './pages/profile/profile';
 import Post3dAuthComponent from './pages/post3dAuth/post3dAuth';
 
-import {AuthGuard} from './common/services/authGuard';
+import { AuthGuard } from './common/services/authGuard';
 
 const appRoutes: Routes = [
 
@@ -32,7 +32,7 @@ const appRoutes: Routes = [
   {path: 'reset/:emailToken',               component: ResetComponent},
   {path: 'forgot',                          component: ForgotComponent},
   {path: 'activate/:emailToken/:userName',  component: ActivateComponent},
-  //TODO in angular2 '?' isn't working -> find a better approach to do that
+  // TODO in angular2 '?' isn't working -> find a better approach to do that
   {path: 'profile',                         component: ProfileComponent, canActivate: [AuthGuard] },
   {path: 'profile/:token',                  component: ProfileComponent, canActivate: [AuthGuard] },
   {path: 'post3dauth',                      component: Post3dAuthComponent}

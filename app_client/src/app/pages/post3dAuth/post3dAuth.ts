@@ -1,11 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {Observable} from "rxjs/Observable";
-import {AuthService} from '../../common/services/auth';
-import {Router} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
+
+import { AuthService } from '../../common/services/auth';
 
 @Component({
-  selector: 'post3d-auth-page',
+  selector: 'mmw-post3d-auth-page',
   templateUrl: 'post3dAuth.html'
 })
 export default class Post3dAuthComponent implements OnInit {
@@ -22,27 +22,23 @@ export default class Post3dAuthComponent implements OnInit {
 
   ngOnInit() {
     console.log('INIT post3dAuth');
-    //3dparty authentication
+    // 3dparty authentication
     this._authService.post3dAuthAfterCallback().subscribe(
       jwtTokenAsString => {
-        console.log("[[[[[[[[[]]]]]]]]]");
-        console.log(jwtTokenAsString);
-        console.log("[[[[[[[[[]]]]]]]]]");
+        // console.log(jwtTokenAsString);
         this._authService.getLoggedUser().subscribe(
           user => {
-            console.log("{{{{{{{{{}}}}}}}}}");
-            console.log(user);
-            console.log("{{{{{{{{{}}}}}}}}}");
+            // console.log(user);
             this._authService.loginEvent.emit(user);
             this._router.navigate(['/profile']);
           }
         );
       },
-      (err)=>{
+      (err) => {
         console.error(err);
         this._router.navigate(['/login']);
       },
-      ()=>console.log("Done")
+      () => console.log('Done')
     );
   }
 }

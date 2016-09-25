@@ -1,11 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import {Observable} from "rxjs/Observable";
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'about-page',
+  selector: 'mmw-about-page',
   templateUrl: 'about.html'
 })
-export default class AboutComponent implements OnInit {
+export default class AboutComponent {
   pageHeader: any;
 
   constructor() {
@@ -13,9 +12,5 @@ export default class AboutComponent implements OnInit {
       title: 'About',
       strapline: ''
     };
-  }
-
-  ngOnInit(){
-
   }
 }

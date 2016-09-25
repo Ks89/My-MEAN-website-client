@@ -1,10 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import {Observable} from "rxjs/Observable";
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 
-import {Project, ProjectService} from '../../common/services/projects';
+import { Project, ProjectService } from '../../common/services/projects';
 
 @Component({
-  selector: 'home-page',
+  selector: 'mmw-home-page',
   styleUrls: ['home.scss'],
   templateUrl: 'home.html'
 })
@@ -20,10 +20,10 @@ export default class HomeComponent implements OnInit {
       title: 'KS',
       strapline: 'Welcome'
     };
-    this.message = "Welcome to my website";
+    this.message = 'Welcome to my website';
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.products = this._projectService.getProjects();
     this.thumbs = this._projectService.getProjectsForHomepage().share();
   }

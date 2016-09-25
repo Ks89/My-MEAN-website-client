@@ -1,24 +1,23 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {Observable} from "rxjs/Observable";
-import {AuthService} from '../../common/services/auth';
-import {Router} from '@angular/router';
-import { EmailValidators } from 'ng2-validators';
-import {FormGroup,FormBuilder,Validators} from '@angular/forms';
+import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+
+import { AuthService } from '../../common/services/auth';
 
 @Component({
   selector: 'reset-page',
   templateUrl: 'reset.html'
 })
-export default class ResetComponent implements OnInit {
+export default class ResetComponent {
   public pageHeader: Object;
   public formModel: FormGroup;
   public emailToken: string;
-  public resetAlert: Object = { visible: false }; //hidden by default
-  public isWaiting: boolean = false; //enable button's spinner
+  public resetAlert: Object = { visible: false }; // hidden by default
+  public isWaiting: boolean = false; // enable button's spinner
   public showFormError: boolean = false;
 
-  //this class is used when you click on the email to reset your password
+  // this class is used when you click on the email to reset your password
 
   constructor(private _authService: AuthService,
               private _route: ActivatedRoute,
@@ -33,20 +32,16 @@ export default class ResetComponent implements OnInit {
     const fb = new FormBuilder();
     this.formModel = fb.group({
       'password': [null, Validators.compose([Validators.required, Validators.minLength(8)])]
-    })
-  }
-
-  ngOnInit(){
-
+    });
   }
 
   onReset() {
     if (this.formModel.valid) {
       this.isWaiting = true;
-      console.log("Calling reset...");
+      console.log('Calling reset...');
       this._authService.reset(this.emailToken, this.formModel.value.password).subscribe(
         response => {
-          console.log("Response");
+          console.log('Response');
           console.log(response);
           this.resetAlert = {
             visible: true,
@@ -68,7 +63,7 @@ export default class ResetComponent implements OnInit {
           this.isWaiting = false;
           this.showFormError = true;
         },
-        () => console.log("Done")
+        () => console.log('Done')
       );
     }
   }
