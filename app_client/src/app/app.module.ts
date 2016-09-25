@@ -26,11 +26,6 @@ import PageHeaderComponent from './common/components/page-header/page-header.com
 
 import { ProjectSearchPipe } from './common/pipes/project-search/project-search.pipe';
 
-import { ProjectService } from './common/services/projects.service';
-import { ProfileService } from './common/services/profile.service';
-import { ContactService } from './common/services/contact.service';
-import { AuthService } from './common/services/auth.service';
-import { AuthGuard } from './common/services/auth-guard.service';
 import { SERVICES } from './common/services/services';
 
 import { ReCaptchaModule } from 'angular2-recaptcha/angular2-recaptcha';
@@ -79,12 +74,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
   ],
   providers: [
     appRoutingProviders,
-    ProjectService,
-    ProfileService,
-    ContactService,
-    AuthService,
-    SERVICES,
-    AuthGuard
+    SERVICES
   ],
   bootstrap: [ ApplicationComponent ]
 })
