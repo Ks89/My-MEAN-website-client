@@ -1,8 +1,6 @@
 const webpack               = require('webpack');
-const CommonsChunkPlugin    = require('webpack/lib/optimize/CommonsChunkPlugin');
-const CopyWebpackPlugin     = require('copy-webpack-plugin');
 const DefinePlugin          = require('webpack/lib/DefinePlugin');
-const ProvidePlugin         = require('webpack/lib/ProvidePlugin');
+const CommonsChunkPlugin    = require('webpack/lib/optimize/CommonsChunkPlugin');
 var webpackMerge = require('webpack-merge');
 var commonConfig = require('./webpack.common.config.js');
 
@@ -39,6 +37,10 @@ module.exports = webpackMerge(commonConfig, {
     publicPath: './'
   },
   plugins: [
+    new CommonsChunkPlugin({
+      name: ['app', 'vendor', 'polyfills'],
+      minChunks: Infinity
+    }),
     new DefinePlugin({'webpack': {'ENV': JSON.stringify(metadata.ENV)}})
   ]
 });

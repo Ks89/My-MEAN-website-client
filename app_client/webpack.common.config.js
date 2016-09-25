@@ -1,6 +1,4 @@
 const webpack               = require('webpack');
-const CommonsChunkPlugin    = require('webpack/lib/optimize/CommonsChunkPlugin');
-const CopyWebpackPlugin     = require('copy-webpack-plugin');
 const DefinePlugin          = require('webpack/lib/DefinePlugin');
 const ProvidePlugin         = require('webpack/lib/ProvidePlugin');
 const OccurrenceOrderPlugin = require('webpack/lib/optimize/OccurrenceOrderPlugin');
@@ -76,10 +74,6 @@ module.exports = {
   },
   postcss: [autoprefixer],
   plugins: [
-    new CommonsChunkPlugin({
-      name: ['app', 'vendor', 'polyfills'],
-      minChunks: Infinity
-    }),
     new ManifestPlugin(),
     new InlineManifestWebpackPlugin(),
     new HtmlWebpackPlugin({
