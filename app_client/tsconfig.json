@@ -10,6 +10,10 @@
     "types": ["es6-shim", "jasmine"]
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "config",
+    "assets",
+    "e2e",
+    "src/**/*.spec.ts"
   ]
 }
