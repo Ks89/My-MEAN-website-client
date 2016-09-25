@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { Router } from '@angular/router';
 
-import { Project, ProjectService } from '../../common/services/projects.service';
+import { Project, ProjectService } from '../../common/services';
 
 @Component({
   selector: 'mmw-project-detail-page',
@@ -24,15 +24,15 @@ export default class ProjectDetailComponent implements OnInit, OnDestroy {
   public futureExtensionsUrl: any;
   public licenseUrl: any;
 
-  private _subscription: Subscription;
+  private subscription: Subscription;
 
   constructor(
-    private _route: ActivatedRoute,
-    private _projectService: ProjectService,
-    private _router: Router
+    private route: ActivatedRoute,
+    private projectService: ProjectService,
+    private router: Router
   ) {
 
-    this.projectId = _route.snapshot.params['projectId'];
+    this.projectId = route.snapshot.params['projectId'];
 
     this.pageHeader = {
       title: 'Project', // that will be replaced by the projectName
@@ -41,7 +41,7 @@ export default class ProjectDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this._projectService.getProjectsById(this.projectId).subscribe(
+    this.projectService.getProjectsById(this.projectId).subscribe(
       project => {
         this.project = project;
         this.images = project.gallery;
@@ -57,14 +57,14 @@ export default class ProjectDetailComponent implements OnInit, OnDestroy {
   }
 
   getInnerUrl(anchor: string) {
-    console.log(this._router.url);
-    return this._router.url + '#' + anchor;
+    console.log(this.router.url);
+    return this.router.url + '#' + anchor;
 
   }
 
   ngOnDestroy(): any {
-    if (this._subscription) {
-      this._subscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
     }
   }
 }

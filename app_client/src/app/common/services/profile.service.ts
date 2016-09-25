@@ -9,13 +9,13 @@ export class Response {
 
 @Injectable()
 export class ProfileService {
-  constructor(private _http: Http) {}
+  constructor(private http: Http) {}
 
   update(profile: any): Observable<Response> {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
 
-    return this._http.post('/api/profile', profile, options)
+    return this.http.post('/api/profile', profile, options)
       .map(response => response.json());
   }
 }

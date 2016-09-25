@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { EmailValidators } from 'ng2-validators';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
-import { AuthService } from '../../common/services/auth.service';
+import { AuthService } from '../../common/services';
 
 @Component({
   selector: 'mmw-forgot-page',
@@ -17,8 +17,8 @@ export default class ForgotComponent {
   public showFormError: boolean = false;
   // this class is used when you click on the 'forgot password' to reset your password
 
-  constructor(private _authService: AuthService,
-              private _router: Router) {
+  constructor(private authService: AuthService,
+              private router: Router) {
     this.pageHeader = {
       title: 'Forgot',
       strapline: ''
@@ -34,7 +34,7 @@ export default class ForgotComponent {
     if (this.formModel.valid) {
       this.isWaiting = true;
       console.log('Calling forgot password...');
-      this._authService.forgot(this.formModel.value.email).subscribe(
+      this.authService.forgot(this.formModel.value.email).subscribe(
         response => {
           console.log('Response');
           console.log(response);
@@ -46,7 +46,7 @@ export default class ForgotComponent {
           };
           this.isWaiting = false;
           this.showFormError = false;
-          this._router.navigate(['/login']);
+          this.router.navigate(['/login']);
         },
         err => {
           console.error(err);

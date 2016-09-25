@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../services';
 
 @Component({
   selector: 'mmw-navigation',
@@ -12,10 +12,10 @@ export default class NavbarComponent implements OnInit {
   public currentUser: any = {name : ''};
   public currentPath: string = 'fakeString';
 
-  constructor(private _authService: AuthService, private _router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(){
-    this._authService.loginEvent
+    this.authService.loginEvent
     .subscribe(user => {
         console.log('NAVIGATION: ');
         console.log(user);
@@ -46,11 +46,11 @@ export default class NavbarComponent implements OnInit {
   }
 
   isNavItemActive(location) {
-    return location === this._router.url ? 'active' : '';
+    return location === this.router.url ? 'active' : '';
   };
 
   logout() {
-    this._authService.logout()
+    this.authService.logout()
     .subscribe(
       result => {
         console.log('Logout result: ');
@@ -63,7 +63,7 @@ export default class NavbarComponent implements OnInit {
         this.currentUser = null;
       }, () => {
         console.log('logout finished');
-        this._router.navigate(['/']);
+        this.router.navigate(['/']);
       }
     );
   }

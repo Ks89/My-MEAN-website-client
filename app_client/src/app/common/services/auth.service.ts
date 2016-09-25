@@ -15,8 +15,8 @@ import 'rxjs/add/operator/share';
 export class AuthService {
   public loginEvent: EventEmitter<any> = new EventEmitter();
 
-  private _headers = new Headers({ 'Content-Type': 'application/json' });
-  private _options = new RequestOptions({ headers: this._headers });
+  private headers = new Headers({ 'Content-Type': 'application/json' });
+  private options = new RequestOptions({ headers: this.headers });
 
   constructor(private http: Http) {}
 
@@ -25,7 +25,7 @@ export class AuthService {
   // ----------------------------------------------------------
 
   login(user: any): Observable<any> {
-    return this.http.post('/api/login', user, this._options)
+    return this.http.post('/api/login', user, this.options)
     .map(response => {
       this.saveToken('auth', response.json().token);
       return response.json();
@@ -37,7 +37,7 @@ export class AuthService {
   }
 
   register(user: any): Observable<any> {
-    return this.http.post('/api/register', user, this._options).map(
+    return this.http.post('/api/register', user, this.options).map(
       response => {
         console.log('Done register');
         console.log(response);
@@ -51,7 +51,7 @@ export class AuthService {
       newPassword : newPassword,
       emailToken : emailToken
     };
-    return this.http.post('/api/resetNewPassword', data, this._options)
+    return this.http.post('/api/resetNewPassword', data, this.options)
     .map(response => {
       //  saveToken('auth', data.token);
       this.saveToken('auth', response.json().token);
@@ -60,7 +60,7 @@ export class AuthService {
   }
 
   forgot(email: any): Observable<any> {
-    return this.http.post('/api/reset', { email : email}, this._options)
+    return this.http.post('/api/reset', { email : email}, this.options)
     .map(response => response.json());
   }
 
@@ -69,7 +69,7 @@ export class AuthService {
       emailToken : emailToken,
       userName : userName
     };
-    return this.http.post('/api/activateAccount', data, this._options)
+    return this.http.post('/api/activateAccount', data, this.options)
     .map(response => response.json());
   }
 

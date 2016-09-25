@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { EmailValidators } from 'ng2-validators';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { ContactService } from '../../common/services/contact.service';
+import { ContactService } from '../../common/services';
 
 @Component({
   selector: 'mmw-contact-page',
@@ -15,10 +15,10 @@ export default class ContactComponent implements OnDestroy {
   public contactAlert: Object = { visible: false }; // hidden by default
   public isWaiting: boolean = false; // enable button's spinner
   public showFormError: boolean = false;
-  private _subscription: Subscription;
-  private _recaptchaResponse: any;
+  private subscription: Subscription;
+  private recaptchaResponse: any;
 
-  constructor(private _contactService: ContactService) {
+  constructor(private contactService: ContactService) {
     this.pageHeader = {
       title: 'Contact',
       strapline: ''
@@ -34,7 +34,7 @@ export default class ContactComponent implements OnDestroy {
 
   handleCorrectCaptcha(captchaResponse: string) {
     console.log(`Resolved captcha with response ${captchaResponse}:`);
-    this._recaptchaResponse = captchaResponse;
+    this.recaptchaResponse = captchaResponse;
   }
 
   onSend() {
@@ -43,14 +43,14 @@ export default class ContactComponent implements OnDestroy {
       console.log('Sending email...');
       console.log(this.formModel.value);
       let dataToSend = {
-          response: this._recaptchaResponse,
+          response: this.recaptchaResponse,
           emailFormData: {
             email : this.formModel.value.email,
             messageText : this.formModel.value.message,
             object : this.formModel.value.subject
           }
       };
-      this._contactService.sendFormWithCaptcha(dataToSend).subscribe(
+      this.contactService.sendFormWithCaptcha(dataToSend).subscribe(
         response => {
           console.log('/api/email called -> OK');
           console.log(response);
@@ -81,8 +81,8 @@ export default class ContactComponent implements OnDestroy {
   }
 
   ngOnDestroy(): any {
-    if (this._subscription) {
-      this._subscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
     }
   }
 }

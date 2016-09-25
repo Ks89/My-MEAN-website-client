@@ -63,20 +63,20 @@ export class Project {
 export class ProjectService {
   public searchEvent: EventEmitter<any> = new EventEmitter();
 
-  constructor(private _http: Http) {}
+  constructor(private http: Http) {}
 
   getProjects(): Observable<Project[]> {
-    return this._http.get('/api/projects')
+    return this.http.get('/api/projects')
       .map(response => response.json());
   }
 
   getProjectsById(projectid: string): Observable<Project> {
-    return this._http.get(`/api/projects/${projectid}`)
+    return this.http.get(`/api/projects/${projectid}`)
       .map(response => response.json());
   }
 
   getProjectsForHomepage(): Observable<Project[]> {
-    return this._http.get('/api/projecthome')
+    return this.http.get('/api/projecthome')
       .map(response => response.json());
   }
 

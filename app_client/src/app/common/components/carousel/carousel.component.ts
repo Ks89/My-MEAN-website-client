@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { Project, ProjectService } from '../../services/projects.service';
+import { Project, ProjectService } from '../../services';
 
 @Component({
   selector: 'mmw-carousel',
@@ -10,9 +10,9 @@ import { Project, ProjectService } from '../../services/projects.service';
 export default class CarouselComponent implements OnInit {
   public thumbs: Observable<Project[]>;
 
-  constructor(private _projectService: ProjectService) {}
+  constructor(private projectService: ProjectService) {}
 
   ngOnInit() {
-    this.thumbs = this._projectService.getProjectsForHomepage().share();
+    this.thumbs = this.projectService.getProjectsForHomepage().share();
   }
 }

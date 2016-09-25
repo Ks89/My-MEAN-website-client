@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Observable } from "rxjs/Observable";
 
-import { Project, ProjectService } from '../../common/services/projects.service';
+import { Project, ProjectService } from '../../common/services';
 
 @Component({
   selector: 'mmw-project-list-page',
@@ -16,8 +16,8 @@ export default class ProjectListComponent {
   public message: string;
   public searchInput: string = ''; // both not null and not undefined
 
-  constructor(private _projectService: ProjectService) {
-    this.projects = this._projectService.getProjects();
+  constructor(private projectService: ProjectService) {
+    this.projects = this.projectService.getProjects();
 
     this.pageHeader = {
       title: 'Projects',

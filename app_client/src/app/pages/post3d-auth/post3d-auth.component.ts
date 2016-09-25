@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 
-import { AuthService } from '../../common/services/auth.service';
+import { AuthService } from '../../common/services';
 
 @Component({
   selector: 'mmw-post3d-auth-page',
@@ -11,9 +10,8 @@ import { AuthService } from '../../common/services/auth.service';
 export default class Post3dAuthComponent implements OnInit {
   public pageHeader: any;
 
-  constructor(private _authService: AuthService,
-              private _route: ActivatedRoute,
-              private _router: Router) {
+  constructor(private authService: AuthService,
+              private router: Router) {
     this.pageHeader = {
       title: 'Activate',
       strapline: ''
@@ -23,20 +21,20 @@ export default class Post3dAuthComponent implements OnInit {
   ngOnInit() {
     console.log('INIT post3dAuth');
     // 3dparty authentication
-    this._authService.post3dAuthAfterCallback().subscribe(
+    this.authService.post3dAuthAfterCallback().subscribe(
       jwtTokenAsString => {
         // console.log(jwtTokenAsString);
-        this._authService.getLoggedUser().subscribe(
+        this.authService.getLoggedUser().subscribe(
           user => {
             // console.log(user);
-            this._authService.loginEvent.emit(user);
-            this._router.navigate(['/profile']);
+            this.authService.loginEvent.emit(user);
+            this.router.navigate(['/profile']);
           }
         );
       },
       (err) => {
         console.error(err);
-        this._router.navigate(['/login']);
+        this.router.navigate(['/login']);
       },
       () => console.log('Done')
     );

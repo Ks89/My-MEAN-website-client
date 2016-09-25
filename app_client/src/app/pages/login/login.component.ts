@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
-import { AuthService } from '../../common/services/auth.service';
+import { AuthService } from '../../common/services';
 
 @Component({
   selector: 'mmw-login-page',
@@ -22,7 +22,7 @@ export default class LoginComponent {
   public linkedinOauthUrl: string = 'api/auth/linkedin';
   public twitterOauthUrl: string = 'api/auth/twitter';
 
-  constructor(private _authService: AuthService, private _router: Router) {
+  constructor(private authService: AuthService, private router: Router) {
     this.pageHeader = {
       title: 'Sign in',
       strapline: ''
@@ -39,7 +39,7 @@ export default class LoginComponent {
     if (this.formModel.valid) {
       this.isWaiting = true;
       console.log('Calling login...');
-      this._authService.login({
+      this.authService.login({
         email: this.formModel.value.email,
         password: this.formModel.value.password
       }).subscribe(
@@ -47,7 +47,7 @@ export default class LoginComponent {
           console.log('Response login');
           console.log(response);
           this.isWaiting = false;
-          this._authService.getLoggedUser().subscribe(
+          this.authService.getLoggedUser().subscribe(
             response => {
 
               console.log('**************************');
@@ -60,8 +60,8 @@ export default class LoginComponent {
                 strong : 'Success',
                 message: response.message
               };
-              this._authService.loginEvent.emit(response);
-              this._router.navigate(['/profile']);
+              this.authService.loginEvent.emit(response);
+              this.router.navigate(['/profile']);
             },
             err => {
               console.error(err);

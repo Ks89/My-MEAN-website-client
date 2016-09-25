@@ -6,10 +6,10 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class ContactService {
-  constructor(private _http: Http) {}
+  constructor(private http: Http) {}
 
   sendFormWithCaptcha(contact: Object): Observable<Object> {
-    return this._http.post('/api/email', contact)
+    return this.http.post('/api/email', contact)
       .map(response => response.json());
   }
 }

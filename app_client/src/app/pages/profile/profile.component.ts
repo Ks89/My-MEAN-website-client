@@ -5,8 +5,7 @@ import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { ProfileService } from '../../common/services/profile.service';
-import { AuthService } from '../../common/services/auth.service';
+import { AuthService, ProfileService } from '../../common/services';
 
 @Component({
   selector: 'mmw-profile-page',
@@ -59,12 +58,12 @@ export default class ProfileComponent implements OnInit, OnDestroy {
   // used to get a reference to the modal dialog content
   @ViewChild('modalDialogContent') modalDialogContent;
 
-  private _subscription: Subscription;
+  private subscription: Subscription;
 
-  constructor(private _profileService: ProfileService,
-    private _route: ActivatedRoute, private _router: Router,
-    private _authService: AuthService, private _modalService: NgbModal) {
-      this.token = _route.snapshot.params['token'];
+  constructor(private profileService: ProfileService,
+    private route: ActivatedRoute, private router: Router,
+    private authService: AuthService, private modalService: NgbModal) {
+      this.token = route.snapshot.params['token'];
 
       if (this.token === null || this.token === undefined ) {
         console.log('profile page loaded without token');
@@ -89,12 +88,12 @@ export default class ProfileComponent implements OnInit, OnDestroy {
     ngOnInit() {
       console.log('INIT');
       // 3dparty authentication
-      this._authService.post3dAuthAfterCallback().subscribe(
+      this.authService.post3dAuthAfterCallback().subscribe(
         jwtTokenAsString => {
           console.log('**************************');
           console.log(jwtTokenAsString);
           console.log('**************************');
-          this._authService.getLoggedUser().subscribe(
+          this.authService.getLoggedUser().subscribe(
             user => {
               console.log('#########################');
               console.log(user);
@@ -115,7 +114,7 @@ export default class ProfileComponent implements OnInit, OnDestroy {
               }
               console.log('---------------setted----------------');
 
-              this._authService.loginEvent.emit(user);
+              this.authService.loginEvent.emit(user);
             }
           );
         },
@@ -168,7 +167,7 @@ export default class ProfileComponent implements OnInit, OnDestroy {
 
         console.log('Calling updateProfile...');
         console.log(this.profileData);
-        this._profileService.update(this.profileData).subscribe(
+        this.profileService.update(this.profileData).subscribe(
           response => {
             console.log('Response');
             console.log(response);
@@ -196,8 +195,8 @@ export default class ProfileComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): any {
-      if (this._subscription) {
-        this._subscription.unsubscribe();
+      if (this.subscription) {
+        this.subscription.unsubscribe();
       }
     }
 
@@ -207,23 +206,23 @@ export default class ProfileComponent implements OnInit, OnDestroy {
       if (this.checkIfLastUnlinkProfile(serviceName)) {
         console.log('Last unlink - processing...');
 
-        this._modalService.open(this.modalDialogContent).result.then((result) => {
+        this.modalService.open(this.modalDialogContent).result.then((result) => {
           console.log(`Closed with: ${result}`);
-          this._authService.unlink(serviceName)
+          this.authService.unlink(serviceName)
           .subscribe(
             result => {
               console.log('Unlinked: ' + result);
-              this._authService.loginEvent.emit(null);
-              this._authService.logout()
+              this.authService.loginEvent.emit(null);
+              this.authService.logout()
               .subscribe(
                 result => {
                   console.log('Logged out: ' + result);
-                  this._router.navigate(['/']);
+                  this.router.navigate(['/']);
                 },
                 err => {
                   // logServer.error('profile impossible to logout', err);
                   console.log('Impossible to logout: ' + err);
-                  this._router.navigate(['/']);
+                  this.router.navigate(['/']);
                 },
                 () => console.log('Last unlink - unlink done')
               );
@@ -244,18 +243,18 @@ export default class ProfileComponent implements OnInit, OnDestroy {
         serviceName === 'github' || serviceName === 'local' ||
         serviceName === 'linkedin' || serviceName === 'twitter') {
           console.log('NOT last unlink - but service recognized, processing...');
-          this._authService.unlink(serviceName)
+          this.authService.unlink(serviceName)
           .subscribe(
             result => {
               console.log(serviceName + ' Unlinked with result user: ');
               console.log(result);
-              this._router.navigate(['/post3dauth']);
+              this.router.navigate(['/post3dauth']);
               console.log('redirected to profile');
             },
             err => {
               // logServer.error('profile impossible to unlink', reason);
               console.log('Impossible to unlink: ' + err);
-              this._router.navigate(['/']);
+              this.router.navigate(['/']);
             },
             () => console.log('not last unlink: done')
           );

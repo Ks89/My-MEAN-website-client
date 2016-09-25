@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { Project, ProjectService } from '../../common/services/projects.service';
+import { Project, ProjectService } from '../../common/services';
 
 @Component({
   selector: 'mmw-home-page',
@@ -15,7 +15,7 @@ export default class HomeComponent implements OnInit {
   public pageHeader: Object;
   public message: string;
 
-  constructor(private _projectService: ProjectService) {
+  constructor(private projectService: ProjectService) {
     this.pageHeader = {
       title: 'KS',
       strapline: 'Welcome'
@@ -24,7 +24,7 @@ export default class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.products = this._projectService.getProjects();
-    this.thumbs = this._projectService.getProjectsForHomepage().share();
+    this.products = this.projectService.getProjects();
+    this.thumbs = this.projectService.getProjectsForHomepage().share();
   }
 }

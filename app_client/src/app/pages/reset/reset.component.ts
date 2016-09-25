@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { AuthService } from '../../common/services/auth.service';
+import { AuthService } from '../../common/services';
 
 @Component({
   selector: 'reset-page',
@@ -19,10 +18,9 @@ export default class ResetComponent {
 
   // this class is used when you click on the email to reset your password
 
-  constructor(private _authService: AuthService,
-              private _route: ActivatedRoute,
-              private _router: Router) {
-    this.emailToken = _route.snapshot.params['emailToken'];
+  constructor(private authService: AuthService,
+              private route: ActivatedRoute) {
+    this.emailToken = route.snapshot.params['emailToken'];
 
     this.pageHeader = {
       title: 'Password reset',
@@ -39,7 +37,7 @@ export default class ResetComponent {
     if (this.formModel.valid) {
       this.isWaiting = true;
       console.log('Calling reset...');
-      this._authService.reset(this.emailToken, this.formModel.value.password).subscribe(
+      this.authService.reset(this.emailToken, this.formModel.value.password).subscribe(
         response => {
           console.log('Response');
           console.log(response);

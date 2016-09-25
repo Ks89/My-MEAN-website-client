@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { EmailValidators, PasswordValidators } from 'ng2-validators';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { AuthService } from '../../common/services/auth.service';
+import { AuthService } from '../../common/services';
 
 @Component({
   selector: 'mmw-register-page',
@@ -16,8 +16,8 @@ export default class RegisterComponent {
   public showFormError: boolean = false;
   public isWaiting: boolean = false; // enable button's spinner
 
-  constructor(private _authService: AuthService,
-              private _router: Router) {
+  constructor(private authService: AuthService,
+              private router: Router) {
     this.pageHeader = {
       title: 'Create a new accout',
       strapline: ''
@@ -68,7 +68,7 @@ export default class RegisterComponent {
 
       this.isWaiting = true;
       console.log('Calling register...');
-      this._authService.register({
+      this.authService.register({
         name: this.formModel.value.name,
         email: this.formModel.value.email,
         password: this.formModel.value.password
@@ -84,7 +84,7 @@ export default class RegisterComponent {
           };
           this.isWaiting = false;
           this.showFormError = false;
-          this._router.navigate(['/login']);
+          this.router.navigate(['/login']);
         },
         err => {
           console.error(err);

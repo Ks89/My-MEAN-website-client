@@ -7,12 +7,12 @@ import { AuthService } from './auth.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private _authService: AuthService, private _router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | boolean {
-      return this._authService.getLoggedUser()
+      return this.authService.getLoggedUser()
       .map(
         data => {
           console.log('canActivate data is: ');
@@ -24,13 +24,13 @@ export class AuthGuard implements CanActivate {
             return true;
           } else {
             console.log('canActivate data is false ');
-            this._router.navigate(['/login']);
+            this.router.navigate(['/login']);
             return false;
           }
         },
         error => {
           console.log('canActivate error ');
-          this._router.navigate(['/login']);
+          this.router.navigate(['/login']);
           return false;
         }
       );
