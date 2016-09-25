@@ -6,7 +6,7 @@ import { Project, ProjectService } from '../../common/services/projects.service'
 @Component({
   selector: 'mmw-project-list-page',
   styleUrls: ['timeline.css'],
-  templateUrl: 'projectList.html'
+  templateUrl: 'project-list.html'
 })
 export default class ProjectListComponent {
   public projects: Observable<Project[]>;

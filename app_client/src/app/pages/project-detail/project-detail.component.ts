@@ -8,7 +8,7 @@ import { Project, ProjectService } from '../../common/services/projects.service'
 @Component({
   selector: 'mmw-project-detail-page',
   styleUrls: ['bs_doc.css'],
-  templateUrl: 'projectDetail.html'
+  templateUrl: 'project-detail.html'
 })
 export default class ProjectDetailComponent implements OnInit, OnDestroy {
   public project: Project;
