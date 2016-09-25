@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Observable } from "rxjs/Observable";
 
-import { Project, ProjectService } from '../../common/services/projects';
+import { Project, ProjectService } from '../../common/services/projects.service';
 
 @Component({
   selector: 'mmw-project-list-page',

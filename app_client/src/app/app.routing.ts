@@ -2,21 +2,21 @@ import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 
-import HomeComponent from './pages/home/home';
-import ProjectListComponent from './pages/projectList/projectList';
-import CvComponent from './pages/cv/cv';
-import AboutComponent from './pages/about/about';
-import ContactComponent from './pages/contact/contact';
-import ProjectDetailComponent from './pages/projectDetail/projectDetail';
-import RegisterComponent from './pages/register/register';
-import LoginComponent from './pages/login/login';
-import ResetComponent from './pages/reset/reset';
-import ForgotComponent from './pages/forgot/forgot';
-import ActivateComponent from './pages/activate/activate';
-import ProfileComponent from './pages/profile/profile';
-import Post3dAuthComponent from './pages/post3dAuth/post3dAuth';
+import HomeComponent from './pages/home/home.component';
+import ProjectListComponent from './pages/projectList/projectList.component';
+import CvComponent from './pages/cv/cv.component';
+import AboutComponent from './pages/about/about.component';
+import ContactComponent from './pages/contact/contact.component';
+import ProjectDetailComponent from './pages/projectDetail/projectDetail.component';
+import RegisterComponent from './pages/register/register.component';
+import LoginComponent from './pages/login/login.component';
+import ResetComponent from './pages/reset/reset.component';
+import ForgotComponent from './pages/forgot/forgot.component';
+import ActivateComponent from './pages/activate/activate.component';
+import ProfileComponent from './pages/profile/profile.component';
+import Post3dAuthComponent from './pages/post3dAuth/post3dAuth.component';
 
-import { AuthGuard } from './common/services/authGuard';
+import { AuthGuard } from './common/services/authGuard.service';
 
 const appRoutes: Routes = [
 

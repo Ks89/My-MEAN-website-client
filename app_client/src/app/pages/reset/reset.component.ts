@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { AuthService } from '../../common/services/auth';
+import { AuthService } from '../../common/services/auth.service';
 
 @Component({
   selector: 'reset-page',

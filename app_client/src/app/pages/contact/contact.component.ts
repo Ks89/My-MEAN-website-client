@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { EmailValidators } from 'ng2-validators';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { ContactService } from '../../common/services/contact';
+import { ContactService } from '../../common/services/contact.service';
 
 @Component({
   selector: 'mmw-contact-page',

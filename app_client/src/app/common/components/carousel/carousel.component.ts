@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { Project, ProjectService } from '../../services/projects';
+import { Project, ProjectService } from '../../services/projects.service';
 
 @Component({
   selector: 'mmw-carousel',

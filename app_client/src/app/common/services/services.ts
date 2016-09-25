@@ -1,7 +1,7 @@
-import { ProjectService } from './projects';
-import { ProfileService } from './profile';
-import { ContactService } from './contact';
-import { AuthService } from './auth';
+import { ProjectService } from './projects.service';
+import { ProfileService } from './profile.service';
+import { ContactService } from './contact.service';
+import { AuthService } from './auth.service';
 
 export const SERVICES = [
   ProjectService, ProfileService, ContactService, AuthService

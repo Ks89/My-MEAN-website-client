@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { EmailValidators, PasswordValidators } from 'ng2-validators';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { AuthService } from '../../common/services/auth';
+import { AuthService } from '../../common/services/auth.service';
 
 @Component({
   selector: 'mmw-register-page',

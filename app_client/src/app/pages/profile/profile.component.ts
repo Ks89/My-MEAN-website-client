@@ -5,8 +5,8 @@ import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { ProfileService } from '../../common/services/profile';
-import { AuthService } from '../../common/services/auth';
+import { ProfileService } from '../../common/services/profile.service';
+import { AuthService } from '../../common/services/auth.service';
 
 @Component({
   selector: 'mmw-profile-page',

@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { EmailValidators } from 'ng2-validators';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
-import { AuthService } from '../../common/services/auth';
+import { AuthService } from '../../common/services/auth.service';
 
 @Component({
   selector: 'mmw-forgot-page',

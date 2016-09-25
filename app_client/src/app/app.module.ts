@@ -4,32 +4,33 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 import { routing, appRoutingProviders }  from './app.routing';
 
-import ApplicationComponent from './application/application';
-import HomeComponent from './pages/home/home';
-import ProjectListComponent from './pages/projectList/projectList';
-import CvComponent from './pages/cv/cv';
-import AboutComponent from './pages/about/about';
-import ContactComponent from './pages/contact/contact';
-import ProjectDetailComponent from './pages/projectDetail/projectDetail';
-import RegisterComponent from './pages/register/register';
-import LoginComponent from './pages/login/login';
-import ResetComponent from './pages/reset/reset';
-import ForgotComponent from './pages/forgot/forgot';
-import ActivateComponent from './pages/activate/activate';
-import ProfileComponent from './pages/profile/profile';
-import Post3dAuthComponent from './pages/post3dAuth/post3dAuth';
+import ApplicationComponent from './application/application.component';
+import HomeComponent from './pages/home/home.component';
+import ProjectListComponent from './pages/projectList/projectList.component';
+import CvComponent from './pages/cv/cv.component';
+import AboutComponent from './pages/about/about.component';
+import ContactComponent from './pages/contact/contact.component';
+import ProjectDetailComponent from './pages/projectDetail/projectDetail.component';
+import RegisterComponent from './pages/register/register.component';
+import LoginComponent from './pages/login/login.component';
+import ResetComponent from './pages/reset/reset.component';
+import ForgotComponent from './pages/forgot/forgot.component';
+import ActivateComponent from './pages/activate/activate.component';
+import ProfileComponent from './pages/profile/profile.component';
+import Post3dAuthComponent from './pages/post3dAuth/post3dAuth.component';
 
-import CarouselComponent from './common/components/carousel/carousel';
-import FooterComponent from './common/components/footer/footer';
-import NavbarComponent from './common/components/navbar/navbar';
-import PageHeaderComponent from './common/components/pageHeader/pageHeader';
-import { ProjectSearchPipe } from './common/pipes/projectSearch/projectSearch';
+import CarouselComponent from './common/components/carousel/carousel.component';
+import FooterComponent from './common/components/footer/footer.component';
+import NavbarComponent from './common/components/navbar/navbar.component';
+import PageHeaderComponent from './common/components/pageHeader/pageHeader.component';
 
-import { ProjectService } from './common/services/projects';
-import { ProfileService } from './common/services/profile';
-import { ContactService } from './common/services/contact';
-import { AuthService } from './common/services/auth';
-import { AuthGuard } from './common/services/authGuard';
+import { ProjectSearchPipe } from './common/pipes/projectSearch/projectSearch.pipe';
+
+import { ProjectService } from './common/services/projects.service';
+import { ProfileService } from './common/services/profile.service';
+import { ContactService } from './common/services/contact.service';
+import { AuthService } from './common/services/auth.service';
+import { AuthGuard } from './common/services/authGuard.service';
 import { SERVICES } from './common/services/services';
 
 import { ReCaptchaModule } from 'angular2-recaptcha/angular2-recaptcha';

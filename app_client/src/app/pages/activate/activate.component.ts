@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 
-import { AuthService } from '../../common/services/auth';
+import { AuthService } from '../../common/services/auth.service';
 
 @Component({
   selector: 'mmw-activate-page',

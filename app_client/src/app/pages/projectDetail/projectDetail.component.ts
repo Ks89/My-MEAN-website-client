@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { Router } from '@angular/router';
 
-import { Project, ProjectService } from '../../common/services/projects';
+import { Project, ProjectService } from '../../common/services/projects.service';
 
 @Component({
   selector: 'mmw-project-detail-page',

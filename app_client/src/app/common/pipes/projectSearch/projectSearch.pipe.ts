@@ -1,6 +1,6 @@
 import {Injectable, Pipe, PipeTransform} from '@angular/core';
 
-import { Project } from '../../services/projects';
+import { Project } from '../../services/projects.service';
 
 @Pipe({
   name: 'mmwProjectSearchPipe'
