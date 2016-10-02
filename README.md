@@ -33,13 +33,51 @@ If you want to help me to write integration-test's case for PassportJS, check [t
 - MongoDB
 - redis
 - npm
-- Google Chrome
+- Google Chrome and Firefox (mandatory for testing)
+- some global npm dependencies: karma-cli, mocha, webpack@2.1.0-beta.22, typescript, nodemon, gulp@github:gulpjs/gulp#4.0
 - work in progress... (this is only an alpha, please be patient)
 
 
 ## News
+- *??/??/2016* - **My MEAN website** Alpha 2 public release [COMING SOON]
 - *08/15/2016* - **My MEAN website** Alpha 1 public release
 
+## How to install (MacOS)
+- download and install Node.js 6.7 or higher
+- download the latest versions of Google Chrome and Mozilla Firefox
+- set FIREFOX_BIN env variable into .bash_profile, for instance on my Mac:
+  export FIREFOX_BIN="/Applications/FirefoxDeveloperEdition.app"
+  export PATH="$FIREFOX_BIN":"$PATH"
+  And reload your bash_profile with "source ~/.bash_profile"
+- Install homebrew:
+  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  brew update
+  brew upgrade
+- Install homebrew packages
+  brew install readline
+  bew install git-lfs
+  brew install tig
+  brew install wget
+  brew install bash-completion
+- Install MongoDB
+  brew install wget
+  brew install mongodb --with-openssl
+  sudo mkdir -p /data/db
+- Install redis
+  wget http://download.redis.io/redis-stable.tar.gz
+  tar xvzf redis-stable.tar.gz
+  cd redis-stable
+  make install
+  cd ..
+  rm -rf redis-stable
+  rm -f redis-stable.tar.gz
+- Install mandatory global npm packages
+  sudo npm install -g karma-cli
+  sudo npm install --global mocha
+  sudo npm install -g webpack@2.1.0-beta.22
+  sudo npm install -g typescript
+  sudo npm install -g nodemon
+  sudo npm install -g gulp@github:gulpjs/gulp#4.0
 
 ## How to setup
 
@@ -91,8 +129,16 @@ If you want to run server's tests execute these commands:
 
 
 ## How to run tests (client-side)
-Still work in progress...
+cd app_client
+npm run test
 
+
+## How to start
+cd <Main folder>
+nodemon
+cd app_client
+npm run buildDev (or npm run build for production)
+Open your browser http://localhost:3000
 
 ## Features
 Work in progress... (this is only an alpha, please be patient)
