@@ -45,10 +45,6 @@ If you want to help me to write integration-test's case for PassportJS, check [t
 ## How to install (MacOS)
 - download and install Node.js 6.7 or higher
 - download the latest versions of Google Chrome and Mozilla Firefox
-- set FIREFOX_BIN env variable into .bash_profile, for instance on my Mac:
-  export FIREFOX_BIN="/Applications/FirefoxDeveloperEdition.app"
-  export PATH="$FIREFOX_BIN":"$PATH"
-  And reload your bash_profile with "source ~/.bash_profile"
 - Install homebrew:
   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
   brew update
