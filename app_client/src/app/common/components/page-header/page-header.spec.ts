@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, inject, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By }              from '@angular/platform-browser';
 import { DebugElement }    from '@angular/core';
 
@@ -8,6 +8,7 @@ let comp:    PageHeaderComponent;
 let fixture: ComponentFixture<PageHeaderComponent>;
 let titleAndStrap: DebugElement;
 
+//stand-alone test
 describe('PageHeaderComponent', () => {
 
   // asynch beforeEach

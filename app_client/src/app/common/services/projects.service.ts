@@ -1,4 +1,4 @@
-import { EventEmitter, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -61,8 +61,6 @@ export class Project {
 
 @Injectable()
 export class ProjectService {
-  public searchEvent: EventEmitter<any> = new EventEmitter();
-
   constructor(private http: Http) {}
 
   getProjects(): Observable<Project[]> {

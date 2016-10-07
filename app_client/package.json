@@ -11,6 +11,7 @@
     "start": "webpack-dev-server --inline --progress --port 8080",
     "serve:dist": "static dist -H '{\"Cache-Control\": \"no-cache, must-revalidate\"}' -z",
     "test": "karma start karma.conf.js",
+    "buildTest": "node_modules/webpack/bin/webpack.js --config webpack.test.config.js --colors --progress --display-error-details --display-cached --profile",
     "predeploy": "npm run build && rimraf ../server/build/public && mkdirp ../server/build/public",
     "deploy": "copyup dist/* ../server/build/public"
   },
@@ -28,7 +29,7 @@
     "@angular/router": "^3.0.1",
     "@ng-bootstrap/ng-bootstrap": "^1.0.0-alpha.5",
     "angular2-component-outlet": "^2.0.1",
-    "angular2-image-popup": "^1.1.0",
+    "angular2-image-popup": "^1.1.1",
     "angular2-ladda": "^1.0.1",
     "angular2-recaptcha": "^0.3.0",
     "bootstrap": "^4.0.0-alpha.4",
