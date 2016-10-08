@@ -22,7 +22,7 @@ export var PROJECTS: Project[] = [
     "url": "https://github.com/Ks89/BYAManager",
     "iconPath": "assets/images/projects/project_icons/byamanager.png",
     "description": "assets/html/projects/bya/description.html",
-    "shortDescription": "dsffsduhfsduaf asfyhasfuas fy8shfuiqw fUWQHBFUIWEBQ fewhfuwfnoeiwb ewuhfiewn",
+    "shortDescription": "short description 1",
     "license": "apache-v2",
     "licenseText": "assets/html/projects/bya/license.html",
     "visible": true,
@@ -98,11 +98,7 @@ export var PROJECTS: Project[] = [
     "changelog": [
       "assets/html/projects/bya/changelog.html"
     ],
-    "tags": [
-      "java se",
-      "maven",
-      "university"
-    ],
+    "tags": ["java se", "maven", "university"],
     "authors": [
       {
         "name": "dasdasdas",
@@ -130,7 +126,7 @@ export var PROJECTS: Project[] = [
     "url":"https://github.com/deib-polimi/SPF2",
     "iconPath":"assets/images/projects/project_icons/spf.png",
     "description":"assets/html/projects/bya/description.html",
-    "shortDescription":"dsffsduhfsduaf asfyhasfuas fy8shfuiqw fUWQHBFUIWEBQ fewhfuwfnoeiwb ewuhfiewn",
+    "shortDescription":"short description 2",
     "license":"apache-v2",
     "licenseText":"assets/html/projects/bya/license.html",
     "visible":true,
@@ -178,7 +174,7 @@ export var PROJECTS: Project[] = [
     "url":"https://github.com/Ks89/superapp",
     "iconPath":"assets/images/projects/project_icons/superapp.png",
     "description":"assets/html/projects/bya/description.html",
-    "shortDescription":"dsffsduhfsduaf asfyhasfuas fy8shfuiqw fUWQHBFUIWEBQ fewhfuwfnoeiwb ewuhfiewn",
+    "shortDescription":"short description 3",
     "license":"apache-v2",
     "licenseText":"assets/html/projects/bya/license.html",
     "visible":true,
