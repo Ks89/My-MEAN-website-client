@@ -3,7 +3,7 @@ import 'rxjs/add/operator/map';
 import { Http } from '@angular/http';
 
 
-import { ProjectHomeView, ProjectGallery, Author, Project, ProjectService } from './projects.service';
+import { ProjectHomeView, ProjectGallery, Author, Project, ProjectService } from '../services/projects.service';
 
 var homeView: ProjectHomeView = {
   "_id": "57f4409c1ef2e2165ff70348",
