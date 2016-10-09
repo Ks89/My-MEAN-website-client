@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 
 import ProjectListComponent from './project-list.component';
 import { ProjectSearchPipe } from '../../common/pipes';
-import { PROJECTS, FakeProjectService } from '../../common/services/fake-project.service.spec';
+import { PROJECTS, FakeProjectService } from '../../common/testing/fake-project.service.spec';
 import { Project, ProjectService } from '../../common/services';
 
 let comp:    ProjectListComponent;

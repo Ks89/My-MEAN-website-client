@@ -8,6 +8,9 @@ import { Project } from '../../services';
 @Injectable()
 export class ProjectSearchPipe implements PipeTransform {
   transform (projects: Project[], args: string): any {
+    if(args === null || args === undefined) {
+      return projects;
+    }
     if (projects === null || projects.length === 0) {
       return projects;
     } else {

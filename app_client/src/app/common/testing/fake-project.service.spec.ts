@@ -18,7 +18,7 @@ var homeView: ProjectHomeView = {
 export var PROJECTS: Project[] = [
   {
     "_id": "57632b61009f08db1623b606",
-    "name": "BYAManager",
+    "name": "BYAManager prj",
     "url": "https://github.com/Ks89/BYAManager",
     "iconPath": "assets/images/projects/project_icons/byamanager.png",
     "description": "assets/html/projects/bya/description.html",
@@ -122,7 +122,7 @@ export var PROJECTS: Project[] = [
   },
   {
     "_id":"57632b61009f08db1623b605",
-    "name":"SPF",
+    "name":"SPF prj",
     "url":"https://github.com/deib-polimi/SPF2",
     "iconPath":"assets/images/projects/project_icons/spf.png",
     "description":"assets/html/projects/bya/description.html",
