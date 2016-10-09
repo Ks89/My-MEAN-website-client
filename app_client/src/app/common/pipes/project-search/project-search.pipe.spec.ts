@@ -24,21 +24,18 @@ describe('ProjectSearchPipe', () => {
   });
 
   it('filters a valid project list by name, returning only one result', () => {
-    //toEqual compares objects
     expect(pipe.transform(PROJECTS, 'BYA')).toEqual([PROJECTS[0]]);
     expect(pipe.transform(PROJECTS, 'bya')).toEqual([PROJECTS[0]]);
     expect(pipe.transform(PROJECTS, 'bYA')).toEqual([PROJECTS[0]]);
   });
 
   it('filters a valid project list by name, returning only one result', () => {
-    //toEqual compares objects
     expect(pipe.transform(PROJECTS, 'prj')).toEqual([PROJECTS[0], PROJECTS[1]]);
     expect(pipe.transform(PROJECTS, 'PRJ')).toEqual([PROJECTS[0], PROJECTS[1]]);
     expect(pipe.transform(PROJECTS, 'pRj')).toEqual([PROJECTS[0], PROJECTS[1]]);
   });
 
   it('filters a valid project list by shortDescription', () => {
-    //toEqual compares objects
     expect(pipe.transform(PROJECTS, '1')).toEqual([PROJECTS[0]]);
     expect(pipe.transform(PROJECTS, ' 1')).toEqual([PROJECTS[0]]);
     expect(pipe.transform(PROJECTS, 'short description 1')).toEqual([PROJECTS[0]]);
