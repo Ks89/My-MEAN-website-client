@@ -124,4 +124,37 @@ describe('ProjectListComponent', () => {
 
   });
 
+  // it('should request login if not logged in', fakeAsync(() => {
+  //   tick();
+  //   fixture.detectChanges(); // trigger data binding
+  //   const element = fixture.debugElement;
+  //
+  //   const inputFilterEl: HTMLInputElement = element.query(By.css('input')).nativeElement;
+  //   inputFilterEl.value = "BY";
+  //
+  //   tick();
+  //   fixture.detectChanges();
+  //
+  //   inputFilterEl.dispatchEvent(newEvent('input'));
+  //   inputFilterEl.dispatchEvent(new Event('input',{"bubbles":true, "cancelable":false}));
+  //
+  //   tick();
+  //   fixture.detectChanges();
+  //
+  //   // expect(inputFilterEl.value).toBe("BY", 'component hero has new name');
+  //   //fixture.detectChanges();
+  //   expect(inputFilterEl.value).toBe("BY", 'component hero has new name');
+  //
+  //   const projectHeadersFiltered = element.queryAll(By.css('h4.media-heading a'));
+  //   expect(projectHeadersFiltered.length).toBe(3);
+  //   expect(projectHeadersFiltered[1].nativeElement.textContent).toBe(PROJECTS[0].name);
+  //
+  // });
+
 });
+
+function newEvent(eventName: string, bubbles = false, cancelable = false) {
+  let evt = document.createEvent('CustomEvent');  // MUST be 'CustomEvent'
+  evt.initCustomEvent(eventName, bubbles, cancelable, null);
+  return evt;
+}
