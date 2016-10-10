@@ -72,4 +72,45 @@ describe('Http-ProjectService (mockBackend)', () => {
         });
     })));
   });
+
+  describe('when getProjectsForHomepage', () => {
+    let backend: MockBackend;
+    let service: ProjectService;
+    let response: Response;
+
+    let homeProjects: ProjectHomeView[] = PROJECTS.map(prj => prj.projectHomeView);
+
+    beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
+      backend = be;
+      service = new ProjectService(http);
+      let options = new ResponseOptions({status: 200, body: PROJECTS});
+      response = new Response(options);
+    }));
+
+    it('should have expected fake home-projects (Observable.do)', async(inject([], () => {
+      backend.connections.subscribe((c: MockConnection) => c.mockRespond(response));
+      service.getProjectsForHomepage().do(projects => {
+          expect(projects.length).toBe(homeProjects.length, 'should have expected no. of projects');
+          expect(projects).toEqual(homeProjects, 'should have expected no. of projects');
+      });
+    })));
+
+    it('should be OK returning no projects', async(inject([], () => {
+      let resp = new Response(new ResponseOptions({status: 200, body: []}));
+      backend.connections.subscribe((c: MockConnection) => c.mockRespond(resp));
+      service.getProjectsForHomepage()
+        .do(projects => expect(homeProjects.length).toBe(0, 'should have no projects'));
+    })));
+
+    it('should treat 404 as an Observable error', async(inject([], () => {
+      let resp = new Response(new ResponseOptions({status: 404}));
+      backend.connections.subscribe((c: MockConnection) => c.mockRespond(resp));
+      service.getProjectsForHomepage()
+        .do(projects => fail('should not respond with projects'))
+        .catch(err => {
+          expect(err).toMatch(/Bad response status/, 'should catch bad response status code');
+          return Observable.of(null); // failure is the expected test result
+        });
+    })));
+  });
 });
