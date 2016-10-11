@@ -65,17 +65,27 @@ export class ProjectService {
 
   getProjects(): Observable<Project[]> {
     return this.http.get('/api/projects')
-      .map(response => response.json());
+      .map(response => response.json())
+      .catch(this.handleError);
   }
 
   getProjectsById(projectid: string): Observable<Project> {
     return this.http.get(`/api/projects/${projectid}`)
-      .map(response => response.json());
+      .map(response => response.json())
+      .catch(this.handleError);
   }
 
   getProjectsForHomepage(): Observable<Project[]> {
     return this.http.get('/api/projecthome')
-      .map(response => response.json());
+      .map(response => response.json())
+      .catch(this.handleError);
+  }
+
+  private handleError (error: any) {
+    // In a real world app, we might send the error to remote logging infrastructure
+    let errMsg = error.message || 'Server error';
+    console.error(errMsg); // log to console instead
+    return Observable.throw(errMsg);
   }
 
 }
