@@ -42,7 +42,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     HttpModule,
     FormsModule,
     ReactiveFormsModule,
-    NgbModule,
+    NgbModule.forRoot(),
     // LaddaModule,
     ReCaptchaModule,
     routing
