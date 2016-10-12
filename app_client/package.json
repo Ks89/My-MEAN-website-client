@@ -47,6 +47,7 @@
     "zone.js": "^0.6.25"
   },
   "devDependencies": {
+    "@ng-bootstrap/ng-bootstrap": "^1.0.0-alpha.5",
     "@types/es6-shim": "^0.31.32",
     "@types/jasmine": "^2.2.34",
     "@types/jquery": "^2.0.32",
