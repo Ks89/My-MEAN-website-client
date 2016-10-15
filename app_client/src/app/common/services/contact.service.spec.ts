@@ -8,7 +8,7 @@ import 'rxjs/add/operator/do';
 
 import { ContactService } from './contact.service';
 
-const contactSendFormWithCaptchaRequest: Object = {
+const contactSendFormWithCaptchaRequest: any = {
   "response": "fdhijfkandlfjahsfdk-fsdfsdfdgsd-gsdsdgsdg",
   "emailFormData": {
     "email": "fake.email@email.it",
