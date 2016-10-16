@@ -118,8 +118,8 @@ describe('Http-AuthService (mockBackend)', () => {
     let backend: MockBackend;
     let service: AuthService;
 
-    const loginRespAllRequired: any = {"message":"Email fields is required."};
-    const loginRespOk: any = {"message":"An e-mail has been sent to valid@email.com with further instructions."};
+    const forgotRespAllRequired: any = {"message":"Email fields is required."};
+    const forgotRespOk: any = {"message":"An e-mail has been sent to valid@email.com with further instructions."};
 
     beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
       backend = be;
@@ -127,15 +127,15 @@ describe('Http-AuthService (mockBackend)', () => {
     }));
 
     it('should be NOT OK', async(inject([], () => {
-      let resp = getMockedResponse(backend, 400, loginRespAllRequired);
+      let resp = getMockedResponse(backend, 400, forgotRespAllRequired);
       service.forgot({ "email": null })
-        .do(resp => expect(resp).toEqual(loginRespAllRequired));
+        .do(resp => expect(resp).toEqual(forgotRespAllRequired));
     })));
 
     it('should be OK', async(inject([], () => {
-      let resp = getMockedResponse(backend, 200, loginRespOk);
+      let resp = getMockedResponse(backend, 200, forgotRespOk);
       service.forgot({ "email": "valid@email.com" })
-        .do(resp => expect(resp).toEqual(loginRespOk));
+        .do(resp => expect(resp).toEqual(forgotRespOk));
     })));
 
     it('should treat 404 as an Observable error', async(inject([], () => {
@@ -146,6 +146,37 @@ describe('Http-AuthService (mockBackend)', () => {
     function getLoginReq(email: string | void, password: string | void) {
       return { "email": email, "password": password };
     }
+  });
+
+
+  describe('#activate()', () => {
+    let backend: MockBackend;
+    let service: AuthService;
+
+    const activateRespNotExists: any = {"message":"No account with that token exists."};
+    const activateRespOk: any = {"message":"An e-mail has been sent to fakeValid@email.com with further instructions."};
+
+    beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
+      backend = be;
+      service = new AuthService(http);
+    }));
+
+    it('should be NOT OK', async(inject([], () => {
+      let resp = getMockedResponse(backend, 404, activateRespNotExists);
+      service.activate('wrongToken', 'fakeuser')
+        .do(resp => expect(resp).toEqual(activateRespNotExists));
+    })));
+
+    it('should be OK', async(inject([], () => {
+      let resp = getMockedResponse(backend, 200, activateRespOk);
+      service.activate('fakeToken', 'fakeuser')
+        .do(resp => expect(resp).toEqual(activateRespOk));
+    })));
+
+    it('should treat 404 as an Observable error', async(inject([], () => {
+      let resp = getMockedResponse(backend, 404, undefined);
+      testFor404(service.activate(null,null));
+    })));
   });
 
 });
