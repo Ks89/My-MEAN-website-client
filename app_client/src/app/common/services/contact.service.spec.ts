@@ -61,7 +61,7 @@ describe('Http-ContactService (mockBackend)', () => {
     it('should have expected the fake contact response', async(inject([], () => {
       backend.connections.subscribe((c: MockConnection) => c.mockRespond(response));
       service.sendFormWithCaptcha(contactSendFormWithCaptchaRequest)
-        .do(response => expect(response).toBe(contactSendFormWithCaptchaSuccess, 'should be a success'));
+        .do(response => expect(response).toEqual(contactSendFormWithCaptchaSuccess, 'should be a success'));
     })));
 
     it('should treat 404 as an Observable error', async(inject([], () => {

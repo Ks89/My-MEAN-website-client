@@ -19,22 +19,26 @@ describe('Http-AuthService (mockBackend)', () => {
 
   it('can instantiate service when inject service',
     inject([AuthService], (service: AuthService) => {
-      expect(service instanceof AuthService).toBe(true);
+      expect(service instanceof AuthService).toEqual(true);
   }));
 
   it('can instantiate service with "new"', inject([Http], (http: Http) => {
     expect(http).not.toBeNull('http should be provided');
     let service = new AuthService(http);
-    expect(service instanceof AuthService).toBe(true, 'new service should be ok');
+    expect(service instanceof AuthService).toEqual(true, 'new service should be ok');
   }));
 
   it('can provide the mockBackend as XHRBackend', inject([XHRBackend], (backend: MockBackend) => {
       expect(backend).not.toBeNull('backend should be provided');
   }));
 
-  describe('#login()', () => {
+  describe('#register()', () => {
     let backend: MockBackend;
     let service: AuthService;
+
+    const registerRespAlreadyExists: any = {"message": "User already exists. Try to login."};
+    const registerRespAllRequired: any = {"message":"All fields required"};
+    const registerRespOk: any = {"message":"User with email valid@email.com registered."};
 
     beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
       backend = be;
@@ -42,45 +46,40 @@ describe('Http-AuthService (mockBackend)', () => {
     }));
 
     it('should be NOT OK', async(inject([], () => {
-      let resp = getMockedResponse(backend, 400, []);
-      service.register({
-          "name": "dsgyhuij",
-          "email": "alreadyused@email.com",
-          "password": "Qw12345678"
-        })
-        .do(resp => expect(resp).toBe({"message":"User already exists. Try to login."}));
+      let resp = getMockedResponse(backend, 400, registerRespAlreadyExists);
+      service.register(getRegisterReq("fake", "alreadyused@email.com", "fake"))
+        .do(resp => expect(resp).toEqual(registerRespAlreadyExists));
     })));
 
     it('should be NOT OK', async(inject([], () => {
-      let resp = getMockedResponse(backend, 400, []);
-      service.register({
-          "name": "dsgyhuij",
-          "email": null,
-          "password": null
-        })
-        .do(resp => expect(resp).toBe({"message":"All fields required"}));
+      let resp = getMockedResponse(backend, 400, registerRespAllRequired);
+      service.register(getRegisterReq("fake", null, null))
+        .do(resp => expect(resp).toEqual(registerRespAllRequired));
     })));
 
     it('should be OK', async(inject([], () => {
-      let resp = getMockedResponse(backend, 200, []);
-      service.register({
-          "name": "dsgyhuij",
-          "email": "valid@email.com",
-          "password": "Qw12345678"
-        })
-        .do(resp => expect(resp).toBe({"message":"User with email valid@email.com registered."}));
+      let resp = getMockedResponse(backend, 200, registerRespOk);
+      service.register(getRegisterReq("fake", "valid@email.com", "fake"))
+        .do(resp => expect(resp).toEqual(registerRespOk));
     })));
 
     it('should treat 404 as an Observable error', async(inject([], () => {
       let resp = getMockedResponse(backend, 404, undefined);
       testFor404(service.register(null));
     })));
+
+    function getRegisterReq(name: string | void, email: string | void, password: string | void) {
+      return { "name": name, "email": email, "password": password };
+    }
   });
 
-
-  describe('#when login()', () => {
+  describe('#login()', () => {
     let backend: MockBackend;
     let service: AuthService;
+
+    const loginRespIncorrect: any = {"message":"Incorrect username or password. Or this account is not activated, check your mailbox."};
+    const loginRespAllRequired: any = {"message":"All fields required"};
+    const loginRespOk: any = {"token":"JWT.TOKEN"};
 
     beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
       backend = be;
@@ -88,36 +87,65 @@ describe('Http-AuthService (mockBackend)', () => {
     }));
 
     it('should be NOT OK', async(inject([], () => {
-      let resp = getMockedResponse(backend, 401, []);
-      service.login({
-          "email": "notValidOrNotActivated@email.com",
-          "password": "Qw12345678"
-        })
-        .do(resp => expect(resp).toBe({"message":"Incorrect username or password. Or this account is not activated, check your mailbox."}));
+      let resp = getMockedResponse(backend, 401, loginRespIncorrect);
+      service.login(getLoginReq("notValidOrNotActivated@email.com", "fake"))
+        .do(resp => expect(resp).toEqual(loginRespIncorrect));
     })));
 
     it('should be NOT OK', async(inject([], () => {
-      let resp = getMockedResponse(backend, 400, []);
-      service.login({
-          "email": "valid@email.com",
-          "password": null
-        })
-        .do(resp => expect(resp).toBe({"message":"All fields required"}));
+      let resp = getMockedResponse(backend, 400, loginRespAllRequired);
+      service.login(getLoginReq("valid@email.com", null))
+        .do(resp => expect(resp).toEqual(loginRespAllRequired));
     })));
 
     it('should be OK', async(inject([], () => {
-      let resp = getMockedResponse(backend, 200, []);
-      service.login({
-          "email": "valid@email.com",
-          "password": "Qw12345678"
-        })
-        .do(resp => expect(resp).toBe({"token":"JWT.TOKEN"}));
+      let resp = getMockedResponse(backend, 200, loginRespOk);
+      service.login(getLoginReq("valid@email.com", "fake"))
+        .do(resp => expect(resp).toEqual(loginRespOk));
     })));
 
     it('should treat 404 as an Observable error', async(inject([], () => {
       let resp = getMockedResponse(backend, 404, undefined);
       testFor404(service.login(null));
     })));
+
+    function getLoginReq(email: string | void, password: string | void) {
+      return { "email": email, "password": password };
+    }
+  });
+
+  describe('#forgot()', () => {
+    let backend: MockBackend;
+    let service: AuthService;
+
+    const loginRespAllRequired: any = {"message":"Email fields is required."};
+    const loginRespOk: any = {"message":"An e-mail has been sent to valid@email.com with further instructions."};
+
+    beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
+      backend = be;
+      service = new AuthService(http);
+    }));
+
+    it('should be NOT OK', async(inject([], () => {
+      let resp = getMockedResponse(backend, 400, loginRespAllRequired);
+      service.forgot({ "email": null })
+        .do(resp => expect(resp).toEqual(loginRespAllRequired));
+    })));
+
+    it('should be OK', async(inject([], () => {
+      let resp = getMockedResponse(backend, 200, loginRespOk);
+      service.forgot({ "email": "valid@email.com" })
+        .do(resp => expect(resp).toEqual(loginRespOk));
+    })));
+
+    it('should treat 404 as an Observable error', async(inject([], () => {
+      let resp = getMockedResponse(backend, 404, undefined);
+      testFor404(service.forgot(null));
+    })));
+
+    function getLoginReq(email: string | void, password: string | void) {
+      return { "email": email, "password": password };
+    }
   });
 
 });
