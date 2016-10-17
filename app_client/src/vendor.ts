@@ -21,6 +21,6 @@ import 'ng2-validators';
 
 // Other vendor libraries
 import 'jquery';
-import 'bootstrap-loader';
+// import 'bootstrap-loader'; //broken with webpack 2.1 beta 25
 
 require('font-awesome/css/font-awesome.css');

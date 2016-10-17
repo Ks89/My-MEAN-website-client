@@ -17,7 +17,6 @@ const metadata = {
 };
 
 module.exports = webpackMerge(commonConfig, {
-  debug: false,
   output: {
     path    : './',
     filename: '[name].[chunkhash].js',

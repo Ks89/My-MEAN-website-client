@@ -13,7 +13,6 @@ const metadata = {
 };
 
 module.exports = webpackMerge(commonConfig, {
-  debug: true,
   devtool: 'source-map',
   output: {
     path    : './',
