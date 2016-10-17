@@ -272,6 +272,29 @@ describe('Http-AuthService (mockBackend)', () => {
     })));
   });
 
+  describe('#logout()', () => {
+    let backend: MockBackend;
+    let service: AuthService;
+
+    const logoutRespOk: any = {"message":"Logout succeeded"};
+
+    beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
+      backend = be;
+      service = new AuthService(http);
+    }));
+
+    it('should be OK', async(inject([], () => {
+      let resp = getMockedResponse(backend, 200, logoutRespOk);
+      service.logout()
+        .do(resp => expect(resp).toEqual(logoutRespOk));
+    })));
+
+    it('should treat 404 as an Observable error', async(inject([], () => {
+      let resp = getMockedResponse(backend, 404, undefined);
+      testFor404(service.logout());
+    })));
+  });
+
 });
 
 function getMockedResponse(backend: MockBackend, status: number, body: any) {
