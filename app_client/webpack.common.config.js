@@ -2,6 +2,7 @@ const webpack               = require('webpack');
 const DefinePlugin          = require('webpack/lib/DefinePlugin');
 const ProvidePlugin         = require('webpack/lib/ProvidePlugin');
 const OccurrenceOrderPlugin = require('webpack/lib/optimize/OccurrenceOrderPlugin');
+const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
 var HtmlWebpackPlugin       = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var ManifestPlugin          = require('webpack-manifest-plugin');
@@ -15,16 +16,15 @@ module.exports = {
     'app': './src/main.ts'
   },
   resolve: {
-    extensions: ['', '.ts', '.js', '.json', '.css', '.html']
+    extensions: ['.ts', '.js', '.json', '.css', '.html']
   },
   module: {
-    preLoaders: [
+    rules: [
       {
         test: /\.ts$/,
-        loader: 'tslint'
-      }
-    ],
-    loaders: [
+        loader: 'tslint',
+        enforce: 'pre'
+      },
       {test: /\.css$/,   loader: 'raw', exclude: /node_modules/},
       {test: /\.css$/,   loader: 'style!css?-minimize', exclude: /src/},
       {
@@ -83,7 +83,6 @@ module.exports = {
     //   }
     // ]
   },
-  postcss: [autoprefixer],
   plugins: [
     new ManifestPlugin(),
     new InlineManifestWebpackPlugin(),
@@ -115,12 +114,18 @@ module.exports = {
       Tab: "exports?Tab!bootstrap/js/dist/tab",
       Util: "exports?Util!bootstrap/js/dist/util"
       //---------------------------------------------------
+    }),
+    new LoaderOptionsPlugin({
+      debug: true,
+      options: {
+        postcss: [autoprefixer],
+        tslint: {
+          emitErrors: false,
+          failOnHint: false,
+          resourcePath: 'src',
+          formattersDirectory: "node_modules/tslint-loader/formatters/"
+        }
+      }
     })
-  ],
-  tslint: {
-    emitErrors: false,
-    failOnHint: false,
-    resourcePath: 'src',
-    formattersDirectory: "node_modules/tslint-loader/formatters/"
-  }
+  ]
 };

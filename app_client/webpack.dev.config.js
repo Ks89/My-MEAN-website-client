@@ -16,7 +16,6 @@ const metadata = {
 };
 
 module.exports = webpackMerge(commonConfig, {
-  debug: true,
   devServer: {
     contentBase: 'src',
     historyApiFallback: true,
