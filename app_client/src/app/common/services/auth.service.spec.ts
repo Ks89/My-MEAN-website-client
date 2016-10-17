@@ -148,7 +148,6 @@ describe('Http-AuthService (mockBackend)', () => {
     }
   });
 
-
   describe('#activate()', () => {
     let backend: MockBackend;
     let service: AuthService;
@@ -176,6 +175,100 @@ describe('Http-AuthService (mockBackend)', () => {
     it('should treat 404 as an Observable error', async(inject([], () => {
       let resp = getMockedResponse(backend, 404, undefined);
       testFor404(service.activate(null,null));
+    })));
+  });
+
+  describe('#reset()', () => {
+    let backend: MockBackend;
+    let service: AuthService;
+
+    const resetRespAllRequired: any = {"message":"No account with that token exists."};
+    const resetRespOk: any = {"message":"An e-mail has been sent to valid@email.com with further instructions."};
+
+    beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
+      backend = be;
+      service = new AuthService(http);
+    }));
+
+    it('should be NOT OK', async(inject([], () => {
+      let resp = getMockedResponse(backend, 400, resetRespAllRequired);
+      service.reset("valid@email.com", "newPassword")
+        .do(resp => expect(resp).toEqual(resetRespAllRequired));
+    })));
+
+    it('should be OK', async(inject([], () => {
+      let resp = getMockedResponse(backend, 200, resetRespOk);
+      service.reset("valid@email.com", "newPassword")
+        .do(resp => expect(resp).toEqual(resetRespOk));
+    })));
+
+    it('should treat 404 as an Observable error', async(inject([], () => {
+      let resp = getMockedResponse(backend, 404, undefined);
+      testFor404(service.reset(null, null));
+    })));
+  });
+
+  describe('#unlink()', () => {
+    let backend: MockBackend;
+    let service: AuthService;
+
+    const unlinkRespOk: any = "User unlinked correctly!";
+
+    beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
+      backend = be;
+      service = new AuthService(http);
+    }));
+
+    it('should be OK', async(inject([], () => {
+      let resp = getMockedResponse(backend, 200, unlinkRespOk);
+      service.unlink('github') // a valid serviceName
+        .do(resp => expect(resp).toEqual(unlinkRespOk));
+    })));
+
+    it('should treat 404 as an Observable error', async(inject([], () => {
+      let resp = getMockedResponse(backend, 404, undefined);
+      testFor404(service.unlink(null));
+    })));
+  });
+
+  describe('#getUserById()', () => {
+    let backend: MockBackend;
+    let service: AuthService;
+
+    const getUserByIdRespOk: any = {
+      "_id":"validId",
+      "__v":0,
+      "profile":{
+        "name":"gybhunj",
+        "surname":"vgbhjn",
+        "nickname":"vghbjn",
+        "email":"vghbjn",
+        "updated":"2016-09-05T19:23:48.008Z",
+        "visible":true,
+        "_id":"profileId"
+      },
+      "google":{
+        "email":"valid.google@email.com",
+        "id":"googleId",
+        "name":"Fake name",
+        "token":"fakeToken"
+      }
+    };
+
+    beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
+      backend = be;
+      service = new AuthService(http);
+    }));
+
+    it('should be OK', async(inject([], () => {
+      let resp = getMockedResponse(backend, 200, getUserByIdRespOk);
+      service.getUserById('validId')
+        .do(resp => expect(resp).toEqual(getUserByIdRespOk));
+    })));
+
+    it('should treat 404 as an Observable error', async(inject([], () => {
+      let resp = getMockedResponse(backend, 404, undefined);
+      testFor404(service.getUserById(null));
     })));
   });
 
