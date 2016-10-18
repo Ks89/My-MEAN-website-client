@@ -61,19 +61,7 @@ module.exports = {
         loader: "file-loader"
       },
       // Bootstrap 4
-      { test: /bootstrap\/dist\/js\/umd\//, loader: 'imports?jQuery=jquery' },
-
-      // Instanbul
-      {
-        enforce: 'post',
-        test: /\.(js|ts)$/,
-        loader: 'istanbul-instrumenter-loader',
-        include: './src',
-        exclude: [
-          /\.(e2e|spec)\.ts$/,
-          /node_modules/
-        ]
-      }
+      { test: /bootstrap\/dist\/js\/umd\//, loader: 'imports?jQuery=jquery' }
     ]
     // noParse: [path.join(__dirname, 'node_modules', 'angular2', 'bundles')]
   },

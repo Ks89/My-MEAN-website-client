@@ -5,15 +5,26 @@
   "private": true,
   "scripts": {
     "clean": "rimraf dist",
+    "clean-coverage": "rimraf coverage",
     "prebuild": "npm run clean",
     "build": "node_modules/webpack/bin/webpack.js --config webpack.prod.config.js --colors --progress --display-error-details --display-cached --profile",
     "buildDev": "node_modules/webpack/bin/webpack.js --config webpack.dev.config.js --colors --progress --display-error-details --display-cached --profile",
     "start": "webpack-dev-server --inline --progress --port 8080",
     "serve:dist": "static dist -H '{\"Cache-Control\": \"no-cache, must-revalidate\"}' -z",
+    "pretest": "npm run clean-coverage",
     "test": "karma start karma.conf.js",
+    "posttest": "npm run coverage",
+    "tslint": "tslint",
+    "lint": "npm run tslint \"src/**/*.ts\"",
+    "coverage": "npm run coverage:json && npm run coverage:html && npm run coverage:lcov",
+    "coverage:init": "remap-istanbul -i coverage/coverage.json",
+    "coverage:json": "npm run coverage:init -- -o coverage/coverage-final.json -t json",
+    "coverage:html": "npm run coverage:init -- -o coverage/html-report -t html",
+    "coverage:lcov": "npm run coverage:init -- -o coverage/lcov.info -t lcovonly",
     "buildTest": "node_modules/webpack/bin/webpack.js --config webpack.test.config.js --colors --progress --display-error-details --display-cached --profile",
     "predeploy": "npm run build && rimraf ../server/build/public && mkdirp ../server/build/public",
-    "deploy": "copyup dist/* ../server/build/public"
+    "deploy": "copyup dist/* ../server/build/public",
+    "coveralls": "coveralls < ./coverage/lcov.info"
   },
   "engines": {
     "npm": ">=3.10.3"
