@@ -20,7 +20,7 @@ import '@ng-bootstrap/ng-bootstrap';
 import 'ng2-validators';
 
 // Other vendor libraries
-// import 'jquery';   //uncomment with bootstrap-loader
-// import 'bootstrap-loader'; //broken with webpack 2.1 beta 25
+import 'jquery';
+import 'bootstrap-loader';
 
 import 'font-awesome-sass-loader';

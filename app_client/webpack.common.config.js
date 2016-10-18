@@ -60,7 +60,7 @@ module.exports = {
         loader: "file-loader"
       },
       // Bootstrap 4
-      // { test: /bootstrap\/dist\/js\/umd\//, loader: 'imports?jQuery=jquery' },
+      { test: /bootstrap\/dist\/js\/umd\//, loader: 'imports?jQuery=jquery' },
 
       // Instanbul
       {
@@ -111,6 +111,8 @@ module.exports = {
     new LoaderOptionsPlugin({
       debug: true,
       options: {
+        context: __dirname,
+        output: { path :  "./" },
         postcss: [autoprefixer],
         tslint: {
           emitErrors: false,
