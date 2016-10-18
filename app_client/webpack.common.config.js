@@ -16,75 +16,65 @@ module.exports = {
     'app': './src/main.ts'
   },
   resolve: {
-    extensions: ['.ts', '.js', '.json', '.css', '.html']
+    descriptionFiles: ['package.json'],
+    extensions: ['.ts', '.js', '.css', '.scss', 'json', '.html']
   },
   module: {
     rules: [
       {
+        enforce: 'pre',
         test: /\.ts$/,
-        loader: 'tslint',
-        enforce: 'pre'
+        loader: 'tslint'
       },
-      {test: /\.css$/,   loader: 'raw', exclude: /node_modules/},
-      {test: /\.css$/,   loader: 'style!css?-minimize', exclude: /src/},
       {
-        test: /\.scss$/,
-        exclude: /node_modules/,
-        loaders: ['raw-loader', 'sass-loader']
-      },
-      {test: /\.html$/,  loader: 'raw'},
-      {test: /\.ts$/,   loaders: [
+        test: /\.ts$/,
+        loaders: [
           'awesome-typescript-loader',
           'angular2-template-loader'
         ],
         exclude: [/\.(spec|e2e)\.ts$/]
       },
-      {test: /\.woff$/,  loader: 'url?limit=10000&mimetype=application/font-woff'},
-      {test: /\.woff2$/, loader: 'url?limit=10000&mimetype=application/font-woff'},
-      {test: /\.ttf$/,   loader: 'url?limit=10000&mimetype=application/octet-stream'},
-      {test: /\.svg$/,   loader: 'url?limit=10000&mimetype=image/svg+xml'},
-      {test: /\.eot$/,   loader: 'file'},
-
+      {
+        test: /\.html$/,
+        loader: 'raw-loader'
+      },
+      {
+       test: /\.css$/,
+       loader: 'raw-loader!style-loader!css-loader!postcss-loader'
+      },
+      {
+        test: /\.scss$/,
+        exclude: /node_modules/,
+        loaders: ['raw-loader', 'sass-loader']
+      },
+      {
+        test: /\.json$/,
+        loader: 'json-loader'
+      },
+      {
+        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: "url-loader?limit=10000&mimetype=application/font-woff"
+      },
+      {
+        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: "file-loader"
+      },
       // Bootstrap 4
       // { test: /bootstrap\/dist\/js\/umd\//, loader: 'imports?jQuery=jquery' },
 
       // Instanbul
-      // {
-      //   enforce: 'post',
-      //   test: /\.(js|ts)$/,
-      //   loader: 'istanbul-instrumenter-loader',
-      //   include: 'src',
-      //   exclude: [
-      //     /\.(e2e|spec)\.ts$/,
-      //     /node_modules/
-      //   ]
-      // }
+      {
+        enforce: 'post',
+        test: /\.(js|ts)$/,
+        loader: 'istanbul-instrumenter-loader',
+        include: 'src',
+        exclude: [
+          /\.(e2e|spec)\.ts$/,
+          /node_modules/
+        ]
+      }
     ]
     // noParse: [path.join(__dirname, 'node_modules', 'angular2', 'bundles')]
-    // loaders: [
-    //   {
-    //     test: /\.ts$/,
-    //     loaders: ['awesome-typescript-loader', 'angular2-template-loader']
-    //   },
-    //   {
-    //     test: /\.html$/,
-    //     loader: 'html'
-    //   },
-    //   {
-    //     test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/,
-    //     loader: 'file?name=assets/[name].[hash].[ext]'
-    //   },
-    //   {
-    //     test: /\.css$/,
-    //     exclude: helpers.root('src', 'app'),
-    //     loader: ExtractTextPlugin.extract('style', 'css?sourceMap')
-    //   },
-    //   {
-    //     test: /\.css$/,
-    //     include: helpers.root('src', 'app'),
-    //     loader: 'raw'
-    //   }
-    // ]
   },
   plugins: [
     new ManifestPlugin(),
@@ -130,5 +120,14 @@ module.exports = {
         }
       }
     })
-  ]
+  ],
+
+  node: {
+     fs: 'empty',
+     global: true,
+     crypto: 'empty',
+     module: false,
+     clearImmediate: false,
+     setImmediate: false
+  }
 };

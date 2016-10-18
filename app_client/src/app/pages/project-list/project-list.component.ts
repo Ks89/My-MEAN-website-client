@@ -5,7 +5,7 @@ import { Project, ProjectService } from '../../common/services';
 
 @Component({
   selector: 'mmw-project-list-page',
-  styleUrls: ['timeline.css'],
+  styleUrls: ['timeline.scss'],
   templateUrl: 'project-list.html'
 })
 export default class ProjectListComponent {
