@@ -24,7 +24,8 @@ module.exports = {
       {
         enforce: 'pre',
         test: /\.ts$/,
-        loader: 'tslint'
+        loader: 'tslint',
+        exclude: [/\.(spec|e2e)\.ts$/]
       },
       {
         test: /\.ts$/,
@@ -67,7 +68,7 @@ module.exports = {
         enforce: 'post',
         test: /\.(js|ts)$/,
         loader: 'istanbul-instrumenter-loader',
-        include: 'src',
+        include: './src',
         exclude: [
           /\.(e2e|spec)\.ts$/,
           /node_modules/
