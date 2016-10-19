@@ -1,7 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
 
-const helpers = require('./helpers');
+const helpers = require('./webpack.helpers');
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin');
 
 module.exports = {
@@ -61,10 +61,6 @@ module.exports = {
     ]
   },
   plugins: [
-    // new DefinePlugin({'webpack': {'ENV': JSON.stringify(metadata.ENV)}}),
-    // new LoaderOptionsPlugin({
-    //   debug: true
-    // }),
     new ContextReplacementPlugin(
       // The (\\|\/) piece accounts for path separators in *nix and Windows
       /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
