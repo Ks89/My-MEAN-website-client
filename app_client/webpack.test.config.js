@@ -1,33 +1,22 @@
-const webpack               = require('webpack');
-const path                  = require('path');
-const DefinePlugin = require('webpack/lib/DefinePlugin');
-const ProvidePlugin         = require('webpack/lib/ProvidePlugin');
+const webpack = require('webpack');
+const path = require('path');
+
+const helpers = require('./helpers');
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin');
-const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
-
-const ENV  = process.env.NODE_ENV = 'development';
-const HOST = process.env.HOST || 'localhost';
-const PORT = process.env.PORT || 8080;
-
-const metadata = {
-  env : ENV,
-  host: HOST,
-  port: PORT
-};
 
 module.exports = {
-  devtool: 'source-map',
+  devtool: 'inline-source-map',
   resolve: {
-    extensions: ['.ts', '.js', '.css', '.scss', 'json', '.html']
+    extensions: ['.ts', '.js', '.scss'],
+    modules: ['node_modules', helpers.root('src')]
   },
   module: {
     rules: [
-      // Instanbul
       {
-        enforce: 'post',
         test: /\.(js|ts)$/,
+        enforce: 'post',
         loader: 'istanbul-instrumenter-loader',
-        include: './src',
+        include: helpers.root('src'),
         exclude: [
           /\.(e2e|spec)\.ts$/,
           /node_modules/
@@ -35,50 +24,51 @@ module.exports = {
       },
       {
         test: /\.ts$/,
-        loaders: [
-          'awesome-typescript-loader',
-          'angular2-template-loader'
-        ],
-        // DON'T USE THIS WITH TESTS -> exclude: [/\.(spec|e2e)\.ts$/]
+        loader: 'awesome-typescript-loader',
+        query: {
+          module: 'commonjs',
+          sourceMap: false,
+          inlineSourceMap: true
+        }
+      },
+      {
+        test: /\.ts$/,
+        loader: 'angular2-template-loader'
       },
       {
         test: /\.html$/,
-        loader: 'raw-loader'
+        loader: 'html'
       },
       {
-       test: /\.css$/,
-       loader: 'raw-loader!style-loader!css-loader!postcss-loader'
+        test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)/,
+        loader: 'null'
+      },
+      {
+        test: /\.css$/,
+        exclude: helpers.root('src', 'app'),
+        loader: 'null'
+      },
+      {
+        test: /\.css$/,
+        include: helpers.root('src', 'app'),
+        loader: 'raw'
       },
       {
         test: /\.scss$/,
         exclude: /node_modules/,
         loaders: ['raw-loader', 'sass-loader']
-      },
-      {
-        test: /\.json$/,
-        loader: 'json-loader'
-      },
-      {
-        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: "url-loader?limit=10000&mimetype=application/font-woff"
-      },
-      {
-        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: "file-loader"
-      },
-      // Bootstrap 4
-      // { test: /bootstrap\/dist\/js\/umd\//, loader: 'imports?jQuery=jquery' },
+      }
     ]
   },
   plugins: [
-    new DefinePlugin({'webpack': {'ENV': JSON.stringify(metadata.ENV)}}),
-    new LoaderOptionsPlugin({
-      debug: true
-    }),
+    // new DefinePlugin({'webpack': {'ENV': JSON.stringify(metadata.ENV)}}),
+    // new LoaderOptionsPlugin({
+    //   debug: true
+    // }),
     new ContextReplacementPlugin(
       // The (\\|\/) piece accounts for path separators in *nix and Windows
       /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
-      path.join(__dirname, 'src') // location of your src
+      helpers.root('./src') // location of your src
     )
   ]
 }

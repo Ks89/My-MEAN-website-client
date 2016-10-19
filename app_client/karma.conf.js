@@ -1,43 +1,33 @@
 module.exports = function (config) {
   config.set({
-    browsers     : ['Chrome', 'Firefox'],
-    // base path that will be used to resolve all patterns (e.g. files, exclude)
     basePath: '',
-    frameworks   : ['jasmine', 'source-map-support'],
-    exclude: [ ],
+    frameworks   : ['jasmine'],
     files        : [{pattern: './karma-test-runner.js', watched: false}],
-    preprocessors: {'./karma-test-runner.js': ['webpack'] },
-    webpack      : require('./webpack.test.config.js'),
+    preprocessors: {'./karma-test-runner.js': ['coverage', 'webpack', 'sourcemap']},
+    webpack      : require('./webpack.test.config'),
 
-    // webpackMiddleware: {
-    //   stats: 'errors-only'
-    // },
+    webpackMiddleware: {
+      stats: 'errors-only'
+    },
 
     webpackServer: { noInfo: true },
 
     coverageReporter: {
-        dir: 'coverage',
-        reporters: [
-            {
-                type: 'json',
-                subdir: '.',
-                file: 'coverage.json'
-            }
-        ]
+        type: 'in-memory'
     },
 
-    reporters: ['progress', 'mocha', 'coverage'],
+    remapCoverageReporter: {
+      'text-summary': null,
+      'json': './coverage/coverage.json',
+      'html': './coverage/html',
+      'lcovonly': './coverage/lcov.info'
+    },
 
-    // web server port
-    // port: 9876,
-
-    // enable / disable colors in the output (reporters and logs)
+    reporters: ['progress', 'mocha', 'coverage', 'remap-coverage'],
+    port: 9876,
     colors: true,
-
-    // level of logging
-    // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
     logLevel: config.LOG_INFO,
-
+    browsers     : ['Chrome', 'Firefox'],
     singleRun    : true
   });
 };

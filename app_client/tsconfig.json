@@ -1,24 +1,26 @@
 {
   "compilerOptions": {
+    "target": "ES5",
+    "module": "es6",
+    "moduleResolution": "node",
+    "sourceMap": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "noEmit": true,
-    "sourceMap": true,
-    "target": "ES5",
-    "types": ["es6-shim", "jasmine"]
+    "removeComments": false,
+    "noImplicitAny": false,
+    "typeRoots": [
+      "node_modules/@types"
+    ]
   },
   "exclude": [
     "node_modules",
+    "coverage",
     "config",
-    "assets",
-    "e2e",
-    "src/**/*.spec.ts"
+    "dist",
+    "report"
   ],
 
   "awesomeTypescriptLoaderOptions": {
-    "forkChecker": true,
     "useWebpackText": true
   },
 

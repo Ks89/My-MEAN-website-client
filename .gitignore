@@ -41,11 +41,14 @@ app_client/.DS_Store
 *.log
 
 # Compiled front-end files
-app_client/dist
-app_client/bundle.js
-app_client/bundle.js.map
-app_client/bundle.js.gz
-app_client/vendor.bundle.js
-app_client/vendor.bundle.js.gz
-app_client/vendor.bundle.js.map
+app_client/build
 app_client/index.html
+app_client/manifest.json
+app_client/*app.*
+app_client/*polyfills.*
+app_client/*vendor.*
+app_client/*.ttf
+app_client/*.eot
+app_client/*.woff
+app_client/*.svg
+app_client/*.woff2
