@@ -19,22 +19,3 @@ var testing = require('@angular/core/testing');
 var browser = require('@angular/platform-browser-dynamic/testing');
 
 testing.TestBed.initTestEnvironment(browser.BrowserDynamicTestingModule, browser.platformBrowserDynamicTesting());
-
-
-// var testing = require('@angular/core/testing');
-// var browser = require('@angular/platform-browser-dynamic/testing');
-//
-// testing.TestBed.initTestEnvironment(
-//     browser.BrowserDynamicTestingModule,
-//     browser.platformBrowserDynamicTesting());
-//
-// Object.assign(global, testing);
-//
-//
-// var testContext = require.context('./src', true, /\.spec\.ts/);
-//
-// function requireAll(requireContext) {
-//   return requireContext.keys().map(requireContext);
-// }
-//
-// var modules = requireAll(testContext);
