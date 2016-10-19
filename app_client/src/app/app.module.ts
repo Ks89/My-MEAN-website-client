@@ -33,7 +33,7 @@ import { ReCaptchaModule } from 'angular2-recaptcha/angular2-recaptcha';
 // import { ComponentOutlet } from 'angular2-component-outlet';
 import { SimplePageScroll } from 'ng2-simple-page-scroll';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-// import { LaddaModule } from 'angular2-ladda';
+import { LaddaModule } from 'angular2-ladda';
 // import { UPLOAD_DIRECTIVES } from 'ng2-uploader/ng2-uploader';
 
 @NgModule({
@@ -43,7 +43,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     FormsModule,
     ReactiveFormsModule,
     NgbModule.forRoot(),
-    // LaddaModule,
+    LaddaModule,
     ReCaptchaModule,
     routing
   ],
