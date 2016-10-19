@@ -2,26 +2,18 @@ import '@angular/forms';
 import '@angular/platform-browser-dynamic';
 import '@angular/http';
 import '@angular/router';
-
-// RxJS
 import 'rxjs';
 
-import 'ng2-simple-page-scroll';
-
-import 'angular2-component-outlet';
-
-// TODO FIXME - BROKEN PACKAGE temporary removed
-// import "angular2-image-popup/app/main";
-
+// Third party opensource libraries
+import "angular2-image-popup";
 import 'angular2-ladda';
-
-// ---------------------------------------------------------------
+import 'ng2-simple-page-scroll';
+import 'angular2-component-outlet';
 import 'angular2-recaptcha/angular2-recaptcha';
 import '@ng-bootstrap/ng-bootstrap';
 import 'ng2-validators';
 
-// Other vendor libraries
+// Other famous libraries
 import 'jquery';
-import 'bootstrap-loader';
-
-import 'font-awesome-sass-loader';
+import 'bootstrap-loader'; // used to import bootstrap as scss
+import 'font-awesome-sass-loader'; // used to import font-awesome as scss

@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 @Component({
   selector: 'my-application',
-  templateUrl: 'application.html'
+  styleUrls: ['application.scss'],
+  templateUrl: 'application.html',
+  encapsulation: ViewEncapsulation.None
 })
 export default class ApplicationComponent {}

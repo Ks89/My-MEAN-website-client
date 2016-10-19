@@ -29,12 +29,11 @@ import { ProjectSearchPipe } from './common/pipes/project-search/project-search.
 import { SERVICES } from './common/services/services';
 
 import { ReCaptchaModule } from 'angular2-recaptcha/angular2-recaptcha';
-// import { ImageModal } from 'angular2-image-popup/directives/angular2-image-popup/image-modal-popup';
+import { ImageModal } from 'angular2-image-popup/directives/angular2-image-popup/image-modal-popup';
 // import { ComponentOutlet } from 'angular2-component-outlet';
 import { SimplePageScroll } from 'ng2-simple-page-scroll';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LaddaModule } from 'angular2-ladda';
-// import { UPLOAD_DIRECTIVES } from 'ng2-uploader/ng2-uploader';
 
 @NgModule({
   imports: [
@@ -67,10 +66,9 @@ import { LaddaModule } from 'angular2-ladda';
     NavbarComponent,
     PageHeaderComponent,
     ProjectSearchPipe,
-    // ImageModal,
+    ImageModal,
     // ComponentOutlet,
     SimplePageScroll,
-  //  UPLOAD_DIRECTIVES
   ],
   providers: [
     appRoutingProviders,
