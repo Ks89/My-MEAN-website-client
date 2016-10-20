@@ -2,7 +2,7 @@ const webpack               = require('webpack');
 const DefinePlugin          = require('webpack/lib/DefinePlugin');
 const CommonsChunkPlugin    = require('webpack/lib/optimize/CommonsChunkPlugin');
 var webpackMerge = require('webpack-merge');
-var commonConfig = require('./webpack.common.config.js');
+var commonConfig = require('./webpack.common.js');
 
 const ENV  = process.env.NODE_ENV = 'development';
 const HOST = process.env.HOST || 'localhost';
@@ -17,7 +17,7 @@ const metadata = {
 
 module.exports = webpackMerge(commonConfig, {
   devServer: {
-    contentBase: 'src',
+    contentBase: './src',
     historyApiFallback: true,
     host: metadata.host,
     port: metadata.port,
@@ -33,7 +33,7 @@ module.exports = webpackMerge(commonConfig, {
     path    : './',
     filename: '[name].js',
     chunkFilename: '[name].js',
-    publicPath: './'
+    // publicPath: './'
   },
   plugins: [
     new CommonsChunkPlugin({

@@ -106,8 +106,8 @@ module.exports = {
         tslint: {
           emitErrors: false,
           failOnHint: false,
-          resourcePath: 'src',
-          formattersDirectory: "node_modules/tslint-loader/formatters/"
+          resourcePath: './src',
+          formattersDirectory: "./node_modules/tslint-loader/formatters/"
         }
       }
     })

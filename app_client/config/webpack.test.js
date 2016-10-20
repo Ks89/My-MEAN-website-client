@@ -64,7 +64,7 @@ module.exports = {
     new ContextReplacementPlugin(
       // The (\\|\/) piece accounts for path separators in *nix and Windows
       /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
-      helpers.root('./src') // location of your src
+      helpers.root('src') // location of your src
     )
   ]
 }

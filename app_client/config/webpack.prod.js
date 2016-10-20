@@ -8,7 +8,7 @@ var ManifestPlugin          = require('webpack-manifest-plugin');
 // var ChunkManifestPlugin           = require('chunk-manifest-webpack-plugin');
 var WebpackMd5HashPlugin          = require('webpack-md5-hash');
 var webpackMerge = require('webpack-merge');
-var commonConfig = require('./webpack.common.config.js');
+var commonConfig = require('./webpack.common.js');
 
 const ENV = process.env.NODE_ENV = 'production';
 const metadata = {
@@ -18,10 +18,10 @@ const metadata = {
 
 module.exports = webpackMerge(commonConfig, {
   output: {
-    path    : './',
+    path    : '',
     filename: '[name].[chunkhash].js',
     chunkFilename: '[name].[chunkhash].js',
-    publicPath: './'
+    //publicPath: ''
   },
   plugins: [
     new CommonsChunkPlugin({

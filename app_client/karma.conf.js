@@ -1,10 +1,12 @@
+var webpackConfig = require('./config/webpack.test');
+
 module.exports = function (config) {
   config.set({
     basePath: '',
     frameworks   : ['jasmine'],
-    files        : [{pattern: './karma-test-runner.js', watched: false}],
-    preprocessors: {'./karma-test-runner.js': ['coverage', 'webpack', 'sourcemap']},
-    webpack      : require('./webpack.test.config'),
+    files        : [{pattern: './config/karma-test-runner.js', watched: false}],
+    preprocessors: {'./config/karma-test-runner.js': ['coverage', 'webpack', 'sourcemap']},
+    webpack      : webpackConfig,
 
     webpackMiddleware: {
       stats: 'errors-only'
