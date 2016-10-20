@@ -39,7 +39,6 @@
     "@angular/platform-browser-dynamic": "^2.1.0",
     "@angular/router": "^3.1.0",
     "@ng-bootstrap/ng-bootstrap": "^1.0.0-alpha.7",
-    "angular2-component-outlet": "^3.0.1",
     "angular2-image-popup": "^1.1.1",
     "angular2-ladda": "^1.0.4",
     "angular2-recaptcha": "^0.3.0",
