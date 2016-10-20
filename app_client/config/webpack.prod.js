@@ -18,10 +18,10 @@ const metadata = {
 
 module.exports = webpackMerge(commonConfig, {
   output: {
-    path    : '',
+    path    : './',
     filename: '[name].[chunkhash].js',
     chunkFilename: '[name].[chunkhash].js',
-    //publicPath: ''
+    publicPath: './'
   },
   plugins: [
     new CommonsChunkPlugin({

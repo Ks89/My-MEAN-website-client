@@ -1,7 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
 
-const helpers = require('./webpack.helpers');
+const helpers = require('./helpers');
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin');
 
 module.exports = {

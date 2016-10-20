@@ -33,7 +33,7 @@ module.exports = webpackMerge(commonConfig, {
     path    : './',
     filename: '[name].js',
     chunkFilename: '[name].js',
-    // publicPath: './'
+    publicPath: './'
   },
   plugins: [
     new CommonsChunkPlugin({
