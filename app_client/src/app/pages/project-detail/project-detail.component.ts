@@ -7,7 +7,7 @@ import { Project, ProjectService } from '../../common/services';
 
 @Component({
   selector: 'mmw-project-detail-page',
-  styleUrls: ['bs_doc.css'],
+  styleUrls: ['bs_doc.scss'],
   templateUrl: 'project-detail.html'
 })
 export default class ProjectDetailComponent implements OnInit, OnDestroy {
@@ -17,12 +17,12 @@ export default class ProjectDetailComponent implements OnInit, OnDestroy {
   public images: Object[];
 
   public self = this;
-  public descriptionUrl: any;
-  public changelogUrl: any;
-  public releasesUrl: any;
-  public featuresUrl: any;
-  public futureExtensionsUrl: any;
-  public licenseUrl: any;
+  public descriptionHtml: any;
+  public changelogHtml: any;
+  public releasesHtml: any;
+  public featuresHtml: any;
+  public futureExtensionsHtml: any;
+  public licenseHtml: any;
 
   private subscription: Subscription;
 
@@ -46,20 +46,14 @@ export default class ProjectDetailComponent implements OnInit, OnDestroy {
         this.project = project;
         this.images = project.gallery;
         this.pageHeader.title = this.project.name; // replace pageHeader's title with projectName
-        this.descriptionUrl = this.project.description;
-        this.changelogUrl = this.project.changelog;
-        this.releasesUrl = this.project.releases;
-        this.featuresUrl = this.project.features;
-        this.futureExtensionsUrl = this.project.futureExtensions;
-        this.licenseUrl = this.project.licenseText;
+        this.descriptionHtml = this.project.description;
+        this.changelogHtml = this.project.changelog;
+        this.releasesHtml = this.project.releases;
+        this.featuresHtml = this.project.features;
+        this.futureExtensionsHtml = this.project.futureExtensions;
+        this.licenseHtml = this.project.licenseText;
       }, error => console.error(error)
     );
-  }
-
-  getInnerUrl(anchor: string) {
-    console.log(this.router.url);
-    return this.router.url + '#' + anchor;
-
   }
 
   ngOnDestroy(): any {

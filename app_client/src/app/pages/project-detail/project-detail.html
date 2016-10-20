@@ -6,6 +6,7 @@
     <div class="col-xs-12 col-sm-12 col-md-11 col-lg-10">
         <section id="Description">
             <h3>Description</h3>
+            <div [innerHtml]="descriptionHtml"></div>
             <!-- https://github.com/Ks89/angular2-component-outlet -->
             <!-- <div *componentOutlet="descriptionUrl; context: self; selector:'my-component'"></div> -->
         </section>
@@ -13,19 +14,23 @@
             <h3>News</h3>
             <div id="Changelog">
                 <h4>Changelog</h4>
+                <div [innerHtml]="changelogHtml"></div>
                 <!-- <div *componentOutlet="changelogUrl; context: self; selector:'my-component'"></div> -->
             </div>
             <div id="Releases">
                 <h4>Releases</h4>
+                <div [innerHtml]="releasesHtml"></div>
                 <!-- <div *componentOutlet="releasesUrl; context: self; selector:'my-component'"></div> -->
             </div>
         </section>
         <section id="Features">
             <h3>Features</h3>
+            <div [innerHtml]="featuresHtml"></div>
             <!-- <div *componentOutlet="featuresUrl; context: self; selector:'my-component'"></div> -->
         </section>
         <section id="FutureExtensions">
             <h3>Future extensions</h3>
+            <div [innerHtml]="futureExtensionsHtml"></div>
             <!-- <div *componentOutlet="futureExtensionsUrl; context: self; selector:'my-component'"></div> -->
         </section>
         <section id="Video">
@@ -40,6 +45,7 @@
         </section>
         <section id="License">
             <h3>License</h3>
+            <div [innerHtml]="licenseHtml"></div>
             <!-- <div *componentOutlet="licenseUrl; context: self; selector:'my-component'"></div> -->
         </section>
     </div>
