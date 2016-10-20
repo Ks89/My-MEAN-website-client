@@ -185,7 +185,7 @@ app.use(function (err, req, res, next) {
   }
   // handle CSRF token errors here
   res.status(403);
-  res.send('session has expired or form tampered with');
+  res.json({"message" : 'session has expired or form tampered with'});
 });
 
 
