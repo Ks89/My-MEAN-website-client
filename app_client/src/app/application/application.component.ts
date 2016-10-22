@@ -1,6 +1,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 @Component({
-  selector: 'my-application',
+  selector: 'mmw-application',
   styleUrls: ['application.scss'],
   templateUrl: 'application.html',
   encapsulation: ViewEncapsulation.None

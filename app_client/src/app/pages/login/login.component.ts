@@ -48,19 +48,19 @@ export default class LoginComponent {
           console.log(response);
           this.isWaiting = false;
           this.authService.getLoggedUser().subscribe(
-            response => {
+            result => {
 
               console.log('**************************');
-              console.log(response);
+              console.log(result);
               console.log('**************************');
 
               this.loginAlert = {
                 visible: true,
                 status: 'success',
                 strong : 'Success',
-                message: response.message
+                message: result.message
               };
-              this.authService.loginEvent.emit(response);
+              this.authService.loginEvent.emit(result);
               this.router.navigate(['/profile']);
             },
             err => {

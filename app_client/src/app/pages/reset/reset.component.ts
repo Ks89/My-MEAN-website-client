@@ -5,7 +5,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../common/services';
 
 @Component({
-  selector: 'reset-page',
+  selector: 'mmw-reset-page',
   templateUrl: 'reset.html'
 })
 export default class ResetComponent {

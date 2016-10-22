@@ -5,11 +5,11 @@ import { AuthService } from '../../services';
 
 @Component({
   selector: 'mmw-navigation',
-  templateUrl: 'navbar.html',
+  templateUrl: 'navbar.html'
 })
 export default class NavbarComponent implements OnInit {
   public isLoggedIn: boolean = false;
-  public currentUser: any = {name : ''};
+  public currentUser: any = { name : '' };
   public currentPath: string = 'fakeString';
 
   constructor(private authService: AuthService, private router: Router) {}

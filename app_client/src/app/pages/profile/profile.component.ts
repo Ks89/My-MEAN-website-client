@@ -210,8 +210,8 @@ export default class ProfileComponent implements OnInit, OnDestroy {
           console.log(`Closed with: ${result}`);
           this.authService.unlink(serviceName)
           .subscribe(
-            result => {
-              console.log('Unlinked: ' + result);
+            response => {
+              console.log('Unlinked: ' + response);
               this.authService.loginEvent.emit(null);
               this.authService.logout()
               .subscribe(
