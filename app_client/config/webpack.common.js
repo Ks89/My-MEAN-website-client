@@ -9,6 +9,8 @@ var ManifestPlugin          = require('webpack-manifest-plugin');
 var InlineManifestWebpackPlugin   = require('inline-manifest-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 
+const helpers = require('./helpers');
+
 module.exports = {
   entry: {
     'polyfills': './src/polyfills.ts',
@@ -106,7 +108,7 @@ module.exports = {
         tslint: {
           emitErrors: false,
           failOnHint: false,
-          resourcePath: 'src',
+          resourcePath: helpers.root('src'),
           formattersDirectory: "./node_modules/tslint-loader/formatters/"
         }
       }
