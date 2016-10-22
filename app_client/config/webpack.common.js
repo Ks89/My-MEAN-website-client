@@ -1,15 +1,18 @@
-const webpack               = require('webpack');
-const DefinePlugin          = require('webpack/lib/DefinePlugin');
-const ProvidePlugin         = require('webpack/lib/ProvidePlugin');
-const OccurrenceOrderPlugin = require('webpack/lib/optimize/OccurrenceOrderPlugin');
-const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
-var HtmlWebpackPlugin       = require('html-webpack-plugin');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var ManifestPlugin          = require('webpack-manifest-plugin');
-var InlineManifestWebpackPlugin   = require('inline-manifest-webpack-plugin');
-const autoprefixer = require('autoprefixer');
+const webpack                      = require('webpack');
+const DefinePlugin                 = require('webpack/lib/DefinePlugin');
+const ProvidePlugin                = require('webpack/lib/ProvidePlugin');
+const OccurrenceOrderPlugin        = require('webpack/lib/optimize/OccurrenceOrderPlugin');
+const LoaderOptionsPlugin          = require('webpack/lib/LoaderOptionsPlugin');
 
-const helpers = require('./helpers');
+const HtmlWebpackPlugin            = require('html-webpack-plugin');
+const ExtractTextPlugin            = require('extract-text-webpack-plugin');
+const ManifestPlugin               = require('webpack-manifest-plugin');
+const InlineManifestWebpackPlugin  = require('inline-manifest-webpack-plugin');
+const autoprefixer                 = require('autoprefixer');
+
+const helpers                      = require('./helpers');
+const TITLE                        = 'My MEAN Website';
+const TEMPLATE_PATH                = './src/index.ejs';
 
 module.exports = {
   entry: {
@@ -71,8 +74,8 @@ module.exports = {
     new ManifestPlugin(),
     new InlineManifestWebpackPlugin(),
     new HtmlWebpackPlugin({
-      title: 'My MEAN Website',
-      template: './src/index.ejs', // Load a custom template
+      title: TITLE,
+      template: TEMPLATE_PATH, // Load a custom template
       inject: true
     }),
     new OccurrenceOrderPlugin(true),
