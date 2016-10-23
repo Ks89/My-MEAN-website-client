@@ -1,6 +1,9 @@
 # My M.E.A.N. website (Alpha)
 <br>
 
+[![Code Climate](https://codeclimate.com/github/Ks89/My-MEAN-website/badges/gpa.svg)](https://codeclimate.com/github/Ks89/My-MEAN-website)
+<br>
+
 ATTENTION: this readme is deprecated, I'm waiting to release Alpha 2 to update it. I'll release Alpha2 soon, please be patient.
 
 ## Informations
