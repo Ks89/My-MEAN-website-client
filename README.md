@@ -1,28 +1,27 @@
-# My M.E.A.N. website (Alpha)
-<br>
-
 [![Code Climate](https://codeclimate.com/github/Ks89/My-MEAN-website/badges/gpa.svg)](https://codeclimate.com/github/Ks89/My-MEAN-website)
 <br>
-
-ATTENTION: this readme is deprecated, I'm waiting to release Alpha 2 to update it. I'll release Alpha2 soon, please be patient.
+# My M.E.A.N. website (Alpha)
+<br>
 
 ## Informations
 My MEAN website is a MEAN's web application that I'm creating as a personal website, but also for other uses.
 It's composed by:
-- A: a front-end in AngularJS 1 (that will be replaced by a new one in Angular2 - check the branch **angular2-front-end**)
+- A: a front-end in Angular 2
 - N + E: a back-end in Node.js + Express js (and other useful libs like PassportJs)
 - M: a MongoDb's database
-- gulp + nodemon
+- redis
+- webpack + gulp + nodemon
+- and other stuff
 
-A possible extension of this project is a configurable template to build a custom web app very quickly.
+A possible extension of this project will be a configurable template to build a custom web app very quickly.
 
 Attention! This project is still an alpha, so it's not production ready. Please be careful.
 If you are interested, star this project on GitHub.
 **All features that I'm developing will be merged into master as soon as possible**. Please be patient.
 
 Testing:
-- front-end unit: useless, because I'm rewriting the entire front-end using Angular 2
-- front-end e2e: useless, because I'm rewriting the entire front-end using Angular 2
+- front-end unit: work in progress
+- front-end e2e: work in progress
 - back-end unit: almost done (only the necessary things)*
 - back-end integration: almost done*
 
@@ -39,7 +38,7 @@ If you want to help me to write integration-test's case for PassportJS, check [t
 - redis
 - npm
 - Google Chrome and Firefox (mandatory for testing)
-- some global npm dependencies: karma-cli, mocha, webpack@2.1.0-beta.22, typescript, nodemon, gulp@github:gulpjs/gulp#4.0
+- some global npm dependencies: karma-cli, mocha, webpack, typescript, nodemon, gulp 4.0 alpha, npm-check, lite-server, remap-istanbul, webdriver-manager, protractor, nsp
 - work in progress... (this is only an alpha, please be patient)
 
 
@@ -54,12 +53,6 @@ If you want to help me to write integration-test's case for PassportJS, check [t
   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
   brew update
   brew upgrade
-- Install homebrew packages
-  brew install readline
-  bew install git-lfs
-  brew install tig
-  brew install wget
-  brew install bash-completion
 - Install MongoDB
   brew install wget
   brew install mongodb --with-openssl
@@ -74,18 +67,22 @@ If you want to help me to write integration-test's case for PassportJS, check [t
   rm -f redis-stable.tar.gz
 - Install mandatory global npm packages
   sudo npm install -g karma-cli
-  sudo npm install --global mocha
-  sudo npm install -g webpack@2.1.0-beta.22
+  sudo npm install -g mocha
+  sudo npm install -g webpack
   sudo npm install -g typescript
   sudo npm install -g nodemon
   sudo npm install -g gulp@github:gulpjs/gulp#4.0
+  sudo npm install -g npm-check
+  sudo npm install -g lite-server
+  sudo npm install -g remap-istanbul
+  sudo npm install -g webdriver-manager
+  sudo npm install -g protractor
 
 ## How to setup
 
 1. create a file called ".env" into the root folder and add all these properties
 
     JWT_SECRET=INSERT A JEW SECRET HERE
-<<<<<<< HEAD
 
     TWITTER_CONSUMER_KEY=YOU KEY/ID
     TWITTER_CONSUMER_SECRET=YOU KEY/ID
@@ -114,13 +111,14 @@ If you want to help me to write integration-test's case for PassportJS, check [t
 4. execute this command 'npm install' into the app_client folder
 4. execute this command 'redis-server
 5. execute this command 'mongod' (on Mac OSX use 'sudo mongod')
-6. execute this command 'nodemon' to start this application on http://localhost:3000 (as you can see this branch doesn't use gulp, at the moment. I want to replace gulp with another tool).
+6. execute this command 'nodemon' to start this application on http://localhost:3000
+7. execute this command 'npm start' into app_client folder to start this application on http://localhost:3100
 
-Attention: there are some problems with browserSync on Mac, so reload the page on Google Chrome to be able to show this application.
-
+This will start this application at http://localhost:3100
 
 ## How to run tests (server-side)
 If you want to run server's tests execute these commands:
+
 1. mocha test-server-integration
 2. mocha test-client-unit/3dparty-passport-test.js
 3. mocha test-client-unit/auth-experimental-collapse-db.js
@@ -131,15 +129,15 @@ If you want to run server's tests execute these commands:
 
 ## How to run tests (client-side)
 cd app_client
-npm run test
+npm test
 
 
 ## How to start
 cd <Main folder>
 nodemon
 cd app_client
-npm run buildDev (or npm run build for production)
-Open your browser http://localhost:3000
+npm start (or npm run build for production)
+Open your browser http://localhost:3100 (if not automatically opened)
 
 ## Features
 Work in progress... (this is only an alpha, please be patient)
