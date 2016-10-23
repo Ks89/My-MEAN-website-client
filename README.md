@@ -17,7 +17,6 @@ A possible extension of this project will be a configurable template to build a 
 
 Attention! This project is still an alpha, so it's not production ready. Please be careful.
 If you are interested, star this project on GitHub.
-**All features that I'm developing will be merged into master as soon as possible**. Please be patient.
 
 Testing:
 - front-end unit: work in progress
