@@ -65,7 +65,8 @@ describe('Http-ProfileService (mockBackend)', () => {
 
     it('should have expected the fake profile response', async(inject([], () => {
       backend.connections.subscribe((c: MockConnection) => c.mockRespond(response));
-      service.update(profileUpdateRequest).do(response => expect(response).toEqual(profileUpdateSuccess, 'should be a success'));
+      service.update(profileUpdateRequest)
+        .subscribe(response => expect(response).toEqual(profileUpdateSuccess, 'should be a success'));
     })));
 
     it('should treat 404 as an Observable error', async(inject([], () => {

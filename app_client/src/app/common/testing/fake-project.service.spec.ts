@@ -1,9 +1,4 @@
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import { Http } from '@angular/http';
-
-
-import { ProjectHomeView, ProjectGallery, Author, Project, ProjectService } from '../services/projects.service';
+import { ProjectHomeView, Project } from '../services/projects.service';
 
 var homeView: ProjectHomeView = {
   "_id": "57f4409c1ef2e2165ff70348",
@@ -224,20 +219,3 @@ export var PROJECTS: Project[] = [
       }]
     }
 ];
-
-export class FakeProjectService implements ProjectService {
-  projects = PROJECTS.map(h => h);
-
-  getProjects(): Observable<Project[]> {
-    return Observable.of(this.projects);
-  }
-
-  getProjectsById(projectid: string): Observable<Project> {
-    return Observable.of(this.projects[0]);
-  }
-
-  getProjectsForHomepage(): Observable<Project[]> {
-    return Observable.of(this.projects);
-  }
-
-}

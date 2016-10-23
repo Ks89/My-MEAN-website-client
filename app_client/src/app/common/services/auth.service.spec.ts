@@ -46,21 +46,21 @@ describe('Http-AuthService (mockBackend)', () => {
     }));
 
     it('should be NOT OK', async(inject([], () => {
-      let resp = getMockedResponse(backend, 400, registerRespAlreadyExists);
+      let resp = new Response(new ResponseOptions({status: 400, body: registerRespAlreadyExists}));
       service.register(getRegisterReq("fake", "alreadyused@email.com", "fake"))
-        .do(resp => expect(resp).toEqual(registerRespAlreadyExists));
+        .subscribe(resp => expect(resp).toEqual(registerRespAlreadyExists));
     })));
 
     it('should be NOT OK', async(inject([], () => {
-      let resp = getMockedResponse(backend, 400, registerRespAllRequired);
+      let resp = new Response(new ResponseOptions({status: 400, body: registerRespAllRequired}));
       service.register(getRegisterReq("fake", null, null))
-        .do(resp => expect(resp).toEqual(registerRespAllRequired));
+        .subscribe(resp => expect(resp).toEqual(registerRespAllRequired));
     })));
 
     it('should be OK', async(inject([], () => {
-      let resp = getMockedResponse(backend, 200, registerRespOk);
+      let resp = new Response(new ResponseOptions({status: 200, body: registerRespOk}));
       service.register(getRegisterReq("fake", "valid@email.com", "fake"))
-        .do(resp => expect(resp).toEqual(registerRespOk));
+        .subscribe(resp => expect(resp).toEqual(registerRespOk));
     })));
 
     it('should treat 404 as an Observable error', async(inject([], () => {
@@ -87,21 +87,21 @@ describe('Http-AuthService (mockBackend)', () => {
     }));
 
     it('should be NOT OK', async(inject([], () => {
-      let resp = getMockedResponse(backend, 401, loginRespIncorrect);
+      let resp = new Response(new ResponseOptions({status: 401, body: loginRespIncorrect}));
       service.login(getLoginReq("notValidOrNotActivated@email.com", "fake"))
-        .do(resp => expect(resp).toEqual(loginRespIncorrect));
+        .subscribe(resp => expect(resp).toEqual(loginRespIncorrect));
     })));
 
     it('should be NOT OK', async(inject([], () => {
-      let resp = getMockedResponse(backend, 400, loginRespAllRequired);
+      let resp = new Response(new ResponseOptions({status: 400, body: loginRespAllRequired}));
       service.login(getLoginReq("valid@email.com", null))
-        .do(resp => expect(resp).toEqual(loginRespAllRequired));
+        .subscribe(resp => expect(resp).toEqual(loginRespAllRequired));
     })));
 
     it('should be OK', async(inject([], () => {
-      let resp = getMockedResponse(backend, 200, loginRespOk);
+      let resp = new Response(new ResponseOptions({status: 200, body: loginRespOk}));
       service.login(getLoginReq("valid@email.com", "fake"))
-        .do(resp => expect(resp).toEqual(loginRespOk));
+        .subscribe(resp => expect(resp).toEqual(loginRespOk));
     })));
 
     it('should treat 404 as an Observable error', async(inject([], () => {
@@ -127,15 +127,15 @@ describe('Http-AuthService (mockBackend)', () => {
     }));
 
     it('should be NOT OK', async(inject([], () => {
-      let resp = getMockedResponse(backend, 400, forgotRespAllRequired);
+      let resp = new Response(new ResponseOptions({status: 400, body: forgotRespAllRequired}));
       service.forgot({ "email": null })
-        .do(resp => expect(resp).toEqual(forgotRespAllRequired));
+        .subscribe(resp => expect(resp).toEqual(forgotRespAllRequired));
     })));
 
     it('should be OK', async(inject([], () => {
-      let resp = getMockedResponse(backend, 200, forgotRespOk);
+      let resp = new Response(new ResponseOptions({status: 200, body: forgotRespOk}));
       service.forgot({ "email": "valid@email.com" })
-        .do(resp => expect(resp).toEqual(forgotRespOk));
+        .subscribe(resp => expect(resp).toEqual(forgotRespOk));
     })));
 
     it('should treat 404 as an Observable error', async(inject([], () => {
@@ -161,15 +161,15 @@ describe('Http-AuthService (mockBackend)', () => {
     }));
 
     it('should be NOT OK', async(inject([], () => {
-      let resp = getMockedResponse(backend, 404, activateRespNotExists);
+      let resp = new Response(new ResponseOptions({status: 400, body: activateRespNotExists}));
       service.activate('wrongToken', 'fakeuser')
-        .do(resp => expect(resp).toEqual(activateRespNotExists));
+        .subscribe(resp => expect(resp).toEqual(activateRespNotExists));
     })));
 
     it('should be OK', async(inject([], () => {
-      let resp = getMockedResponse(backend, 200, activateRespOk);
+      let resp = new Response(new ResponseOptions({status: 200, body: activateRespOk}));
       service.activate('fakeToken', 'fakeuser')
-        .do(resp => expect(resp).toEqual(activateRespOk));
+        .subscribe(resp => expect(resp).toEqual(activateRespOk));
     })));
 
     it('should treat 404 as an Observable error', async(inject([], () => {
@@ -191,15 +191,15 @@ describe('Http-AuthService (mockBackend)', () => {
     }));
 
     it('should be NOT OK', async(inject([], () => {
-      let resp = getMockedResponse(backend, 400, resetRespAllRequired);
+      let resp = new Response(new ResponseOptions({status: 400, body: resetRespAllRequired}));
       service.reset("valid@email.com", "newPassword")
-        .do(resp => expect(resp).toEqual(resetRespAllRequired));
+        .subscribe(resp => expect(resp).toEqual(resetRespAllRequired));
     })));
 
     it('should be OK', async(inject([], () => {
-      let resp = getMockedResponse(backend, 200, resetRespOk);
+      let resp = new Response(new ResponseOptions({status: 200, body: resetRespOk}));
       service.reset("valid@email.com", "newPassword")
-        .do(resp => expect(resp).toEqual(resetRespOk));
+        .subscribe(resp => expect(resp).toEqual(resetRespOk));
     })));
 
     it('should treat 404 as an Observable error', async(inject([], () => {
@@ -220,9 +220,9 @@ describe('Http-AuthService (mockBackend)', () => {
     }));
 
     it('should be OK', async(inject([], () => {
-      let resp = getMockedResponse(backend, 200, unlinkRespOk);
+      let resp = new Response(new ResponseOptions({status: 200, body: unlinkRespOk}));
       service.unlink('github') // a valid serviceName
-        .do(resp => expect(resp).toEqual(unlinkRespOk));
+        .subscribe(resp => expect(resp).toEqual(unlinkRespOk));
     })));
 
     it('should treat 404 as an Observable error', async(inject([], () => {
@@ -261,9 +261,9 @@ describe('Http-AuthService (mockBackend)', () => {
     }));
 
     it('should be OK', async(inject([], () => {
-      let resp = getMockedResponse(backend, 200, getUserByIdRespOk);
+      let resp = new Response(new ResponseOptions({status: 200, body: getUserByIdRespOk}));
       service.getUserById('validId')
-        .do(resp => expect(resp).toEqual(getUserByIdRespOk));
+        .subscribe(resp => expect(resp).toEqual(getUserByIdRespOk));
     })));
 
     it('should treat 404 as an Observable error', async(inject([], () => {
@@ -284,9 +284,9 @@ describe('Http-AuthService (mockBackend)', () => {
     }));
 
     it('should be OK', async(inject([], () => {
-      let resp = getMockedResponse(backend, 200, logoutRespOk);
+      let resp = new Response(new ResponseOptions({status: 200, body: logoutRespOk}));
       service.logout()
-        .do(resp => expect(resp).toEqual(logoutRespOk));
+        .subscribe(resp => expect(resp).toEqual(logoutRespOk));
     })));
 
     it('should treat 404 as an Observable error', async(inject([], () => {

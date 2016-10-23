@@ -17,10 +17,16 @@ const contactSendFormWithCaptchaRequest: any = {
   }
 };
 
-const contactSendFormWithCaptchaSuccess: any = contactSendFormWithCaptchaRequest.emailFormData.email;
+const contactSendFormWithoutCaptchaRequest: any = {
+  "emailFormData": {
+    "email": "fake.email@email.it",
+    "messageText": "gsdgsdgsadgsdgsdg",
+    "object": "fsdfsdafsd"
+  }
+};
 
-// TODO work in progress
-const contactSendFormWithCaptchaError: any = contactSendFormWithCaptchaRequest.emailFormData.email;
+const contactSendFormWithCaptchaSuccess: any = { "message": contactSendFormWithCaptchaRequest.emailFormData.email };
+const contactSendFormWithCaptchaError: any = {"message":["missing-input-response"]};
 
 describe('Http-ContactService (mockBackend)', () => {
 
@@ -61,7 +67,14 @@ describe('Http-ContactService (mockBackend)', () => {
     it('should have expected the fake contact response', async(inject([], () => {
       backend.connections.subscribe((c: MockConnection) => c.mockRespond(response));
       service.sendFormWithCaptcha(contactSendFormWithCaptchaRequest)
-        .do(response => expect(response).toEqual(contactSendFormWithCaptchaSuccess, 'should be a success'));
+        .subscribe(response => expect(response).toEqual(contactSendFormWithCaptchaSuccess, 'should be a success'));
+    })));
+
+    it('should catch 401 - recaptcha response not valid', async(inject([], () => {
+      let resp = new Response(new ResponseOptions({status: 401, body: contactSendFormWithCaptchaError}));
+      backend.connections.subscribe((c: MockConnection) => c.mockRespond(resp));
+      service.sendFormWithCaptcha(contactSendFormWithoutCaptchaRequest)
+        .subscribe(response => expect(response).toEqual(contactSendFormWithCaptchaError, 'should be a success'));
     })));
 
     it('should treat 404 as an Observable error', async(inject([], () => {

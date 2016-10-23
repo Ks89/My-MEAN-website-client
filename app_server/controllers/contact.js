@@ -42,68 +42,68 @@ module.exports.sendEmailWithRecaptcha = function(req, res) {
     		console.log(body);
     		done(err, body);
     	});
-    }, 
+    },
     (body, done) => {
 
-    	var result = JSON.parse( body );
-		console.log(result);
-		if(result.success === false) {
-			if(result['error-codes']) {
-				Utils.sendJSONres(res, 401, result['error-codes']);
+	    var result = JSON.parse( body );
+			console.log(result);
+			if(result.success === false) {
+				if(result['error-codes']) {
+					Utils.sendJSONres(res, 401, result['error-codes']);
+				} else {
+					Utils.sendJSONres(res, 401, "Recaptcha verify answered FALSE!");
+				}
 			} else {
-				Utils.sendJSONres(res, 401, "Recaptcha verify answered FALSE!");
+				done();
 			}
-		} else {
-			done();
-		}
-	},
-	(done) => {
+		},
+		(done) => {
 
-		console.log("Trying to send an email");
-		if (req.body.emailFormData && req.body.emailFormData.email &&
-			req.body.emailFormData.object && req.body.emailFormData.messageText) {
-			
-			console.log("Preparing to send an email");
-			done(null, req.body.emailFormData);
-		} else {
-			Utils.sendJSONres(res, 400, 'Missing input params');
-		}
-	},
-	(formEmail, done) => {
+			console.log("Trying to send an email");
+			if (req.body.emailFormData && req.body.emailFormData.email &&
+				req.body.emailFormData.object && req.body.emailFormData.messageText) {
 
-		console.log('Sending an email from ' + process.env.USER_EMAIL + ' to: ' + formEmail.email);
-	
-		var message = {
-			from: process.env.USER_EMAIL, 
-			to: formEmail.email,
-			subject: formEmail.object,
-			html: formEmail.messageText, 
-			generateTextFromHtml: true
-		};
-
-		mailTransport.sendMail(message, err => {
-			if (err) {
-				console.log('err ----> returning 404');
-				console.log(err.message);
-				done(err, 404, null);
+				console.log("Preparing to send an email");
+				done(null, req.body.emailFormData);
+			} else {
+				Utils.sendJSONres(res, 400, 'Missing input params');
 			}
-			console.log('OK -----> returning 200');
-			done(null, 200, formEmail);
-		});
-	},
-	(resultHttpCode, formEmail, done) => {
+		},
+		(formEmail, done) => {
 
-		console.log("resultHttpCode: " + resultHttpCode);
-		if(resultHttpCode === 200) {
-			console.log('Message sent successfully to: ' + formEmail.email);
-			Utils.sendJSONres(res, 200, formEmail.email);
-		} else {
-			console.log("Error, resultHttpCode!=200 -> " + resultHttpCode);	
-			Utils.sendJSONres(res, 500, "Impossibile to send the email");
-		}
-    }], (err) => {
-    	if (err) {
-    		Utils.sendJSONres(res, 500, "Unknown error");
-		}
+			console.log('Sending an email from ' + process.env.USER_EMAIL + ' to: ' + formEmail.email);
+
+			var message = {
+				from: process.env.USER_EMAIL,
+				to: formEmail.email,
+				subject: formEmail.object,
+				html: formEmail.messageText,
+				generateTextFromHtml: true
+			};
+
+			mailTransport.sendMail(message, err => {
+				if (err) {
+					console.log('err ----> returning 404');
+					console.log(err.message);
+					done(err, 404, null);
+				}
+				console.log('OK -----> returning 200');
+				done(null, 200, formEmail);
+			});
+		},
+		(resultHttpCode, formEmail, done) => {
+
+			console.log("resultHttpCode: " + resultHttpCode);
+			if(resultHttpCode === 200) {
+				console.log('Message sent successfully to: ' + formEmail.email);
+				Utils.sendJSONres(res, 200, { message: formEmail.email });
+			} else {
+				console.log("Error, resultHttpCode!=200 -> " + resultHttpCode);
+				Utils.sendJSONres(res, 500, "Impossibile to send the email");
+			}
+	  }], (err) => {
+	    if (err) {
+	    	Utils.sendJSONres(res, 500, "Unknown error");
+			}
     });
 };

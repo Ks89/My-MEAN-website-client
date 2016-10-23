@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/toPromise';
 
 import { Project, ProjectHomeView, ProjectService } from './projects.service';
 import { PROJECTS } from '../testing/fake-project.service.spec';
@@ -41,23 +42,23 @@ describe('Http-ProjectService (mockBackend)', () => {
     beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
       backend = be;
       service = new ProjectService(http);
-      let options = new ResponseOptions({status: 200, body: PROJECTS});
+      let options = new ResponseOptions({status: 200, body: PROJECTS });
       response = new Response(options);
     }));
 
     it('should have expected fake projects', async(inject([], () => {
       backend.connections.subscribe((c: MockConnection) => c.mockRespond(response));
-      service.getProjects().do(projects => {
+      service.getProjects().subscribe(projects => {
           expect(projects.length).toBe(PROJECTS.length, 'should have expected no. of projects');
           expect(projects).toEqual(PROJECTS, 'should have expected all mocked projects');
       });
     })));
 
     it('should be OK returning no projects', async(inject([], () => {
-      let resp = new Response(new ResponseOptions({status: 200, body: []}));
+      let resp = new Response(new ResponseOptions({status: 200, body: [] }));
       backend.connections.subscribe((c: MockConnection) => c.mockRespond(resp));
       service.getProjects()
-        .do(projects => expect(projects.length).toBe(0, 'should have no projects'));
+        .subscribe(projects => expect(projects.length).toBe(0, 'should have no projects'));
     })));
 
     it('should treat 404 as an Observable error', async(inject([], () => {
@@ -82,13 +83,13 @@ describe('Http-ProjectService (mockBackend)', () => {
     beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
       backend = be;
       service = new ProjectService(http);
-      let options = new ResponseOptions({status: 200, body: PROJECTS});
+      let options = new ResponseOptions({status: 200, body: homeProjects});
       response = new Response(options);
     }));
 
     it('should have expected fake home-projects', async(inject([], () => {
       backend.connections.subscribe((c: MockConnection) => c.mockRespond(response));
-      service.getProjectsForHomepage().do(projects => {
+      service.getProjectsForHomepage().subscribe(projects => {
           expect(projects.length).toBe(homeProjects.length, 'should have expected no. of projects');
           expect(projects).toEqual(homeProjects, 'should have expected all home projects');
       });
@@ -98,7 +99,7 @@ describe('Http-ProjectService (mockBackend)', () => {
       let resp = new Response(new ResponseOptions({status: 200, body: []}));
       backend.connections.subscribe((c: MockConnection) => c.mockRespond(resp));
       service.getProjectsForHomepage()
-        .do(projects => expect(projects.length).toBe(0, 'should have no projects'));
+        .subscribe(projects => expect(projects.length).toBe(0, 'should have no projects'));
     })));
 
     it('should treat 404 as an Observable error', async(inject([], () => {
@@ -121,24 +122,24 @@ describe('Http-ProjectService (mockBackend)', () => {
     beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
       backend = be;
       service = new ProjectService(http);
-      let options = new ResponseOptions({status: 200, body: PROJECTS});
-      response = new Response(options);
     }));
 
     for(let i=0; i<PROJECTS.length; i++) {
       it(`should have expected a single project that match the id=${PROJECTS[i]._id}. Test i=${i}`, async(inject([], () => {
+        let options = new ResponseOptions({status: 200, body: PROJECTS[i]});
+        response = new Response(options);
         backend.connections.subscribe((c: MockConnection) => c.mockRespond(response));
-        service.getProjectsById(PROJECTS[i]._id).do(project => {
+        service.getProjectsById(PROJECTS[i]._id).subscribe(project => {
             expect(project).toEqual(PROJECTS[i], 'should have the single project by its id');
         });
       })));
     }
 
     it('should be OK returning no projects (because the requested project doesn\'t exists)', async(inject([], () => {
-      let resp = new Response(new ResponseOptions({status: 200, body: []}));
+      let resp = new Response(new ResponseOptions({status: 404, body: {"message":"Project not found"}}));
       backend.connections.subscribe((c: MockConnection) => c.mockRespond(resp));
       service.getProjectsById('ey7dhef879wgfh8w9e')
-        .do(project => expect(project).toBe(null, 'should have no projects'));
+        .subscribe(project => expect(project).toEqual({"message":"Project not found"}, 'should have no projects'));
     })));
 
     it('should treat 404 as an Observable error', async(inject([], () => {
