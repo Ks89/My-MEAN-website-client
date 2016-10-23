@@ -1,12 +1,14 @@
 engines:
-  rubocop:
-    enabled: true
-    #checks:
-    #	Rubocop/Metrics/ClassLength:
-    #  	enabled: false
-  golint:
-    enabled: true
   eslint:
+    enabled: true
+  fixme:
+    enabled: true
+    config:
+      strings:
+      - FIXME
+      - TODO
+      - BUG
+  nodesecurity:
     enabled: true
   csslint:
     enabled: true
@@ -15,10 +17,18 @@ engines:
     config:
       languages:
       - javascript
+  markdownlint:
+    enabled: true
+  scss-lint:
+    enabled: true
+  shellcheck:
+    enabled: true
 ratings:
   paths:
   - app_client/**
   - app_server/**
+  - "**.css"
+  - "**.scss"
   - "app.js"
 exclude_paths:
 - "test-client-e2e/"
