@@ -4,6 +4,11 @@ var logger = require('../utils/logger.js');
 var gracefulShutdown;
 var dbURI = 'mongodb://localhost/KS';
 
+// ------------------------
+// as explained here http://mongoosejs.com/docs/promises.html
+mongoose.Promise = require('bluebird');
+// ------------------------
+
 if (process.env.NODE_ENV === 'production') {
 	console.log("production mode enabled!");
 	dbURI = process.env.MONGOLAB_URI; //you can set this using heroku config:set MONGOLAB_URI=path

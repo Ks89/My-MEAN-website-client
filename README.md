@@ -1,6 +1,8 @@
 # My M.E.A.N. website (Alpha)
 <br>
 
+ATTENTION: this readme is deprecated, I'm waiting to release Alpha 2 to update it. I'll release Alpha2 soon, please be patient.
+
 ## Informations
 My MEAN website is a MEAN's web application that I'm creating as a personal website, but also for other uses.
 It's composed by:

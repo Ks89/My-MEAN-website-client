@@ -12,6 +12,7 @@
   "dependencies": {
     "async": "^2.0.0-rc.6",
     "bcrypt-nodejs": "0.0.3",
+    "bluebird": "^3.4.6",
     "body-parser": "^1.15.2",
     "compression": "^1.6.2",
     "connect-redis": "^3.1.0",
