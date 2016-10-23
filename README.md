@@ -132,11 +132,12 @@ npm test
 
 
 ## How to start
-cd <Main folder>
-nodemon
-cd app_client
-npm start (or npm run build for production)
-Open your browser http://localhost:3100 (if not automatically opened)
+
+- cd <Main folder>
+- nodemon
+- cd app_client
+- npm start (or npm run build for production)
+- Open your browser http://localhost:3100 (if not automatically opened)
 
 ## Features
 Work in progress... (this is only an alpha, please be patient)
