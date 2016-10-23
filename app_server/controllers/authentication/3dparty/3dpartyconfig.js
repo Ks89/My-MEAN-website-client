@@ -2,7 +2,7 @@ module.exports = {
   facebook: {
     clientID: process.env.FACEBOOK_APP_ID,
     clientSecret: process.env.FACEBOOK_APP_SECRET,
-    callbackURL: "http://localhost:3000/api/auth/facebook/callback",
+    callbackURL: "http://localhost:3100/api/auth/facebook/callback",
     profileFields: ['id', 'email', 'gender', 'link', 'locale', 'name', 'timezone', 'updated_time', 'verified'],
     passReqToCallback: true
   },
@@ -16,19 +16,19 @@ module.exports = {
   google: {
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/api/auth/google/callback",
+    callbackURL: "http://localhost:3100/api/auth/google/callback",
     passReqToCallback: true
   },
   github: {
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/api/auth/github/callback",
+    callbackURL: "http://localhost:3100/api/auth/github/callback",
     passReqToCallback: true
   },
   linkedin: {
     clientID: process.env.LINKEDIN_CLIENT_ID,
     clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/api/auth/linkedin/callback",
+    callbackURL: "http://localhost:3100/api/auth/linkedin/callback",
     profileFields: ['id', 'first-name', 'last-name', 'email-address'],
     passReqToCallback: true,
     state: true
