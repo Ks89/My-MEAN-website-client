@@ -9,7 +9,6 @@
     "removeComments": false,
     "noImplicitAny": true,
     "suppressImplicitAnyIndexErrors": true,
-    "outDir": "output",
     "typeRoots": [
       "node_modules/@types"
     ]
@@ -25,14 +24,18 @@
     "src/main-ngc.ts",
     "src/main.ts"
   ],
-
+  "files": [
+    "src/app/app.module.ts",
+    "src/main.ngc.ts",
+    "src/typings.d.ts"
+  ],
   "awesomeTypescriptLoaderOptions": {
     "useWebpackText": true,
     "forkChecker": true,
     "useCache": true
   },
   "angularCompilerOptions": {
-   "genDir": "aot",
-   "skipMetadataEmit" : true
+    "genDir": "aot",
+    "skipMetadataEmit" : true
   }
 }
