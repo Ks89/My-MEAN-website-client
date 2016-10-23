@@ -8,8 +8,6 @@ engines:
       - FIXME
       - TODO
       - BUG
-  nodesecurity:
-    enabled: true
   csslint:
     enabled: true
   duplication:
