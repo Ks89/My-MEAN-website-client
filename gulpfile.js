@@ -1,25 +1,17 @@
 var gulp        = require('gulp');
 var jshint      = require('gulp-jshint');
-var uglify      = require('gulp-uglify');
 const mocha 	= require('gulp-mocha');
-var concat      = require('gulp-concat');
-// var less        = require('gulp-less');
-var minifyCSS   = require('gulp-minify-css');
-var prefix      = require('gulp-autoprefixer');
 
 var gutil       = require('gulp-util');
 
 var del         = require('del');
 var browserSync = require('browser-sync').create();
-var wiredep     = require('wiredep').stream;
-var mainBowerFiles = require('main-bower-files');
 
 var nodemon 	= require('gulp-nodemon');
 
 var cached 		= require('gulp-cached');
 var remember 	= require('gulp-remember');
 var sourcemaps  = require('gulp-sourcemaps');
-var combiner    = require('stream-combiner2');
 var through     = require('through2');
 
 var eslint 		= require('gulp-eslint');
@@ -44,22 +36,8 @@ var prod = function(task) {
 	return isprod ? task : noop();
 };
 
-// var mainBowerFiles = require('main-bower-files');
-
-var test = ['unit-test-server/**/*.js'];
-
-var testHintJs = ['app_server/**/*.js',
-		'app_client/**/*.js',
-		'app.js',
-		'public/javascripts/*.js',
-		'!public/javascripts/stacktrace.min.js',
-		'!public/javascripts/please-wait.min.js',
-		'!public/angular/*.js',
-		'!public/angular-ladda/*.js',
-		'!public/ngGallery/**/*'
-		];
-
-var app_clientJs = ['app_client/**/*.js'];
+var test = ['test-server-unit/**/*.js', 'test-server-integration/**/*.js'];
+var testHintJs = ['app_server/**/*.js', 'app.js'];
 
 gulp.task('hint', function() {
 	return gulp.src(testHintJs /*, {since: gulp.lastRun('hint')}*/)
@@ -90,48 +68,6 @@ gulp.task('test', function() {
 //     .pipe(gulp.dest("./app_client/index.html"));
 // });
 
-
-gulp.task('scripts',
-	gulp.series('hint', function scriptsInternal() {
-          // var glob = mainBowerFiles('*.js');
-          // glob.push('app/scripts/**/*.js');
-          return gulp.src(/*glob*/ 
-			//only app_client files, because the generated file will be imported into app_client/index.html
-			app_clientJs , {	sourcemaps: true /*,
-				since: gulp.lastRun('hint')*/} )
-          .pipe(sourcemaps.init())
-          .pipe(dev(sourcemaps.init()))
-          .pipe(cached('ugly'))
-          .pipe(uglify().on('error', gutil.log))
-          .pipe(remember('ugly'))
-          .pipe(concat('mysite.min.js'))
-          //.pipe(rev())
-          //.pipe(dev(sourcemaps.write('.', {sourceRoot: 'js-source'})))
-          .pipe(gulp.dest('public/angular')); //write mysite.min.js to build dir
-          //.pipe(rev.manifest())
-          //.pipe(gulp.dest('public/angular')); // write manifest to build dir
-      })
-	);
-
-gulp.task('styles', function() {
-	return gulp.src('public/stylesheets/*' , { since: gulp.lastRun('styles') })
-	.pipe(minifyCSS())
-	.pipe(prefix())
-	//.pipe(rev())
-	.pipe(gulp.dest('dist/styles'));
-    //.pipe(rev.manifest())
-    //.pipe(gulp.dest('dist/styles')); // write manifest to build dir
-});
-
-function clean() {
-  // You can use multiple globbing patterns as you would with `gulp.src`,
-  // for example if you are using del 2.0 or above, return its promise
-  return del(['dist', 'public/angular']);
-}
-
-exports.clean = clean;
-
-
 gulp.task('nodemon', function (cb) {
 
 	var started = false;
@@ -149,7 +85,7 @@ gulp.task('nodemon', function (cb) {
 			cb();
 			started = true;
 		}
-		
+
 	})
 	.on('error', function(err) {
      // Make sure failure causes gulp to exit
@@ -167,7 +103,7 @@ gulp.task('server',
 	    // informs browser-sync to proxy our expressjs app which would run at the following location
 	    proxy: 'http://localhost:3000',
 
-		//files: app_clientJs,
+		  //files: app_clientJs,
 
 	    // informs browser-sync to use the following port for the proxied app
 	    // notice that the default port is 3000, which would clash with our expressjs
@@ -180,7 +116,7 @@ gulp.task('server',
 );
 
 // gulp.task('server', function(done) {
-// 	if(!isprod) {	
+// 	if(!isprod) {
 //      bSync({
 //           server: {
 //                baseDir: ['bin/www']
@@ -197,27 +133,18 @@ gulp.task('server',
 //     });
 
 gulp.task('default',
-	gulp.series(clean,
-		gulp.parallel('styles', 'scripts'),
-		//'revreplace',
-		'server',
+	gulp.series('server',
 
 		function watcher(done) {
-		    gulp.watch(['app_server/**/*.js', 'app_client/**/*.js', 'public/**/*.js', 'app.js'], 
-		    	gulp.parallel('scripts'));
-		    gulp.watch('public/stylesheets/**/*.css', gulp.parallel('styles'));
-		    gulp.watch('public/**/*.js', browserSync.reload);
-		  })
+		    gulp.watch(['app_server/**/*.js', 'app.js'], browserSync.reload);
+		})
 
 		//function watcher() {
 			//gulp.watch('**/*.*', browserSync.reload
 			// if(!isprod) {
 			// 	var watcher = gulp.watch(['app_server/**/*.js',
-			// 	'app_client/**/*.js',
-			// 	'public/**/*.js',
 			// 	'app.js',
 			// 	], gulp.parallel('scripts'));
-			// 	gulp.watch('public/stylesheets/*', gulp.parallel('styles'));
 			// 	gulp.watch('**/*.*', browserSync.reload); //TODO remove this, i'm not using bsync anymore
 			// }
 			//)
