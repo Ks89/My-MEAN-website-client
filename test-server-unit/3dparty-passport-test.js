@@ -533,7 +533,7 @@ describe('3dparty-passport', () => {
 	describe('#updateUser()', () => {
 		describe('---YES---', () => {
 
-			beforeEach(done => User.remove({}, err => done(err)));
+			beforeEach(() => User.remove({}, err => err));
 
 			it('should update an empty object with profile infos after the 3dparty login.', done => {
         // Overwrite the private a1 function with the mock.
@@ -680,4 +680,4 @@ describe('3dparty-passport', () => {
 	});
 });
 
-after(done => User.remove({}, err => done(err)));
+after(() => User.remove({}, err => err));

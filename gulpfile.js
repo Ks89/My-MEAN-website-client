@@ -1,6 +1,7 @@
 var gulp        = require('gulp');
 var jshint      = require('gulp-jshint');
-const mocha 	= require('gulp-mocha');
+var mocha 	= require('gulp-mocha');
+var istanbul = require('gulp-istanbul');
 
 var gutil       = require('gulp-util');
 
@@ -46,14 +47,46 @@ gulp.task('hint', function() {
 	.pipe(jshint.reporter('fail'));
 });
 
-gulp.task('test', function() {
-	return gulp.src(test, { read: false })
-    .pipe(mocha({
-      reporter: 'spec'
-    }))
-    .on('error', gutil.log);
+gulp.task('pre-test', function () {
+  return gulp.src([
+		'test-server-unit/3dparty-passport-test.js',
+		'test-server-unit/auth-experimental-collapse-db.js',
+		'test-server-unit/auth-util-test.js',
+		'test-server-unit/users-test.js',
+		'test-server-unit/util-test.js'
+		])
+		// optionally load existing source maps
+    .pipe(sourcemaps.init())
+    // Covering files
+    .pipe(istanbul())
+    // Force `require` to return covered files
+    .pipe(istanbul.hookRequire());
 });
 
+gulp.task('test',
+	gulp.series('pre-test', function () {
+  return gulp.src([
+		'test-server-unit/3dparty-passport-test.js',
+		'test-server-unit/auth-experimental-collapse-db.js',
+		'test-server-unit/auth-util-test.js',
+		'test-server-unit/users-test.js',
+		'test-server-unit/util-test.js'
+		])
+    .pipe(mocha())
+    // Creating the reports after tests ran
+    .pipe(istanbul.writeReports())
+    // Enforce a coverage of at least 90%
+    .pipe(istanbul.enforceThresholds({ thresholds: { global: 90 } }));
+}));
+
+// gulp.task('test', function() {
+// 	return gulp.src(test, { read: false })
+//     .pipe(mocha({
+//       reporter: 'spec'
+//     }))
+//     .on('error', gutil.log);
+// });
+//
 
 // gulp.task('watch-mocha', function() {
 //     gulp.watch(['lib/**', 'test/**'], ['test']);

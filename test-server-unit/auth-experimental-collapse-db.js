@@ -22,7 +22,7 @@ var userDb;
 var util = require('../app_server/utils/util');
 var serviceNames = require('../app_server/controllers/authentication/serviceNames');
 
-//add session property to the mocked 
+//add session property to the mocked
 //request (used to store jwt session token by redis)
 var mockedReq = {
 	session : {
@@ -158,7 +158,7 @@ describe('auth-experimental-collapse-db', () => {
 
 		describe('---YES---', () => {
 
-			beforeEach(done => User.remove({}, err => done(err)));
+			beforeEach(() => User.remove({}, err => err));
 
 			for(let i=0; i<inputAndOutputMocked.length; i++) {
 				it('should collapse the db and check that users has been merged. Test i=' + i + ', common service=' + inputAndOutputMocked[i].service, done => {
@@ -393,4 +393,4 @@ describe('auth-experimental-collapse-db', () => {
 	});
 });
 
-after(done => User.remove({}, err => done(err)));
+after(() => User.remove({}, err => err));
