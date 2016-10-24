@@ -12,7 +12,8 @@ const HOST = process.env.HOST || 'localhost';
 const PORT = process.env.PORT || 8080;
 
 const METADATA = {
-  contentBase: helpers.root('app_client', 'assets'),
+  contentBase: './',
+  publicPath: "./assets/",
   env: ENV,
   host: HOST,
   portServer: '3000',
@@ -37,7 +38,7 @@ module.exports = webpackMerge(commonConfig, {
   },
   devtool: 'source-map',
   output: {
-    path    : helpers.root('app_client', 'dist'),
+    path    : helpers.root('dist'),
     filename: '[name].js',
     chunkFilename: '[name].js',
     publicPath: '/'
@@ -48,24 +49,24 @@ module.exports = webpackMerge(commonConfig, {
       minChunks: Infinity
     }),
     new DefinePlugin({'webpack': {'ENV': JSON.stringify(METADATA.env)}}),
-    new BrowserSyncPlugin(
-      // BrowserSync options
-      {
-        // browse to http://${METADATA:host}:${METADATA.portBrowserSync}/
-        // during development
-        host: METADATA.host,
-        port: METADATA.portBrowserSync,
-        // proxy the Webpack Dev Server endpoint
-        // (which should be serving on DEV_SERVER_PATH) through BrowserSync
-        proxy: DEV_SERVER_PATH
-      },
-      // plugin options
-      {
-        // prevent BrowserSync from reloading the page
-        // and let Webpack Dev Server take care of this
-        // (usefull if you want to use HMR)
-        reload: false
-      }
-    )
+    // new BrowserSyncPlugin(
+    //   // BrowserSync options
+    //   {
+    //     // browse to http://${METADATA:host}:${METADATA.portBrowserSync}/
+    //     // during development
+    //     host: METADATA.host,
+    //     port: METADATA.portBrowserSync,
+    //     // proxy the Webpack Dev Server endpoint
+    //     // (which should be serving on DEV_SERVER_PATH) through BrowserSync
+    //     proxy: DEV_SERVER_PATH
+    //   },
+    //   // plugin options
+    //   {
+    //     // prevent BrowserSync from reloading the page
+    //     // and let Webpack Dev Server take care of this
+    //     // (usefull if you want to use HMR)
+    //     reload: false
+    //   }
+    // )
   ]
 });

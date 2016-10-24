@@ -4,6 +4,7 @@ const ProvidePlugin                = require('webpack/lib/ProvidePlugin');
 const OccurrenceOrderPlugin        = require('webpack/lib/optimize/OccurrenceOrderPlugin');
 const LoaderOptionsPlugin          = require('webpack/lib/LoaderOptionsPlugin');
 const ContextReplacementPlugin     = require('webpack/lib/ContextReplacementPlugin');
+const CopyWebpackPlugin            = require('copy-webpack-plugin');
 
 const HtmlWebpackPlugin            = require('html-webpack-plugin');
 const ExtractTextPlugin            = require('extract-text-webpack-plugin');
@@ -31,7 +32,7 @@ module.exports = {
         enforce: 'pre',
         test: /\.ts$/,
         loader: 'tslint',
-        exclude: [/\.(spec|e2e)\.ts$/]
+        exclude: [/\.(spec|e2e)\.ts$/, /node_modules/]
       },
       {
         test: /\.ts$/,
@@ -103,6 +104,7 @@ module.exports = {
       Util: "exports?Util!bootstrap/js/dist/util"
       //---------------------------------------------------
     }),
+    new CopyWebpackPlugin([{from: './assets', to: './assets'}]),
     new ContextReplacementPlugin(
       // The (\\|\/) piece accounts for path separators in *nix and Windows
       /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
@@ -122,14 +124,5 @@ module.exports = {
         }
       }
     })
-  ],
-
-  node: {
-     fs: 'empty',
-     global: true,
-     crypto: 'empty',
-     module: false,
-     clearImmediate: false,
-     setImmediate: false
-  }
+  ]
 };
