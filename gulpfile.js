@@ -18,9 +18,6 @@ var through     = require('through2');
 var eslint 		= require('gulp-eslint');
 var babel 		= require('gulp-babel');
 
-var rev 		= require('gulp-rev');
-var revReplace 	= require('gulp-rev-replace');
-
 var arguments 	= require('yargs').argv;
 
 var isprod = (arguments.env === 'prod');
@@ -48,12 +45,12 @@ gulp.task('hint', function() {
 
 
 var testPaths = ['test-server-integration/**/*.js',
-									'test-server-unit/3dparty-passport-test.js',
-									'test-server-unit/auth-experimental-collapse-db.js',
-									'test-server-unit/auth-util-test.js',
-									'test-server-unit/users-test.js',
-									'test-server-unit/util-test.js'
-								 ];
+								 'test-server-unit/3dparty-passport-test.js',
+								 'test-server-unit/auth-experimental-collapse-db.js',
+								 'test-server-unit/auth-util-test.js',
+								 'test-server-unit/users-test.js',
+								 'test-server-unit/util-test.js'
+								];
 
 gulp.task('pre-test', function () {
   return gulp.src(['app_server/**/*.js'])
@@ -74,18 +71,6 @@ gulp.task('test',
     // Enforce a coverage of at least 90%
     .pipe(istanbul.enforceThresholds({ thresholds: { global: 90 } }));
 }));
-
-// gulp.task('watch-mocha', function() {
-//     gulp.watch(['lib/**', 'test/**'], ['test']);
-// });
-
-// gulp.task('revreplace', function() {
-//   var manifest = gulp.src("./public/angular/rev-manifest.json");
-
-//   return gulp.src("./app_client/index-1.html")
-//     .pipe(revReplace({manifest: manifest}))
-//     .pipe(gulp.dest("./app_client/index.html"));
-// });
 
 gulp.task('nodemon', function (cb) {
 
