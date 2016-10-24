@@ -83,7 +83,7 @@ describe('contact', () => {
 	}
 
 	describe('#sendEmailWithRecaptcha()', () => {
-		
+
 		describe('---YES---', () => {
 
 			beforeEach(done => updateCookiesAndTokens(done));
@@ -96,7 +96,7 @@ describe('contact', () => {
 				.expect(200)
 				.end((err, res) => {
 					if (!err) {
-						expect(res.body).to.be.equals(EMAIL);
+						expect(res.body.message).to.be.equals(EMAIL);
 					}
 					done(err);
 				});
@@ -167,7 +167,7 @@ describe('contact', () => {
 
 				it('should catch a 400 BAD REQUEST, because subject, object and text params are mandatory. Test i=' + i, done => {
 					getPartialNockApiUrl().reply(200, recaptchaCorrectRespMock);
-					
+
 					//remove imput params
 					delete contactMock.emailFormData;
 
@@ -177,14 +177,14 @@ describe('contact', () => {
 					.expect(400)
 					.end((err, res) => {
 						if (!err) {
-							expect(res.body.message).to.be.equals('Missing input params');	
+							expect(res.body.message).to.be.equals('Missing input params');
 						}
 						done(err);
 					});
 				});
 			}
 		});
-		
+
 		describe('---ERRORS---', () => {
 			it('should get 403 FORBIDDEN,, because XSRF-TOKEN is not available', done => {
 				getPartialPostRequest(EMAIL_URL)
