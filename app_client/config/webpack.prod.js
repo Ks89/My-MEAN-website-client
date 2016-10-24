@@ -2,20 +2,22 @@ const webpack               = require('webpack');
 const CommonsChunkPlugin    = require('webpack/lib/optimize/CommonsChunkPlugin');
 const DefinePlugin          = require('webpack/lib/DefinePlugin');
 const UglifyJsPlugin        = require('webpack/lib/optimize/UglifyJsPlugin');
+
 const ManifestPlugin        = require('webpack-manifest-plugin');
-// var ChunkManifestPlugin  = require('chunk-manifest-webpack-plugin');
 const WebpackMd5HashPlugin  = require('webpack-md5-hash');
 const CompressionPlugin     = require('compression-webpack-plugin');
+const webpackMerge          = require('webpack-merge');
+// var ChunkManifestPlugin  = require('chunk-manifest-webpack-plugin');
 
-const webpackMerge = require('webpack-merge');
-const commonConfig = require('./webpack.common.js');
+const commonConfig          = require('./webpack.common.js');
+const helpers               = require('./helpers');
 
 const ENV = process.env.NODE_ENV = 'production';
 const METADATA = { env: ENV };
 
 module.exports = webpackMerge(commonConfig, {
   output: {
-    path    : './',
+    path    : helpers.root('app_client', 'dist'),
     filename: '[name].[chunkhash].js',
     chunkFilename: '[name].[chunkhash].js',
     publicPath: './'

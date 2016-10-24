@@ -1,21 +1,23 @@
 const webpack               = require('webpack');
 const DefinePlugin          = require('webpack/lib/DefinePlugin');
 const CommonsChunkPlugin    = require('webpack/lib/optimize/CommonsChunkPlugin');
-var BrowserSyncPlugin = require('browser-sync-webpack-plugin');
-var webpackMerge = require('webpack-merge');
-var commonConfig = require('./webpack.common.js');
+const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
+const webpackMerge = require('webpack-merge');
+
+const commonConfig = require('./webpack.common');
+const helpers = require('./helpers');
 
 const ENV  = process.env.NODE_ENV = 'development';
 const HOST = process.env.HOST || 'localhost';
 const PORT = process.env.PORT || 8080;
 
 const METADATA = {
-  contentBase: './',
+  contentBase: helpers.root('app_client', 'assets'),
   env: ENV,
   host: HOST,
   portServer: '3000',
   portWebpackDevServer: PORT,
-  portBrowserSync: '3100',
+  portBrowserSync: '3100'
 };
 
 const MAIN_SERVER_PATH = `http://${METADATA.host}:${METADATA.portServer}`;
@@ -35,7 +37,7 @@ module.exports = webpackMerge(commonConfig, {
   },
   devtool: 'source-map',
   output: {
-    path    : '/',
+    path    : helpers.root('app_client', 'dist'),
     filename: '[name].js',
     chunkFilename: '[name].js',
     publicPath: '/'

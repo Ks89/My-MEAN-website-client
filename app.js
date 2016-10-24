@@ -125,7 +125,7 @@ app.use(contentLength.validateMax({max: MAX_CONTENT_LENGTH_ACCEPTED, status: 400
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(morgan({ "stream": logger.stream }));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'app_client')));
+app.use(express.static(path.join(__dirname, 'app_client', 'dist')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -175,7 +175,7 @@ app.use('/api', routesApi);
 
 
 app.use(function(req, res) {
-  res.sendFile(path.join(__dirname, 'app_client', 'index.html'));
+  res.sendFile(path.join(__dirname, 'app_client', 'dist', 'index.html'));
 });
 
 // catch bad csrf token

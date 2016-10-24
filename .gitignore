@@ -26,13 +26,9 @@ build/Release
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
 node_modules
 
-
 ~/
 .DS_Store
 .env
-
-#deprecated file with the new angular2 implementation
-*/*/mysite.min.js
 
 #app_client/src/node_modules
 app_client/node_modules
@@ -41,14 +37,4 @@ app_client/.DS_Store
 *.log
 
 # Compiled front-end files
-app_client/build
-app_client/index.html
-app_client/manifest.json
-app_client/*app.*
-app_client/*polyfills.*
-app_client/*vendor.*
-app_client/*.ttf
-app_client/*.eot
-app_client/*.woff
-app_client/*.svg
-app_client/*.woff2
+app_client/dist

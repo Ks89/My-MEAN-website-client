@@ -3,6 +3,7 @@ const DefinePlugin                 = require('webpack/lib/DefinePlugin');
 const ProvidePlugin                = require('webpack/lib/ProvidePlugin');
 const OccurrenceOrderPlugin        = require('webpack/lib/optimize/OccurrenceOrderPlugin');
 const LoaderOptionsPlugin          = require('webpack/lib/LoaderOptionsPlugin');
+const ContextReplacementPlugin     = require('webpack/lib/ContextReplacementPlugin');
 
 const HtmlWebpackPlugin            = require('html-webpack-plugin');
 const ExtractTextPlugin            = require('extract-text-webpack-plugin');
@@ -102,16 +103,21 @@ module.exports = {
       Util: "exports?Util!bootstrap/js/dist/util"
       //---------------------------------------------------
     }),
+    new ContextReplacementPlugin(
+      // The (\\|\/) piece accounts for path separators in *nix and Windows
+      /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
+      helpers.root('./src') // location of your src
+    ),
     new LoaderOptionsPlugin({
       debug: true,
       options: {
         context: __dirname,
-        output: { path :  "./" },
+        output: { path :  './' },
         postcss: [autoprefixer],
         tslint: {
           emitErrors: false,
           failOnHint: false,
-          resourcePath: helpers.root('src'),
+          resourcePath: helpers.root('./src'),
           formattersDirectory: "./node_modules/tslint-loader/formatters/"
         }
       }
