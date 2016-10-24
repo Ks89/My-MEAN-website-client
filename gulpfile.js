@@ -37,7 +37,6 @@ var prod = function(task) {
 	return isprod ? task : noop();
 };
 
-var test = ['test-server-unit/**/*.js', 'test-server-integration/**/*.js'];
 var testHintJs = ['app_server/**/*.js', 'app.js'];
 
 gulp.task('hint', function() {
@@ -46,6 +45,15 @@ gulp.task('hint', function() {
 	.pipe(jshint.reporter('default'))
 	.pipe(jshint.reporter('fail'));
 });
+
+
+var testPaths = ['test-server-integration/**/*.js',
+									'test-server-unit/3dparty-passport-test.js',
+									'test-server-unit/auth-experimental-collapse-db.js',
+									'test-server-unit/auth-util-test.js',
+									'test-server-unit/users-test.js',
+									'test-server-unit/util-test.js'
+								 ];
 
 gulp.task('pre-test', function () {
   return gulp.src(['app_server/**/*.js'])
@@ -59,7 +67,7 @@ gulp.task('pre-test', function () {
 
 gulp.task('test',
 	gulp.series('pre-test', function () {
-  return gulp.src(['test-server-integration/**/*.js'])
+  return gulp.src(testPaths)
     .pipe(mocha())
     // Creating the reports after tests ran
     .pipe(istanbul.writeReports())
@@ -67,19 +75,9 @@ gulp.task('test',
     .pipe(istanbul.enforceThresholds({ thresholds: { global: 90 } }));
 }));
 
-// gulp.task('test', function() {
-// 	return gulp.src(test, { read: false })
-//     .pipe(mocha({
-//       reporter: 'spec'
-//     }))
-//     .on('error', gutil.log);
-// });
-//
-
 // gulp.task('watch-mocha', function() {
 //     gulp.watch(['lib/**', 'test/**'], ['test']);
 // });
-
 
 // gulp.task('revreplace', function() {
 //   var manifest = gulp.src("./public/angular/rev-manifest.json");
@@ -135,23 +133,6 @@ gulp.task('server',
 	 })
 	})
 );
-
-// gulp.task('server', function(done) {
-// 	if(!isprod) {
-//      bSync({
-//           server: {
-//                baseDir: ['bin/www']
-//           }
-//      })
-// 	}
-//  done();
-// });
-
-// gulp.task('deps', function() {
-// 	return gulp.src('public/html/**/*.html')
-//         //.pipe(wiredep())
-//         .pipe(gulp.dest('dist'));
-//     });
 
 gulp.task('default',
 	gulp.series('server',
