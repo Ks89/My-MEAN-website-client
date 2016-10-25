@@ -17,7 +17,7 @@ const METADATA = { env: ENV };
 
 module.exports = webpackMerge(commonConfig, {
   output: {
-    path    : helpers.root('app_client', 'dist'),
+    path    : helpers.root('dist'),
     filename: '[name].[chunkhash].js',
     chunkFilename: '[name].[chunkhash].js',
     publicPath: './'
