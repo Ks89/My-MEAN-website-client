@@ -1,5 +1,11 @@
-require('dotenv').config(); //to read info from .env file
-//attention: i'm using "dotenv" 2.0 and for this reason I must call "config()".
+console.log("Starting with NODE_ENV=" + process.env.NODE_ENV);
+console.log("process.env.CI is " + process.env.CI);
+
+if(!process.env.CI || process.env.CI !== 'yes') {
+  console.log("Initializing dotenv (requires .env file)")
+  require('dotenv').config(); //to read info from .env file
+  //attention: i'm using "dotenv" 2.0 and for this reason I must call "config()".
+}
 
 var express = require('express');
 var compression = require('compression');
@@ -28,10 +34,12 @@ var csrf = require('csurf');
 var fs = require('fs');
 var passport = require('passport');
 
+console.log("Initializing mongodb");
 //require for mongo
 require('./app_server/models/db');
 require('./app_server/controllers/authentication/passport')(passport);
 
+console.log("Initializing expressjs");
 var app = express();
 
 //[hemlet] enable hemlet
@@ -53,6 +61,7 @@ var app = express();
   -contentSecurityPolicy for setting Content Security Policy
   -noCache to disable client-side caching => I don't want this for better performances
 */
+console.log("Initializing hemlet");
 var helmet = require('helmet');
 app.use(helmet());
 
@@ -121,11 +130,18 @@ app.use(helmet.contentSecurityPolicy({
 //[large payload attacks] this line enables the middleware for all routes
 app.use(contentLength.validateMax({max: MAX_CONTENT_LENGTH_ACCEPTED, status: 400, message: "stop it!"})); // max size accepted for the content-length
 
+console.log("Initializing morgan");
+
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(morgan({ "stream": logger.stream }));
+
+console.log("Initializing static resources");
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'app_client', 'dist')));
+
+console.log("Initializing bodyparser");
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -146,11 +162,15 @@ app.use(session({
     // }
 }));
 
+console.log("Initializing passportjs");
+
 app.use(passport.initialize());
 app.use(passport.session());
 
 // compress all requests using gzip
 app.use(compression());
+
+console.log("Initializing REST apis");
 
 // --------------------------------------- ROUTES ---------------------------------------
 // dedicated routes for angular logging with stacktracejs
@@ -173,6 +193,8 @@ var routesApi = require('./app_server/routes/index')(express);
 app.use('/api', routesApi);
 // --------------------------------------------------------------------------------------
 
+
+console.log("Initializing static path for index.html");
 
 app.use(function(req, res) {
   res.sendFile(path.join(__dirname, 'app_client', 'dist', 'index.html'));

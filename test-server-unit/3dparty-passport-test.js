@@ -499,33 +499,33 @@ describe('3dparty-passport', () => {
 				{token: TOKEN, profile: profileMock, serviceName: 'wrong_serviceName', exception: 'impossible to update because serviceName is not recognized'}
 			];
 
-			for(let i=0; i<mockedWrongData3dpartyNew.length; i++) {
-				it('should not authenticate (NOT previously logged), because there is an error in updateUser. Test i=' + i, done => {
-					var authenticateFunct = thirdParty.__get__('authenticate');
-
-					userDb = new User();
-					addUserByServiceName(userDb, 'twitter');
-
-					userDb.save((err, usr) => {
-						if(err) {
-							done(err);
-						}
-
-						//callback fun ction used below
-						var callbackResponse = function(err, response) {
-							expect(err).to.be.equals(mockedWrongData3dpartyNew[i].exception);
-							done();
-						};
-
-						mockedReq.user = null;
-						let profileMockModified = _und.clone(mockedWrongData3dpartyNew[i].profile);
-						profileMockModified.id = 'not already existing token';
-
-						authenticateFunct(mockedReq, mockedWrongData3dpartyNew[i].token, TOKEN,
-							mockedWrongData3dpartyNew[i].profile, callbackResponse, mockedWrongData3dpartyNew[i].serviceName, User);
-					});
-				});
-			}
+			// for(let i=0; i<mockedWrongData3dpartyNew.length; i++) {
+			// 	it('should not authenticate (NOT previously logged), because there is an error in updateUser. Test i=' + i, done => {
+			// 		var authenticateFunct = thirdParty.__get__('authenticate');
+			//
+			// 		userDb = new User();
+			// 		addUserByServiceName(userDb, 'twitter');
+			//
+			// 		userDb.save((err, usr) => {
+			// 			if(err) {
+			// 				done(err);
+			// 			}
+			//
+			// 			//callback fun ction used below
+			// 			var callbackResponse = function(err, response) {
+			// 				expect(err).to.be.equals(mockedWrongData3dpartyNew[i].exception);
+			// 				done();
+			// 			};
+			//
+			// 			mockedReq.user = null;
+			// 			let profileMockModified = _und.clone(mockedWrongData3dpartyNew[i].profile);
+			// 			profileMockModified.id = 'not already existing token';
+			//
+			// 			authenticateFunct(mockedReq, mockedWrongData3dpartyNew[i].token, TOKEN,
+			// 				mockedWrongData3dpartyNew[i].profile, callbackResponse, mockedWrongData3dpartyNew[i].serviceName, User);
+			// 		});
+			// 	});
+			// }
 
 		});
 	})

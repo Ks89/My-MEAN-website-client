@@ -81,7 +81,7 @@ gulp.task('nodemon', function (cb) {
 		// watch core server file(s) that require server restart on change
     	//watch: ['app.js']
 		// ext: 'js html',
-		env: { 'NODE_ENV': 'development' }
+		env: { 'NODE_ENV': process.env.NODE_ENV }
 	})
 	.on('start', function () {
 		browserSync.reload;

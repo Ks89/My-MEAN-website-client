@@ -1,0 +1,16 @@
+language: node_js
+node_js:
+  - "6.1"
+before_script:
+  - npm install -g mocha
+  - npm install -g nodemon
+  - npm install -g gulp@github:gulpjs/gulp#4.0
+  - npm install -g istanbul
+  - npm install
+  - sleep 15
+sudo: required
+script:
+  - gulp test
+services:
+  - mongodb
+  - redis-server
