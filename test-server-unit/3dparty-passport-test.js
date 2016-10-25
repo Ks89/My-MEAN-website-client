@@ -490,8 +490,6 @@ describe('3dparty-passport', () => {
 				});
 			}
 
-
-
 			const mockedWrongData3dpartyNew = [
 				{token: null, profile: profileMock, serviceName: 'github', exception: 'impossible to update because both serviceName and accessToken must be strings'},
 				{token: TOKEN, profile: profileMock, serviceName: null, exception: 'impossible to update because both serviceName and accessToken must be strings'},
@@ -499,6 +497,8 @@ describe('3dparty-passport', () => {
 				{token: TOKEN, profile: profileMock, serviceName: 'wrong_serviceName', exception: 'impossible to update because serviceName is not recognized'}
 			];
 
+			// TODO FIXME broken for some reasons only when I run `gulp test` and not simply
+			// running `mocha test-server-unit/3dparty-passport-test.js`
 			// for(let i=0; i<mockedWrongData3dpartyNew.length; i++) {
 			// 	it('should not authenticate (NOT previously logged), because there is an error in updateUser. Test i=' + i, done => {
 			// 		var authenticateFunct = thirdParty.__get__('authenticate');
