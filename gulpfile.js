@@ -66,6 +66,12 @@ gulp.task('test',
 	gulp.series('pre-test', function () {
   return gulp.src(testPaths)
     .pipe(mocha())
+		.once('error', () => {
+    	process.exit(1);
+    })
+    .once('end', () => {
+    	process.exit();
+    })
     // Creating the reports after tests ran
     .pipe(istanbul.writeReports())
     // Enforce a coverage of at least 90%

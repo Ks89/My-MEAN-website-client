@@ -1,12 +1,12 @@
 {
-  "name": "stefanocappa",
-  "version": "0.0.2",
+  "name": "My Mean website - back-end",
+  "version": "1.0.0-alpha2",
   "private": true,
   "scripts": {
     "start": "node ./bin/www"
   },
   "engines": {
-    "node": "~6.3.1",
+    "node": "~6.7.0",
     "npm": "~3.10.3"
   },
   "dependencies": {
