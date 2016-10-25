@@ -1,9 +1,15 @@
 'use strict';
 process.env.NODE_ENV = 'test'; //before every other instruction
 
-//to be able to use generateJwt I must import
-//dotenv (otherwise I cannot read process.env with the encryption key)
-require('dotenv').config();
+console.log("Starting with NODE_ENV=" + process.env.NODE_ENV);
+console.log("process.env.CI is " + process.env.CI);
+
+if(!process.env.CI || process.env.CI !== 'yes') {
+  console.log("Initializing dotenv (requires .env file)")
+	//to be able to use generateJwt I must import
+	//dotenv (otherwise I cannot read process.env with the encryption key)
+	require('dotenv').config();
+}
 
 var chai = require('chai');
 var expect = chai.expect;

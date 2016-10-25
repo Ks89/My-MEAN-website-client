@@ -48,7 +48,7 @@ describe('contact', () => {
 		.get('/login')
 		.end((err, res) => {
 			if(err) {
-				done(err1);
+				done(err);
 			} else {
 				csrftoken = (res.headers['set-cookie']).filter(value =>{
 					return value.includes('XSRF-TOKEN');

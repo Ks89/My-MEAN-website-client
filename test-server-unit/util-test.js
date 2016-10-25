@@ -1,9 +1,15 @@
 'use strict';
 process.env.NODE_ENV = 'test'; //before every other instruction
 
-//to be able to use generateJwt I must import 
-//dotenv (otherwise I cannot read process.env with the encryption key)
-require('dotenv').config();
+console.log("Starting with NODE_ENV=" + process.env.NODE_ENV);
+console.log("process.env.CI is " + process.env.CI);
+
+if(!process.env.CI || process.env.CI !== 'yes') {
+  console.log("Initializing dotenv (requires .env file)")
+	//to be able to use generateJwt I must import
+	//dotenv (otherwise I cannot read process.env with the encryption key)
+	require('dotenv').config();
+}
 
 var chai = require('chai');
 var assert = chai.assert;
@@ -22,9 +28,9 @@ describe('util', () => {
   const CORRUPTED_TOKEN = 'Jwt not valid or corrupted';
   const EXPIRE_DATE_NOT_FOUND = 'Expire date not found';
   const NOT_FLOAT_EXP_DATE = 'Not a float expiration date';
- 
+
  describe('#sendJSONres()', () => {
-    
+
     describe('---YES---', () => {
       it('should send a JSON response with content object and status 200', () => {
         const mockedObjContent = {
@@ -90,7 +96,7 @@ describe('util', () => {
         expect(mockedRes).to.be.not.null;
         expect(mockedRes).to.be.not.undefined;
         expect(mockedRes.getContentType()).to.be.equals('application/json');
-        expect(mockedRes.getStatus()).to.be.equals(403);        
+        expect(mockedRes.getStatus()).to.be.equals(403);
         expect(mockedRes.getJson().message).to.be.equals(mockedStringContent);
       });
 
@@ -100,7 +106,7 @@ describe('util', () => {
         expect(mockedRes).to.be.not.null;
         expect(mockedRes).to.be.not.undefined;
         expect(mockedRes.getContentType()).to.be.equals('application/json');
-        expect(mockedRes.getStatus()).to.be.equals(403);        
+        expect(mockedRes.getStatus()).to.be.equals(403);
         expect(mockedRes.getJson().message).to.be.equals(mockedStringArrayContent);
       });
 
@@ -110,7 +116,7 @@ describe('util', () => {
         expect(mockedRes).to.be.not.null;
         expect(mockedRes).to.be.not.undefined;
         expect(mockedRes.getContentType()).to.be.equals('application/json');
-        expect(mockedRes.getStatus()).to.be.equals(501);        
+        expect(mockedRes.getStatus()).to.be.equals(501);
         expect(mockedRes.getJson().message).to.be.equals(mockedStringContent);
       });
     });
@@ -189,7 +195,7 @@ describe('util', () => {
     });
 
     describe('---ERRORS---', () => {
-      it('should catch -not a valid date- exception', () => {    
+      it('should catch -not a valid date- exception', () => {
 
         expect(() => util.getTextFormattedDate("not a date")).to.throw(NOT_VALID_DATE);
         expect(() => util.getTextFormattedDate(undefined)).to.throw(NOT_VALID_DATE);
@@ -245,7 +251,7 @@ describe('util', () => {
     describe('---YES---', () => {
       it('should return true, because jwt is valid', () => {
         //valid for 10 minutes (10*60*1000)
-        dateExpire.setTime(dateExpire.getTime() + 600000); 
+        dateExpire.setTime(dateExpire.getTime() + 600000);
         expect(util.isJwtValidDate(getJwtMockWithFloatDate(dateExpire))).to.equal(true);
       });
     });
@@ -253,13 +259,13 @@ describe('util', () => {
     describe('---NO---', () => {
       it('should return false, because jwt is expired', () => {
         //invalid because expired 10 minutes ago (10*60*1000)
-        dateExpire.setTime(dateExpire.getTime() - 600000); 
+        dateExpire.setTime(dateExpire.getTime() - 600000);
         expect(util.isJwtValidDate(getJwtMockWithFloatDate(dateExpire))).to.equal(false);
       });
 
       it('should return false, because jwt is expired exactly in this moment', () => {
         //invalid because expired 0 seconds ago
-        dateExpire.setTime(dateExpire.getTime()); 
+        dateExpire.setTime(dateExpire.getTime());
         expect(util.isJwtValidDate(getJwtMockWithFloatDate(dateExpire))).to.equal(false);
       });
     });
@@ -268,8 +274,8 @@ describe('util', () => {
       it('should catch -not a float expiration date- exception', () => {
         //date must be a float into the jwt token and not a Date's object
         expect(() => util.isJwtValidDate(getJwtMockNoFloatDate(dateExpire))).to.throw(NOT_FLOAT_EXP_DATE);
-        //TODO FIXME improve adding other test, to be sure that it will work also 
-        //passing null, undefined and so on :) 
+        //TODO FIXME improve adding other test, to be sure that it will work also
+        //passing null, undefined and so on :)
         //I know that it won't work :( -> update util.js
       });
 
@@ -351,7 +357,7 @@ describe('util', () => {
       it('should return an error message, because jwt is expired', done => {
         //invalid because expired 10 minutes ago (10*60*1000)
         var expiry = new Date();
-        expiry.setTime(expiry.getTime() - 600000); 
+        expiry.setTime(expiry.getTime() - 600000);
         util.isJwtValid(getMockJwtString(expiry))
         .then(function(result) {
           expect(true).to.be.false; //XD
@@ -367,7 +373,7 @@ describe('util', () => {
       it('should return an error message, because jwt is expired exactly in this moment', done => {
         //invalid because expired 0 seconds ago
         var expiry = new Date();
-        expiry.setTime(expiry.getTime()); 
+        expiry.setTime(expiry.getTime());
         util.isJwtValid(getMockJwtString(expiry))
         .then(function(result) {
           expect(true).to.be.false; //XD
