@@ -4,9 +4,15 @@ module.exports = function (config) {
   config.set({
     basePath: '',
     frameworks   : ['jasmine'],
-    files        : [{pattern: './config/karma-test-runner.js', watched: false}],
-    preprocessors: {'./config/karma-test-runner.js': ['coverage', 'webpack', 'sourcemap']},
-    webpack      : webpackConfig,
+    files        : [
+      { pattern: './config/karma-test-runner.js',
+        watched: false
+      }
+    ],
+    preprocessors: {
+      './config/karma-test-runner.js': ['coverage', 'webpack', 'sourcemap']
+    },
+    webpack: webpackConfig,
 
     webpackMiddleware: {
       stats: 'errors-only'
