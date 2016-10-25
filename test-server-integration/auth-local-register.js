@@ -31,7 +31,7 @@ describe('auth-local', () => {
 		.get('/login')
 		.end((err, res) => {
 			if(err) {
-				done(err1);
+				done(err);
 			} else {
 				csrftoken = (res.headers['set-cookie']).filter(value =>{
 					return value.includes('XSRF-TOKEN');
@@ -71,7 +71,7 @@ describe('auth-local', () => {
 	}
 
 	function dropUserCollectionTestDb(done) {
-		User.remove({}, err => { 
+		User.remove({}, err => {
 			done(err);
 		});
 	}
@@ -79,7 +79,7 @@ describe('auth-local', () => {
 	describe('#register()', () => {
 
 		beforeEach(done => dropUserCollectionTestDb(done));
-		
+
 		describe('---YES---', () => {
 
 			beforeEach(done => updateCookiesAndTokens(done));
@@ -104,7 +104,7 @@ describe('auth-local', () => {
 							expect(user.local.activateAccountExpires).to.be.not.undefined;
 							expect(user.local.activateAccountToken).to.be.not.undefined;
 							done(err1);
-					    });	
+					    });
 					}
 				});
 			});
@@ -132,7 +132,7 @@ describe('auth-local', () => {
 						});
 					}
 				], (err, res) => {
-					if (err) { 
+					if (err) {
 						done(err);
 					} else {
 						expect(res.body.message).to.be.equals("User already exists. Try to login.");
@@ -143,11 +143,11 @@ describe('auth-local', () => {
 
 			afterEach(done => dropUserCollectionTestDb(done));
 		});
-			
+
 
 		describe('---NO - Wrong/Missing params---', () => {
 			beforeEach(done => updateCookiesAndTokens(done));
-			
+
 			const wrongRegisterMocks = [
 				{name: NEW_NAME, email : NEW_EMAIL},
 				{name: NEW_NAME, password : NEW_PASSWORD},
@@ -163,7 +163,7 @@ describe('auth-local', () => {
 			for(let i = 0; i<wrongRegisterMocks.length; i++) {
 				console.log(wrongRegisterMocks[i]);
 				it('should get 400 BAD REQUEST, because you must pass all mandatory params. Test i= ' + i, done => {
-					
+
 					beforeEach(done => updateCookiesAndTokens(done));
 
 					async.waterfall([
@@ -182,7 +182,7 @@ describe('auth-local', () => {
 							});
 						}
 					], (err, response) => {
-						if (err) { 
+						if (err) {
 							done(err);
 						} else {
 							expect(response.message).to.be.equals("All fields required");
@@ -196,7 +196,7 @@ describe('auth-local', () => {
 
 			afterEach(done => dropUserCollectionTestDb(done));
 		});
-		
+
 		describe('---ERRORS---', () => {
 			it('should get 403 FORBIDDEN, because XSRF-TOKEN is not available', done => {
 				getPartialPostRequest('/api/register')
