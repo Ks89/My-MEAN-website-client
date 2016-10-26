@@ -1,5 +1,5 @@
 'use strict';
-process.env.NODE_ENV = 'test'; //before every other instruction
+//process.env.NODE_ENV = 'test'; //before every other instruction
 
 console.log("Starting with NODE_ENV=" + process.env.NODE_ENV);
 console.log("process.env.CI is " + process.env.CI);

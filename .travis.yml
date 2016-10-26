@@ -6,11 +6,10 @@ before_script:
   - npm install -g nodemon
   - npm install -g gulp@github:gulpjs/gulp#4.0
   - npm install -g istanbul
-  - npm install
   - sleep 15
 sudo: required
 script:
-  - gulp test
+  - mocha test-server-unit/util-test.js
 services:
   - mongodb
   - redis-server
