@@ -124,5 +124,16 @@ module.exports = {
         }
       }
     })
-  ]
+  ],
+  node: {
+    global: true,
+    process: true,
+    Buffer: false,
+    crypto: 'empty',
+    module: false,
+    clearImmediate: false,
+    setImmediate: false,
+    clearTimeout: true,
+    setTimeout: true
+  }
 };

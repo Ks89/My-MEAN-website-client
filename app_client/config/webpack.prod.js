@@ -40,8 +40,10 @@ module.exports = webpackMerge(commonConfig, {
     new DefinePlugin({'webpack': {'ENV': JSON.stringify(METADATA.env)}}),
 
     new UglifyJsPlugin({
+      beautify: false,
       compress: {screw_ie8 : true},
-      mangle: {screw_ie8 : true}
+      mangle: {screw_ie8 : true, keep_fnames: true},
+      comments: false
     })
     ],
 });

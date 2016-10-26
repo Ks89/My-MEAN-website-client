@@ -1,24 +1,23 @@
 const webpack               = require('webpack');
 const DefinePlugin          = require('webpack/lib/DefinePlugin');
 const CommonsChunkPlugin    = require('webpack/lib/optimize/CommonsChunkPlugin');
-const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
-const webpackMerge = require('webpack-merge');
 
-const commonConfig = require('./webpack.common');
-const helpers = require('./helpers');
+const BrowserSyncPlugin     = require('browser-sync-webpack-plugin');
+const webpackMerge          = require('webpack-merge');
+
+const commonConfig          = require('./webpack.common');
+const helpers               = require('./helpers');
 
 const ENV  = process.env.NODE_ENV = 'development';
 const HOST = process.env.HOST || 'localhost';
 const PORT = process.env.PORT || 8080;
 
 const METADATA = {
-  contentBase: './',
-  publicPath: "./assets/",
   env: ENV,
   host: HOST,
-  portServer: '3000',
+  portServer: '3001',
   portWebpackDevServer: PORT,
-  portBrowserSync: '3100'
+  portBrowserSync: '3300'
 };
 
 const MAIN_SERVER_PATH = `http://${METADATA.host}:${METADATA.portServer}`;
@@ -26,13 +25,14 @@ const DEV_SERVER_PATH = `http://${METADATA.host}:${METADATA.portWebpackDevServer
 
 module.exports = webpackMerge(commonConfig, {
   devServer: {
-    contentBase: METADATA.contentBase,
+    inline: true,
+    port: METADATA.portWebpackDevServer,
     historyApiFallback: true,
     stats: { colors: true },
-    quiet: true,
     proxy: {
-      //proxy all paths of the main server (executed with gulp/nodemon)
-      "**": MAIN_SERVER_PATH
+      //proxy all paths of the main
+      //server (executed with gulp (not with nodemon))
+      "/api/**": MAIN_SERVER_PATH
     },
 
   },

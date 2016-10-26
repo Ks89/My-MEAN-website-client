@@ -16,7 +16,7 @@
     "npm": ">=3.10.3"
   },
   "scripts": {
-    "start": "webpack-dev-server --inline --progress --port 8080",
+    "start": "webpack-dev-server --progress --port 8080",
     "pretest": "npm run clean-coverage",
     "test": "karma start",
     "tslint": "tslint",
