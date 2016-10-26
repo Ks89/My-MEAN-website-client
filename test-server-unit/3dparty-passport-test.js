@@ -505,28 +505,29 @@ describe('3dparty-passport', () => {
 
 			// TODO FIXME broken for some reasons only when I run `gulp test` and not simply
 			// running `mocha test-server-unit/3dparty-passport-test.js`
+      // This problem is caused by "sessionLocalUserId instanceof mongoose.Types.ObjectId" into 3dparty-passport.js
 			// for(let i=0; i<mockedWrongData3dpartyNew.length; i++) {
 			// 	it('should not authenticate (NOT previously logged), because there is an error in updateUser. Test i=' + i, done => {
 			// 		var authenticateFunct = thirdParty.__get__('authenticate');
-			//
+      //
 			// 		userDb = new User();
 			// 		addUserByServiceName(userDb, 'twitter');
-			//
+      //
 			// 		userDb.save((err, usr) => {
 			// 			if(err) {
 			// 				done(err);
 			// 			}
-			//
-			// 			//callback fun ction used below
+      //
+			// 			//callback function used below
 			// 			var callbackResponse = function(err, response) {
 			// 				expect(err).to.be.equals(mockedWrongData3dpartyNew[i].exception);
 			// 				done();
 			// 			};
-			//
+      //
 			// 			mockedReq.user = null;
 			// 			let profileMockModified = _und.clone(mockedWrongData3dpartyNew[i].profile);
 			// 			profileMockModified.id = 'not already existing token';
-			//
+      //
 			// 			authenticateFunct(mockedReq, mockedWrongData3dpartyNew[i].token, TOKEN,
 			// 				mockedWrongData3dpartyNew[i].profile, callbackResponse, mockedWrongData3dpartyNew[i].serviceName, User);
 			// 		});

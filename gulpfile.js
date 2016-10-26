@@ -62,10 +62,15 @@ gulp.task('pre-test', function () {
     .pipe(istanbul.hookRequire());
 });
 
+function handleError(err) {
+  console.log(err.toString());
+  this.emit('end');
+}
+
 gulp.task('test',
 	gulp.series('pre-test', function () {
   return gulp.src(testPaths)
-    .pipe(mocha())
+    .pipe(mocha().on("error", handleError))
     // Creating the reports after tests ran
     .pipe(istanbul.writeReports())
     // Enforce a coverage of at least 90%
