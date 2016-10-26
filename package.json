@@ -64,7 +64,7 @@
     "multer": "^1.2.0",
     "nock": "^8.0.0",
     "npm-check": "^5.4.0",
-    "protractor": "^4.0.9",
+    "protractor": "^4.0.10",
     "rewire": "^2.5.2",
     "supertest": "^2.0.1",
     "through2": "^2.0.1",
