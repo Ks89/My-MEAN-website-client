@@ -1,9 +1,9 @@
-const webpack = require('webpack');
-const path = require('path');
+const webpack                  = require('webpack');
+const path                     = require('path');
 
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin');
 
-const helpers = require('./helpers');
+const helpers                  = require('./helpers');
 
 module.exports = {
   devtool: 'inline-source-map',
