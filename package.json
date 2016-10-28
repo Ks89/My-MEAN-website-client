@@ -16,7 +16,8 @@
     "npm": "~3.10.8"
   },
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "test": "gulp test"
   },
   "dependencies": {
     "async": "^2.1.2",
