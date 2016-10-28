@@ -1,15 +1,36 @@
 console.log("Starting with NODE_ENV=" + process.env.NODE_ENV);
 console.log("process.env.CI is " + process.env.CI);
 
-if(!process.env.CI || process.env.CI !== 'yes') {
+if(!(process.env.CI && process.env.CI === 'yes')) {
   console.log("Initializing dotenv (requires .env file)")
   require('dotenv').config(); //to read info from .env file
   //attention: i'm using "dotenv" 2.0 and for this reason I must call "config()".
 }
 
+var path = require('path');
+
+// --------------------------------------------------------
+// --------------------------------------------------------
+// See this issue here https://github.com/Ks89/My-MEAN-website/issues/30
+//  to understand this piece of code.
+var pathFrontEndFolder, pathFrontEndIndex;
+if((process.env.CI && process.env.CI === 'yes') || process.env.NODE_ENV === 'test') {
+  console.log("Executed in CI or TEST - providing fake app_client and index.html");
+  //provides fake directories and files to be able to run this files
+  //also with mocha in both testing and ci environments.
+  //Otherwise, you are forced to run `npm run build` into app_client's folder
+  pathFrontEndFolder = path.join(__dirname);
+  pathFrontEndIndex = path.join(__dirname, 'app.js');
+} else {
+  console.log("Providing reale app_client and index.html");
+  pathFrontEndFolder = path.join(__dirname, 'app_client', 'dist');
+  pathFrontEndIndex = path.join(__dirname, 'app_client', 'dist', 'index.html');
+}
+// --------------------------------------------------------
+// --------------------------------------------------------
+
 var express = require('express');
 var compression = require('compression');
-var path = require('path');
 var favicon = require('serve-favicon');
 var morgan = require('morgan');
 var session = require('express-session');
@@ -137,8 +158,7 @@ console.log("Initializing morgan");
 app.use(morgan({ "stream": logger.stream }));
 
 console.log("Initializing static resources");
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'app_client', 'dist')));
+app.use(express.static(pathFrontEndFolder));
 
 console.log("Initializing bodyparser");
 
@@ -197,7 +217,7 @@ app.use('/api', routesApi);
 console.log("Initializing static path for index.html");
 
 app.use(function(req, res) {
-  res.sendFile(path.join(__dirname, 'app_client', 'dist', 'index.html'));
+  res.sendFile(pathFrontEndIndex);
 });
 
 // catch bad csrf token
