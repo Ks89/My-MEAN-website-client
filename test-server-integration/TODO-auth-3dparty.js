@@ -105,7 +105,7 @@ describe('contact', () => {
 			// 		displayName: 'Fake name
 			// 		username: 'Fakeusername',
 			// 		profileUrl: 'https://github.com/Ks89',
-			// 		emails: [ { value: 'stefano.cappa@fake.email.it' } ],
+			// 		emails: [ { value: 'fake@fake.email.it' } ],
 			// 		provider: 'github'
 			// 	};
 
@@ -228,7 +228,7 @@ describe('contact', () => {
 			// 		displayName: 'Stefano Cappa',
 			// 		username: 'Ks89',
 			// 		profileUrl: 'https://github.com/Ks89',
-			// 		emails: [ { value: 'stefano.cappa@fake.email.it' } ],
+			// 		emails: [ { value: 'fake@fake.email.it' } ],
 			// 		provider: 'github'
 			// 	};
 
@@ -311,7 +311,7 @@ describe('contact', () => {
 					displayName: 'Stefano Cappa',
 					username: 'Ks89',
 					profileUrl: 'https://github.com/Ks89',
-					emails: [ { value: 'stefano.cappa@fake.email.it' } ]
+					emails: [ { value: 'fake@fake.email.it' } ]
 				};
 
 	     		getPartialGetRequest('/api/auth/facebook')
