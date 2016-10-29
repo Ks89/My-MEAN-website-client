@@ -1,4 +1,4 @@
-[![Code Climate](https://codeclimate.com/github/Ks89/My-MEAN-website/badges/gpa.svg)](https://codeclimate.com/github/Ks89/My-MEAN-website)
+[![Code Climate](https://codeclimate.com/github/Ks89/My-MEAN-website/badges/gpa.svg)](https://codeclimate.com/github/Ks89/My-MEAN-website)   [![Build Status](https://travis-ci.org/Ks89/My-MEAN-website.svg?branch=master)](https://travis-ci.org/Ks89/My-MEAN-website)
 <br>
 # My M.E.A.N. website (Alpha 2)
 <br>
