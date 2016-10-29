@@ -47,8 +47,18 @@ module.exports = {
         loader: 'raw-loader'
       },
       {
-       test: /\.css$/,
-       loader: 'raw-loader!style-loader!css-loader!postcss-loader'
+        test: /\.css$/,
+        exclude: helpers.root('src', 'app'),
+        loader: ExtractTextPlugin
+          .extract({
+              fallbackLoader: "style-loader",
+              loader: ['css', 'postcss']
+          })
+      },
+      {
+        test: /\.css$/,
+        include: helpers.root('src', 'app'),
+        loader: 'raw!postcss'
       },
       {
         test: /\.scss$/,

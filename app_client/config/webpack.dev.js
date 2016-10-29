@@ -4,6 +4,7 @@ const CommonsChunkPlugin    = require('webpack/lib/optimize/CommonsChunkPlugin')
 
 const BrowserSyncPlugin     = require('browser-sync-webpack-plugin');
 const webpackMerge          = require('webpack-merge');
+const ExtractTextPlugin     = require('extract-text-webpack-plugin');
 
 const commonConfig          = require('./webpack.common');
 const helpers               = require('./helpers');
@@ -47,6 +48,10 @@ module.exports = webpackMerge(commonConfig, {
     new CommonsChunkPlugin({
       name: ['app', 'vendor', 'polyfills'],
       minChunks: Infinity
+    }),
+    new ExtractTextPlugin({
+      filename: '[name].css',
+      allChunks: true
     }),
     new DefinePlugin({'webpack': {'ENV': JSON.stringify(METADATA.env)}}),
     new BrowserSyncPlugin(
