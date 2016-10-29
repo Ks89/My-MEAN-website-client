@@ -497,42 +497,39 @@ describe('3dparty-passport', () => {
 			}
 
 			const mockedWrongData3dpartyNew = [
-				{token: null, profile: profileMock, serviceName: 'github', exception: 'impossible to update because both serviceName and accessToken must be strings'},
-				{token: TOKEN, profile: profileMock, serviceName: null, exception: 'impossible to update because both serviceName and accessToken must be strings'},
-				{token: null, profile: profileMock, serviceName: null, exception: 'impossible to update because both serviceName and accessToken must be strings'},
-				{token: TOKEN, profile: profileMock, serviceName: 'wrong_serviceName', exception: 'impossible to update because serviceName is not recognized'}
+				{token: null, profile: profileMock, serviceName: 'github', exception: 'Impossible to find an user with sessionLocalUserId'},
+				{token: TOKEN, profile: profileMock, serviceName: null, exception: 'Impossible to find an user with sessionLocalUserId'},
+				{token: null, profile: profileMock, serviceName: null, exception: 'Impossible to find an user with sessionLocalUserId'},
+				{token: TOKEN, profile: profileMock, serviceName: 'wrong_serviceName', exception: 'Impossible to find an user with sessionLocalUserId'}
 			];
 
-			// TODO FIXME broken for some reasons only when I run `gulp test` and not simply
-			// running `mocha test-server-unit/3dparty-passport-test.js`
-      // This problem is caused by "sessionLocalUserId instanceof mongoose.Types.ObjectId" into 3dparty-passport.js
-			// for(let i=0; i<mockedWrongData3dpartyNew.length; i++) {
-			// 	it('should not authenticate (NOT previously logged), because there is an error in updateUser. Test i=' + i, done => {
-			// 		var authenticateFunct = thirdParty.__get__('authenticate');
-      //
-			// 		userDb = new User();
-			// 		addUserByServiceName(userDb, 'twitter');
-      //
-			// 		userDb.save((err, usr) => {
-			// 			if(err) {
-			// 				done(err);
-			// 			}
-      //
-			// 			//callback function used below
-			// 			var callbackResponse = function(err, response) {
-			// 				expect(err).to.be.equals(mockedWrongData3dpartyNew[i].exception);
-			// 				done();
-			// 			};
-      //
-			// 			mockedReq.user = null;
-			// 			let profileMockModified = _und.clone(mockedWrongData3dpartyNew[i].profile);
-			// 			profileMockModified.id = 'not already existing token';
-      //
-			// 			authenticateFunct(mockedReq, mockedWrongData3dpartyNew[i].token, TOKEN,
-			// 				mockedWrongData3dpartyNew[i].profile, callbackResponse, mockedWrongData3dpartyNew[i].serviceName, User);
-			// 		});
-			// 	});
-			// }
+			for(let i=0; i<mockedWrongData3dpartyNew.length; i++) {
+				it('should not authenticate (NOT previously logged), because there is an error in updateUser. Test i=' + i, done => {
+					var authenticateFunct = thirdParty.__get__('authenticate');
+
+					userDb = new User();
+					addUserByServiceName(userDb, 'twitter');
+
+					userDb.save((err, usr) => {
+						if(err) {
+							done(err);
+						}
+
+						//callback function used below
+						var callbackResponse = function(err, response) {
+							expect(err).to.be.equals(mockedWrongData3dpartyNew[i].exception);
+							done();
+						};
+
+						mockedReq.user = null;
+						let profileMockModified = _und.clone(mockedWrongData3dpartyNew[i].profile);
+						profileMockModified.id = 'not already existing token';
+
+						authenticateFunct(mockedReq, mockedWrongData3dpartyNew[i].token, TOKEN,
+							mockedWrongData3dpartyNew[i].profile, callbackResponse, mockedWrongData3dpartyNew[i].serviceName, User);
+					});
+				});
+			}
 
 		});
 	})
