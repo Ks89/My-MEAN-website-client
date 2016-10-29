@@ -5,18 +5,10 @@ node_js:
 env:
   - JWT_SECRET=faketestjwt TWITTER_CONSUMER_KEY=consumerkey TWITTER_CONSUMER_SECRET=consumersecret TWITTER_CALLBACK_URL=http://127.0.0.1:3300/api/auth/twitter/callback FACEBOOK_APP_ID=appid FACEBOOK_APP_SECRET=appsecret FACEBOOK_CALLBACK_URL=http://localhost:3300/api/auth/facebook/callback GOOGLE_CLIENT_ID=clientid GOOGLE_CLIENT_SECRET=clientsecret GOOGLE_CALLBACK_URL=http://localhost:3300/api/auth/google/callback GITHUB_CLIENT_ID=clientid GITHUB_CLIENT_SECRET=clientsecret GITHUB_CALLBACK_URL=http://localhost:3300/api/auth/github/callback LINKEDIN_CLIENT_ID=clientid LINKEDIN_CLIENT_SECRET=clientsecret LINKEDIN_CALLBACK_URL=http://localhost:3300/api/auth/linkedin/callback USER_EMAIL=fake@fake.it PASS_EMAIL=fakepasswordemail RECAPTCHA_PUBLIC=recaptchapublic RECAPTCHA_SECRET=recaptchasecret NODE_ENV=test CI=yes
 before_script:
-  - npm install -g mocha
-  - npm install -g nodemon
-  - npm install -g gulp@github:gulpjs/gulp#4.0
-  - npm install -g istanbul
+  - bash travisci/before_script.sh
 sudo: required
 script:
-  - mocha test-server-integration/
-  - mocha test-server-unit/3dparty-passport-test.js
-  - mocha test-server-unit/auth-experimental-collapse-db.js
-  - mocha test-server-unit/auth-util-test.js
-  - mocha test-server-unit/users-test.js
-  - mocha test-server-unit/util-test.js
+  - bash travisci/travis_script.sh
 services:
   - mongodb
   - redis-server
