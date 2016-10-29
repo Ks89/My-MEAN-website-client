@@ -12,8 +12,8 @@
     "url": "https://github.com/Ks89/My-MEAN-website"
   },
   "engines": {
-    "node": "~7.0.0",
-    "npm": "~3.10.8"
+    "node": ">=6.0",
+    "npm": ">=3.8.6"
   },
   "scripts": {
     "start": "node ./bin/www",
