@@ -14,7 +14,11 @@ const autoprefixer                 = require('autoprefixer');
 
 const helpers                      = require('./helpers');
 const TITLE                        = 'My MEAN Website';
+const TITLE_ADMIN                  = 'Admin My MEAN Website';
 const TEMPLATE_PATH                = './src/index.ejs';
+const TEMPLATE_ADMIN_PATH          = './src/admin.ejs';
+const TEMPLATE_HTML                = 'index.html';
+const TEMPLATE_ADMIN_HTML          = 'admin.html';
 
 module.exports = {
   entry: {
@@ -88,8 +92,17 @@ module.exports = {
     new InlineManifestWebpackPlugin(),
     new HtmlWebpackPlugin({
       title: TITLE,
-      template: TEMPLATE_PATH, // Load a custom template
-      inject: true
+      inject: true,
+      chunks: ['app', 'vendor', 'polyfills'],
+      template: TEMPLATE_PATH,
+      filename: TEMPLATE_HTML
+    }),
+    new HtmlWebpackPlugin({
+      title: TITLE_ADMIN,
+      inject: true,
+      chunks: ['admin', 'vendor', 'polyfills'],
+      template: TEMPLATE_ADMIN_PATH,
+      filename: TEMPLATE_ADMIN_HTML
     }),
     new OccurrenceOrderPlugin(true),
     new ProvidePlugin({
