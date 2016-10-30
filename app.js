@@ -14,6 +14,7 @@ var path = require('path');
 // See this issue here https://github.com/Ks89/My-MEAN-website/issues/30
 //  to understand this piece of code.
 var pathFrontEndFolder, pathFrontEndIndex;
+var pathFrontEndAdminIndex;
 if((process.env.CI && process.env.CI === 'yes') || process.env.NODE_ENV === 'test') {
   console.log("Executed in CI or TEST - providing fake app_client and index.html");
   //provides fake directories and files to be able to run this files
@@ -25,6 +26,7 @@ if((process.env.CI && process.env.CI === 'yes') || process.env.NODE_ENV === 'tes
   console.log("Providing reale app_client and index.html");
   pathFrontEndFolder = path.join(__dirname, 'app_client', 'dist');
   pathFrontEndIndex = path.join(__dirname, 'app_client', 'dist', 'index.html');
+  pathFrontEndAdminIndex = path.join(__dirname, 'app_client', 'dist', 'admin.html');
 }
 // --------------------------------------------------------
 // --------------------------------------------------------
@@ -216,8 +218,12 @@ app.use('/api', routesApi);
 
 console.log("Initializing static path for index.html");
 
-app.use(function(req, res) {
+app.use('/', function(req, res) {
   res.sendFile(pathFrontEndIndex);
+});
+
+app.use('/admin', function(req, res) {
+  res.sendFile(pathFrontEndAdminIndex);
 });
 
 // catch bad csrf token
