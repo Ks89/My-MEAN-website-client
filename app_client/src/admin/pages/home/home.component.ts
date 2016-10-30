@@ -7,6 +7,5 @@ import { Observable } from 'rxjs/Observable';
   templateUrl: 'home.html'
 })
 export default class HomeAdminComponent {
-
   constructor() {}
 }
