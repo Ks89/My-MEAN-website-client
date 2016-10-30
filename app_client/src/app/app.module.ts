@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
-import { routing, appRoutingProviders }  from './app.routing';
+import { routing }  from './app.routing';
 
 import ApplicationComponent from './application/application.component';
 import HomeComponent from './pages/home/home.component';
@@ -69,7 +69,6 @@ import { LaddaModule } from 'angular2-ladda';
     SimplePageScroll
   ],
   providers: [
-    appRoutingProviders,
     SERVICES
   ],
   bootstrap: [ ApplicationComponent ]

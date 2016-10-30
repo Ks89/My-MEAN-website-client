@@ -1,6 +1,5 @@
 import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 
 import HomeComponent from './pages/home/home.component';
 import ProjectListComponent from './pages/project-list/project-list.component';
@@ -36,10 +35,6 @@ const appRoutes: Routes = [
   {path: 'profile',                         component: ProfileComponent, canActivate: [AuthGuard] },
   {path: 'profile/:token',                  component: ProfileComponent, canActivate: [AuthGuard] },
   {path: 'post3dauth',                      component: Post3dAuthComponent}
-];
-
-export const appRoutingProviders: any[] = [
-  { provide: LocationStrategy, useClass: HashLocationStrategy }
 ];
 
 export const routing: ModuleWithProviders = RouterModule.forRoot(appRoutes);
