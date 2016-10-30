@@ -18,9 +18,10 @@ const TEMPLATE_PATH                = './src/index.ejs';
 
 module.exports = {
   entry: {
-    'polyfills': './src/polyfills.ts',
-    'vendor': './src/vendor.ts',
-    'app': './src/main.ts'
+    polyfills: './src/polyfills.ts',
+    vendor: './src/vendor.ts',
+    app: './src/main.ts',
+    admin: './src/admin.ts'
   },
   resolve: {
     descriptionFiles: ['package.json'],
@@ -48,7 +49,7 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        exclude: helpers.root('src', 'app'),
+        exclude: [helpers.root('src', 'app'), helpers.root('src', 'admin')],
         loader: ExtractTextPlugin
           .extract({
               fallbackLoader: "style-loader",
@@ -57,7 +58,7 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        include: helpers.root('src', 'app'),
+        include: [helpers.root('src', 'app'), helpers.root('src', 'admin')],
         loader: 'raw!postcss'
       },
       {

@@ -2,6 +2,7 @@ const webpack               = require('webpack');
 const CommonsChunkPlugin    = require('webpack/lib/optimize/CommonsChunkPlugin');
 const DefinePlugin          = require('webpack/lib/DefinePlugin');
 const UglifyJsPlugin        = require('webpack/lib/optimize/UglifyJsPlugin');
+// const DedupePlugin          = require('webpack/lib/optimize/DedupePlugin');
 
 const ManifestPlugin        = require('webpack-manifest-plugin');
 const WebpackMd5HashPlugin  = require('webpack-md5-hash');

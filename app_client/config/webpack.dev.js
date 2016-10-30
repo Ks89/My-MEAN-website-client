@@ -46,7 +46,13 @@ module.exports = webpackMerge(commonConfig, {
   },
   plugins: [
     new CommonsChunkPlugin({
-      name: ['app', 'vendor', 'polyfills'],
+      name: 'app',
+      chunks: ['app', 'vendor', 'polyfills'],
+      minChunks: Infinity
+    }),
+    new CommonsChunkPlugin({
+      name: 'admin',
+      chunks: ['admin', 'vendor', 'polyfills'],
       minChunks: Infinity
     }),
     new ExtractTextPlugin({
