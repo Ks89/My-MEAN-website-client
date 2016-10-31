@@ -19,7 +19,7 @@ Attention! This project is still an alpha, so it's not production ready. Please 
 If you are interested, star this project on GitHub.
 
 Testing:
-- front-end unit: only some classes are tested. In alpha 3 and 4 I'll complete everything 
+- front-end unit: only some classes are tested. In alpha 3 and 4 I'll complete everything
 - front-end e2e: work in progress, In alpha 3 and 4 I'll complete everything
 - back-end unit: almost done (only the necessary things)*. coverage >80%
 - back-end integration: almost done*. coverage >80%
@@ -49,34 +49,35 @@ If you want to help me to write integration-test's case for PassportJS, check [t
 - download and install Node.js 7.0 or higher
 - download the latest versions of Google Chrome and Mozilla Firefox
 - Install homebrew:
-  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-  brew update
-  brew upgrade
+  - ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  - brew update
+  - brew upgrade
 - Install MongoDB
-  brew install wget
-  brew install mongodb --with-openssl
-  sudo mkdir -p /data/db
+  - brew install wget
+  - brew install mongodb --with-openssl
+  - sudo mkdir -p /data/db
 - Install redis
-  wget http://download.redis.io/redis-stable.tar.gz
-  tar xvzf redis-stable.tar.gz
-  cd redis-stable
-  make install
-  cd ..
-  rm -rf redis-stable
-  rm -f redis-stable.tar.gz
+  - wget http://download.redis.io/redis-stable.tar.gz
+  - tar xvzf redis-stable.tar.gz
+  - cd redis-stable
+  - make install
+  - cd ..
+  - rm -rf redis-stable
+  - rm -f redis-stable.tar.gz
 - Install global npm packages
-  sudo npm install -g karma-cli
-  sudo npm install -g mocha
-  sudo npm install -g webpack
-  sudo npm install -g typescript
-  sudo npm install -g nodemon
-  sudo npm install -g gulp@github:gulpjs/gulp#4.0
-  sudo npm install -g npm-check
-  sudo npm install -g lite-server
-  sudo npm install -g remap-istanbul
-  sudo npm install -g webdriver-manager
-  sudo npm install -g protractor
-  sudo npm install -g istanbul
+  - sudo npm install -g karma-cli
+  - sudo npm install -g mocha
+  - sudo npm install -g webpack
+  - sudo npm install -g typescript
+  - sudo npm install -g typescript
+  - sudo npm install -g nodemon
+  - sudo npm install -g gulp@github:gulpjs/gulp#4.0
+  - sudo npm install -g npm-check
+  - sudo npm install -g lite-server
+  - sudo npm install -g remap-istanbul
+  - sudo npm install -g webdriver-manager
+  - sudo npm install -g protractor
+  - sudo npm install -g istanbul
 
 ## How to setup
 

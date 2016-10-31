@@ -12,6 +12,9 @@ script:
 services:
   - mongodb
   - redis-server
+addons:
+  code_climate:
+    repo_token: 71e1e63e00682fa5571f37bd59e0568781c5fc9b84f75f5130c5a37703fa6e87
 cache: # enable caching
   bundler: true
   directories:
