@@ -6,7 +6,7 @@
 #chmod a+x install-macos.sh
 #bash install-macos.sh
 
-tput setaf 2; echo "Welcome to KS89 My MEAN Website 1.0.0-alpha3 install script for macOS"
+tput setaf 2; echo "Welcome to KS89 My MEAN Website 1.0.0-alpha3 install script for Ubuntu"
 
 tput setaf 2; echo "Please, insert your password if requested"
 
