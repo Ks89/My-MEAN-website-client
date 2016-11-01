@@ -30,7 +30,7 @@ then
     bash setup/ubuntu/npm.sh
 
     tput setaf 5; echo "source ~/.bash_profile called"
-    source ~/.bash_profile
+    source ~/.bashrc
 
     tput setaf 6; echo "Thank u, bye bye!"
 fi
