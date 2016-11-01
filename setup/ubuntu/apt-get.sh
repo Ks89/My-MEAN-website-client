@@ -26,5 +26,7 @@ then
   echo "deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/testing multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.4.list
   sudo apt-get update
   sudo apt-get install -y mongodb-org
+  sudo mkdir /data
+  sudo mkdir /data/db
   sudo cp setup/ubuntu/mongod.service /lib/systemd/system/mongod.service
 fi
