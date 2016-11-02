@@ -88,12 +88,12 @@ module.exports = {
     // noParse: [path.join(__dirname, 'node_modules', 'angular2', 'bundles')]
   },
   plugins: [
-    new ManifestPlugin(),
-    new InlineManifestWebpackPlugin(),
+    new ManifestPlugin(), // TODO check if I can remove this
+    new InlineManifestWebpackPlugin(), // TODO check if I can remove this
     new HtmlWebpackPlugin({
       title: TITLE,
       inject: true,
-      // chunksSortMode: 'none',
+      // chunksSortMode: 'auto', // auto is the default value
       chunks: ['polyfills', 'vendor', 'app'],
       template: TEMPLATE_PATH,
       filename: TEMPLATE_HTML

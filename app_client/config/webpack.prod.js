@@ -26,7 +26,7 @@ module.exports = webpackMerge(commonConfig, {
   },
   plugins: [
     new CommonsChunkPlugin({
-      name: ['app', 'vendor', 'polyfills'],
+      name: ['admin', 'app', 'vendor', 'polyfills'],
       minChunks: Infinity
     }),
     new ExtractTextPlugin({
@@ -34,6 +34,7 @@ module.exports = webpackMerge(commonConfig, {
       allChunks: true
     }),
     new WebpackMd5HashPlugin(),
+    
     // new ChunkManifestPlugin({ //BROKEN WITH WEBPACK 2 - waiting for a solution
     //   filename: "manifest.json",
     //   manifestVariable: "webpackManifest"
