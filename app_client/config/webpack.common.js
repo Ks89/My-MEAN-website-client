@@ -93,14 +93,57 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: TITLE,
       inject: true,
-      chunks: ['app', 'vendor', 'polyfills'],
+      // chunksSortMode: 'none',
+      chunks: ['polyfills', 'vendor', 'app'],
       template: TEMPLATE_PATH,
       filename: TEMPLATE_HTML
     }),
     new HtmlWebpackPlugin({
       title: TITLE_ADMIN,
       inject: true,
-      chunks: ['admin', 'vendor', 'polyfills'],
+//  a.names[0]: vendor
+// b.names[0]: admin
+// a>b--- -1
+// a.names[0]: admin
+// b.names[0]: polyfills
+// a<b--- 1
+// a.names[0]: vendor
+// b.names[0]: polyfills
+// a>b--- -1
+      chunksSortMode: function (a, b) {  //alphabetical order
+        console.log("a.names[0]: " + a.names[0]); //pva
+        console.log("b.names[0]: "+ b.names[0]);
+          if(a.names[0].startsWith('p')) {
+            console.log("ap -1");
+            return -1;
+          } else {
+            if(a.names[0].startsWith('v') && b.names[0].startsWith('a')) {
+              console.log("av ba -1");
+              return -1;
+            } else {
+              if(a.names[0].startsWith('a') && (b.names[0].startsWith('p') || b.names[0].startsWith('v'))) {
+                console.log("aa bp bv 1");
+                return 1;
+              } else {
+                if(a.names[0].startsWith('v') && b.names[0].startsWith('p')) {
+                  console.log("av bp 1");
+                  return 1;
+                }
+              }
+            }
+          }
+          // if (a.names[0] < b.names[0]) {
+          //   console.log("a<b--- 1 ");
+          //   return 1;
+          // }
+          // if (a.names[0] > b.names[0]) {
+          //   console.log("a>b--- -1 ");
+          //   return -1;
+          // }
+          // console.log("a=b--- 0 ");
+          return 0;
+        },
+      chunks: ['polyfills', 'vendor', 'admin'],
       template: TEMPLATE_ADMIN_PATH,
       filename: TEMPLATE_ADMIN_HTML
     }),
