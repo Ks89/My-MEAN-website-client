@@ -76,7 +76,7 @@
         }
     ], 
     "projectHomeView" : {
-        "carouselImagePath" : "http://placehold.it/1000x400", 
+        "carouselImagePath" : "http://placehold.it/1440x450", 
         "carouselText" : "sdjs fshfs fhfsdhf", 
         "thumbImagePath" : "http://placehold.it/720x300", 
         "thumbText" : "sfsfasf", 
@@ -137,7 +137,7 @@
         }
     ], 
     "projectHomeView" : {
-        "carouselImagePath" : "http://placehold.it/1000x400", 
+        "carouselImagePath" : "http://placehold.it/1440x450", 
         "carouselText" : "sdjs fshfs fhfsdhf", 
         "thumbImagePath" : "http://placehold.it/720x300", 
         "thumbText" : "sfsfasf", 
@@ -198,7 +198,7 @@
         }
     ], 
     "projectHomeView" : {
-        "carouselImagePath" : "http://placehold.it/1000x400", 
+        "carouselImagePath" : "http://placehold.it/1440x450", 
         "carouselText" : "sdjs fshfs fhfsdhf", 
         "thumbImagePath" : "http://placehold.it/720x300", 
         "thumbText" : "sfsfasf", 
