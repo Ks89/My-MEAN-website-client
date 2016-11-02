@@ -12,8 +12,14 @@ module.exports.projectsList = function(req, res) {
     if (!results || err) {
       console.log('projectsList error:', err);
       Utils.sendJSONres(res, 404, "Project list not found");
+      return;
+    }
+    if (results.length === 0) {
+      console.log('projectsList is empty');
+      res.status(204).end(); // no content (attention, don't use res.json() in this case)
     } else {
       Utils.sendJSONres(res, 200, results);
+      return;
     }
   });
 };
@@ -29,8 +35,14 @@ module.exports.projectsListHomepage = function(req, res) {
       if (!results || err) {
         console.log('projectsListHomepage error:', err);
         Utils.sendJSONres(res, 404, "Project list homepage not found");
+        return;
+      }
+      if (results.length === 0) {
+        console.log('projectsListHomepage is empty');
+        res.status(204).end(); // no content (attention, don't use res.json() in this case)
       } else {
         Utils.sendJSONres(res, 200, results);
+        return;
       }
     });
 };

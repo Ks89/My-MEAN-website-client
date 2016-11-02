@@ -136,17 +136,17 @@ describe('projects', () => {
 		describe('---NO---', () => {
 
 			before(done => dropProjectCollectionTestDb(done));
-	
-			it('should catch 200 but with an empty array as response', done => {
+
+			it('should catch 204 no content', done => {
 				getPartialGetRequest(URL_PROJECTS)
-				.expect(200)
+				.expect(204) // no content
 				.end((err, res) => {
 					if (err) {
 						return done(err);
 					} else {
+						// no content => nothing :)
 						expect(res.body).to.be.not.null;
 						expect(res.body).to.be.not.undefined;
-						expect(res.body.length).to.be.equals(0);
 						done();
 					}
 				});
@@ -178,7 +178,7 @@ describe('projects', () => {
 								expect(prj.projectHomeView.thumbImagePath).to.be.equals(project2.projectHomeView.thumbImagePath);
 								expect(prj.projectHomeView.thumbText).to.be.equals(project2.projectHomeView.thumbText);
 								expect(prj.projectHomeView.bigThumbImagePath).to.be.equals(project2.projectHomeView.bigThumbImagePath);
-								expect(prj.projectHomeView.bigThumbText).to.be.equals(project2.projectHomeView.bigThumbText);				
+								expect(prj.projectHomeView.bigThumbText).to.be.equals(project2.projectHomeView.bigThumbText);
 								expect(prj.name).to.be.equals(project2.name);
 								expect(prj.url).to.be.equals(project2.url);
 								expect(prj.description).to.be.equals(project2.description);
@@ -204,18 +204,18 @@ describe('projects', () => {
 		describe('---NO---', () => {
 
 			before(done => dropProjectCollectionTestDb(done));
-	
-			it('should catch 200 but with an empty array as response', done => {
+
+			it('should catch 204 no content', done => {
 				getPartialGetRequest(URL_PROJECTHOME)
-				.expect(200) //Status code
+				.expect(204) // no content
 				// end handles the response
 				.end((err, res) => {
 					if (err) {
 						return done(err);
 					} else {
+						// no content => nothing :)
 						expect(res.body).to.be.not.null;
 						expect(res.body).to.be.not.undefined;
-						expect(res.body.length).to.be.equals(0);
 						done();
 					}
 				});
@@ -228,7 +228,7 @@ describe('projects', () => {
 		describe('---YES---', () => {
 
 			before(done => insertProjectsTestDb(done));
-			
+
 			it('should correctly get a single project by its id', done => {
 				getPartialGetRequest(URL_SINGLE_PROJECT + project2._id)
 				.expect(200)
@@ -244,7 +244,7 @@ describe('projects', () => {
 						expect(prj.projectHomeView.thumbImagePath).to.be.equals(project2.projectHomeView.thumbImagePath);
 						expect(prj.projectHomeView.thumbText).to.be.equals(project2.projectHomeView.thumbText);
 						expect(prj.projectHomeView.bigThumbImagePath).to.be.equals(project2.projectHomeView.bigThumbImagePath);
-						expect(prj.projectHomeView.bigThumbText).to.be.equals(project2.projectHomeView.bigThumbText);				
+						expect(prj.projectHomeView.bigThumbText).to.be.equals(project2.projectHomeView.bigThumbText);
 						expect(prj.name).to.be.equals(project2.name);
 						expect(prj.url).to.be.equals(project2.url);
 						expect(prj.description).to.be.equals(project2.description);
@@ -257,7 +257,7 @@ describe('projects', () => {
 						expect(prj.authors.surname).to.be.equals(project2.authors.surname);
 						expect(prj.authors.url).to.be.equals(project2.authors.url);
 						expect(prj.authors.urlAvailable).to.be.equals(project2.authors.urlAvailable);
-						
+
 						done(err);
 					}
 				});
@@ -269,7 +269,7 @@ describe('projects', () => {
 		describe('---ERRORS---', () => {
 
 			before(done => dropProjectCollectionTestDb(done));
-	
+
 			it('should catch 404 not found and check the error message', done => {
 				getPartialGetRequest(URL_SINGLE_PROJECT + 'fake_id')
 				.expect(404)
