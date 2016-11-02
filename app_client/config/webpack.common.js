@@ -101,46 +101,24 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: TITLE_ADMIN,
       inject: true,
-//  a.names[0]: vendor
-// b.names[0]: admin
-// a>b--- -1
-// a.names[0]: admin
-// b.names[0]: polyfills
-// a<b--- 1
-// a.names[0]: vendor
-// b.names[0]: polyfills
-// a>b--- -1
-      chunksSortMode: function (a, b) {  //alphabetical order
-        console.log("a.names[0]: " + a.names[0]); //pva
+      chunksSortMode: function (a, b) {  //my custom order polyfills/vendor/admin
+        console.log("a.names[0]: " + a.names[0]);
         console.log("b.names[0]: "+ b.names[0]);
           if(a.names[0].startsWith('p')) {
-            console.log("ap -1");
             return -1;
           } else {
             if(a.names[0].startsWith('v') && b.names[0].startsWith('a')) {
-              console.log("av ba -1");
               return -1;
             } else {
               if(a.names[0].startsWith('a') && (b.names[0].startsWith('p') || b.names[0].startsWith('v'))) {
-                console.log("aa bp bv 1");
                 return 1;
               } else {
                 if(a.names[0].startsWith('v') && b.names[0].startsWith('p')) {
-                  console.log("av bp 1");
                   return 1;
                 }
               }
             }
           }
-          // if (a.names[0] < b.names[0]) {
-          //   console.log("a<b--- 1 ");
-          //   return 1;
-          // }
-          // if (a.names[0] > b.names[0]) {
-          //   console.log("a>b--- -1 ");
-          //   return -1;
-          // }
-          // console.log("a=b--- 0 ");
           return 0;
         },
       chunks: ['polyfills', 'vendor', 'admin'],
