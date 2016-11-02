@@ -8,6 +8,7 @@ import ApplicationAdminComponent from './application/application.component';
 import HomeAdminComponent from './pages/home/home.component';
 
 import FooterAdminComponent from './common/components/footer/footer.component';
+import { SidebarModule } from './sidebar-module/sidebar.module';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LaddaModule } from 'angular2-ladda';
@@ -20,6 +21,7 @@ import { LaddaModule } from 'angular2-ladda';
     ReactiveFormsModule,
     NgbModule.forRoot(),
     LaddaModule,
+    SidebarModule,
     routing
   ],
   declarations: [

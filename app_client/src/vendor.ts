@@ -14,6 +14,7 @@ import 'ng2-validators';
 
 // Other famous libraries
 import 'jquery';
+import 'lodash';
 import 'bootstrap-loader'; // used to import bootstrap as scss
 
 // if you want to remove my custom css to show the initial spinner
