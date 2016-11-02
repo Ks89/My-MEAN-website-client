@@ -1,23 +1,9 @@
 <ngb-carousel>
-  <template ngbSlide>
-    <img src="http://placehold.it/1440x450" alt="Random first slide">
+  <template ngbSlide *ngFor="let thumb of thumbs | async">
+    <img src="{{thumb.projectHomeView.carouselImagePath}}" alt="Random first slide">
     <div class="carousel-caption">
-      <h3>Project 1</h3>
-      <p>Project descritpion 1</p>
-    </div>
-  </template>
-  <template ngbSlide>
-    <img src="http://placehold.it/1440x450" alt="Random second slide">
-    <div class="carousel-caption">
-      <h3>Project 2</h3>
-      <p>Project descritpion 2</p>
-    </div>
-  </template>
-  <template ngbSlide>
-    <img src="http://placehold.it/1440x450" alt="Random third slide">
-    <div class="carousel-caption">
-      <h3>Project 3</h3>
-      <p>Project descritpion 3</p>
+      <h3>{{thumb.name}}</h3>
+      <p>{{thumb.projectHomeView.carouselText}}</p>
     </div>
   </template>
 </ngb-carousel>
