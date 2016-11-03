@@ -433,4 +433,58 @@ describe('util', () => {
       });
     });
   });
+
+  describe('#isNotAcceptableValue()', () => {
+    describe('---YES---', () => {
+      it('should return true', () => {
+        expect(util.isNotAcceptableValue(undefined)).to.be.true;
+        expect(util.isNotAcceptableValue(null)).to.be.true;
+        expect(util.isNotAcceptableValue(NaN)).to.be.true;
+        expect(util.isNotAcceptableValue(function(){})).to.be.true;
+        expect(util.isNotAcceptableValue(()=>{})).to.be.true;
+        expect(util.isNotAcceptableValue(/fooRegex/i)).to.be.true;
+        expect(util.isNotAcceptableValue(new RegExp(/fooRegex/,'i'))).to.be.true;
+        expect(util.isNotAcceptableValue(new RegExp('/fooRegex/','i'))).to.be.true;
+        expect(util.isNotAcceptableValue(new Error())).to.be.true;
+
+        expect(util.isNotAcceptableValue(-1)).to.be.false;
+        expect(util.isNotAcceptableValue(-0)).to.be.false;
+        expect(util.isNotAcceptableValue(0)).to.be.false;
+        expect(util.isNotAcceptableValue(1)).to.be.false;
+        expect(util.isNotAcceptableValue("")).to.be.false;
+        expect(util.isNotAcceptableValue([])).to.be.false;
+        expect(util.isNotAcceptableValue(true)).to.be.false;
+        expect(util.isNotAcceptableValue(false)).to.be.false;
+        expect(util.isNotAcceptableValue(new Date())).to.be.false;
+        expect(util.isNotAcceptableValue(new Array())).to.be.false;
+      });
+    });
+  });
+
+  describe('#isAcceptableValue()', () => {
+    describe('---YES---', () => {
+      it('should return true', () => {
+        expect(util.isAcceptableValue(undefined)).to.be.false;
+        expect(util.isAcceptableValue(null)).to.be.false;
+        expect(util.isAcceptableValue(NaN)).to.be.false;
+        expect(util.isAcceptableValue(function(){})).to.be.false;
+        expect(util.isAcceptableValue(()=>{})).to.be.false;
+        expect(util.isAcceptableValue(/fooRegex/i)).to.be.false;
+        expect(util.isAcceptableValue(new RegExp(/fooRegex/,'i'))).to.be.false;
+        expect(util.isAcceptableValue(new RegExp('/fooRegex/','i'))).to.be.false;
+        expect(util.isAcceptableValue(new Error())).to.be.false;
+
+        expect(util.isAcceptableValue(-1)).to.be.true;
+        expect(util.isAcceptableValue(-0)).to.be.true;
+        expect(util.isAcceptableValue(0)).to.be.true;
+        expect(util.isAcceptableValue(1)).to.be.true;
+        expect(util.isAcceptableValue("")).to.be.true;
+        expect(util.isAcceptableValue([])).to.be.true;
+        expect(util.isAcceptableValue(true)).to.be.true;
+        expect(util.isAcceptableValue(false)).to.be.true;
+        expect(util.isAcceptableValue(new Date())).to.be.true;
+        expect(util.isAcceptableValue(new Array())).to.be.true;
+      });
+    });
+  });
 });
