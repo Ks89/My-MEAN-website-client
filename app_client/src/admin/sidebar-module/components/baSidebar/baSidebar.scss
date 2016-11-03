@@ -1,27 +1,27 @@
 // @import '../../sass/conf/conf';
 $font-family: 'Roboto', sans-serif;
 
-$resXXL: 1280px;
-$resXL: 1170px;
-$resL: 991px;
-$resM: 768px;
-$resS: 660px;
-$resXS: 500px;
-$resXXS: 435px;
-$resMin: 320px;
+$res-xxl: 1280px;
+$res-xl: 1170px;
+$res-l: 991px;
+$res-m: 768px;
+$res-s: 660px;
+$res-xs: 500px;
+$res-xxs: 435px;
+$res-min: 320px;
 
-// $resXXL: 1280px;
-// $resXL: 1170px;
+// $res-xxl: 1280px;
+// $res-xl: 1170px;
 // $resL: 991px;
 // $resM: 768px;
 // $resS: 660px;
-// $resXS: 500px;
-// $resXXS: 435px;
-// $resMin: 320px;
+// $res-xs: 500px;
+// $res-xxs: 435px;
+// $res-min: 320px;
 
 $top-height: 66px;
 
-$default-animation-duration: 0.2s;
+$default-animation-duration: .2s;
 $default-animation-style: ease-out;
 
 $font-thin: 100;
@@ -29,11 +29,11 @@ $font-light: 300;
 $font-normal: 400;
 $font-bold: 700;
 $font-bolder: 500;
-$font-ultraBold: 900;
+$font-ultra-bold: 900;
 
 // sidebar colors
 $sidebar: #072d4e;
-$sidebar-text: #ffffff;
+$sidebar-text: #fff;
 
 // color scheme
 $primary: #00abff !default;
@@ -68,26 +68,26 @@ $danger-bg: tint($danger, 20%);
 
 
 $sidebar-width: 180px;
-$angle-left: "\f100";
-$angle-right: "\f101";
+$angle-left: '\f100';
+$angle-right: '\f101';
 
 .al-sidebar {
-  width: $sidebar-width;
-  top: $top-height;
-  left: 0;
-  z-index: 1001;
-  display: block;
-  min-height: 100%;
   background-color: $sidebar;
+  display: block;
   height: 100%;
+  left: 0;
+  min-height: 100%;
   position: fixed;
+  top: $top-height;
+  width: $sidebar-width;
+  z-index: 1001;
 }
 
 .al-sidebar-list {
+  list-style: none;
   margin: 0;
   overflow: hidden;
-  padding: 18px 0 0 0;
-  list-style: none;
+  padding: 18px 0 0;
 }
 
 .al-sidebar-sublist .subitem-submenu-list {
@@ -102,13 +102,16 @@ $angle-right: "\f101";
 
 .al-sidebar-list-item {
   display: block;
-  position: relative;
   float: none;
   padding: 0;
+  position: relative;
+
   &.selected:not(.with-sub-menu) {
     background-color: $primary;
+
     a.al-sidebar-list-link {
       color: $sidebar-text;
+
       b {
         color: $sidebar-text;
       }
@@ -117,13 +120,16 @@ $angle-right: "\f101";
 }
 
 .ba-sidebar-item-expanded {
-  > ul.al-sidebar-sublist {
-    display: block!important;
+  > ul {
+    &.al-sidebar-sublist {
+      display: block !important;
+    }
   }
 
 }
 
-.al-sidebar-list-item, .ba-sidebar-sublist-item {
+.al-sidebar-list-item,
+.ba-sidebar-sublist-item {
   &.ba-sidebar-item-expanded {
     > .al-sidebar-list-link {
       b {
@@ -138,28 +144,32 @@ $angle-right: "\f101";
 }
 
 a.al-sidebar-list-link {
-  display: block;
-  height: 42px;
-  padding-left: 18px;
-  text-shadow: none;
-  font-size: 13px;
-  text-decoration: none;
   color: $sidebar-text;
-  line-height: 42px;
-  white-space: nowrap;
-  overflow: hidden;
   cursor: pointer;
+  display: block;
+  font-size: 13px;
+  height: 42px;
+  line-height: 42px;
+  overflow: hidden;
+  padding-left: 18px;
+  text-decoration: none;
+  text-shadow: none;
+  white-space: nowrap;
+
   &:hover {
     color: $primary;
+
     b {
       color: $primary;
     }
   }
+
   i {
     margin-right: 18px;
     width: 16px;
     display: inline-block;
   }
+
   b {
     display: block;
     opacity: 1;
@@ -174,14 +184,15 @@ a.al-sidebar-list-link {
     padding: 0;
     text-align: center;
     color: $sidebar-text;
-    transition: transform 0.2s linear;
+    transition: transform .2s linear;
   }
 }
 
-.slimScrollBar, .slimScrollRail {
-  border-radius: 0px !important;
-  width: 4px !important;
+.slimScrollBar,
+.slimScrollRail {
+  border-radius: 0 !important;
   left: 176px;
+  width: 4px !important;
 }
 
 @mixin layout-collapsed() {
@@ -199,31 +210,37 @@ a.al-sidebar-list-link {
   list-style: none;
   position: relative;
   display: none;
+
   &.expanded {
     display: block;
   }
+
   > ba-menu-item > li {
     display: block;
     float: none;
     padding: 0;
     border-bottom: none;
     position: relative;
+
     a {
-      display: block;
-      text-shadow: none;
-      font-size: 13px;
-      text-decoration: none;
       color: $sidebar-text;
-      padding-left: 52px;
+      display: block;
+      font-size: 13px;
       height: auto;
       line-height: 29px;
+      padding-left: 52px;
+      text-shadow: none;
+      text-decoration: none;
+
       &:hover {
         color: $primary;
       }
     }
+
     &.selected:not(.with-sub-menu) > a {
-      border: none;
       background-color: $primary;
+      border: none;
+
       &:hover {
         color: $sidebar-text;
       }
@@ -236,16 +253,16 @@ a.al-sidebar-list-link {
   @include default-sublist();
 }
 
-.sidebar-hover-elem{
-  width: 4px;
+.sidebar-hover-elem {
   background: $primary;
+  display: block;
+  height: 42px;
+  left: 176px;
   position: absolute;
   top: -150px;
-  left: 176px;
-  transition: all 0.5s ease;
+  transition: all .5s ease;
   transition-property: top, height;
-  height: 42px;
-  display: block;
+  width: 4px;
 }
 
 .sidebar-select-elem {
@@ -257,39 +274,45 @@ a.al-sidebar-list-link {
   .al-sidebar {
     width: 52px;
 
-    .fa-angle-down, .fa-angle-up {
+    .fa-angle-down,
+    .fa-angle-up {
       opacity: 0;
     }
 
     .al-sidebar-sublist {
+      display: block;
+      left: 52px;
+      overflow: hidden;
       position: absolute;
       top: -1px;
-      left: 52px;
-      @include bg-translucent-dark(0.8);
+      transition: width .5s ease;
       width: 0;
-      display: block;
-      overflow: hidden;
-      transition: width 0.5s ease;
+      @include bg-translucent-dark(.8);
+
       &.slide-right {
         width: 135px;
       }
-      &:before {
+
+      &::before {
         display: none;
       }
+
       li {
-        &:before {
+        &::before {
           display: none;
         }
+
         a {
+          min-width: 130px;
           padding-left: 18px;
           padding-right: 18px;
-          min-width: 130px;
           white-space: nowrap;
         }
       }
     }
 
-    .sidebar-hover-elem, .sidebar-select-elem {
+    .sidebar-hover-elem,
+    .sidebar-select-elem {
       left: 48px;
     }
   }
@@ -299,41 +322,45 @@ a.al-sidebar-list-link {
   .al-sidebar {
     width: 0;
   }
-  .sidebar-hover-elem, .sidebar-select-elem {
+  .sidebar-hover-elem,
+  .sidebar-select-elem {
     display: none;
   }
 }
 
 @mixin sidebar-overlap() {
   .al-sidebar {
+    transition: width .5s ease;
     width: $sidebar-width;
-    @include bg-translucent-dark(0.75);
-    transition: width 0.5s ease;
+    @include bg-translucent-dark(.75);
 
-    .fa-angle-down, .fa-angle-up {
+    .fa-angle-down,
+    .fa-angle-up {
       opacity: 1;
     }
 
     .al-sidebar-sublist {
-      @include default-sublist();
-      top: auto;
-      left: auto;
       background: none;
-      width: auto;
+      left: auto;
       overflow: visible;
+      top: auto;
       transition: none;
+      width: auto;
+      @include default-sublist();
     }
 
-    .sidebar-hover-elem, .sidebar-select-elem {
+    .sidebar-hover-elem,
+    .sidebar-select-elem {
       left: $sidebar-width - 4;
-      transition: left 0.5s ease;
+      transition: left .5s ease;
     }
   }
 }
 
 .menu-collapsed {
-  .slimScrollBar, .slimScrollRail {
-    display: none!important;
+  .slimScrollBar,
+  .slimScrollRail {
+    display: none !important;
   }
 }
 
@@ -343,13 +370,13 @@ a.al-sidebar-list-link {
   }
 }
 
-@media (min-width: $resXS + 1) {
+@media (min-width: $res-xs + 1) {
   .menu-collapsed {
     @include sidebar-collapsed();
   }
 }
 
-@media (max-width: 1200px) and (min-width: $resXS) {
+@media (max-width: 1200px) and (min-width: $res-xs) {
   @include layout-collapsed();
 }
 
@@ -357,7 +384,7 @@ a.al-sidebar-list-link {
   @include sidebar-overlap();
 }
 
-@media (max-width: $resXS) {
+@media (max-width: $res-xs) {
   .menu-collapsed {
     @include sidebar-hidden();
   }
