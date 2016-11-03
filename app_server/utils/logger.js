@@ -1,6 +1,13 @@
 var winston = require('winston');
 winston.emitErrs = true;
 
+function getFormatter(options) {
+  // Return string will be passed to logger.
+  return options.timestamp() + ' ' + options.level.toUpperCase() + ' ' +
+    (undefined !== options.message ? options.message : '') +
+    (options.meta && Object.keys(options.meta).length ? '\n\t' + JSON.stringify(options.meta) : '' );
+}
+
 var logger = new winston.Logger({
   transports: [
     new winston.transports.File({
@@ -14,11 +21,7 @@ var logger = new winston.Logger({
         timestamp: () => {
           return Date.now();
         },
-        formatter: (options) => {
-        // Return string will be passed to logger.
-          return options.timestamp() +' '+ options.level.toUpperCase() +' '+ (undefined !== options.message ? options.message : '') +
-            (options.meta && Object.keys(options.meta).length ? '\n\t'+ JSON.stringify(options.meta) : '' );
-        }
+        formatter: (options) => getFormatter(options)
       }),
     new winston.transports.Console({
       level: 'warn',
@@ -28,11 +31,7 @@ var logger = new winston.Logger({
       timestamp: () => {
         return Date.now();
       },
-      formatter: (options) => {
-        // Return string will be passed to logger.
-        return options.timestamp() +' '+ options.level.toUpperCase() +' '+ (undefined !== options.message ? options.message : '') +
-          (options.meta && Object.keys(options.meta).length ? '\n\t'+ JSON.stringify(options.meta) : '' );
-      }
+      formatter: (options) => getFormatter(options)
     })
   ],
   exitOnError: false
