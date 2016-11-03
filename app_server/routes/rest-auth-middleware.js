@@ -14,18 +14,18 @@ module.exports.restAuthenticationMiddleware = function(req, res, next) {
 			Utils.sendJSONres(res, 404, "Token not found");
 			return;
 		}
-		
+
 		jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
 			if(err) {
 				logger.error("jwt.verify error");
-				Utils.sendJSONres(res, 404, null);
+				Utils.sendJSONres(res, 401, "Jwt not valid or corrupted");
 				return;
-			} 
+			}
 
 			if(decoded) {
-			    console.log("decoded valid");
-			    try {
-			    	if(Utils.isJwtValidDate(decoded)) {
+				console.log("decoded valid");
+				try {
+					if(Utils.isJwtValidDate(decoded)) {
 						logger.debug("systemDate valid");
 						next();
 					} else {
@@ -36,9 +36,11 @@ module.exports.restAuthenticationMiddleware = function(req, res, next) {
 					logger.error(e);
 					Utils.sendJSONres(res, 500, "Impossible to check if jwt is valid");
 				}
+			} else {
+				Utils.sendJSONres(res, 500, "Impossible to check if jwt is valid - decoded is not valid");
 			}
 		});
-		
+
 	} else {
 		logger.error('No token');
 		Utils.sendJSONres(res, 403, 'No token provided.');

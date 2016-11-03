@@ -26,7 +26,6 @@ const SERVICENAME_NOT_VALID = 'Service name not valid';
 const SERVICENAME_MUSTBE_STRING = 'Service name must be a String';
 const USER_MUSTBE_OBJECT = 'User must be a valid object';
 
-
 describe('auth-util', () => {
 
 	describe('#checkIfLastUnlink()', () => {
@@ -55,6 +54,12 @@ describe('auth-util', () => {
 					done();
 				});
 			}
+
+      it('should create an object calling the constructor', () => {
+        var authUtil = new AuthUtil();
+        expect(authUtil).to.be.not.null;
+        expect(authUtil).to.be.not.undefined;
+      });
 		});
 
 		describe('---NO---', () => {
@@ -130,6 +135,32 @@ describe('auth-util', () => {
 				done();
 			});
 		});
+
+    describe('---ERRORS---', () => {
+      it('should throw an exception, because user is not valid', () => {
+        expect(()=>AuthUtil.checkIfLastUnlink('', null)).to.throw(USER_MUSTBE_OBJECT);
+        expect(()=>AuthUtil.checkIfLastUnlink('', undefined)).to.throw(USER_MUSTBE_OBJECT);
+			});
+
+      it('should throw an exception, because serviceName must be a string', () => {
+        expect(()=>AuthUtil.checkIfLastUnlink(null, {})).to.throw(SERVICENAME_MUSTBE_STRING);
+        expect(()=>AuthUtil.checkIfLastUnlink(undefined, {})).to.throw(SERVICENAME_MUSTBE_STRING);
+        expect(()=>AuthUtil.checkIfLastUnlink(-1, {})).to.throw(SERVICENAME_MUSTBE_STRING);
+        expect(()=>AuthUtil.checkIfLastUnlink(5, {})).to.throw(SERVICENAME_MUSTBE_STRING);
+        expect(()=>AuthUtil.checkIfLastUnlink(99, {})).to.throw(SERVICENAME_MUSTBE_STRING);
+        expect(()=>AuthUtil.checkIfLastUnlink(600, {})).to.throw(SERVICENAME_MUSTBE_STRING);
+        expect(()=>AuthUtil.checkIfLastUnlink(function(){}, {})).to.throw(SERVICENAME_MUSTBE_STRING);
+        expect(()=>AuthUtil.checkIfLastUnlink(()=>{}, {})).to.throw(SERVICENAME_MUSTBE_STRING);
+        expect(()=>AuthUtil.checkIfLastUnlink(/fooRegex/i, {})).to.throw(SERVICENAME_MUSTBE_STRING);
+        expect(()=>AuthUtil.checkIfLastUnlink([], {})).to.throw(SERVICENAME_MUSTBE_STRING);
+        expect(()=>AuthUtil.checkIfLastUnlink(new RegExp(/fooRegex/,'i'), {})).to.throw(SERVICENAME_MUSTBE_STRING);
+        expect(()=>AuthUtil.checkIfLastUnlink(new RegExp('/fooRegex/','i'), {})).to.throw(SERVICENAME_MUSTBE_STRING);
+        expect(()=>AuthUtil.checkIfLastUnlink(new Error(), {})).to.throw(SERVICENAME_MUSTBE_STRING);
+        expect(()=>AuthUtil.checkIfLastUnlink(true, {})).to.throw(SERVICENAME_MUSTBE_STRING);
+        expect(()=>AuthUtil.checkIfLastUnlink(false, {})).to.throw(SERVICENAME_MUSTBE_STRING);
+        expect(()=>AuthUtil.checkIfLastUnlink(new Array(), {})).to.throw(SERVICENAME_MUSTBE_STRING);
+			});
+    });
 	});
 
 

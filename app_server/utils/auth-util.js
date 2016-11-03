@@ -13,7 +13,7 @@ class AuthUtils {
     }
 
     if(!_.isString(serviceName)) {
-      throw 'serviceName must be a String';
+      throw 'Service name must be a String';
     }
 
     if(whitelistServices.indexOf(serviceName) === -1) {
