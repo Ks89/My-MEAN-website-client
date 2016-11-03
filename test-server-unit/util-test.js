@@ -14,7 +14,6 @@ if(!process.env.CI || process.env.CI !== 'yes') {
 var chai = require('chai');
 var assert = chai.assert;
 var expect = chai.expect;
-var _und = require('underscore');
 var util = require('../app_server/utils/util');
 var MockedRes = require('./mocked-res-class');
 var mockedRes = new MockedRes();

@@ -1,4 +1,4 @@
-var _und = require('underscore');
+var _ = require('lodash');
 var serviceNames = require('../serviceNames');
 var thirdpartyConfig = require('./3dpartyconfig');
 var FacebookStrategy = require('passport-facebook').Strategy;
@@ -8,7 +8,7 @@ var LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
 var TwitterStrategy = require('passport-twitter').Strategy;
 
 var logger = require('../../../utils/logger');
-var util = require('../../../utils/util');
+var Utils = require('../../../utils/util');
 var mongoose = require('mongoose');
 
 //----------experimental---
@@ -16,22 +16,22 @@ var authExperimentalFeatures = require('../common/auth-experimental-collapse-db.
 //-------------------------
 
 function updateUser (user, accessToken, profile, serviceName) {
-  if(util.isNotSimpleCustomObjectOrDate(user)) {
+  if(Utils.isNotSimpleCustomObjectOrDate(user)) {
     logger.error("impossible to update because user must be an object");
     throw 'impossible to update because user must be an object';
   }
 
-  if(util.isNotSimpleCustomObjectOrDate(profile)) {
+  if(Utils.isNotSimpleCustomObjectOrDate(profile)) {
     logger.error("impossible to update because profile must be an object");
     throw 'impossible to update because profile must be an objects';
   }
 
-  if(!_und.isString(serviceName) || !_und.isString(accessToken)) {
+  if(!_.isString(serviceName) || !_.isString(accessToken)) {
     logger.error("impossible to update because both serviceName and accessToken must be strings");
     throw 'impossible to update because both serviceName and accessToken must be strings';
   }
 
-  const whitelistServices = _und.without(serviceNames, 'local', 'profile');
+  const whitelistServices = _.without(serviceNames, 'local', 'profile');
   if(whitelistServices.indexOf(serviceName) === -1) {
     logger.error("impossible to update because serviceName is not recognized");
     throw 'impossible to update because serviceName is not recognized';
@@ -81,16 +81,16 @@ function authenticate(req, accessToken, refreshToken, profile, done, serviceName
   process.nextTick(() => {
     var sessionLocalUserId = req.session.localUserId;
 
-    if(_und.isArray(sessionLocalUserId) || _und.isRegExp(sessionLocalUserId) || _und.isFunction(sessionLocalUserId) ||
-      _und.isDate(sessionLocalUserId) || _und.isBoolean(sessionLocalUserId) || _und.isError(sessionLocalUserId) ||
-      _und.isNaN(sessionLocalUserId) || _und.isNumber(sessionLocalUserId)) {
+    if(_.isArray(sessionLocalUserId) || _.isRegExp(sessionLocalUserId) || _.isFunction(sessionLocalUserId) ||
+      _.isDate(sessionLocalUserId) || _.isBoolean(sessionLocalUserId) || _.isError(sessionLocalUserId) ||
+      _.isNaN(sessionLocalUserId) || _.isNumber(sessionLocalUserId)) {
         console.error('sessionLocalUserId must be either a string, null, undefined or an ObjectId');
         return done('sessionLocalUserId must be either a string, null, undefined or an ObjectId');
     }
 
     //check if the user is already logged in using the LOCAL authentication
-    if(!_und.isNull(sessionLocalUserId) && !_und.isUndefined(sessionLocalUserId) &&
-        ( _und.isString(sessionLocalUserId) ||
+    if(!_.isNull(sessionLocalUserId) && !_.isUndefined(sessionLocalUserId) &&
+        ( _.isString(sessionLocalUserId) ||
           sessionLocalUserId instanceof mongoose.Types.ObjectId) ) {
 
       console.log("sessionLocalUserId found - managing 3dauth + local");

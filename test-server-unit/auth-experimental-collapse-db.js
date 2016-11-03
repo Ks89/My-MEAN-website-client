@@ -14,7 +14,6 @@ if(!process.env.CI || process.env.CI !== 'yes') {
 var chai = require('chai');
 var assert = chai.assert;
 var expect = chai.expect;
-var _und = require('underscore');
 
 var User;
 var mongoose = require('mongoose');

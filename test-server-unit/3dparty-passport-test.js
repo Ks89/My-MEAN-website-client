@@ -14,7 +14,7 @@ if(!process.env.CI || process.env.CI !== 'yes') {
 var chai = require('chai');
 var assert = chai.assert;
 var expect = chai.expect;
-var _und = require('underscore');
+var _ = require('lodash');
 var rewire = require('rewire');
 
 var User;
@@ -155,7 +155,7 @@ describe('3dparty-passport', () => {
 		describe('---YES---', () => {
 			beforeEach(done => dropUserCollectionTestDb(done));
 
-			var whitelistServices = _und.without(serviceNames, 'profile', 'local');
+			var whitelistServices = _.without(serviceNames, 'profile', 'local');
 			for(let i=0; i<whitelistServices.length; i++) {
 				it('should authenticate for the first time (new user 3dparty service). Test i=' + i, done => {
 					var authenticateFunct = thirdParty.__get__('authenticate');
@@ -264,7 +264,7 @@ describe('3dparty-passport', () => {
 					};
 
 					mockedReq.user = null;
-					let profileMockModified = _und.clone(profileMock);
+					let profileMockModified = _.clone(profileMock);
 					profileMockModified.id = 'not already existing token';
 
 					authenticateFunct(mockedReq, TOKEN, TOKEN, profileMockModified,
@@ -301,7 +301,7 @@ describe('3dparty-passport', () => {
 					};
 
 					mockedReq.user = null;
-					let profileMockModified = _und.clone(profileMock);
+					let profileMockModified = _.clone(profileMock);
 					profileMockModified.id = 'github' + ID_POSTFIX;
 
 					authenticateFunct(mockedReq, TOKEN, TOKEN, profileMockModified,
@@ -522,7 +522,7 @@ describe('3dparty-passport', () => {
 						};
 
 						mockedReq.user = null;
-						let profileMockModified = _und.clone(mockedWrongData3dpartyNew[i].profile);
+						let profileMockModified = _.clone(mockedWrongData3dpartyNew[i].profile);
 						profileMockModified.id = 'not already existing token';
 
 						authenticateFunct(mockedReq, mockedWrongData3dpartyNew[i].token, TOKEN,

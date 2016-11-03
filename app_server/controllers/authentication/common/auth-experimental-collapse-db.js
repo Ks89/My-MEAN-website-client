@@ -4,7 +4,7 @@ var logger = require('../../../utils/logger.js');
 var authCommon = require('./auth-common.js');
 var Utils = require('../../../utils/util.js');
 var serviceNames = require('../serviceNames');
-var _und = require('underscore');
+var _ = require('lodash');
 
 module.exports.collapseDb = (loggedUser, serviceName, req) => {
 	return new Promise((resolve, reject) => {
@@ -14,7 +14,7 @@ module.exports.collapseDb = (loggedUser, serviceName, req) => {
 			return;
 		}
 
-		if(!_und.isString(serviceName)) {
+		if(!_.isString(serviceName)) {
 			console.error("impossible to collapseDb because serviceName must be a string");
 			reject('impossible to collapseDb because serviceName must be a string');
 			return;

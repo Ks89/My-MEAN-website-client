@@ -1,5 +1,6 @@
-var _und = require('underscore');
+var _ = require('lodash');
 var jwt = require('jsonwebtoken');
+var Utils = require('./util');
 var whitelistServices = require('../controllers/authentication/serviceNames');
 
 class AuthUtils {
@@ -11,7 +12,7 @@ class AuthUtils {
       throw 'User must be a valid object';
     }
 
-    if(!_und.isString(serviceName)) {
+    if(!_.isString(serviceName)) {
       throw 'serviceName must be a String';
     }
 
@@ -23,8 +24,8 @@ class AuthUtils {
     let result = false;
     let checkProp;
     //I remove serviceName from whitelistServices
-    const noProfileServices = _und.without(whitelistServices, 'profile');
-    const filteredServices = _und.without(noProfileServices, serviceName);
+    const noProfileServices = _.without(whitelistServices, 'profile');
+    const filteredServices = _.without(noProfileServices, serviceName);
 
     for(let service of filteredServices) {
       if(service === 'local') {
@@ -46,15 +47,13 @@ class AuthUtils {
   }
 
   static removeServiceFromUserDb(serviceName, user) {
-    if(!user || _und.isString(user) ||
-        !_und.isObject(user) || _und.isArray(user) ||
-        _und.isFunction(user) || _und.isRegExp(user) ||
-        _und.isError(user) || _und.isNull(user) || _und.isBoolean(user) ||
-        _und.isUndefined(user) || _und.isNaN(user) || _und.isDate(user)) {
+    if(!user || _.isString(user) ||
+        !_.isObject(user) || _.isArray(user) || _.isBoolean(user) ||
+        _.isDate(user) || Utils.isNotAcceptableValue(user)) {
       throw 'User must be a valid object';
     }
 
-    if(!_und.isString(serviceName)) {
+    if(!_.isString(serviceName)) {
       throw 'Service name must be a String';
     }
 

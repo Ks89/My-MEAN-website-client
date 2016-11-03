@@ -13,7 +13,6 @@ if(!process.env.CI || process.env.CI !== 'yes') {
 
 var chai = require('chai');
 var expect = chai.expect;
-var _und = require('underscore');
 
 require('../app_server/models/users');
 var mongoose = require('mongoose');

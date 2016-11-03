@@ -1,4 +1,4 @@
-var _und = require('underscore');
+var _ = require('lodash');
 var jwt = require('jsonwebtoken');
 var logger = require('./logger');
 
@@ -10,15 +10,15 @@ class Utils {
     let contentToReturn;
 
     //check status param
-    if(!_und.isNumber(status) || _und.isNaN(status) || status < 100 || status >= 600) {
+    if(!_.isNumber(status) || _.isNaN(status) || status < 100 || status >= 600) {
       throw "Status must be a valid http status code  number";
     }
 
     //check content param
     //because content can be only String, Array, Object (but no all of the others)
-    if((!_und.isString(content) && !_und.isArray(content) && !_und.isObject(content)) ||
-      _isNotAcceptableValue(content) || _und.isDate(content) || _und.isBoolean(content) ||
-      _und.isNumber(content)) {
+    if((!_.isString(content) && !_.isArray(content) && !_.isObject(content)) ||
+      _isNotAcceptableValue(content) || _.isDate(content) || _.isBoolean(content) ||
+      _.isNumber(content)) {
       throw "Content must be either String, or Array, or Object (no Error, RegExp, and so on )";
     }
 
@@ -26,7 +26,7 @@ class Utils {
     res.contentType('application/json');
 
     if(status >= 400 && status < 600) {
-      if(_und.isString(content) || _und.isArray(content)) {
+      if(_.isString(content) || _.isArray(content)) {
         contentToReturn = {
           message : content
         };
@@ -41,7 +41,7 @@ class Utils {
 
   static getTextFormattedDate(date) {
     console.log("getTextFormattedDate " + date);
-    if(!_und.isDate(date)) {
+    if(!_.isDate(date)) {
       throw "Not a valid date";
     }
     const day = date.getDay();
@@ -61,17 +61,17 @@ class Utils {
   //isObject: JavaScript arrays and functions
   //          are objects, while (normal) strings and numbers are not.
   static isNotSimpleCustomObject(obj) {
-    return !_und.isObject(obj) || _und.isArray(obj) ||
-        _isNotAcceptableValue(obj) || _und.isBoolean(obj);
+    return !_.isObject(obj) || _.isArray(obj) ||
+        _isNotAcceptableValue(obj) || _.isBoolean(obj);
   }
 
   static isNotSimpleCustomObjectOrDate(obj) {
-    return !_und.isObject(obj) || _und.isArray(obj) ||
-        _isNotAcceptableValue(obj) || _und.isBoolean(obj) || _und.isDate(obj);
+    return !_.isObject(obj) || _.isArray(obj) ||
+        _isNotAcceptableValue(obj) || _.isBoolean(obj) || _.isDate(obj);
   }
 
   static isSimpleCustomObject(obj) {
-    return _und.isObject(token) || _und.isArray(token) || _isNotAcceptableValue(token);
+    return _.isObject(token) || _.isArray(token) || _isNotAcceptableValue(token);
   }
 
   static isJwtValidDate(decodedJwtToken) {
@@ -80,8 +80,8 @@ class Utils {
     //isObject: JavaScript arrays and functions
     //          are objects, while (normal) strings and numbers are not.
     if(!decodedJwtToken ||
-        !_und.isObject(decodedJwtToken) || _und.isArray(decodedJwtToken) ||
-        _isNotAcceptableValue(decodedJwtToken) || _und.isBoolean(decodedJwtToken)) {
+        !_.isObject(decodedJwtToken) || _.isArray(decodedJwtToken) ||
+        _isNotAcceptableValue(decodedJwtToken) || _.isBoolean(decodedJwtToken)) {
       throw "Not a valid decodedJwtToken";
     }
 
@@ -92,7 +92,7 @@ class Utils {
     //decodedJwtToken.exp is a Float that represents the exp date
     //it must be a float, and not a Date
     //NB: parseFloat returns NaN if it can't parse a value
-    if(_und.isDate(decodedJwtToken.exp) || _und.isNaN(parseFloat(decodedJwtToken.exp))) {
+    if(_.isDate(decodedJwtToken.exp) || _.isNaN(parseFloat(decodedJwtToken.exp))) {
       throw "Not a float expiration date";
     }
 
@@ -119,8 +119,8 @@ class Utils {
   static isJwtValid(token) {
     var self = this;
 
-    if(!token || !_und.isString(token) ||
-        _und.isObject(token) || _und.isArray(token) ||
+    if(!token || !_.isString(token) ||
+        _.isObject(token) || _.isArray(token) ||
         _isNotAcceptableValue(token)) {
       throw "Not a valid token";
     }
@@ -177,9 +177,9 @@ class Utils {
 // private functions that I can call inside this class.
 // Also, I exposed these functions using two static methods (without `_`)
 function _isNotAcceptableValue(param) {
-  return _und.isFunction(param) || _und.isRegExp(param) ||
-  _und.isError(param) || _und.isNull(param) ||
-  _und.isUndefined(param) || _und.isNaN(param);
+  return _.isFunction(param) || _.isRegExp(param) ||
+  _.isError(param) || _.isNull(param) ||
+  _.isUndefined(param) || _.isNaN(param);
 }
 
 function _isAcceptableValue(param) {

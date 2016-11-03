@@ -2,7 +2,7 @@ var mongoose = require( 'mongoose' );
 var bcrypt   = require('bcrypt-nodejs');
 var jwt = require('jsonwebtoken');
 var logger = require('../utils/logger.js');
-var _und = require('underscore');
+var _ = require('lodash');
 
 //profileSchema with profile infos not related to authentication
 //These are info used only into the view
@@ -69,7 +69,7 @@ var userSchema = new mongoose.Schema({
 });
 
 userSchema.methods.setPassword = function(password) {
-  if(!_und.isString(password)) {
+  if(!_.isString(password)) {
     throw "not a valid password format";
   }
 
@@ -80,7 +80,7 @@ userSchema.methods.setPassword = function(password) {
 };
 
 userSchema.methods.validPassword = function(password) {
-  if(!_und.isString(password)) {
+  if(!_.isString(password)) {
     throw "not a valid password format";
   }
   return bcrypt.compareSync(password, this.local.hash);

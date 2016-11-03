@@ -5,7 +5,7 @@ var jwt = require('jsonwebtoken');
 var Utils = require('../../../utils/util');
 var AuthUtils = require('../../../utils/auth-util');
 var async = require('async');
-var _und = require('underscore');
+var _ = require('lodash');
 var whitelistServices = require('../serviceNames');
 
 /* GET to decode a JWT passing the token itself*/
@@ -66,11 +66,8 @@ var sessionToken = function(req, res) {
 };
 
 var generateSessionJwtToken = function(user) {
-  if(!user || _und.isString(user) ||
-      !_und.isObject(user) || _und.isArray(user) ||
-      _und.isFunction(user) || _und.isRegExp(user) ||
-      _und.isError(user) || _und.isNull(user) || _und.isBoolean(user) ||
-      _und.isUndefined(user) || _und.isNaN(user) || _und.isDate(user)) {
+  if(!user || _.isString(user) || !_.isObject(user) || _.isArray(user) ||
+      _.isBoolean(user) || _.isDate(user) || Utils.isNotAcceptableValue(user)) {
     throw 'User must be a valid object';
   }
 

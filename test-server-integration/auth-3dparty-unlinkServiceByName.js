@@ -5,13 +5,13 @@ var expect = require('chai').expect;
 var app = require('../app');
 var agent = require('supertest').agent(app);
 var async = require('async');
-var _und = require('underscore');
+var _ = require('lodash');
 
 require('../app_server/models/users');
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var fullServiceNames = require('../app_server/controllers/authentication/serviceNames');
-var serviceNames = _und.without(fullServiceNames, 'profile');
+var serviceNames = _.without(fullServiceNames, 'profile');
 
 var user;
 var csrftoken;
@@ -157,7 +157,7 @@ describe('auth-3dparty', () => {
 
 			describe('YES LAST UNLINK', () => {
 				//because I'm testing on 3dauth-unlink, I'm removing 'local'
-				var services3dAuth = _und.without(serviceNames, 'local');
+				var services3dAuth = _.without(serviceNames, 'local');
 
 				for(let i=0; i<services3dAuth.length; i++) {
 					it('should remove ' + services3dAuth[i] + ' account from an user with only this account [YES LAST UNLINK].', done => {
