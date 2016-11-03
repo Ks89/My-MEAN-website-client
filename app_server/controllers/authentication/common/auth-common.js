@@ -14,22 +14,16 @@ var decodeToken = function(req, res) {
   console.log(req.params);
 
   if (req.params && req.params.token) {
-
     const token = req.params.token;
 
-    try {
-      Utils.isJwtValid(token)
-      .then(result => {
-        console.log("IsJwtValid result: " + JSON.stringify(result));
-        Utils.sendJSONres(res, 200, JSON.stringify(result));
-      }, reason => {
-        console.log("IsJwtValid error: " + reason);
-        Utils.sendJSONres(res, reason.status, reason.message);
-      });
-    } catch(e) {
-      logger.error(e);
-      Utils.sendJSONres(res, 500, "Impossible to check if jwt is valid");
-    }
+    Utils.isJwtValid(token)
+    .then(result => {
+      console.log("IsJwtValid result: " + JSON.stringify(result));
+      Utils.sendJSONres(res, 200, JSON.stringify(result));
+    }, reason => {
+      console.log("IsJwtValid error: " + reason);
+      Utils.sendJSONres(res, reason.status, reason.message);
+    });
   } else {
     console.log('No token found');
     Utils.sendJSONres(res, 404, "No token found");

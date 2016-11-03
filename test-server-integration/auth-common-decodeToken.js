@@ -50,7 +50,7 @@ const jwtWrongDateStringToken = function () {
 
 	return jwt.sign({
 		_id: 'fake_id',
-		//I don't want to expose private information here -> I filter 
+		//I don't want to expose private information here -> I filter
 		//the user object into a similar object without some fields
 		user: {
 			local: {
@@ -101,7 +101,7 @@ describe('auth-common', () => {
 	}
 
 	function dropUserTestDbAndLogout(done) {
-		User.remove({}, err => { 
+		User.remove({}, err => {
 			//I want to try to logout to be able to run all tests in a clean state
 			//If this call returns 4xx or 2xx it's not important here
 			getPartialGetRequest(URL_LOGOUT)
@@ -169,7 +169,7 @@ describe('auth-common', () => {
 		describe('---ERRORS---', () => {
 
 			beforeEach(done => insertUserTestDb(done));
-			
+
 			it('should 401 UNAUTHORIZED, because token isn\'t defined', done => {
 				async.waterfall([
 					asyncDone => {
@@ -190,7 +190,6 @@ describe('auth-common', () => {
 					}], (err, response) => done(err));
 			});
 
-
 			it('should 401 UNAUTHORIZED, because token is expired', done => {
 				async.waterfall([
 					asyncDone => {
@@ -206,6 +205,27 @@ describe('auth-common', () => {
 						.expect(401)
 						.end((err, res) => {
 							expect(res.body.message).to.be.equals('Token Session expired (date).');
+							asyncDone(err);
+						});
+					}], (err, response) => done(err));
+			});
+
+			it('should get 401 UNAUTHORIZED, because token\'s format is wrong', done => {
+				const TOKEN_WITH_WRONG_FORMAT = 'dadasd.sdasdsadas'; // with only one dot
+				async.waterfall([
+					asyncDone => {
+						getPartialPostRequest(URL_LOGIN)
+						.set('XSRF-TOKEN', csrftoken)
+						.send(loginMock)
+						.expect(200)
+						.end((err, res) => asyncDone(err, res));
+					},
+					(res, asyncDone) => {
+						getPartialGetRequest(URL_BASE_DECODE_TOKEN + TOKEN_WITH_WRONG_FORMAT)
+						.send()
+						.expect(401)
+						.end((err, res) => {
+							expect(res.body.message).to.be.equals('Jwt not valid or corrupted');
 							asyncDone(err);
 						});
 					}], (err, response) => done(err));
