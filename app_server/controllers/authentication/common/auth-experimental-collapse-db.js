@@ -37,7 +37,7 @@ module.exports.collapseDb = (loggedUser, serviceName, req) => {
 
 		if(serviceName === 'local') {
 			keyProperty = 'email';
-		} else { 
+		} else {
 			keyProperty = 'id';
 		}
 
