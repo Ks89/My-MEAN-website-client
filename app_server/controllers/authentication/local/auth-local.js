@@ -47,7 +47,9 @@ function sendEmail(user, message, done) {
 //function passed to async.waterfall's arrays to create a random token
 function createRandomToken(done) {
   crypto.randomBytes(64, (err, buf) => {
-    if (err) throw err;
+    if (err) {
+      throw err;
+    }
     var token = buf.toString('hex');
     done(err, token);
   });
@@ -96,9 +98,9 @@ module.exports.register = (req, res) => {
 
           //create message data
           const msgText = 'You are receiving this because you (or someone else) have requested an account for this website.\n' +
-            'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-            link + '\n\n' +
-            'If you did not request this, please ignore this email.\n';
+          'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+          link + '\n\n' +
+          'If you did not request this, please ignore this email.\n';
           const message = emailMsg(req.body.email, 'Welcome to stefanocappa.it', msgText);
 
           done(err, savedUser, message);
@@ -106,14 +108,14 @@ module.exports.register = (req, res) => {
       });
     },
     sendEmail //function defined below
-    ], (err, user) => {
-      console.log(err);
-      if (err) {
-        return next(err);
-      } else {
-        Utils.sendJSONres(res, 200, {message: "User with email " + user.local.email + " registered."});
-      }
-    });
+  ], (err, user) => {
+    console.log(err);
+    if (err) {
+      return next(err);
+    } else {
+      Utils.sendJSONres(res, 200, {message: "User with email " + user.local.email + " registered."});
+    }
+  });
 };
 
 /* POST to login as local user */
@@ -186,9 +188,9 @@ module.exports.reset = (req, res) => {
 
           //create email data
           const msgText = 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
-            'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-            link + '\n\n' +
-            'If you did not request this, please ignore this email and your password will remain unchanged.\n';
+          'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+          link + '\n\n' +
+          'If you did not request this, please ignore this email and your password will remain unchanged.\n';
           const message = emailMsg(req.body.email, 'Password reset for stefanocappa.it', msgText);
 
           done(err, savedUser, message);
@@ -196,14 +198,14 @@ module.exports.reset = (req, res) => {
       });
     },
     sendEmail //function defined below
-    ], (err, user) => {
-      if (err) { 
-        console.log(err);
-        return next(err);
-      } else {
-        Utils.sendJSONres(res, 200, {message: 'An e-mail has been sent to ' + user.local.email + ' with further instructions.'});
-      }
-    });
+  ], (err, user) => {
+    if (err) {
+      console.log(err);
+      return next(err);
+    } else {
+      Utils.sendJSONres(res, 200, {message: 'An e-mail has been sent to ' + user.local.email + ' with further instructions.'});
+    }
+  });
 };
 
 /* POST to reset the local password */
@@ -217,7 +219,7 @@ module.exports.resetPasswordFromEmail = (req, res) => {
   async.waterfall([
     done => {
       User.findOne({ 'local.resetPasswordToken': req.body.emailToken ,
-         'local.resetPasswordExpires': { $gt: Date.now() }}, (err, user) => {
+      'local.resetPasswordExpires': { $gt: Date.now() }}, (err, user) => {
         if (!user || err) {
           Utils.sendJSONres(res, 404, 'No account with that token exists.');
           return;
@@ -232,7 +234,7 @@ module.exports.resetPasswordFromEmail = (req, res) => {
 
           //create email data
           const msgText = 'This is a confirmation that the password for your account ' +
-            user.local.email + ' has just been changed.\n';
+          user.local.email + ' has just been changed.\n';
           const message = emailMsg(savedUser.local.email, 'Password for stefanocappa.it updated', msgText);
 
           done(err, savedUser, message);
@@ -240,14 +242,14 @@ module.exports.resetPasswordFromEmail = (req, res) => {
       });
     },
     sendEmail //function defined below
-    ], (err, user) => {
-      if (err) {
-        console.log(err);
-        return next(err);
-      } else {
-        Utils.sendJSONres(res, 200, {message: 'An e-mail has been sent to ' + user.local.email + ' with further instructions.'});
-      }
-     });
+  ], (err, user) => {
+    if (err) {
+      console.log(err);
+      return next(err);
+    } else {
+      Utils.sendJSONres(res, 200, {message: 'An e-mail has been sent to ' + user.local.email + ' with further instructions.'});
+    }
+  });
 };
 
 /* POST to activate the local account, using
@@ -265,45 +267,45 @@ module.exports.activateAccount = (req, res) => {
   async.waterfall([
     done => {
       User.findOne({ 'local.activateAccountToken': req.body.emailToken , 'local.name' : decodedUserName},
-         /*,'local.activateAccountExpires': { $gt: Date.now() }},*/ (err, user) => {
-        if (!user || err) {
-          Utils.sendJSONres(res, 404, 'No account with that token exists.');
-          return;
-        }
-
-        console.log("user.activateAccountExpires: " + user.local.activateAccountExpires);
-        console.log("Date.now(): " + new Date(Date.now()));
-
-        if(user.local.activateAccountExpires < new Date(Date.now())) {
-          Utils.sendJSONres(res, 404, 'Link exprired! Your account is removed. Please, create another account, also with the same email address.');
-          return;
-        }
-
-        console.log('Activate account with user: ' + user);
-
-        user.local.activateAccountToken = undefined;
-        user.local.activateAccountExpires = undefined;
-
-        user.save((err, savedUser) => {
-          console.log('Activated account with savedUser: ' + savedUser);
-
-          //create email data
-          const msgText = 'This is a confirmation that your account ' + user.local.name +
-                          'with email ' + user.local.email + ' has just been activated.\n';
-          const message = emailMsg(savedUser.local.email, 'Account activated for stefanocappa.it', msgText);
-
-          done(err, savedUser, message);
-        });
-      });
-    },
-    sendEmail //function defined below
-    ], (err, user) => {
-      console.log('Finished');
-      if (err) {
-        console.log(err);
-        return next(err);
-      } else {
-        Utils.sendJSONres(res, 200, {message: 'An e-mail has been sent to ' + user.local.email + ' with further instructions.'});
+      /*,'local.activateAccountExpires': { $gt: Date.now() }},*/ (err, user) => {
+      if (!user || err) {
+        Utils.sendJSONres(res, 404, 'No account with that token exists.');
+        return;
       }
-     });
+
+      console.log("user.activateAccountExpires: " + user.local.activateAccountExpires);
+      console.log("Date.now(): " + new Date(Date.now()));
+
+      if(user.local.activateAccountExpires < new Date(Date.now())) {
+        Utils.sendJSONres(res, 404, 'Link exprired! Your account is removed. Please, create another account, also with the same email address.');
+        return;
+      }
+
+      console.log('Activate account with user: ' + user);
+
+      user.local.activateAccountToken = undefined;
+      user.local.activateAccountExpires = undefined;
+
+      user.save((err, savedUser) => {
+        console.log('Activated account with savedUser: ' + savedUser);
+
+        //create email data
+        const msgText = 'This is a confirmation that your account ' + user.local.name +
+        'with email ' + user.local.email + ' has just been activated.\n';
+        const message = emailMsg(savedUser.local.email, 'Account activated for stefanocappa.it', msgText);
+
+        done(err, savedUser, message);
+      });
+    });
+  },
+  sendEmail //function defined below
+], (err, user) => {
+  console.log('Finished');
+  if (err) {
+    console.log(err);
+    return next(err);
+  } else {
+    Utils.sendJSONres(res, 200, {message: 'An e-mail has been sent to ' + user.local.email + ' with further instructions.'});
+  }
+});
 };

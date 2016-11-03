@@ -77,6 +77,18 @@ function updateUser (user, accessToken, profile, serviceName) {
   return user;
 }
 
+// this function calls done() when finish
+function collapseDb(user, serviceName, req, done) {
+  authExperimentalFeatures.collapseDb(user, serviceName, req)
+  .then(result => {
+    console.log("collapseDb promise: " + result);
+    return done(null, result);
+  }, reason => {
+    console.log("ERROR collapseDb promise");
+    return done(null, user);
+  });
+}
+
 function authenticate(req, accessToken, refreshToken, profile, done, serviceName, userRef) {
   process.nextTick(() => {
     var sessionLocalUserId = req.session.localUserId;
@@ -121,14 +133,7 @@ function authenticate(req, accessToken, refreshToken, profile, done, serviceName
           }
 
           //----------------- experimental ---------------
-          authExperimentalFeatures.collapseDb(user, serviceName, req)
-          .then(result => {
-            console.log("collapseDb localuser with 3dpartyauth promise: " + result);
-            return done(null, result);
-          }, reason => {
-            console.log("ERROR collapseDb localuser with 3dpartyauth promise");
-            return done(null, user);
-          });
+          collapseDb(user, serviceName, req, done);
           //----------------------------------------------
         });
       });
@@ -211,16 +216,8 @@ function authenticate(req, accessToken, refreshToken, profile, done, serviceName
           console.log("Saving already existing user.");
 
           //----------------- experimental ---------------
-          authExperimentalFeatures.collapseDb(savedUser, serviceName, req)
-          .then(result => {
-            console.log("collapseDb promise: " + result);
-            return done(null, result);
-          }, reason => {
-            console.log("ERROR collapseDb promise");
-            return done(null, savedUser);
-          });
+          collapseDb(savedUser, serviceName, req, done);
           //----------------------------------------------
-
         });
       }
     }
