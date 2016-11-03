@@ -17,9 +17,8 @@ class Utils {
     //check content param
     //because content can be only String, Array, Object (but no all of the others)
     if((!_und.isString(content) && !_und.isArray(content) && !_und.isObject(content)) ||
-      _und.isRegExp(content) || _und.isFunction(content) || _und.isDate(content) ||
-      _und.isBoolean(content) || _und.isError(content) || _und.isNull(content) ||
-      _und.isUndefined(content) || _und.isNaN(content) || _und.isNumber(content)) {
+      isNotAcceptableValue(content) || _und.isDate(content) || _und.isBoolean(content) ||
+      _und.isNumber(content)) {
       throw "Content must be either String, or Array, or Object (no Error, RegExp, and so on )";
     }
 
@@ -63,25 +62,16 @@ class Utils {
   //          are objects, while (normal) strings and numbers are not.
   static isNotSimpleCustomObject(obj) {
     return !_und.isObject(obj) || _und.isArray(obj) ||
-        _und.isFunction(obj) || _und.isRegExp(obj) ||
-        _und.isError(obj) || _und.isNull(obj) ||
-        _und.isUndefined(obj) || _und.isNaN(obj) ||
-        _und.isBoolean(obj);
+        isNotAcceptableValue(obj) || _und.isBoolean(obj);
   }
 
   static isNotSimpleCustomObjectOrDate(obj) {
     return !_und.isObject(obj) || _und.isArray(obj) ||
-        _und.isFunction(obj) || _und.isRegExp(obj) ||
-        _und.isError(obj) || _und.isNull(obj) ||
-        _und.isUndefined(obj) || _und.isNaN(obj) ||
-        _und.isBoolean(obj) || _und.isDate(obj);
+        isNotAcceptableValue(obj) || _und.isBoolean(obj) || _und.isDate(obj);
   }
 
   static isSimpleCustomObject(obj) {
-    return _und.isObject(token) || _und.isArray(token) ||
-        _und.isFunction(token) || _und.isRegExp(token) ||
-        _und.isError(token) || _und.isNull(token) ||
-        _und.isUndefined(token) || _und.isNaN(token);
+    return _und.isObject(token) || _und.isArray(token) || isNotAcceptableValue(token);
   }
 
   static isJwtValidDate(decodedJwtToken) {
@@ -91,10 +81,7 @@ class Utils {
     //          are objects, while (normal) strings and numbers are not.
     if(!decodedJwtToken ||
         !_und.isObject(decodedJwtToken) || _und.isArray(decodedJwtToken) ||
-        _und.isFunction(decodedJwtToken) || _und.isRegExp(decodedJwtToken) ||
-        _und.isError(decodedJwtToken) || _und.isNull(decodedJwtToken) ||
-        _und.isUndefined(decodedJwtToken) || _und.isNaN(decodedJwtToken) ||
-        _und.isBoolean(decodedJwtToken)) {
+        isNotAcceptableValue(decodedJwtToken) || _und.isBoolean(decodedJwtToken)) {
       throw "Not a valid decodedJwtToken";
     }
 
@@ -134,9 +121,7 @@ class Utils {
 
     if(!token || !_und.isString(token) ||
         _und.isObject(token) || _und.isArray(token) ||
-        _und.isFunction(token) || _und.isRegExp(token) ||
-        _und.isError(token) || _und.isNull(token) ||
-        _und.isUndefined(token) || _und.isNaN(token)) {
+        isNotAcceptableValue(token)) {
       throw "Not a valid token";
     }
 
@@ -171,7 +156,25 @@ class Utils {
       });
     });
   }
+}
 
+// This function returns true if the parameter is NOT acceptable, i.e.
+// is a function OR
+// is a RegExp OR
+// is an Error OR
+// is null OR
+// is undefined OR
+// is NaN;
+// false otherwise.
+function isNotAcceptableValue(param) {
+  return _und.isFunction(param) || _und.isRegExp(param) ||
+  _und.isError(param) || _und.isNull(param) ||
+  _und.isUndefined(param) || _und.isNaN(param);
+}
+
+// the opposite of isNotAcceptableValue
+function isAcceptableValue(param) {
+  return !isNotAcceptableValue(param);
 }
 
 module.exports = Utils;
