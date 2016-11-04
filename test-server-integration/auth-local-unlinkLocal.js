@@ -90,7 +90,7 @@ describe('auth-local', () => {
 	}
 
 	function dropUserTestDbAndLogout(done) {
-		User.remove({}, err => { 
+		User.remove({}, err => {
 			//I want to try to logout to be able to run all tests in a clean state
 			//If this call returns 4xx or 2xx it's not important here
 			getPartialGetRequest(URL_UNLINK_LOCAL)
@@ -128,7 +128,7 @@ describe('auth-local', () => {
 							} else {
 								console.log(res.body);
 								expect(res.body).to.be.equals("User unlinked correctly!");
-				
+
 								asyncDone();
 							}
 						});
@@ -142,7 +142,7 @@ describe('auth-local', () => {
 						User.findOne({ 'local.email': USER_EMAIL }, (err1, usr) => {
 							if(err1) {
 								return asyncDone(err1);
-							} 
+							}
 							usr.github.id = '1231232';
 							usr.github.token = 'TOKEN';
 							usr.github.email = 'email@email.it';
@@ -156,13 +156,13 @@ describe('auth-local', () => {
 								user = usr;
 								updateCookiesAndTokens(asyncDone); //pass done, it's important!
 							});
-						});	
+						});
 					},
 					asyncDone => {
 						User.findOne({ 'local.email': USER_EMAIL }, (err1, usr) => {
 							if(err1) {
 								return asyncDone(err1);
-							} 
+							}
 							updateCookiesAndTokens(asyncDone);
 
 						});
@@ -195,7 +195,7 @@ describe('auth-local', () => {
 						User.findOne({ 'github.id': user.github.id }, (err1, usr) => {
 							if(err1) {
 								return asyncDone(err1);
-							} 
+							}
 							expect(usr.local.name).to.be.undefined;
 							expect(usr.local.email).to.be.undefined;
 							expect(usr.local.hash).to.be.undefined;
@@ -230,11 +230,11 @@ describe('auth-local', () => {
 						.end((err, res) => asyncDone(err));
 					},
 					asyncDone => {
-						User.remove({}, err => { 
+						User.remove({}, err => {
 							asyncDone(err);
 						});
 					},
-					asyncDone => {				
+					asyncDone => {
 						getPartialGetRequest(URL_UNLINK_LOCAL)
 						.send()
 						.expect(403)
@@ -247,7 +247,7 @@ describe('auth-local', () => {
 
 			});
 
-			it('should catch 403 FORBIDDEN, because this API is available only for ' + 
+			it('should catch 403 FORBIDDEN, because this API is available only for ' +
 					'logged users. rest-auth-middleware will responde with -no token provided- message', done => {
 				getPartialGetRequest(URL_LOGOUT)
 				.send()
@@ -257,7 +257,7 @@ describe('auth-local', () => {
 					.send()
 					.expect(403)
 					.end((err, res) => {
-						expect(res.body.message).to.be.equals('No token provided.');
+						expect(res.body.message).to.be.equals('No token provided');
 						done();
 					});
 				});

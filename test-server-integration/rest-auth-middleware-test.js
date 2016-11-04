@@ -21,6 +21,14 @@ const USER_PASSWORD = 'fake';
 const URL_LOGIN = '/api/login';
 const URL_LOGOUT = '/api/logout';
 
+// testing services
+const URL_DESTROY_SESSION = '/api/destroySession';
+const URL_SET_STRING_SESSION = '/api/setStringSession';
+const URL_SET_JSON_WITHOUT_TOKEN_SESSION = '/api/setJsonWithoutTokenSession';
+const URL_SET_JSON_WITH_WRONGFORMAT_TOKEN_SESSION = '/api/setJsonWithWrongFormatTokenSession';
+const URL_SET_JSON_WITH_EXPIRED_DATE_SESSION = '/api/setJsonWithExpiredDateSession';
+
+
 const loginMock = {
 	email : USER_EMAIL,
 	password : USER_PASSWORD
@@ -90,33 +98,25 @@ describe('auth-common', () => {
 		.set('Accept', 'application/json');
 	}
 
-	describe('#logout()', () => {
+	describe('#restAuthenticationMiddleware()', () => {
 		describe('---YES---', () => {
 
 			beforeEach(done => insertUserTestDb(done));
 
-			it('should logout', done => {
-
-				async.waterfall([
-					asyncDone => {
-						getPartialPostRequest(URL_LOGIN)
-						.set('XSRF-TOKEN', csrftoken)
-						.send(loginMock)
-						.expect(200)
-						.end((err, res) => asyncDone(err, res));
-					},
-					(res, asyncDone) => {
+			it('should login', done => {
+  			getPartialPostRequest(URL_LOGIN)
+  			.set('XSRF-TOKEN', csrftoken)
+  			.send(loginMock)
+  			.expect(200)
+  			.end((err, res) => {
+          if (err) {
+						return done(err);
+					} else {
 						expect(res.body.token).to.be.not.null;
 						expect(res.body.token).to.be.not.undefined;
-
-						getPartialGetRequest(URL_LOGOUT)
-						.send()
-						.expect(200)
-						.end((err, res) => {
-							expect(res.body.message).to.be.equals('Logout succeeded');
-							asyncDone(err);
-						});
-					}], (err, response) => done(err));
+						done(err);
+					}
+        });
 			});
 
 			afterEach(done => dropUserTestDbAndLogout(done));
@@ -127,13 +127,48 @@ describe('auth-common', () => {
 
 			beforeEach(done => insertUserTestDb(done));
 
-			it('should get 403 FORBIDDEN, because you aren\'t authenticated', done => {
-				getPartialGetRequest(URL_LOGOUT)
-				//not authenticated
-				.send(loginMock)
-				.expect(403)
-				.end(() => done());
-			});
+      const sessionModifierUrls = [
+        {url: URL_DESTROY_SESSION, msg: 'No token provided', status: 403},
+        {url: URL_SET_STRING_SESSION, msg: 'No token provided', status: 403},
+        {url: URL_SET_JSON_WITHOUT_TOKEN_SESSION, msg: 'Token not found', status: 404},
+        {url: URL_SET_JSON_WITH_WRONGFORMAT_TOKEN_SESSION, msg: 'Jwt not valid or corrupted', status: 401},
+        {url: URL_SET_JSON_WITH_EXPIRED_DATE_SESSION, msg: 'Jwt not valid or corrupted', status: 401}
+      ];
+      for(let i=0; i<sessionModifierUrls.length; i++) {
+        it(`should get 403 FORBIDDEN while calling a protected service
+                (for instance, logout()), because you aren't authenticated.
+                Test i=${i} with ${sessionModifierUrls[i]}`, done => {
+  				async.waterfall([
+  					asyncDone => {
+  						getPartialPostRequest(URL_LOGIN)
+  						.set('XSRF-TOKEN', csrftoken)
+  						.send(loginMock)
+  						.expect(200)
+  						.end((err, res) => asyncDone(err, res));
+  					},
+  					(res, asyncDone) => {
+  						expect(res.body.token).to.be.not.null;
+  						expect(res.body.token).to.be.not.undefined;
+
+  						getPartialGetRequest(sessionModifierUrls[i].url)
+  						.send()
+  						.expect(200)
+  						.end((err, res) => asyncDone(err, res));
+  					},
+  					(res, asyncDone) => {
+  						getPartialGetRequest(URL_LOGOUT)
+  						.send()
+  						.expect(sessionModifierUrls[i].status) // expected status
+  						.end((err, res) => {
+  							// session data is modified
+  							// and the rest-auth-middleware blocks your call
+                // returning a specific error message
+  							expect(res.body.message).to.be.equals(sessionModifierUrls[i].msg);
+  							asyncDone(err);
+  						});
+  					}], (err, response) => done(err));
+  			});
+      }
 
 			afterEach(done => dropUserTestDbAndLogout(done));
 		});

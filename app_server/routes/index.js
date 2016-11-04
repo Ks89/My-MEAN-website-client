@@ -1,11 +1,4 @@
 module.exports = function (express) {
-	// var multer  = require('multer');
-	// var upload = multer({ dest: '/Users/Ks89/Downloads/', fileFilter:
-	// 		function(req,file,cb){
-  //       console.log('file is',file)
-  //       cb(null,true);
-	// 		}
-	// });
 	var app = express();
 	var router = express.Router();
 	var Utils = require('../utils/util');
@@ -61,22 +54,10 @@ module.exports = function (express) {
 	router.use(restAuthMiddleware.restAuthenticationMiddleware);
 	//profile
 	router.post('/profile', ctrlProfile.update);
-
-	// app.post('/profilephoto', upload.single('avatar'), function (req, res, next) {
-	// 	console.log(req);
-	// 	console.log(req.file);
-	// 	console.log(req.body);
-	// 	// req.file is the `avatar` file
-	// 	// req.body will hold the text fields, if there were any
-	// 	Utils.sendJSONres(res, 200, "OK");
-	// })
-
-
 	//common - 3dparty + local
 	router.get('/logout', ctrlAuthCommon.logout);
 	router.get('/sessionToken', ctrlAuthCommon.sessionToken);
 	router.get('/decodeToken/:token', ctrlAuthCommon.decodeToken);
-
 	//3dparty auth - authorize (already logged in/connecting other social account)
 	router.get('/connect/github', ctrlAuth3dParty.connectGithub);
 	router.get('/connect/github/callback', ctrlAuth3dParty.connectGithubCallback);
@@ -95,6 +76,18 @@ module.exports = function (express) {
 	router.get('/unlink/google', ctrlAuth3dParty.unlinkGoogle);
 	router.get('/unlink/twitter', ctrlAuth3dParty.unlinkTwitter);
 	router.get('/unlink/linkedin', ctrlAuth3dParty.unlinkLinkedin);
+
+
+	// -----------------------------------------------------------------------------------------
+	// -----------------------------------------------------------------------------------------
+	// 				  	  authenticated REST services used only for testing/ci!!!
+	// -----------------------------------------------------------------------------------------
+	if(process.env.NODE_ENV === 'test' || (process.env.CI && process.env.CI === 'yes')) {
+		router = require('./testing-api')(router);
+	}
+	// -----------------------------------------------------------------------------------------
+	// -----------------------------------------------------------------------------------------
+
 
 	module.exports = router;
 	return router;

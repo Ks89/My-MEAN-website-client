@@ -33,7 +33,7 @@ const loginMock = {
 
 const SESSION_NOT_VALID = 'Session not valid, probably it\'s expired';
 const LOGOUT_SUCCEEDED = 'Logout succeeded';
-const NO_TOKEN_PROVIDED = 'No token provided.';
+const NO_TOKEN_PROVIDED = 'No token provided';
 
 //this file is usefull to test authCommon.unlinkServiceByName for 3dauth,
 //i.e. to call /unlink/****serviceName**** in auth-3dparty.js

@@ -166,5 +166,5 @@ module.exports = {
   logout: logout,
   sessionToken: sessionToken,
   generateSessionJwtToken: generateSessionJwtToken,
-  unlinkServiceByName: unlinkServiceByName,
+  unlinkServiceByName: unlinkServiceByName
 };

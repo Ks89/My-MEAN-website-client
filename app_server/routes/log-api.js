@@ -1,3 +1,4 @@
+// ------------- imported from app.js ---------------
 module.exports = function (express) {
 	var app = express();
 	var router = express.Router();
