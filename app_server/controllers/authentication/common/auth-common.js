@@ -95,21 +95,14 @@ var unlinkServiceByName = function(req, serviceName, res) {
 
   async.waterfall([
     done => {
-      try {
-        Utils.isJwtValid(token)
-        .then(result => {
-          console.log("IsJwtValid result: " + result);
-          done(null, result);
-        }, reason => {
-          console.log("IsJwtValid error: " + reason);
-          Utils.sendJSONres(res, reason.status, reason.message);
-          return;
-        });
-      } catch(e) {
-        logger.error(e);
-        Utils.sendJSONres(res, 500, 'Impossible to check if jwt is valid');
-        return;
-      }
+      Utils.isJwtValid(token)
+      .then(result => {
+        console.log("IsJwtValid result: " + result);
+        done(null, result);
+      }, reason => {
+        console.log("IsJwtValid error: " + reason);
+        Utils.sendJSONres(res, reason.status, reason.message);
+      });
     },
     (decodedToken, done) => {
       User.findById(decodedToken.user._id, (err, user) => {
