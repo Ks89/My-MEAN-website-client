@@ -26,6 +26,11 @@ const URL_LOGIN = '/api/login';
 const URL_LOGOUT = '/api/logout';
 const URL_BASE_UNLINK = '/api/unlink/';
 
+// testing services
+const URL_DESTROY_SESSION = '/api/testing/destroySession';
+const URL_SET_JSON_WITHOUT_TOKEN_SESSION = '/api/testing/setJsonWithoutTokenSession';
+const URL_SET_JSON_WITH_WRONGFORMAT_TOKEN_SESSION = '/api/testing/setJsonWithWrongFormatTokenSession';
+
 const loginMock = {
 	email : USER_EMAIL,
 	password : USER_PASSWORD
@@ -289,6 +294,138 @@ describe('auth-3dparty', () => {
 								asyncDone(err);
 							});
 						}], (err, response) => done(err));
+				});
+			}
+
+			for(let i=0; i<serviceNames.length; i++) {
+				it('should catch 404 NOT FOUND, because the session is not valid.' +
+						'----Implemented with the rest-auth-middleware bypass---. serviceName=' + serviceNames[i], done => {
+
+					async.waterfall([
+						asyncDone => {
+							getPartialPostRequest(URL_LOGIN)
+							.set('XSRF-TOKEN', csrftoken)
+							.send(loginMock)
+							.expect(200)
+							.end((err, res) => asyncDone(err, res));
+						},
+						(res, asyncDone) => {
+							expect(res.body.token).to.be.not.null;
+							expect(res.body.token).to.be.not.undefined;
+							console.log(res.body);
+
+							getPartialGetRequest(URL_DESTROY_SESSION)
+							.send()
+							.expect(200)
+							.end((err, res) => asyncDone(err, res));
+						},
+						(res, asyncDone) => {
+							// BYPASS rest-auth-middleware
+							process.env.DISABLE_REST_AUTH_MIDDLEWARE = 'yes';
+
+							getPartialGetRequest(URL_BASE_UNLINK + serviceNames[i])
+							.send()
+							.expect(401)
+							.end((err, res) => {
+								// thanks to the rest-auth-middleware bypass, this message is
+								// thrown by unlinkServiceByName and not by the rest-auth-middleware itself.
+								expect(res.body.message).to.be.equals(SESSION_NOT_VALID);
+
+								// RESTORE rest-auth-middleware
+								delete process.env.DISABLE_REST_AUTH_MIDDLEWARE;
+								asyncDone(err);
+							});
+						}
+					], (err, response) => done(err));
+				});
+			}
+
+
+
+			for(let i=0; i<serviceNames.length; i++) {
+				it('should catch 401 UNAUTHORIZED, because session token is not available.' +
+						'----Implemented with the rest-auth-middleware bypass---. serviceName=' + serviceNames[i], done => {
+
+					async.waterfall([
+						asyncDone => {
+							getPartialPostRequest(URL_LOGIN)
+							.set('XSRF-TOKEN', csrftoken)
+							.send(loginMock)
+							.expect(200)
+							.end((err, res) => asyncDone(err, res));
+						},
+						(res, asyncDone) => {
+							expect(res.body.token).to.be.not.null;
+							expect(res.body.token).to.be.not.undefined;
+							console.log(res.body);
+
+							getPartialGetRequest(URL_SET_JSON_WITHOUT_TOKEN_SESSION)
+							.send()
+							.expect(200)
+							.end((err, res) => asyncDone(err, res));
+						},
+						(res, asyncDone) => {
+							// BYPASS rest-auth-middleware
+							process.env.DISABLE_REST_AUTH_MIDDLEWARE = 'yes';
+
+							getPartialGetRequest(URL_BASE_UNLINK + serviceNames[i])
+							.send()
+							.expect(401)
+							.end((err, res) => {
+								// thanks to the rest-auth-middleware bypass, this message is
+								// thrown by unlinkServiceByName and not by the rest-auth-middleware itself.
+								expect(res.body.message).to.be.equals('Token not found');
+
+								// RESTORE rest-auth-middleware
+								delete process.env.DISABLE_REST_AUTH_MIDDLEWARE;
+								asyncDone(err);
+							});
+						}
+					], (err, response) => done(err));
+				});
+			}
+
+
+			for(let i=0; i<serviceNames.length; i++) {
+				it('should catch 401 UNAUTHORIZED, because session token\'s format is wrong.' +
+						'----Implemented with the rest-auth-middleware bypass---. serviceName=' + serviceNames[i], done => {
+
+					async.waterfall([
+						asyncDone => {
+							getPartialPostRequest(URL_LOGIN)
+							.set('XSRF-TOKEN', csrftoken)
+							.send(loginMock)
+							.expect(200)
+							.end((err, res) => asyncDone(err, res));
+						},
+						(res, asyncDone) => {
+							expect(res.body.token).to.be.not.null;
+							expect(res.body.token).to.be.not.undefined;
+							console.log(res.body);
+
+							getPartialGetRequest(URL_SET_JSON_WITH_WRONGFORMAT_TOKEN_SESSION)
+							.send()
+							.expect(200)
+							.end((err, res) => asyncDone(err, res));
+						},
+						(res, asyncDone) => {
+							// BYPASS rest-auth-middleware
+							process.env.DISABLE_REST_AUTH_MIDDLEWARE = 'yes';
+
+							getPartialGetRequest(URL_BASE_UNLINK + serviceNames[i])
+							.send()
+							.expect(401)
+							.end((err, res) => {
+								// thanks to the rest-auth-middleware bypass, this message is
+								// thrown by unlinkServiceByName and not by the rest-auth-middleware itself.
+								expect(res.body.message).to.be.equals('Jwt not valid or corrupted');
+
+								// RESTORE rest-auth-middleware
+								delete process.env.DISABLE_REST_AUTH_MIDDLEWARE;
+								asyncDone(err);
+							});
+						}
+					], (err, response) => done(err));
 				});
 			}
 

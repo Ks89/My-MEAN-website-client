@@ -22,6 +22,9 @@ const URL_LOGIN = '/api/login';
 const URL_LOGOUT = '/api/logout';
 const URL_SESSIONTOKEN = '/api/sessionToken';
 
+// testing services
+const URL_DESTROY_SESSION = '/api/testing/destroySession';
+
 const loginMock = {
 	email : USER_EMAIL,
 	password : USER_PASSWORD
@@ -65,7 +68,7 @@ describe('auth-common', () => {
 	}
 
 	function dropUserTestDbAndLogout(done) {
-		User.remove({}, err => { 
+		User.remove({}, err => {
 			//I want to try to logout to be able to run all tests in a clean state
 			//If this call returns 4xx or 2xx it's not important here
 			getPartialGetRequest(URL_LOGOUT)
@@ -135,6 +138,42 @@ describe('auth-common', () => {
 				.send(loginMock)
 				.expect(403)
 				.end(() => done());
+			});
+
+			it('should get 404 NOT FOUND, because session token is not available', done => {
+				async.waterfall([
+					asyncDone => {
+						getPartialPostRequest(URL_LOGIN)
+						.set('XSRF-TOKEN', csrftoken)
+						.send(loginMock)
+						.expect(200)
+						.end((err, res) => asyncDone(err, res));
+					},
+					(res, asyncDone) => {
+						expect(res.body.token).to.be.not.null;
+						expect(res.body.token).to.be.not.undefined;
+						console.log(res.body);
+
+						getPartialGetRequest(URL_DESTROY_SESSION)
+						.send()
+						.expect(200)
+						.end((err, res) => asyncDone(err, res));
+					},
+					(res, asyncDone) => {
+						// BYPASS rest-auth-middleware
+						process.env.DISABLE_REST_AUTH_MIDDLEWARE = 'yes';
+
+						getPartialGetRequest(URL_SESSIONTOKEN)
+						.send()
+						.expect(404)
+						.end((err, res) => {
+							expect(res.body.message).to.be.equals('Authtoken not available as session data');
+
+							// RESTORE rest-auth-middleware
+							delete process.env.DISABLE_REST_AUTH_MIDDLEWARE;
+							asyncDone(err);
+						});
+					}], (err, response) => done(err));
 			});
 
 			afterEach(done => dropUserTestDbAndLogout(done));

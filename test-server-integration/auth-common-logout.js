@@ -21,6 +21,9 @@ const USER_PASSWORD = 'fake';
 const URL_LOGIN = '/api/login';
 const URL_LOGOUT = '/api/logout';
 
+// testing services
+const URL_DESTROY_SESSION = '/api/testing/destroySession';
+
 const loginMock = {
 	email : USER_EMAIL,
 	password : USER_PASSWORD
@@ -133,6 +136,42 @@ describe('auth-common', () => {
 				.send(loginMock)
 				.expect(403)
 				.end(() => done());
+			});
+
+			it('should get 404 NOT FOUND, because session token is not available', done => {
+				async.waterfall([
+					asyncDone => {
+						getPartialPostRequest(URL_LOGIN)
+						.set('XSRF-TOKEN', csrftoken)
+						.send(loginMock)
+						.expect(200)
+						.end((err, res) => asyncDone(err, res));
+					},
+					(res, asyncDone) => {
+						expect(res.body.token).to.be.not.null;
+						expect(res.body.token).to.be.not.undefined;
+						console.log(res.body);
+
+						getPartialGetRequest(URL_DESTROY_SESSION)
+						.send()
+						.expect(200)
+						.end((err, res) => asyncDone(err, res));
+					},
+					(res, asyncDone) => {
+						// BYPASS rest-auth-middleware
+						process.env.DISABLE_REST_AUTH_MIDDLEWARE = 'yes';
+
+						getPartialGetRequest(URL_LOGOUT)
+						.send()
+						.expect(404)
+						.end((err, res) => {
+							expect(res.body.message).to.be.equals('Authtoken not available as session data');
+
+							// RESTORE rest-auth-middleware
+							delete process.env.DISABLE_REST_AUTH_MIDDLEWARE;
+							asyncDone(err);
+						});
+					}], (err, response) => done(err));
 			});
 
 			afterEach(done => dropUserTestDbAndLogout(done));
