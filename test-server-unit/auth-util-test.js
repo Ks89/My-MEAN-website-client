@@ -28,6 +28,14 @@ const USER_MUSTBE_OBJECT = 'User must be a valid object';
 
 describe('auth-util', () => {
 
+  describe('#constructor()', () => {
+    it('should create an object calling the constructor', () => {
+      var authUtil = new AuthUtil();
+      expect(authUtil).to.be.not.null;
+      expect(authUtil).to.be.not.undefined;
+    });
+  });
+
 	describe('#checkIfLastUnlink()', () => {
 		describe('---YES---', () => {
 
@@ -54,12 +62,6 @@ describe('auth-util', () => {
 					done();
 				});
 			}
-
-      it('should create an object calling the constructor', () => {
-        var authUtil = new AuthUtil();
-        expect(authUtil).to.be.not.null;
-        expect(authUtil).to.be.not.undefined;
-      });
 		});
 
 		describe('---NO---', () => {
