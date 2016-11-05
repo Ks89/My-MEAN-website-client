@@ -12,11 +12,11 @@ module.exports = function (router) {
   // -----------------------------------------------------------------------------------------
   // -----------------------------------------------------------------------------------------
 
-  router.get('/destroySession', ctrlTesting.destroySession);
-  router.get('/setStringSession', ctrlTesting.setStringSession);
-  router.get('/setJsonWithoutTokenSession', ctrlTesting.setJsonWithoutTokenSession);
-  router.get('/setJsonWithWrongFormatTokenSession', ctrlTesting.setJsonWithWrongFormatTokenSession);
-  router.get('/setJsonWithExpiredDateSession', ctrlTesting.setJsonWithExpiredDateSession);
+  router.get('/testing/destroySession', ctrlTesting.destroySession);
+  router.get('/testing/setStringSession', ctrlTesting.setStringSession);
+  router.get('/testing/setJsonWithoutTokenSession', ctrlTesting.setJsonWithoutTokenSession);
+  router.get('/testing/setJsonWithWrongFormatTokenSession', ctrlTesting.setJsonWithWrongFormatTokenSession);
+  router.get('/testing/setJsonWithExpiredDateSession', ctrlTesting.setJsonWithExpiredDateSession);
 
 	module.exports = router;
 	return router;

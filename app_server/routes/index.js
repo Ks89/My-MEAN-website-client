@@ -46,12 +46,13 @@ module.exports = function (express) {
 	// -----------------------------------------------------------------------------------------
 	// -----------------------------------------------------------------------------------------
 	// -----------------------------------------------------------------------------------------
-	// 					    route middleware to authenticate and check token
-	// 				 all routes defined BELOW will be protected by the following code
+	// 					    route middleware to authenticate and check the token.
+	// 				 All routes defined BELOW will be protected by the following code!
 	// -----------------------------------------------------------------------------------------
 	// -----------------------------------------------------------------------------------------
 	// -----------------------------------------------------------------------------------------
 	router.use(restAuthMiddleware.restAuthenticationMiddleware);
+	
 	//profile
 	router.post('/profile', ctrlProfile.update);
 	//common - 3dparty + local
