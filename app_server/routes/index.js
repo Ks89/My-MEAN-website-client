@@ -43,6 +43,18 @@ module.exports = function (express) {
 	router.get('/auth/linkedin', ctrlAuth3dParty.authLinkedin);
 	router.get('/auth/linkedin/callback', ctrlAuth3dParty.authLinkedinCallback, ctrlAuth3dParty.callbackRedirectLinkedin);
 
+
+	// -----------------------------------------------------------------------------------------
+	// -----------------------------------------------------------------------------------------
+	// 				  	      REST services used only for testing/ci!!!
+	// -----------------------------------------------------------------------------------------
+	if(process.env.NODE_ENV === 'test' || (process.env.CI && process.env.CI === 'yes')) {
+		router = require('./testing-api')(router);
+	}
+	// -----------------------------------------------------------------------------------------
+	// -----------------------------------------------------------------------------------------
+
+
 	// -----------------------------------------------------------------------------------------
 	// -----------------------------------------------------------------------------------------
 	// -----------------------------------------------------------------------------------------
@@ -52,7 +64,7 @@ module.exports = function (express) {
 	// -----------------------------------------------------------------------------------------
 	// -----------------------------------------------------------------------------------------
 	router.use(restAuthMiddleware.restAuthenticationMiddleware);
-	
+
 	//profile
 	router.post('/profile', ctrlProfile.update);
 	//common - 3dparty + local
@@ -77,18 +89,6 @@ module.exports = function (express) {
 	router.get('/unlink/google', ctrlAuth3dParty.unlinkGoogle);
 	router.get('/unlink/twitter', ctrlAuth3dParty.unlinkTwitter);
 	router.get('/unlink/linkedin', ctrlAuth3dParty.unlinkLinkedin);
-
-
-	// -----------------------------------------------------------------------------------------
-	// -----------------------------------------------------------------------------------------
-	// 				  	  authenticated REST services used only for testing/ci!!!
-	// -----------------------------------------------------------------------------------------
-	if(process.env.NODE_ENV === 'test' || (process.env.CI && process.env.CI === 'yes')) {
-		router = require('./testing-api')(router);
-	}
-	// -----------------------------------------------------------------------------------------
-	// -----------------------------------------------------------------------------------------
-
 
 	module.exports = router;
 	return router;
