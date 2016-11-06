@@ -1,4 +1,5 @@
 var Utils = require('../utils/util');
+var jwt = require('jsonwebtoken');
 
 var destroySession = function(req, res) {
   req.session.destroy(() => {
@@ -14,46 +15,37 @@ var setStringSession = function(req, res) {
 };
 
 var setJsonWithoutTokenSession = function(req, res) {
-  req.session.authToken = JSON.stringify({
-    _id: 'fakeid',
-    user: null,
-    token: null, // without token
-    exp: (new Date()).getTime()
-  });
+  req.session.authToken = JSON.stringify({ token: null });
   console.log('setJsonWithoutTokenSession forced -> req.session.authToken = a JSON');
   Utils.sendJSONres(res, 200, {message: "Session modified correctly!"});
 };
 
 var setJsonWithWrongFormatTokenSession = function(req, res) {
-  req.session.authToken = JSON.stringify({
-    _id: 'fakeid',
-    token: 'wrong.format', // only one dot :)
-    user: null,
-    exp: (new Date()).getTime()
-  });
+  const wrongFormatToken = 'wrong.format'; // only one dot :)
+  req.session.authToken = JSON.stringify({ token: wrongFormatToken });
   console.log('setJsonWithWrongFormatTokenSession forced -> req.session.authToken = a JSON');
   Utils.sendJSONres(res, 200, {message: "Session modified correctly!"});
 };
 
 var setJsonWithExpiredDateSession = function(req, res) {
-  var expiry = new Date();
-	expiry.setTime(expiry.getTime() - 600000); //expired 10 minutes ago (10*60*1000)
-  console.warn("+++++++++++++++++++++++++++++++++");
-  req.session.authToken = JSON.stringify({
-    _id: '581d01b3706b0a34de2c0b03',
-    user: {
-      _id: "581d01b3706b0a34de2c0b03",
-			local: {
-				email: 'email',
-				name: 'name'
-			}
-		},
-    exp: parseFloat(expiry.getTime()) // obviously wrong
-  });
+  let expired = new Date();
+  expired.setTime(expired.getTime() - 600000); //expired 10 minutes ago (10*60*1000)
+  req.session.authToken = getAuthSessionTokenFake('fake_id', null, expired.getTime());
   console.warn(req.session.authToken);
   console.log('setJsonWithExpiredDateSession forced -> req.session.authToken = a JSON');
   Utils.sendJSONres(res, 200, {message: "Session modified correctly!"});
 };
+
+// private function used to generate fake (but valid)
+// jwt tokens for testing purposes
+function getAuthSessionTokenFake(_id, user, floatDate) {
+  let fakeJwtSigned = jwt.sign({
+    _id: _id,
+    user: user,
+    exp: parseFloat(floatDate),
+  }, process.env.JWT_SECRET);
+  return JSON.stringify({ token: fakeJwtSigned });
+}
 
 module.exports = {
   destroySession: destroySession,
