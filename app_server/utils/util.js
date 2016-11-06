@@ -70,12 +70,9 @@ class Utils {
         _isNotAcceptableValue(obj) || _.isBoolean(obj) || _.isDate(obj);
   }
 
-  static isSimpleCustomObject(obj) {
-    return _.isObject(token) || _.isArray(token) || _isNotAcceptableValue(token);
-  }
-
   static isJwtValidDate(decodedJwtToken) {
-    console.log("isJwtValidDate " + decodedJwtToken);
+    console.log("isJwtValidDate");
+    console.log(decodedJwtToken);
 
     //isObject: JavaScript arrays and functions
     //          are objects, while (normal) strings and numbers are not.
