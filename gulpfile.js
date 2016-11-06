@@ -40,7 +40,8 @@ var testPaths = ['test-server-integration/**/*.js',
 								 'test-server-unit/auth-experimental-collapse-db.js',
 								 'test-server-unit/auth-util-test.js',
 								 'test-server-unit/users-test.js',
-								 'test-server-unit/util-test.js'
+								 'test-server-unit/util-test.js',
+								 'test-server-unit/passport-test.js'
 								];
 
 gulp.task('pre-test', function pretestInternal() {
@@ -64,7 +65,7 @@ gulp.task('test',
     .pipe(mocha().on("error", handleError))
     // Creating the reports after tests ran
     .pipe(istanbul.writeReports())
-    // Enforce a coverage of at least 90%
+    // Enforce a coverage of at least 90% otherwise throw an error
     .pipe(istanbul.enforceThresholds({ thresholds: { global: 90 } }));
 }));
 
