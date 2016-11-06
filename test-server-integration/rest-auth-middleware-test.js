@@ -123,17 +123,12 @@ describe('rest-auth-middleware', () => {
 		});
 
 		describe('---ERRORS---', () => {
-
-			beforeEach(done => insertUserTestDb(done));
-
       const sessionModifierUrls = [
         {url: URL_DESTROY_SESSION, msg: 'No token provided', status: 403},
         {url: URL_SET_STRING_SESSION, msg: 'No token provided', status: 403},
         {url: URL_SET_JSON_WITHOUT_TOKEN_SESSION, msg: 'Token not found', status: 404},
         {url: URL_SET_JSON_WITH_WRONGFORMAT_TOKEN_SESSION, msg: 'Jwt not valid or corrupted', status: 401},
-
-				// TODO FIXME BROKEN
-				// {rl: URL_SET_JSON_WITH_EXPIRED_DATE_SESSION, msg: 'Data is not valid', status: 404}
+				{url: URL_SET_JSON_WITH_EXPIRED_DATE_SESSION, msg: 'Data is not valid', status: 404}
       ];
       for(let i=0; i<sessionModifierUrls.length; i++) {
         it(`should get 403 FORBIDDEN while calling a protected service
@@ -141,16 +136,6 @@ describe('rest-auth-middleware', () => {
                 Test i=${i} with ${sessionModifierUrls[i]}`, done => {
   				async.waterfall([
   					asyncDone => {
-  						getPartialPostRequest(URL_LOGIN)
-  						.set('XSRF-TOKEN', csrftoken)
-  						.send(loginMock)
-  						.expect(200)
-  						.end((err, res) => asyncDone(err, res));
-  					},
-  					(res, asyncDone) => {
-  						expect(res.body.token).to.be.not.null;
-  						expect(res.body.token).to.be.not.undefined;
-
   						getPartialGetRequest(sessionModifierUrls[i].url)
   						.send()
   						.expect(200)

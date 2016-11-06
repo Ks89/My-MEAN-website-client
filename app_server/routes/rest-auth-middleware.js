@@ -1,15 +1,15 @@
 // ------------- imported from ./index.js ---------------
 
-var jwt = require('jsonwebtoken');
-var logger = require('../utils/logger');
-var Utils = require('../utils/util');
+const jwt = require('jsonwebtoken');
+const logger = require('../utils/logger');
+const Utils = require('../utils/util');
 
 module.exports.restAuthenticationMiddleware = function(req, res, next) {
 	logger.warn("restAuthenticationMiddleware - req.session.authToken:" + req.session.authToken);
 
 	// For testing purposes it could be useful to bypass this authentication middleware
 	// to be able to modify the session.
-	// I implemented some tests that uses this bypass to tests all statements and
+	// There are some tests that are using this bypass to cover all statements and
 	// branches.
 	// ATTENTION - USE THIS FEATURE ONLY FOR TESTING PURPOSES!!!!!!!
 	if(process.env.DISABLE_REST_AUTH_MIDDLEWARE === 'yes' && (process.env.NODE_ENV === 'test' || (process.env.CI && process.env.CI === 'yes'))) {
@@ -22,10 +22,8 @@ module.exports.restAuthenticationMiddleware = function(req, res, next) {
 
 	try {
 		if (req.session.authToken) {
-			// var cookie = JSON.parse(req.cookies.userCookie);
-			// var token = cookie.token;
-			var authToken = JSON.parse(req.session.authToken);
-			var token = authToken.token;
+			const authToken = JSON.parse(req.session.authToken);
+			const token = authToken.token;
 			logger.debug("restAuthenticationMiddleware - parsed token:" + token);
 			if(!token) {
 				logger.error("restAuthenticationMiddleware - Token not found");
@@ -54,7 +52,6 @@ module.exports.restAuthenticationMiddleware = function(req, res, next) {
 							logger.error('restAuthenticationMiddleware - jwt has an invalid data');
 							Utils.sendJSONres(res, 404, "Data is not valid");
 						}
-						logger.warn("[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]");
 					} catch (e) {
 						logger.error('restAuthenticationMiddleware - error during Utils.isJwtValidDate');
 						Utils.sendJSONres(res, 500, "Impossible to check if jwt is valid");
