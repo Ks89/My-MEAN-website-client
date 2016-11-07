@@ -15,6 +15,7 @@ export default class ResetComponent {
   public resetAlert: Object = { visible: false }; // hidden by default
   public isWaiting: boolean = false; // enable button's spinner
   public showFormError: boolean = false;
+  public alreadyChanged: boolean = false;
 
   // this class is used when you click on the email to reset your password
 
@@ -49,6 +50,7 @@ export default class ResetComponent {
           };
           this.isWaiting = false;
           this.showFormError = false;
+          this.alreadyChanged = true; // disable button
         },
         err => {
           console.error(err);
