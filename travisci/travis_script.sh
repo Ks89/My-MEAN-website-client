@@ -1,9 +1,11 @@
-mocha test-server-integration/
-mocha test-server-unit/3dparty-passport-test.js
-mocha test-server-unit/auth-experimental-collapse-db.js
-mocha test-server-unit/auth-util-test.js
-mocha test-server-unit/users-test.js
-mocha test-server-unit/util-test.js
+gulp test
+# mocha test-server-integration/
+# mocha test-server-unit/3dparty-passport.spec.js
+# mocha test-server-unit/auth-experimental-collapse-db.spec.js
+# mocha test-server-unit/auth-util.spec.js
+# mocha test-server-unit/passport.spec.js
+# mocha test-server-unit/users.spec.js
+# mocha test-server-unit/util.spec.js
 
 #cd app_client
 #npm test
