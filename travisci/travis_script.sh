@@ -5,6 +5,6 @@ mocha test-server-unit/auth-util-test.js
 mocha test-server-unit/users-test.js
 mocha test-server-unit/util-test.js
 
-cd app_client
-npm test
-cd ..
+#cd app_client
+#npm test
+#cd ..
