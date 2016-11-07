@@ -37,7 +37,7 @@ gulp.task('hint', function hintInternal() {
 
 var testPaths = [
 								 'test-server-integration/**/*.spec.js',
-								 'test-server-unit/**/*.spec.js'
+								//  'test-server-unit/**/*.spec.js'
 								];
 
 gulp.task('pre-test', function pretestInternal() {
