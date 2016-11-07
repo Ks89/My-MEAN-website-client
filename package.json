@@ -12,7 +12,7 @@
     "url": "https://github.com/Ks89/My-MEAN-website"
   },
   "engines": {
-    "node": ">=6.0",
+    "node": ">=6.0.0",
     "npm": ">=3.8.6"
   },
   "scripts": {
