@@ -14,7 +14,7 @@
             <div class="card-block text-xs-center">
               <h4 class="card-title">{{thumb.name}}</h4>
               <p class="card-text">{{thumb.projectHomeView.thumbText}}</p>
-              <a class="btn btn-default" href="/#projects/{{thumb._id}}" class="btn btn-primary">View details &raquo;</a>
+              <a class="btn btn-default" [routerLink]="['/projects', thumb._id]" class="btn btn-primary">View details &raquo;</a>
             </div>
           </div>
         </div>
