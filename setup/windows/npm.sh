@@ -24,6 +24,7 @@ then
   npm install -g nsp
   npm install -g codeclimate-test-reporter
   npm install -g istanbul
+  npm install -g snyk
 fi
 
 read -p "Would you update webdriver-manager to be able to use Selenium Server? Press y or n: " -n 1 -r

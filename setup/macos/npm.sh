@@ -19,6 +19,7 @@ then
   sudo npm install -g protractor
   sudo npm install -g codeclimate-test-reporter
   sudo npm install -g istanbul
+  sudo npm install -g snyk
 fi
 
 read -p "Would you update webdriver-manager to be able to use Selenium Server? Press y or n: " -n 1 -r
