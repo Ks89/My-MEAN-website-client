@@ -68,12 +68,12 @@ describe('auth-local', () => {
 					expect(usr.local.activateAccountToken).to.be.not.undefined;
 					user = usr;
 					asyncDone(err);
-			    });	
+			    });
 			}
 		], (err, response) => done(err));
 	}
 
-	//usefull function that prevent to copy and paste the same code
+	//useful function that prevent to copy and paste the same code
 	function getPartialPostRequest (apiUrl) {
 		return agent
 			.post(apiUrl)
@@ -116,13 +116,13 @@ describe('auth-local', () => {
 							expect(usr.local.name).to.be.equals(USER_NAME);
 							expect(usr.local.email).to.be.equals(USER_EMAIL);
 							expect(usr.validPassword(USER_PASSWORD)).to.be.true;
-							
+
 							expect(usr.local.activateAccountToken).to.be.undefined;
 							expect(usr.local.activateAccountExpires).to.be.undefined;
 
 							done(err1);
 					    });
-						
+
 					}
 				});
 			});
@@ -147,7 +147,7 @@ describe('auth-local', () => {
 					console.log("exprires: " + usr.local.activateAccountExpires);
 
 					usr.local.activateAccountExpires =  Date.now() - 3600000; // - 1 hour
-					
+
 					console.log("exprires: " + usr.local.activateAccountExpires);
 
 					usr.save((err, savedUser) => {
@@ -187,7 +187,7 @@ describe('auth-local', () => {
 					console.log("exprires: " + usr.local.activateAccountExpires);
 
 					usr.local.activateAccountToken = 'random_wrong_token';
-					
+
 					console.log("token: " + usr.local.activateAccountToken);
 
 					usr.save((err, savedUser) => {
@@ -213,12 +213,12 @@ describe('auth-local', () => {
 			    });
 			});
 
-			afterEach(done => dropUserCollectionTestDb(done));	
+			afterEach(done => dropUserCollectionTestDb(done));
 		});
 
 		describe('---NO - Missing params---', () => {
 			before(done => registerUserTestDb(done));
-			
+
 			const missingUpdatePwdMocks = [
 				{emailToken : 'random email token - valid or nor is not important here'},
 				{userName : USER_NAME},
@@ -245,9 +245,9 @@ describe('auth-local', () => {
 				});
 			}
 
-			after(done => dropUserCollectionTestDb(done));		
+			after(done => dropUserCollectionTestDb(done));
 		});
-		
+
 		describe('---ERRORS---', () => {
 			it('should get 403 FORBIDDEN, because XSRF-TOKEN is not available', done => {
 				getPartialPostRequest('/api/activate')

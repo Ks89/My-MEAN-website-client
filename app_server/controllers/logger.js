@@ -22,43 +22,34 @@ module.exports.exception = (req, res) => {
 	//--IMPORTANT-- save the data on log file
 	logger.error('Called log-exception: ' + JSON.stringify(req.body));
 
-	if(req.body) {
-		const response = {
-			info: "Exception logged on server",
-			body : req.body
-		};
-		Utils.sendJSONres(res, 200, response);
-	} else {
-		const errResponse = {
-			info: "Impossible to log exception on server, body is empty",
-			body : null
-		};
-		Utils.sendJSONres(res, 404, errResponse);
-	}
+	const response = {
+		info: "Exception logged on server",
+		body : req.body
+	};
+	Utils.sendJSONres(res, 200, response);
 };
 
 function log(req, res, type) {
 	console.log('Called log-' + type + ' = ');
 	console.log(req.body);
 
-	//--IMPORTANT-- save the data on log file
-	if(type==='debug') {
-		logger.debug('Called log-' + type + ': ' + JSON.stringify(req.body.message));
+	let messageToLog;
+	if(req.body && req.body.message) {
+		messageToLog = req.body.message;
 	} else {
-		logger.error('Called log-' + type + ': ' + JSON.stringify(req.body.message));
+		messageToLog = req.body;
 	}
 
-	if(req.body) {
-		const response = {
-			info: type + " logged on server",
-			body : req.body
-		};
-		Utils.sendJSONres(res, 200, response);
+	//--IMPORTANT-- save the data on log file
+	if(type === 'debug') {
+		logger.debug('Called log-' + type + ': ' + JSON.stringify(messageToLog));
 	} else {
-		const errResponse = {
-			info: "Impossible to log" + type + " on server, body is empty",
-			body : null
-		};
-		Utils.sendJSONres(res, 404, errResponse);
+		logger.error('Called log-' + type + ': ' + JSON.stringify(messageToLog));
 	}
+
+	const response = {
+		info: type + " logged on server",
+		body : req.body
+	};
+	Utils.sendJSONres(res, 200, response);
 }

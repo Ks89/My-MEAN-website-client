@@ -35,13 +35,9 @@ gulp.task('hint', function hintInternal() {
 });
 
 
-var testPaths = ['test-server-integration/**/*.js',
-								 'test-server-unit/3dparty-passport-test.js',
-								 'test-server-unit/auth-experimental-collapse-db.js',
-								 'test-server-unit/auth-util-test.js',
-								 'test-server-unit/users-test.js',
-								 'test-server-unit/util-test.js',
-								 'test-server-unit/passport-test.js'
+var testPaths = [
+								 'test-server-integration/**/*.spec.js',
+								 'test-server-unit/**/*.spec.js'
 								];
 
 gulp.task('pre-test', function pretestInternal() {
