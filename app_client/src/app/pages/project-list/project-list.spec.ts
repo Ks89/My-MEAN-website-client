@@ -16,7 +16,7 @@ let projectService: any;
 let projectServiceStub: any;
 let spy: jasmine.Spy;
 
-const baseUrl = '#/projects/';
+const baseUrl = '/projects/';
 
 describe('ProjectListComponent', () => {
   // beforeEach(() => {
