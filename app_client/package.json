@@ -50,7 +50,7 @@
     "angular2-ladda": "^1.0.6",
     "angular2-recaptcha": "^0.3.0",
     "bootstrap": "^4.0.0-alpha.5",
-    "bootstrap-loader": "^2.0.0-beta.11",
+    "bootstrap-loader": "2.0.0-beta.12",
     "core-js": "^2.4.1",
     "font-awesome": "^4.6.3",
     "jquery": "^3.1.1",
