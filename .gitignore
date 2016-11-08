@@ -36,5 +36,8 @@ app_client/.DS_Store
 
 *.log
 
+# docs api generated with apidocjs
+docs/api
+
 # Compiled front-end files
 app_client/dist
