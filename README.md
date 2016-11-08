@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/Ks89/My-MEAN-website.svg?branch=master)](https://travis-ci.org/Ks89/My-MEAN-website)   [![Code Climate](https://codeclimate.com/github/Ks89/My-MEAN-website/badges/gpa.svg)](https://codeclimate.com/github/Ks89/My-MEAN-website)   [![Test Coverage](https://codeclimate.com/github/Ks89/My-MEAN-website/badges/coverage.svg)](https://codeclimate.com/github/Ks89/My-MEAN-website/coverage)
+[![Build Status](https://travis-ci.org/Ks89/My-MEAN-Website-client.svg?branch=master)](https://travis-ci.org/Ks89/My-MEAN-Website-client)   [![Code Climate](https://codeclimate.com/github/Ks89/My-MEAN-Website-client/badges/gpa.svg)](https://codeclimate.com/github/Ks89/My-MEAN-Website-client)   [![Test Coverage](https://codeclimate.com/github/Ks89/My-MEAN-Website-client/badges/coverage.svg)](https://codeclimate.com/github/Ks89/My-MEAN-Website-client/coverage)
 <br>
 # My M.E.A.N. website client (Alpha 3)
 <br>
