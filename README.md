@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/Ks89/My-MEAN-website.svg?branch=master)](https://travis-ci.org/Ks89/My-MEAN-website)   [![Code Climate](https://codeclimate.com/github/Ks89/My-MEAN-website/badges/gpa.svg)](https://codeclimate.com/github/Ks89/My-MEAN-website)   [![Test Coverage](https://codeclimate.com/github/Ks89/My-MEAN-website/badges/coverage.svg)](https://codeclimate.com/github/Ks89/My-MEAN-website/coverage)
 <br>
-# My M.E.A.N. website (Alpha 2)
+# My M.E.A.N. website client (Alpha 3)
 <br>
 
 ## Informations
@@ -21,20 +21,10 @@ If you are interested, star this project on GitHub.
 Testing:
 - front-end unit: only some classes are tested. In alpha 3 and 4 I'll complete everything
 - front-end e2e: work in progress, In alpha 3 and 4 I'll complete everything
-- back-end unit: almost done (only the necessary things)*. coverage >80%
-- back-end integration: almost done*. coverage >80%
-
-(*) I unit-tested only public functions and I tested all APIs (integration) except for OAUTH2/PassportJS.
-This is because, it's extremely difficult to test passportjs (for 3dparty services, not for the local auth) without to use  browsers (like Zombie or Phantom). In my opinion an integration-test for a back-end api must use only backend's code, not also a browser (browser is on client and not on server :) ).
-The problem is that to test PassportJS without a browser it's really diffult. I asked on StackOverflow [HERE](http://stackoverflow.com/questions/38169351/how-can-i-test-integration-testing-with-supertest-a-node-js-server-with-passpo), without receivend any answers.
-For this reason, I decided to unit-tests these APIs (not APIs theirself but their functions/logics).
-If you want to help me to write integration-test's case for PassportJS, check [this file](https://github.com/Ks89/My-MEAN-website/blob/master/test-server-integration/TODO-auth-3dparty.js)
-
 
 ## Requirements
-- Node.js
-- MongoDB
-- redis
+- Node.js and npm
+- My-MEAN-website server Alpha3
 - npm
 - Google Chrome and Firefox (mandatory for testing)
 - some global npm dependencies: karma-cli, mocha, webpack, typescript, nodemon, gulp 4.0 alpha, npm-check, lite-server, remap-istanbul, webdriver-manager, protractor
@@ -81,65 +71,22 @@ If you want to help me to write integration-test's case for PassportJS, check [t
 
 ## How to setup
 
-1. create a file called ".env" into the root folder and add all these properties
-
-    JWT_SECRET=INSERT A JEW SECRET HERE
-
-    TWITTER_CONSUMER_KEY=YOU KEY/ID
-    TWITTER_CONSUMER_SECRET=YOU KEY/ID
-
-    FACEBOOK_APP_ID=YOU KEY/ID
-    FACEBOOK_APP_SECRET=YOU KEY/ID
-
-    GOOGLE_CLIENT_ID=YOU KEY/ID
-    GOOGLE_CLIENT_SECRET=YOU KEY/ID
-
-    GITHUB_CLIENT_ID=YOU KEY/ID
-    GITHUB_CLIENT_SECRET=YOU KEY/ID
-
-    LINKEDIN_CLIENT_ID=YOU KEY/ID
-    LINKEDIN_CLIENT_SECRET=YOU KEY/ID
-
-    USER_EMAIL=YOUR_EMAIL
-    PASS_EMAIL=YOUR_PASSWORD
-
-    - replace 'YOU KEY/ID' with the keys obtained from facebook/github... oauth applications.
-    - replace YOUR_EMAIL and YOUR_PASSWORD with the data of your e-mail account
-    - reaplce INSERT A JWT SECRET HERE with an alphanumerical string (I'm using a random string with a length = 72)
-
-2. install all necessary tools (Node.js, redis-server, mongo db, Google Chrome)
-3. execute this command 'npm install' into the root folder
-4. execute this command 'npm install' into the app_client folder
-4. execute this command 'redis-server
-5. execute this command 'mongod' (on Mac OSX use 'sudo mongod')
-6. execute this command 'gulp' into the root folder to start this application (back-end)
-7. execute this command 'npm start' into app_client folder to start this application (front-end)
+1. install all necessary tools (Node.js, Google Chrome, Mozilla Firefox)
+2. execute this command 'npm install' into the root folder
+3. start My-MEAN-website server with `gulp`
+7. execute this command 'npm start' into the root folder to start this application (client/front-end)
 
 This will start this application at http://localhost:3300
 
-## How to run tests (server-side)
-If you want to run server's tests execute these commands:
-
-1. mocha test-server-integration
-2. mocha test-client-unit/3dparty-passport-test.js
-3. mocha test-client-unit/auth-experimental-collapse-db.js
-4. mocha test-client-unit/auth-util-test.js
-5. mocha test-client-unit/users-test.js
-6. mocha test-client-unit/util-test.js
-
-Or try `gulp test`, but it's still broken
-
-
 ## How to run tests (client-side)
-cd app_client
 npm test
-
 
 ## How to start
 
-- cd <Main folder>
+- cd MyWebsite
 - gulp
-- cd app_client
+- cd ..
+- cd My-MEAN-Website-client
 - npm start (or npm run build for production)
 - Open your browser http://localhost:3300 (if not automatically opened)
 

@@ -11,13 +11,10 @@ then
   npm install -g --production windows-build-tools
   npm install -g node-gyp
   npm install -g karma-cli
-  npm install -g mocha
   npm install -g webpack
   npm install -g typescript
-  npm install -g nodemon
-  npm install -g gulp@github:gulpjs/gulp#4.0
+  npm install -g typings
   npm install -g npm-check
-  npm install -g lite-server
   npm install -g remap-istanbul
   npm install -g webdriver-manager
   npm install -g protractor

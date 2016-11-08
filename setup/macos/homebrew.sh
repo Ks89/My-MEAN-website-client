@@ -24,13 +24,3 @@ then
   echo installing nodejs and npm, only if not already available
   which -s node || brew install node
 fi
-
-read -p "Would you install/compile MongoDb? Press y or n: " -n 1 -r
-echo
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
-  echo installing mongodb
-  brew install mongodb --with-openssl
-  #create a folder for mongodb to prevent an error on mac osx
-  sudo mkdir -p /data/db
-fi

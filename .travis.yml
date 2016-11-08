@@ -6,20 +6,19 @@ node_js:
   - "6.1"
   - "6.0"
 env:
-  - JWT_SECRET=faketestjwt TWITTER_CONSUMER_KEY=consumerkey TWITTER_CONSUMER_SECRET=consumersecret TWITTER_CALLBACK_URL=http://127.0.0.1:3300/api/auth/twitter/callback FACEBOOK_APP_ID=appid FACEBOOK_APP_SECRET=appsecret FACEBOOK_CALLBACK_URL=http://localhost:3300/api/auth/facebook/callback GOOGLE_CLIENT_ID=clientid GOOGLE_CLIENT_SECRET=clientsecret GOOGLE_CALLBACK_URL=http://localhost:3300/api/auth/google/callback GITHUB_CLIENT_ID=clientid GITHUB_CLIENT_SECRET=clientsecret GITHUB_CALLBACK_URL=http://localhost:3300/api/auth/github/callback LINKEDIN_CLIENT_ID=clientid LINKEDIN_CLIENT_SECRET=clientsecret LINKEDIN_CALLBACK_URL=http://localhost:3300/api/auth/linkedin/callback USER_EMAIL=fake@fake.it PASS_EMAIL=fakepasswordemail RECAPTCHA_PUBLIC=recaptchapublic RECAPTCHA_SECRET=recaptchasecret NODE_ENV=test CI=yes
+  - NODE_ENV=test CI=yes
 before_script:
   - bash travisci/before_script.sh
 sudo: required
 script:
   - bash travisci/travis_script.sh
-services:
-  - mongodb
-  - redis-server
+#services:
+#  - mongodb
+#  - redis-server
 addons:
   code_climate:
-    repo_token: 71e1e63e00682fa5571f37bd59e0568781c5fc9b84f75f5130c5a37703fa6e87
+    repo_token: insertherecorrectnewtoken
 cache: # enable caching
   bundler: true
   directories:
-  - node_modules # NPM packages back end
-  - app_client/node_modules # NPM packages front end
+  - node_modules # NPM packages

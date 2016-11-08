@@ -23,22 +23,14 @@ engines:
     enabled: true
 ratings:
   paths:
-  - app_client/**
-  - app_server/**
+  - src/**
   - "**.css"
   - "**.scss"
-  - "app.js"
 exclude_paths:
-- "test-client-e2e/"
-- "test-client-e2e-angular1-deprecated/"
-- "test-server-integration/"
-- "test-server-unit/"
-- "spec"
 - "docs"
-- "bin"
 - "**/*.log"
-- "app_client/e2e/"
-- "app_client/config/"
-- "app_client/assets/"
-- "app_client/src/typings.d.ts"
-- "app_client/src/app/**/*.spec.ts"
+- "e2e/"
+- "config/"
+- "assets/"
+- "src/typings.d.ts"
+- "src/app/**/*.spec.ts"
