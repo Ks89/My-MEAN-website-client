@@ -17,7 +17,7 @@ script:
 #  - redis-server
 addons:
   code_climate:
-    repo_token: insertherecorrectnewtoken
+    repo_token: 8992777c415fd321e37092b0c44837f6d0e9a5647c8369854e8e32e0a47e3850
 cache: # enable caching
   bundler: true
   directories:
