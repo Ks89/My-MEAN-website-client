@@ -7,5 +7,3 @@ npm install -g webdriver-manager
 npm install -g protractor
 npm install -g codeclimate-test-reporter
 npm install -g istanbul
-
-npm install

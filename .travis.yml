@@ -31,7 +31,7 @@ addons:
     - g++-4.8
   code_climate:
     repo_token: 8992777c415fd321e37092b0c44837f6d0e9a5647c8369854e8e32e0a47e3850
-cache: # enable caching
-  bundler: true
-  directories:
-  - node_modules # NPM packages
+# cache: # enable caching
+#   bundler: true
+#   directories:
+#   - node_modules # NPM packages
