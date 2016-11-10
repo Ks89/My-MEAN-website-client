@@ -1,8 +1,9 @@
 [![Build Status](https://travis-ci.org/Ks89/My-MEAN-Website-client.svg?branch=master)](https://travis-ci.org/Ks89/My-MEAN-Website-client)   [![Code Climate](https://codeclimate.com/github/Ks89/My-MEAN-Website-client/badges/gpa.svg)](https://codeclimate.com/github/Ks89/My-MEAN-Website-client)   [![Test Coverage](https://codeclimate.com/github/Ks89/My-MEAN-Website-client/badges/coverage.svg)](https://codeclimate.com/github/Ks89/My-MEAN-Website-client/coverage)   [![Known Vulnerabilities](https://snyk.io/test/github/ks89/my-mean-website-client/badge.svg)](https://snyk.io/test/github/ks89/my-mean-website-client)
 <br>
-# My M.E.A.N. website client (Alpha 3)
+# My M.E.A.N. website client/front-end (Alpha)
 <br>
-
+This is the client side. Server side is available [HERE](https://github.com/Ks89/My-MEAN-website-server)
+<br>
 ## Informations
 My MEAN website is a MEAN's web application that I'm creating as a personal website, but also for other uses.
 It's composed by:
@@ -32,6 +33,7 @@ Testing:
 
 
 ## News
+- *??/??/2016* - **My MEAN website** Alpha 3 See [HERE](https://github.com/Ks89/My-MEAN-website-client/milestones) for the schedule
 - *10/27/2016* - **My MEAN website** Alpha 2 public release [HERE](https://github.com/Ks89/My-MEAN-website/releases)
 - *08/15/2016* - **My MEAN website** Alpha 1 public release [HERE](https://github.com/Ks89/My-MEAN-website/releases)
 
