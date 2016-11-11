@@ -6,7 +6,8 @@ node_js:
   # - "6.1"
   # - "6.0"
 env:
-  - CXX=g++-4.8 NODE_ENV=test CI=yes
+  # - CXX=g++-4.8 NODE_ENV=test CI=yes
+  - NODE_ENV=test CI=yes
 before_install:
   # - sudo apt-get update
   # - sudo apt-get install -y libappindicator1 fonts-liberation
@@ -16,19 +17,28 @@ before_install:
   # - export DISPLAY=:99.0
   # - sh -e /etc/init.d/xvfb start
 before_script:
-  - bash travisci/before_script.sh
-script:
-  - bash travisci/travis_script.sh
+  # - bash travisci/before_script.sh
+  - npm install -g typings
+  - npm install -g karma-cli
+  - npm install -g webpack
+  - npm install -g typescript
+  - npm install -g remap-istanbul
+  - npm install -g webdriver-manager
+  - npm install -g protractor
+  - npm install -g codeclimate-test-reporter
+  - npm install -g istanbul
+# script:
+#   - bash travisci/travis_script.sh
 sudo: required
 #services:
 #  - mongodb
 #  - redis-server
 addons:
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
-    packages:
-    - g++-4.8
+  # apt:
+  #   sources:
+  #   - ubuntu-toolchain-r-test
+  #   packages:
+  #   - g++-4.8
   code_climate:
     repo_token: 8992777c415fd321e37092b0c44837f6d0e9a5647c8369854e8e32e0a47e3850
 # cache: # enable caching
