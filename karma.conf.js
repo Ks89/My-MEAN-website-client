@@ -1,7 +1,7 @@
 var webpackConfig = require('./config/webpack.test');
 
 function getBrowsers() {
-  if(process.env.CI) {
+  if (process.env.CI) {
     return ['PhantomJS'];
   } else {
     return ['PhantomJS', 'Chrome', 'Firefox'];
@@ -11,9 +11,10 @@ function getBrowsers() {
 module.exports = function (config) {
   config.set({
     basePath: '',
-    frameworks   : ['jasmine'],
-    files        : [
-      { pattern: './config/karma-test-runner.js',
+    frameworks: ['jasmine'],
+    files: [
+      {
+        pattern: './config/karma-test-runner.js',
         watched: false
       }
     ],
@@ -26,10 +27,10 @@ module.exports = function (config) {
       stats: 'errors-only'
     },
 
-    webpackServer: { noInfo: true },
+    webpackServer: {noInfo: true},
 
     coverageReporter: {
-        type: 'in-memory'
+      type: 'in-memory'
     },
 
     remapCoverageReporter: {
@@ -43,7 +44,7 @@ module.exports = function (config) {
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
-    browsers     : getBrowsers(),
-    singleRun    : true
+    browsers: getBrowsers(),
+    singleRun: true
   });
 };
