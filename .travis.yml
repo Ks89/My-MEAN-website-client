@@ -9,6 +9,8 @@ env:
   - CXX=g++-4.8 NODE_ENV=test CI=yes
 before_install:
   - bash travisci/before_install.sh
+# before_script:
+#   - firefox: "latest"
 script:
   - bash travisci/travis_script.sh
 sudo: required

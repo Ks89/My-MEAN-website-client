@@ -1,5 +1,13 @@
 var webpackConfig = require('./config/webpack.test');
 
+function getBrowsers() {
+  if(process.env.CI) {
+    return ['PhantomJS'];
+  } else {
+    return ['PhantomJS', 'Chrome', 'Firefox'];
+  }
+}
+
 module.exports = function (config) {
   config.set({
     basePath: '',
@@ -35,7 +43,7 @@ module.exports = function (config) {
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
-    browsers     : ['PhantomJS', 'Chrome', 'Firefox'],
+    browsers     : getBrowsers(),
     singleRun    : true
   });
 };
