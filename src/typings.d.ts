@@ -1,6 +1,7 @@
 // JQuery
 interface JQuery {
   carousel(fn: string);
+  slimScroll: any;
 }
 
 // Webpack

@@ -25,3 +25,6 @@ import 'bootstrap-loader'; // used to import bootstrap as scss
 import 'font-awesome/css/font-awesome.css';
 // css to show a centered spinner before angular's booting
 import '../src/loading.css';
+
+
+import 'jquery-slimscroll';

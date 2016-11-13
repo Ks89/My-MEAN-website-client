@@ -9,6 +9,12 @@ import {BaMenuItem} from './components/baMenu/components/baMenuItem/baMenuItem.c
 import {BaMenuService} from './components/baMenu/baMenu.service';
 
 import {
+  BaScrollPosition,
+  BaSlimScroll
+} from './directives';
+
+
+import {
   BaSidebar
 } from './components';
 
@@ -17,8 +23,14 @@ const NGA_COMPONENTS = [
   BaMenuItem, BaMenu
 ];
 
+const NGA_DIRECTIVES = [
+  BaScrollPosition,
+  BaSlimScroll
+];
+
 @NgModule({
   declarations: [
+    ...NGA_DIRECTIVES,
     ...NGA_COMPONENTS
   ],
   imports: [
@@ -28,6 +40,7 @@ const NGA_COMPONENTS = [
     ReactiveFormsModule,
   ],
   exports: [
+    ...NGA_DIRECTIVES,
     ...NGA_COMPONENTS
   ],
   providers: [BaMenuService]

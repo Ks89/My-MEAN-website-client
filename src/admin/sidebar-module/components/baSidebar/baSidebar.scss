@@ -10,15 +10,6 @@ $res-xs: 500px;
 $res-xxs: 435px;
 $res-min: 320px;
 
-// $res-xxl: 1280px;
-// $res-xl: 1170px;
-// $resL: 991px;
-// $resM: 768px;
-// $resS: 660px;
-// $res-xs: 500px;
-// $res-xxs: 435px;
-// $res-min: 320px;
-
 $top-height: 66px;
 
 $default-animation-duration: .2s;
@@ -67,7 +58,7 @@ $danger-bg: tint($danger, 20%);
 }
 
 
-$sidebar-width: 180px;
+$sidebar-width: 190px;
 $angle-left: '\f100';
 $angle-right: '\f101';
 
@@ -105,6 +96,11 @@ $angle-right: '\f101';
   float: none;
   padding: 0;
   position: relative;
+  color: $sidebar-text;
+
+  /*span {
+    color: $sidebar-text;
+  }*/
 
   &.selected:not(.with-sub-menu) {
     background-color: $primary;
@@ -380,9 +376,9 @@ a.al-sidebar-list-link {
   @include layout-collapsed();
 }
 
-@media (max-width: 1200px) {
-  @include sidebar-overlap();
-}
+//@media (max-width: 1200px) {
+//  @include sidebar-overlap();
+//}
 
 @media (max-width: $res-xs) {
   .menu-collapsed {
