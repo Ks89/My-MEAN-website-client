@@ -5,7 +5,9 @@ import { HttpModule } from '@angular/http';
 import { routing }  from './admin.routing';
 
 import ApplicationAdminComponent from './application/application.component';
-import HomeAdminComponent from './pages/home/home.component';
+import DashboardAdminComponent from './pages/dashboard/dashboard.component';
+import UsersAdminComponent from './pages/users/users.component';
+import NewsletterAdminComponent from './pages/newsletter/newsletter.component';
 
 import FooterAdminComponent from './common/components/footer/footer.component';
 import { SidebarModule } from './sidebar-module/sidebar.module';
@@ -26,7 +28,9 @@ import { LaddaModule } from 'angular2-ladda';
   ],
   declarations: [
     ApplicationAdminComponent,
-    HomeAdminComponent,
+    DashboardAdminComponent,
+    UsersAdminComponent,
+    NewsletterAdminComponent,
     FooterAdminComponent
   ],
   providers: [],

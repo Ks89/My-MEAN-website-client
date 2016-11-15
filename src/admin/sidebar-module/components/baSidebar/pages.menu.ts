@@ -1,13 +1,13 @@
 export const PAGES_MENU = [
   {
-    path: 'pages',
+    path: '',
     children: [
       {
-        path: 'dashboard',
+        path: '',
         data: {
           menu: {
             title: 'Dashboard',
-            icon: 'ion-android-home',
+            icon: 'ion-android-dashboard',
             selected: false,
             expanded: false,
             order: 0
@@ -15,7 +15,7 @@ export const PAGES_MENU = [
         }
       },
       {
-        path: 'users',
+        path: '',
         data: {
           menu: {
             title: 'Users',
@@ -27,27 +27,27 @@ export const PAGES_MENU = [
         },
         children: [
           {
-            path: 'allUser',
+            path: 'allUsers',
             data: {
               menu: {
                 title: 'All',
-                url: '/allUser'
-              }
-            }
-          },
-          {
-            path: 'singleUser',
-            data: {
-              menu: {
-                title: 'Single',
-                url: '/singleUser'
+                url: 'allUsers'
               }
             }
           }
+          // {
+          //   path: 'singleUser',
+          //   data: {
+          //     menu: {
+          //       title: 'Single',
+          //       url: '/singleUser'
+          //     }
+          //   }
+          // }
         ]
       },
       {
-        path: 'newsletter',
+        path: '',
         data: {
           menu: {
             title: 'Newsletter',
@@ -63,19 +63,19 @@ export const PAGES_MENU = [
             data: {
               menu: {
                 title: 'Search',
-                url: '/newsletterSearch'
-              }
-            }
-          },
-          {
-            path: 'newsletterCreate',
-            data: {
-              menu: {
-                title: 'Create',
-                url: '/newsletterCreate'
+                url: 'newsletterSearch'
               }
             }
           }
+          // {
+          //   path: 'newsletterCreate',
+          //   data: {
+          //     menu: {
+          //       title: 'Create',
+          //       url: '/newsletterCreate'
+          //     }
+          //   }
+          // }
         ]
       },
       // {

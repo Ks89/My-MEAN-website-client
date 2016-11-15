@@ -1,11 +1,15 @@
 import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import HomeComponent from './pages/home/home.component';
+import DashboardAdminComponent from './pages/dashboard/dashboard.component';
+import UsersAdminComponent from './pages/users/users.component';
+import NewsletterAdminComponent from './pages/newsletter/newsletter.component';
 
 const appRoutes: Routes = [
-  // use http://localhost:3001/admin.html to login
-  {path: 'admin.html',                  component: HomeComponent}
+  // use http://localhost:3300/admin to login
+  {path: '',                    component: DashboardAdminComponent},
+  {path: 'allUsers',           component: UsersAdminComponent},
+  {path: 'newsletterSearch',   component: NewsletterAdminComponent}
 ];
 
 export const routing: ModuleWithProviders = RouterModule.forRoot(appRoutes);

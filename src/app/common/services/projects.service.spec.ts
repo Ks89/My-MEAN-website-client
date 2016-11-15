@@ -87,11 +87,11 @@ describe('Http-ProjectService (mockBackend)', () => {
       response = new Response(options);
     }));
 
-    it('should have expected fake home-projects', async(inject([], () => {
+    it('should have expected fake dashboard-projects', async(inject([], () => {
       backend.connections.subscribe((c: MockConnection) => c.mockRespond(response));
       service.getProjectsForHomepage().subscribe(projects => {
           expect(projects.length).toBe(homeProjects.length, 'should have expected no. of projects');
-          expect(projects).toEqual(homeProjects, 'should have expected all home projects');
+          expect(projects).toEqual(homeProjects, 'should have expected all dashboard projects');
       });
     })));
 
