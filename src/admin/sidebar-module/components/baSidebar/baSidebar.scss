@@ -10,7 +10,7 @@ $res-xs: 500px;
 $res-xxs: 435px;
 $res-min: 320px;
 
-$top-height: 66px;
+$top-height: 54px;
 
 $default-animation-duration: .2s;
 $default-animation-style: ease-out;
@@ -187,7 +187,7 @@ a.al-sidebar-list-link {
 .slimScrollBar,
 .slimScrollRail {
   border-radius: 0 !important;
-  left: 176px;
+  left: 190px;
   width: 4px !important;
 }
 
@@ -253,7 +253,7 @@ a.al-sidebar-list-link {
   background: $primary;
   display: block;
   height: 42px;
-  left: 176px;
+  left: 186px;
   position: absolute;
   top: -150px;
   transition: all .5s ease;

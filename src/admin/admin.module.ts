@@ -9,7 +9,7 @@ import DashboardAdminComponent from './pages/dashboard/dashboard.component';
 import UsersAdminComponent from './pages/users/users.component';
 import NewsletterAdminComponent from './pages/newsletter/newsletter.component';
 
-import FooterAdminComponent from './common/components/footer/footer.component';
+import NavbarAdminComponent from "./common/components/navbar/navbar.component";
 import { SidebarModule } from './sidebar-module/sidebar.module';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -31,7 +31,7 @@ import { LaddaModule } from 'angular2-ladda';
     DashboardAdminComponent,
     UsersAdminComponent,
     NewsletterAdminComponent,
-    FooterAdminComponent
+    NavbarAdminComponent
   ],
   providers: [],
   bootstrap: [ ApplicationAdminComponent ]

@@ -1,8 +1,8 @@
-import ApplicationComponent from './application.component';
+import ApplicationAdminComponent from './application.component';
 
-describe('ApplicationComponent', () => {
+describe('ApplicationAdminComponent', () => {
   it('is successfully instantiated', () => {
-    const app = new ApplicationComponent();
-    expect(app instanceof ApplicationComponent).toEqual(true);
+    const app = new ApplicationAdminComponent();
+    expect(app instanceof ApplicationAdminComponent).toEqual(true);
   });
 });
