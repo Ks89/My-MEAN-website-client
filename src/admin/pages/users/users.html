@@ -3,6 +3,32 @@
     <div class="row">
       <br><br>
       Users content
+      <br><br>
+
+      <div class="table-responsive">
+        <table class="table table-hover table-striped">
+          <thead class="thead-inverse">
+            <tr>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Username</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of users | async">
+              <td>{{user._id}}</td>
+              <td>{{user.local_name}}</td>
+              <td>{{user.local_email}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <br><br>
+
+
+      <ngb-pagination [collectionSize]="collectionSize" (pageChange)="onPageChange($event)" [(page)]="page" [maxSize]="maxSize" [pageSize]="pageSize" [rotate]="true" [ellipses]="false" [boundaryLinks]="true"></ngb-pagination>
+
 
     </div>
   </div>

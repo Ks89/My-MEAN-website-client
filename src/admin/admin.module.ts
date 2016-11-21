@@ -12,6 +12,8 @@ import NewsletterAdminComponent from './pages/newsletter/newsletter.component';
 import NavbarAdminComponent from "./common/components/navbar/navbar.component";
 import { SidebarModule } from './sidebar-module/sidebar.module';
 
+import { SERVICES } from './common/services/services';
+
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LaddaModule } from 'angular2-ladda';
 
@@ -33,7 +35,9 @@ import { LaddaModule } from 'angular2-ladda';
     NewsletterAdminComponent,
     NavbarAdminComponent
   ],
-  providers: [],
+  providers: [
+    SERVICES
+  ],
   bootstrap: [ ApplicationAdminComponent ]
 })
 

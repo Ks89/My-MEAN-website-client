@@ -7,15 +7,8 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
 
-export class User {
-  constructor(
-    public _id: string,
-    public local_name: string,
-    public local_email: string) {
-  }
-}
 
-const users: User[] = [
+const users: any = [
   {
     _id: 'id1',
     local_name: 'name1',
@@ -77,15 +70,15 @@ const users: User[] = [
 export class UserService {
   constructor(private http: Http) {}
 
-  getUsers(page: number, pageSize: number): Observable<User[]> {
+  getUsers(page: number, pageSize: number): Observable<any[]> {
     let upper = page * pageSize;
     let lower = upper - (pageSize - 1) - 1;
     console.log("upper: " + upper);
     console.log("lower: " + lower);
     // return  Observable.of(users).skip(1);
 
-    // return Observable.of(users).take(users.length);
-    return Observable.of(users);
+    return Observable.of(users).delay(500).take(upper).skip(lower);
+    // return Observable.of(users);
 
   }
 
