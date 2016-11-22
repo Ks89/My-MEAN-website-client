@@ -21,6 +21,7 @@ export class BaMenu {
   public menuItems:any[];
   public showHoverElem:boolean;
   public hoverElemHeight:number;
+  public hoverElemLeft: number;
   public hoverElemTop:number;
   protected _onRouteChange:Subscription;
   public outOfArea:number = -200;
@@ -59,8 +60,9 @@ export class BaMenu {
 
     console.log("width current target:" + $event.currentTarget.clientWidth);
 
-    // TODO: get rid of magic 54 constant
+    // TODO: get rid of magic constants
     this.hoverElemTop = $event.currentTarget.getBoundingClientRect().top - 54;
+    this.hoverElemLeft = $event.currentTarget.clientWidth + 11;
   }
 
   public toggleSubMenu($event):boolean {
