@@ -1,9 +1,10 @@
 import {Component, ViewEncapsulation, Input, Output, EventEmitter} from '@angular/core';
 import {Router, Routes, NavigationEnd} from '@angular/router';
 import {Subscription} from 'rxjs/Rx';
+import * as _ from 'lodash';
 
 import {BaMenuService} from './baMenu.service';
-import {BaMenuItem} from './components/baMenuItem';
+import {MenuService} from "../../../common/services/menu.service";
 
 @Component({
   selector: 'ba-menu',
@@ -12,7 +13,7 @@ import {BaMenuItem} from './components/baMenuItem';
 })
 export class BaMenu {
 
-  @Input() menuRoutes:Routes = [];
+  public menuRoutes:Routes = [];
   @Input() sidebarCollapsed:boolean = false;
   @Input() menuHeight:number;
 
@@ -26,9 +27,8 @@ export class BaMenu {
   protected _onRouteChange:Subscription;
   public outOfArea:number = -200;
 
-  constructor(private _router:Router, private _service:BaMenuService) {
+  constructor(private _router:Router, private _service:BaMenuService, private menuService: MenuService) {
     this._onRouteChange = this._router.events.subscribe((event) => {
-
       if (event instanceof NavigationEnd) {
         if (this.menuItems) {
           this.selectMenuAndNotify();
@@ -47,7 +47,14 @@ export class BaMenu {
   }
 
   public ngOnInit():void {
-    this.menuItems = this._service.convertRoutesToMenus(this.menuRoutes);
+    this.menuService.getMenu().subscribe(
+      val => {
+        let routes = _.cloneDeep(val);
+        this.menuItems = this._service.convertRoutesToMenus(routes);
+        return this.menuItems;
+      },
+        e => console.log('error')
+    );
   }
 
   public ngOnDestroy():void {

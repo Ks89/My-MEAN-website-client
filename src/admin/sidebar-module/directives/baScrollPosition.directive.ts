@@ -20,7 +20,6 @@ export class BaScrollPosition {
     if (isScrolled !== this._isScrolled) {
       this._isScrolled = isScrolled;
       this.scrollChange.emit(isScrolled);
-      console.log("------------------");
     }
   }
 }

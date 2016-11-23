@@ -1,10 +1,4 @@
 import {Component, ElementRef, HostListener, ViewEncapsulation} from '@angular/core';
-import {BaMenu} from '../baMenu';
-import * as _ from 'lodash';
-import {MenuService} from "../../../common/services/menu.service";
-import {Observable} from "rxjs";
-
-// import { PAGES_MENU } from './pages.menu';
 
 @Component({
   selector: 'ba-sidebar',
@@ -19,26 +13,16 @@ export class BaSidebar {
     resWidthHideSidebar: 500
   };
 
-  // here we declare which routes we want to use as a menu in our sidebar
-  // public routes = _.cloneDeep(PAGES_MENU); // we're creating a deep copy since we are going to change that object
-
-  public routes;
+  // public routes;
   public menuHeight:number;
   public isMenuCollapsed:boolean = false;
   public isMenuShouldCollapsed:boolean = false;
 
 
-  constructor(private _elementRef:ElementRef, private menuService: MenuService) {
+  constructor(private _elementRef:ElementRef) {
   }
 
   public ngOnInit():void {
-
-    this.menuService.getMenu().subscribe(
-      val => this.routes = _.cloneDeep(val),
-      e => console.log('error')
-    );
-
-
     if (this._shouldMenuCollapse()) {
       this.menuCollapse();
     }

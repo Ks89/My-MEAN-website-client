@@ -58,9 +58,11 @@ export class BaMenuService {
 
   protected _convertArrayToItems(routes:any[], parent?:any):any[] {
     let items = [];
-    routes.forEach((route) => {
-      items.push(this._convertObjectToItem(route, parent));
-    });
+    if(routes) {
+      routes.forEach((route) => {
+        items.push(this._convertObjectToItem(route, parent));
+      });
+    }
     return items;
   }
 
@@ -99,8 +101,6 @@ export class BaMenuService {
 
       let itemUrl = this._router.serializeUrl(this._router.createUrlTree(object.route.paths));
       object.url = /*object.url ? object.url : '#' + */itemUrl.substring(1,itemUrl.length);
-
-      console.log("object.url:" + object.url);
 
       object.target = object.target || '';
       return this._selectItem(object);

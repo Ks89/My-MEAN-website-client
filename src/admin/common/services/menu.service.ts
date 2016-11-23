@@ -81,19 +81,19 @@ const menu: any = [
             }
           }
         ]
+      },
+      {
+        path: '',
+        data: {
+          menu: {
+            title: 'Github',
+            url: 'http://github.com/ks89',
+            icon: 'ion-android-exit',
+            order: 800,
+            target: '_blank'
+          }
+        }
       }
-      // ,{
-      //   path: '',
-      //   data: {
-      //     menu: {
-      //       title: 'Github',
-      //       url: 'http://github.com/ks89',
-      //       icon: 'ion-android-exit',
-      //       order: 800,
-      //       target: '_blank'
-      //     }
-      //   }
-      // }
     ]
   }
 ];
@@ -103,7 +103,7 @@ export class MenuService {
   constructor(private http: Http) {}
 
   getMenu(): Observable<any[]> {
-    return Observable.of(menu);
+    return Observable.of(menu).delay(500);
 
   }
 
