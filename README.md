@@ -99,7 +99,7 @@ Work in progress... (this is only an alpha, please be patient)
 Note: updated local profile info
 ![alt tag](http://www.stefanocappa.it/publicfiles/Github_repositories_images/MyMeanWebsite/profile-updated.png)
 <br/><br/>
-Note: multiple account connected (Facebook and Github)
+Note: multiple account connected (Local, Facebook, Github, Google and Linkedin)
 ![alt tag](http://www.stefanocappa.it/publicfiles/Github_repositories_images/MyMeanWebsite/profile-multiple.png)
 <br/><br/>
 Admin web page (list of users)
