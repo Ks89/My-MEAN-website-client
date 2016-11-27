@@ -65,7 +65,10 @@ Execute `npm test`
 - cd ..
 - cd 'main folder of this project'
 - `npm start` (or `npm run build` for production)
-- Open your browser http://localhost:3300 (if not automatically opened)
+- Open your browser **http://localhost:3300** (if not automatically opened)
+
+If you want to start the admin page, go to **http://localhost:3300/admin.html**
+Attention: it's very unstable, because I decided to implement only some basic features. I'll improve it in the next alphas.
 
 ## Features
 Work in progress... (this is only an alpha, please be patient)
@@ -98,6 +101,9 @@ Note: updated local profile info
 <br/><br/>
 Note: multiple account connected (Facebook and Github)
 ![alt tag](http://www.stefanocappa.it/publicfiles/Github_repositories_images/MyMeanWebsite/profile-multiple.png)
+<br/><br/>
+Admin web page (list of users)
+![alt tag](http://www.stefanocappa.it/publicfiles/Github_repositories_images/MyMeanWebsite/admin-users.png)
 
 
 ## Configuration
