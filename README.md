@@ -5,7 +5,7 @@
 **This is the client side.** Server side is available [HERE](https://github.com/Ks89/My-MEAN-website-server)
 <br>
 ## Informations
-My MEAN website is a MEAN's web application that I'm creating as a personal website, but also for other uses.
+My MEAN website is a MEAN's web application that I'm creating as a personal website, but also for other users.
 It's composed by:
 - A: a front-end in Angular 2
 - N + E: a back-end in Node.js + Express js (and other useful libs like PassportJs)
