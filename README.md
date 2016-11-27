@@ -45,7 +45,7 @@ Testing:
 
 ## How to install (Windows)
 - install Node.js, MongoDb, redis-server and so on
-- from the `setup` folder of this project, run `bash install-macos.sh`
+- from the `setup` folder of this project, run `bash install-windows.sh`
 - TODO improve this tutorial :)
 
 ## How to setup
@@ -63,7 +63,7 @@ Execute `npm test`
 - cd MyWebsite (if necessary rename server-side's main folder)
 - `gulp`
 - cd ..
-- cd <Main folder>
+- cd 'main folder of this project'
 - `npm start` (or `npm run build` for production)
 - Open your browser http://localhost:3300 (if not automatically opened)
 
