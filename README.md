@@ -60,10 +60,10 @@ This will start this application at http://localhost:3300
 Execute `npm test`
 
 ## How to start
-- cd MyWebsite (if necessary rename your main folder)
+- cd MyWebsite (if necessary rename server-side's main folder)
 - `gulp`
 - cd ..
-- cd My-MEAN-Website-client (if necessary rename your main folder)
+- cd <Main folder>
 - `npm start` (or `npm run build` for production)
 - Open your browser http://localhost:3300 (if not automatically opened)
 
@@ -76,7 +76,6 @@ Work in progress... (this is only an alpha, please be patient)
 
 
 ## Images
-Work in progress... (all these images are old. alpha 2 uses a new front-end in Angular 2 and Bootstrap 4 )
 
 ![alt tag](http://www.stefanocappa.it/publicfiles/Github_repositories_images/MyMeanWebsite/home.png)
 <br/><br/>
