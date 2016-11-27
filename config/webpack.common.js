@@ -101,26 +101,18 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: TITLE_ADMIN,
       inject: true,
-      chunksSortMode: function (a, b) {  //my custom order polyfills/vendor/admin
-        console.log("a.names[0]: " + a.names[0]);
-        console.log("b.names[0]: "+ b.names[0]);
-          if(a.names[0].startsWith('p')) {
-            return -1;
-          } else {
-            if(a.names[0].startsWith('v') && b.names[0].startsWith('a')) {
-              return -1;
-            } else {
-              if(a.names[0].startsWith('a') && (b.names[0].startsWith('p') || b.names[0].startsWith('v'))) {
-                return 1;
-              } else {
-                if(a.names[0].startsWith('v') && b.names[0].startsWith('p')) {
-                  return 1;
-                }
-              }
-            }
-          }
+      chunksSortMode: function (chunk1, chunk2) {
+        let orders = ['polyfills', 'vendor', 'admin'];
+        let order1 = orders.indexOf(chunk1.names[0]);
+        let order2 = orders.indexOf(chunk2.names[0]);
+        if (order1 > order2) {
+          return 1;
+        } else if (order1 < order2) {
+          return -1;
+        } else {
           return 0;
-        },
+        }
+      },
       chunks: ['polyfills', 'vendor', 'admin'],
       template: TEMPLATE_ADMIN_PATH,
       filename: TEMPLATE_ADMIN_HTML
