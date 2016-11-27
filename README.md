@@ -2,7 +2,7 @@
 <br>
 # My M.E.A.N. website client/front-end (Alpha)
 <br>
-This is the client side. Server side is available [HERE](https://github.com/Ks89/My-MEAN-website-server)
+**This is the client side.** Server side is available [HERE](https://github.com/Ks89/My-MEAN-website-server)
 <br>
 ## Informations
 My MEAN website is a MEAN's web application that I'm creating as a personal website, but also for other uses.
@@ -21,75 +21,50 @@ If you are interested, star this project on GitHub.
 
 Testing:
 - front-end unit: only some classes are tested. In alpha 3 and 4 I'll complete everything
-- front-end e2e: work in progress, In alpha 3 and 4 I'll complete everything
+- front-end e2e: work in progress, In alpha 4 and 5 I'll complete everything
 
 ## Requirements
 - Node.js and npm
 - My-MEAN-website server Alpha3
 - npm
 - Google Chrome and Firefox (mandatory for testing)
-- some global npm dependencies: karma-cli, mocha, webpack, typescript, nodemon, gulp 4.0 alpha, npm-check, lite-server, remap-istanbul, webdriver-manager, protractor
+- some global npm dependencies, for instance karma-cli, mocha, webpack, typescript, gulp 4.0 alpha, remap-istanbul, webdriver-manager, protractor
 - work in progress... (this is only an alpha, please be patient)
 
 
 ## News
-- *??/??/2016* - **My MEAN website** Alpha 3 See [HERE](https://github.com/Ks89/My-MEAN-website-client/milestones) for the schedule
+- *11/30/2016* - **My MEAN website** Alpha 3 See [HERE](https://github.com/Ks89/My-MEAN-website-client/milestones) for the schedule
 - *10/27/2016* - **My MEAN website** Alpha 2 public release [HERE](https://github.com/Ks89/My-MEAN-website/releases)
 - *08/15/2016* - **My MEAN website** Alpha 1 public release [HERE](https://github.com/Ks89/My-MEAN-website/releases)
 
 ## How to install (MacOS)
-- download and install Node.js 7.0 or higher
-- download the latest versions of Google Chrome and Mozilla Firefox
-- Install homebrew:
-  - ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-  - brew update
-  - brew upgrade
-- Install MongoDB
-  - brew install wget
-  - brew install mongodb --with-openssl
-  - sudo mkdir -p /data/db
-- Install redis
-  - wget http://download.redis.io/redis-stable.tar.gz
-  - tar xvzf redis-stable.tar.gz
-  - cd redis-stable
-  - make install
-  - cd ..
-  - rm -rf redis-stable
-  - rm -f redis-stable.tar.gz
-- Install global npm packages
-  - sudo npm install -g karma-cli
-  - sudo npm install -g mocha
-  - sudo npm install -g webpack
-  - sudo npm install -g typescript
-  - sudo npm install -g typescript
-  - sudo npm install -g nodemon
-  - sudo npm install -g gulp@github:gulpjs/gulp#4.0
-  - sudo npm install -g npm-check
-  - sudo npm install -g lite-server
-  - sudo npm install -g remap-istanbul
-  - sudo npm install -g webdriver-manager
-  - sudo npm install -g protractor
-  - sudo npm install -g istanbul
+- from the `setup` folder of this project, run `bash install-macos.sh`
+
+## How to install (Linux)
+- from the `setup` folder of this project, run `bash install-linux.sh`
+
+## How to install (Windows)
+- install Node.js, MongoDb, redis-server and so on
+- from the `setup` folder of this project, run `bash install-macos.sh`
+- TODO improve this tutorial :)
 
 ## How to setup
-
-1. install all necessary tools (Node.js, Google Chrome, Mozilla Firefox)
-2. execute this command 'npm install' into the root folder
+1. install all necessary tools
+2. execute `npm install` into the root folder
 3. start My-MEAN-website server with `gulp`
-7. execute this command 'npm start' into the root folder to start this application (client/front-end)
+7. execute `npm start` into the root folder to start this application (client/front-end)
 
 This will start this application at http://localhost:3300
 
 ## How to run tests (client-side)
-npm test
+Execute `npm test`
 
 ## How to start
-
-- cd MyWebsite
-- gulp
+- cd MyWebsite (if necessary rename your main folder)
+- `gulp`
 - cd ..
-- cd My-MEAN-Website-client
-- npm start (or npm run build for production)
+- cd My-MEAN-Website-client (if necessary rename your main folder)
+- `npm start` (or `npm run build` for production)
 - Open your browser http://localhost:3300 (if not automatically opened)
 
 ## Features
@@ -107,13 +82,13 @@ Work in progress... (all these images are old. alpha 2 uses a new front-end in A
 <br/><br/>
 ![alt tag](http://www.stefanocappa.it/publicfiles/Github_repositories_images/MyMeanWebsite/projects.png)
 <br/><br/>
-![alt tag](http://www.stefanocappa.it/publicfiles/Github_repositories_images/MyMeanWebsite/project-detail.png)
+![alt tag](http://www.stefanocappa.it/publicfiles/Github_repositories_images/MyMeanWebsite/projectDetail.png)
 <br/><br/>
-![alt tag](http://www.stefanocappa.it/publicfiles/Github_repositories_images/MyMeanWebsite/projectDetail-imagegallery.png)
+![alt tag](http://www.stefanocappa.it/publicfiles/Github_repositories_images/MyMeanWebsite/projectDetail-image.png)
 <br/><br/>
 ![alt tag](http://www.stefanocappa.it/publicfiles/Github_repositories_images/MyMeanWebsite/contact.png)
 <br/><br/>
-![alt tag](http://www.stefanocappa.it/publicfiles/Github_repositories_images/MyMeanWebsite/contact-recaptcha.png)
+![alt tag](http://www.stefanocappa.it/publicfiles/Github_repositories_images/MyMeanWebsite/contact-images.png)
 <br/><br/>
 ![alt tag](http://www.stefanocappa.it/publicfiles/Github_repositories_images/MyMeanWebsite/signin.png)
 <br/><br/>
@@ -123,7 +98,7 @@ Note: updated local profile info
 ![alt tag](http://www.stefanocappa.it/publicfiles/Github_repositories_images/MyMeanWebsite/profile-updated.png)
 <br/><br/>
 Note: multiple account connected (Facebook and Github)
-![alt tag](http://www.stefanocappa.it/publicfiles/Github_repositories_images/MyMeanWebsite/profile-fb-github.png)
+![alt tag](http://www.stefanocappa.it/publicfiles/Github_repositories_images/MyMeanWebsite/profile-multiple.png)
 
 
 ## Configuration
