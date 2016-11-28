@@ -32,17 +32,17 @@ export class BaSidebar {
     setTimeout(() => this.updateSidebarHeight());
   }
 
-  @HostListener('window:resize')
-  public onWindowResize():void {
-
-    var isMenuShouldCollapsed = this._shouldMenuCollapse();
-
-    if (this.isMenuShouldCollapsed !== isMenuShouldCollapsed) {
-      this.menuCollapseStateChange(isMenuShouldCollapsed);
-    }
-    this.isMenuShouldCollapsed = isMenuShouldCollapsed;
-    this.updateSidebarHeight();
-  }
+  // @HostListener('window:resize')
+  // public onWindowResize():void {
+  //
+  //   var isMenuShouldCollapsed = this._shouldMenuCollapse();
+  //
+  //   if (this.isMenuShouldCollapsed !== isMenuShouldCollapsed) {
+  //     this.menuCollapseStateChange(isMenuShouldCollapsed);
+  //   }
+  //   this.isMenuShouldCollapsed = isMenuShouldCollapsed;
+  //   this.updateSidebarHeight();
+  // }
 
   public menuExpand():void {
     this.menuCollapseStateChange(false);

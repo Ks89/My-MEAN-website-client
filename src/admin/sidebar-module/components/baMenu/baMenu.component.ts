@@ -65,8 +65,6 @@ export class BaMenu {
     this.showHoverElem = true;
     this.hoverElemHeight = $event.currentTarget.clientHeight;
 
-    console.log("width current target:" + $event.currentTarget.clientWidth);
-
     // TODO: get rid of magic constants
     this.hoverElemTop = $event.currentTarget.getBoundingClientRect().top - 54;
     this.hoverElemLeft = $event.currentTarget.clientWidth + 11;

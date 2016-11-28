@@ -345,11 +345,11 @@ a.al-sidebar-list-link {
       @include default-sublist();
     }
 
-    .sidebar-hover-elem,
-    .sidebar-select-elem {
-      left: $sidebar-width - 4;
-      transition: left .5s ease;
-    }
+    //.sidebar-hover-elem,
+    //.sidebar-select-elem {
+    //  left: $sidebar-width - 4;
+    //  transition: left .5s ease;
+    //}
   }
 }
 
@@ -359,6 +359,7 @@ a.al-sidebar-list-link {
     display: none !important;
   }
 }
+
 
 @media (min-width: 1200px) {
   .menu-collapsed {
@@ -391,3 +392,4 @@ a.al-sidebar-list-link {
     padding-left: 0;
   }
 }
+
