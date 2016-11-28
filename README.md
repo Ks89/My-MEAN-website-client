@@ -33,9 +33,9 @@ Testing:
 
 
 ## News
-- *11/30/2016* - **My MEAN website** Alpha 3 See [HERE](https://github.com/Ks89/My-MEAN-website-client/milestones) for the schedule
-- *10/27/2016* - **My MEAN website** Alpha 2 public release [HERE](https://github.com/Ks89/My-MEAN-website/releases)
-- *08/15/2016* - **My MEAN website** Alpha 1 public release [HERE](https://github.com/Ks89/My-MEAN-website/releases)
+- *11/28/2016* - **My MEAN website** Alpha 3 public release [HERE](https://github.com/Ks89/My-MEAN-website-client/releases)
+- *10/27/2016* - **My MEAN website** Alpha 2 public release [HERE](https://github.com/Ks89/My-MEAN-website-server/releases/tag/v.alpha-2.2)
+- *08/15/2016* - **My MEAN website** Alpha 1 public release [HERE](https://github.com/Ks89/My-MEAN-website-server/releases/tag/v.alpha-1)
 
 ## How to install (MacOS)
 - from the `setup` folder of this project, run `bash install-macos.sh`
