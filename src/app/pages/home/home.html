@@ -21,19 +21,19 @@
       </div>
 
       <hr class="featurette-divider">
+    </div>
 
-      <div *ngFor="let bigThumb of thumbs | async; let i = index">
-        <div class="row featurette">
-          <div class="col-md-7 {{i%2==0 ? '' : 'push-md-5'}}">
-            <h2 class="featurette-heading">{{bigThumb.name}} <span class="text-muted">It'll blow your mind.</span></h2>
-            <p class="lead">{{bigThumb.projectHomeView.bigThumbText}}</p>
-          </div>
-          <div class="col-md-5 {{i%2==0 ? '' : 'pull-md-7'}}">
-            <img class="featurette-image img-fluid m-x-auto" src="{{bigThumb.projectHomeView.bigThumbImagePath}}" alt="Generic placeholder image">
-          </div>
+    <div *ngFor="let bigThumb of thumbs | async; let i = index">
+      <div class="row featurette">
+        <div class="col-md-7 {{i%2==0 ? '' : 'push-md-5'}}">
+          <h2 class="featurette-heading">{{bigThumb.name}} <span class="text-muted">It'll blow your mind.</span></h2>
+          <p class="lead">{{bigThumb.projectHomeView.bigThumbText}}</p>
         </div>
-        <hr class="featurette-divider"> <!-- Divider -->
+        <div class="col-md-5 {{i%2==0 ? '' : 'pull-md-7'}}">
+          <img class="featurette-image img-fluid m-x-auto" src="{{bigThumb.projectHomeView.bigThumbImagePath}}" alt="Generic placeholder image">
+        </div>
       </div>
+      <hr class="featurette-divider"> <!-- Divider -->
     </div>
   </div>
 </div>
