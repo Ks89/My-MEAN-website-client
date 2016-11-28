@@ -85,7 +85,8 @@ module.exports = {
       // Bootstrap 4
       { test: /bootstrap\/dist\/js\/umd\//, loader: 'imports?jQuery=jquery' }
     ],
-    noParse: [/node_modules\/@angular\/\*\*\/bundles\//]
+    noParse: [/node_modules\/@angular\/\*\*\/bundles\//,
+              /@angular\/\*\*\/bundles\//]
   },
   plugins: [
     new ManifestPlugin(), // TODO check if I can remove this
