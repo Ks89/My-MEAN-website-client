@@ -1,4 +1,5 @@
 import { ProjectHomeView, Project } from '../services/projects.service';
+import { Observable } from "rxjs";
 
 var homeView: ProjectHomeView = {
   "_id": "57f4409c1ef2e2165ff70348",
@@ -219,3 +220,18 @@ export var PROJECTS: Project[] = [
       }]
     }
 ];
+
+export class FakeProjectService {
+
+  getProjects(): Observable<Project[]> {
+    return Observable.of(PROJECTS);
+  }
+
+  getProjectsById(projectid: string): Observable<Project[]> {
+    return Observable.of(PROJECTS);
+  }
+
+  getProjectsForHomepage(): Observable<Project[]> {
+    return Observable.of(PROJECTS);
+  }
+}
