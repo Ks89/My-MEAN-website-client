@@ -15,8 +15,6 @@ engines:
     config:
       languages:
       - javascript
-  markdownlint:
-    enabled: true
   scss-lint:
     enabled: true
   shellcheck:
