@@ -28,7 +28,7 @@ export default class ActivateComponent implements OnInit {
     this.onActivate();
   }
 
-  onActivate() {
+  private onActivate() {
     console.log('Calling activate...');
 
     this.authService.activate(this.emailToken, this.userName)
