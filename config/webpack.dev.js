@@ -74,7 +74,7 @@ module.exports = webpackMerge(commonConfig, {
       {
         // prevent BrowserSync from reloading the page
         // and let Webpack Dev Server take care of this
-        // (usefull if you want to use HMR)
+        // (useful if you want to use HMR)
         reload: false
       }
     )
