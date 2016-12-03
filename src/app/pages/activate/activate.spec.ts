@@ -39,19 +39,17 @@ describe('ActivateComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ ActivateComponent, RouterLinkStubDirective, RouterOutletStubComponent ],
       schemas:      [ NO_ERRORS_SCHEMA ]
-    })
-      .overrideComponent(ActivateComponent, {
-        set: {
-          providers: [
-            { provide: ActivatedRoute, useValue: activatedRoute },
-            { provide: AuthService, useClass: FakeAuthService }
-          ]
-        }
-      }).compileComponents();
-
+    }).overrideComponent(ActivateComponent, {
+      set: {
+        providers: [
+          { provide: ActivatedRoute, useValue: activatedRoute },
+          { provide: AuthService, useClass: FakeAuthService }
+        ]
+      }
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ActivateComponent);
-    comp = fixture.componentInstance; // ActivateComponent test instance
+    comp = fixture.componentInstance;
 
     fixture.detectChanges();
     return fixture.whenStable().then(() => fixture.detectChanges());
@@ -59,16 +57,9 @@ describe('ActivateComponent', () => {
 
   describe('test test', () => {
     beforeEach(() => {
-      // trigger initial data binding
       fixture.detectChanges();
-
-      // find DebugElements with an attached RouterLinkStubDirective
-      linkDes = fixture.debugElement
-        .queryAll(By.directive(RouterLinkStubDirective));
-
-      // get the attached link directive instances using the DebugElement injectors
-      links = linkDes
-        .map(de => de.injector.get(RouterLinkStubDirective) as RouterLinkStubDirective);
+      linkDes = fixture.debugElement.queryAll(By.directive(RouterLinkStubDirective));
+      links = linkDes.map(de => de.injector.get(RouterLinkStubDirective) as RouterLinkStubDirective);
     });
 
     it('can instantiate it', () => {
@@ -81,21 +72,16 @@ describe('ActivateComponent', () => {
     });
   });
 
-  it('should check if projects are displayed correctly', () => {
+  it('should activate the local account, displaying username and a success message', () => {
     fixture.detectChanges(); // trigger data binding
     const element = fixture.debugElement;
 
-    // const values = element.queryAll(By.css('a'));
-    // expect(values.length).toBe(9);
-    //
-    // const projectHeaders = element.queryAll(By.css('h4.media-heading a'));
-    // expect(projectHeaders.length).toBe(6);
-    // expect(projectHeaders[1].nativeElement.textContent).toBe(PROJECTS[0].name);
-    //
-    // const shortDescriptions = element.queryAll(By.css('p.name'));
-    // expect(shortDescriptions.length).toBe(3);
-    // expect(shortDescriptions[0].nativeElement.textContent).toBe(PROJECTS[0].shortDescription);
-    //
-    // const tags = element.queryAll(By.css('span.tag.tag-pill.tag-warning'));
+    const alert = element.queryAll(By.css('h4'));
+    expect(alert.length).toBe(1);
+    expect(alert[0].nativeElement.textContent).toBe('Welcome fake username');
+
+    const welcomeName = element.queryAll(By.css('div.alert.alert-success'));
+    expect(welcomeName.length).toBe(1);
+    expect(welcomeName[0].nativeElement.textContent.trim()).toBe('Success An e-mail has been sent to fake@fake.it with further instructions.');
   });
 });
