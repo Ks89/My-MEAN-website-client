@@ -55,10 +55,9 @@ describe('ContactComponent', () => {
     it('can instantiate it', () => expect(comp).not.toBeNull());
 
     it('should send an email', () => {
-      fixture.detectChanges();
       const element: DebugElement = fixture.debugElement;
 
-      const inputs: DebugElement[] = element.queryAll(By.css('input'));
+      let inputs: DebugElement[] = element.queryAll(By.css('input'));
       expect(inputs.length).toBe(2);
 
       comp.formModel.controls['email'].setValue('fake@email.com');
@@ -66,16 +65,23 @@ describe('ContactComponent', () => {
       comp.formModel.controls['message'].setValue('Message message message message message');
 
       expect(comp.formModel.valid).toBe(true);
+
+      comp.handleCorrectCaptcha('correct fake recaptcha response');
+
+      comp.onSend();
+
+      fixture.detectChanges();
+
+      const messages: DebugElement[] = element.queryAll(By.css('div.alert.alert-success'));
+      expect(messages.length).toBe(1);
+      expect(messages[0].nativeElement.textContent.trim()).toBe('Success fake@email.com');
     });
   });
 
   describe('---NO---', () => {
     beforeEach(() => fixture.detectChanges());
 
-    it('can instantiate it', () => expect(comp).not.toBeNull());
-
-    it('shouldn\'t send an email', () => {
-      fixture.detectChanges();
+    it(`shouldn't send an email`, () => {
       const element: DebugElement = fixture.debugElement;
 
       const inputs: DebugElement[] = element.queryAll(By.css('input'));
@@ -89,11 +95,31 @@ describe('ContactComponent', () => {
     });
   });
 
-  // function sendInput(inputElement: HTMLInputElement, text: string) {
-  //   inputElement.value = text;
-  //   inputElement.dispatchEvent(new Event('input'));
-  //   fixture.detectChanges();
-  //   return fixture.whenStable();
-  // }
+  describe('---ERROR---', () => {
+    beforeEach(() => fixture.detectChanges());
+
+    it(`shouldn't send an email, because recaptcha isn't valid`, () => {
+      const element: DebugElement = fixture.debugElement;
+
+      const inputs: DebugElement[] = element.queryAll(By.css('input'));
+      expect(inputs.length).toBe(2);
+
+      comp.formModel.controls['email'].setValue('fake@email.com');
+      comp.formModel.controls['subject'].setValue('Fake subject');
+      comp.formModel.controls['message'].setValue('Message message message message message');
+
+      expect(comp.formModel.valid).toBe(true);
+
+      comp.handleCorrectCaptcha(null);
+
+      comp.onSend();
+
+      fixture.detectChanges();
+
+      const messages: DebugElement[] = element.queryAll(By.css('div.alert.alert-danger'));
+      expect(messages.length).toBe(1);
+      expect(messages[0].nativeElement.textContent.trim()).toBe('Error missing-input-response');
+    });
+  });
 
 });

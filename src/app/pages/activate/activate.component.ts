@@ -1,17 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { AuthService } from '../../common/services';
+import { Subscription } from "rxjs";
 
 @Component({
   selector: 'mmw-activate-page',
   templateUrl: 'activate.html'
 })
-export default class ActivateComponent implements OnInit {
+export default class ActivateComponent implements OnInit, OnDestroy {
   public pageHeader: Object;
   public emailToken: string;
   public userName: string;
   public activateAlert: Object = { visible: false }; // hidden by default
+  private subscription: Subscription;
 
   constructor(private authService: AuthService,
               private route: ActivatedRoute) {
@@ -53,5 +55,11 @@ export default class ActivateComponent implements OnInit {
       },
       () => console.log('Done')
     );
+  }
+
+  ngOnDestroy(): any {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }

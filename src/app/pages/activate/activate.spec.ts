@@ -21,10 +21,11 @@ import { By } from '@angular/platform-browser';
 import ActivateComponent from './activate.component';
 import { RouterLinkStubDirective, RouterOutletStubComponent, ActivatedRoute, ActivatedRouteStub }   from '../../common/testing/router-stubs.spec';
 import { AuthService } from "../../common/services/auth.service";
-import { FakeAuthService } from "../../common/testing/fake-auth.service.spec";
+import { FakeAuthService, FAKE_BAD_EMAIL_TOKEN } from "../../common/testing/fake-auth.service.spec";
 
 const FAKE_EMAIL_TOKEN = 'fake@fake.it';
 const FAKE_USERNAME = 'fake username';
+const FAKE_BAD_USERNAME = 'bad username';
 
 let comp: ActivateComponent;
 let fixture: ComponentFixture<ActivateComponent>;
@@ -37,7 +38,7 @@ describe('ActivateComponent', () => {
 
     activatedRoute = new ActivatedRouteStub();
     activatedRoute.testParams = { emailToken: FAKE_EMAIL_TOKEN, userName: FAKE_USERNAME };
-
+    // TestBed.resetTestingModule();
     TestBed.configureTestingModule({
       declarations: [ ActivateComponent, RouterLinkStubDirective, RouterOutletStubComponent ],
       schemas:      [ NO_ERRORS_SCHEMA ]
@@ -85,30 +86,50 @@ describe('ActivateComponent', () => {
     });
   });
 
-  // it('should NOT activate the local account, displaying username and an error message', () => {
-  //
-  //   activatedRoute.testParams = { emailToken: 'notexisting@mail.it', userName: 'not existing' };
-  //
-  //
-  //   //respond with {"message":"No account with that token exists."}
-  //   // Service actually injected into the component
-  //   // let authService = fixture.debugElement.injector.get(AuthService);
-  //   //
-  //   // // Setup spy on the `getQuote` method
-  //   // let spy = spyOn(authService, 'activate')
-  //   //   .and.returnValue(Observable.of({
-  //   //     "message":"No account with that token exists."
-  //   //   }));
-  //
-  //   fixture.detectChanges(); // trigger data binding
-  //   const element = fixture.debugElement;
-  //
-  //   const alert = element.queryAll(By.css('h4'));
-  //   expect(alert.length).toBe(1);
-  //   expect(alert[0].nativeElement.textContent).toBe('Welcome not existing');
-  //
-  //   const welcomeName = element.queryAll(By.css('div.alert.alert-danger'));
-  //   expect(welcomeName.length).toBe(1);
-  //   expect(welcomeName[0].nativeElement.textContent.trim()).toBe('Danger No account with that token exists.');
-  // });
+  describe('---ERROR---', () => {
+
+    beforeEach( async(() => {
+      TestBed.resetTestingModule();
+
+      activatedRoute = new ActivatedRouteStub();
+      activatedRoute.testParams = { emailToken: FAKE_BAD_EMAIL_TOKEN, userName: FAKE_BAD_USERNAME };
+
+      TestBed.configureTestingModule({
+        declarations: [ ActivateComponent, RouterLinkStubDirective, RouterOutletStubComponent ],
+        schemas:      [ NO_ERRORS_SCHEMA ]
+      }).overrideComponent(ActivateComponent, {
+        set: {
+          providers: [
+            { provide: ActivatedRoute, useValue: activatedRoute },
+            { provide: AuthService, useClass: FakeAuthService }
+          ]
+        }
+      }).compileComponents();
+
+      fixture = TestBed.createComponent(ActivateComponent);
+      comp = fixture.componentInstance;
+
+      fixture.detectChanges();
+      return fixture.whenStable().then(() => fixture.detectChanges());
+    }));
+
+    it('can instantiate it', () => expect(comp).not.toBeNull());
+
+    it('should NOT activate the local account, displaying username and an error message', () => {
+
+      fixture.detectChanges();
+      const element: DebugElement = fixture.debugElement;
+
+      const alert: DebugElement[] = element.queryAll(By.css('h4'));
+      expect(alert.length).toBe(1);
+      expect(alert[0].nativeElement.textContent).toBe(`Welcome ${FAKE_BAD_USERNAME}`);
+
+      fixture.detectChanges();
+
+      const welcomeNames: DebugElement[] = element.queryAll(By.css('div.alert.alert-danger'));
+      expect(welcomeNames.length).toBe(1);
+      expect(welcomeNames[0].nativeElement.textContent.trim()).toBe('Danger No account with that token exists.');
+    });
+
+  });
 });
