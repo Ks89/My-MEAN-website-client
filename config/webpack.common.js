@@ -11,6 +11,7 @@ const ExtractTextPlugin            = require('extract-text-webpack-plugin');
 const ManifestPlugin               = require('webpack-manifest-plugin');
 const InlineManifestWebpackPlugin  = require('inline-manifest-webpack-plugin');
 const autoprefixer                 = require('autoprefixer');
+const ChunkManifestPlugin          = require('chunk-manifest-webpack-plugin');
 
 const helpers                      = require('./helpers');
 const TITLE                        = 'My MEAN Website';
@@ -89,7 +90,7 @@ module.exports = {
               /@angular\/\*\*\/bundles\//]
   },
   plugins: [
-    new ManifestPlugin(), // TODO check if I can remove this
+    new ManifestPlugin(),
     new InlineManifestWebpackPlugin(), // TODO check if I can remove this
     new HtmlWebpackPlugin({
       title: TITLE,
@@ -148,6 +149,10 @@ module.exports = {
       /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
       helpers.root('./src') // location of your src
     ),
+    new ChunkManifestPlugin({
+      filename: "manifest.json",
+      manifestVariable: "webpackManifest"
+    }),
     new LoaderOptionsPlugin({
       debug: true,
       options: {
