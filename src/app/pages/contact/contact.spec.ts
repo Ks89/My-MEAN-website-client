@@ -26,28 +26,28 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 let comp: ContactComponent;
 let fixture: ComponentFixture<ContactComponent>;
 
+function initTestBed() {
+  TestBed.configureTestingModule({
+    imports: [FormsModule, ReactiveFormsModule],
+    declarations: [ContactComponent],
+    schemas: [NO_ERRORS_SCHEMA],
+  }).overrideComponent(ContactComponent, {
+    set: {
+      providers: [
+        {provide: ContactService, useClass: FakeContactService}
+      ]
+    }
+  }).compileComponents();
+
+  fixture = TestBed.createComponent(ContactComponent);
+  comp = fixture.componentInstance;
+
+  fixture.detectChanges();
+  return fixture.whenStable().then(() => fixture.detectChanges());
+}
+
 describe('ContactComponent', () => {
-  beforeEach(async(() => {
-
-    TestBed.configureTestingModule({
-      imports: [FormsModule, ReactiveFormsModule],
-      declarations: [ContactComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).overrideComponent(ContactComponent, {
-      set: {
-        providers: [
-          {provide: ContactService, useClass: FakeContactService}
-        ]
-      }
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(ContactComponent);
-    comp = fixture.componentInstance;
-
-    fixture.detectChanges();
-    return fixture.whenStable().then(() => fixture.detectChanges());
-  }));
-
+  beforeEach(async(() => initTestBed()));
 
   describe('---YES---', () => {
     beforeEach(() => fixture.detectChanges());
@@ -121,5 +121,4 @@ describe('ContactComponent', () => {
       expect(messages[0].nativeElement.textContent.trim()).toBe('Error missing-input-response');
     });
   });
-
 });

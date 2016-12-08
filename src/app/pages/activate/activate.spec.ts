@@ -33,31 +33,31 @@ let activatedRoute: ActivatedRouteStub;
 let links: RouterLinkStubDirective[];
 let linkDes: DebugElement[];
 
+function initTestBed(emailToken, userName) {
+  activatedRoute = new ActivatedRouteStub();
+  activatedRoute.testParams = { emailToken: emailToken, userName: userName };
+
+  TestBed.configureTestingModule({
+    declarations: [ ActivateComponent, RouterLinkStubDirective, RouterOutletStubComponent ],
+    schemas:      [ NO_ERRORS_SCHEMA ]
+  }).overrideComponent(ActivateComponent, {
+    set: {
+      providers: [
+        { provide: ActivatedRoute, useValue: activatedRoute },
+        { provide: AuthService, useClass: FakeAuthService }
+      ]
+    }
+  }).compileComponents();
+
+  fixture = TestBed.createComponent(ActivateComponent);
+  comp = fixture.componentInstance;
+
+  fixture.detectChanges();
+  return fixture.whenStable().then(() => fixture.detectChanges());
+}
+
 describe('ActivateComponent', () => {
-  beforeEach( async(() => {
-
-    activatedRoute = new ActivatedRouteStub();
-    activatedRoute.testParams = { emailToken: FAKE_EMAIL_TOKEN, userName: FAKE_USERNAME };
-    // TestBed.resetTestingModule();
-    TestBed.configureTestingModule({
-      declarations: [ ActivateComponent, RouterLinkStubDirective, RouterOutletStubComponent ],
-      schemas:      [ NO_ERRORS_SCHEMA ]
-    }).overrideComponent(ActivateComponent, {
-      set: {
-        providers: [
-          { provide: ActivatedRoute, useValue: activatedRoute },
-          { provide: AuthService, useClass: FakeAuthService }
-        ]
-      }
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(ActivateComponent);
-    comp = fixture.componentInstance;
-
-    fixture.detectChanges();
-    return fixture.whenStable().then(() => fixture.detectChanges());
-  }));
-
+  beforeEach( async(() => initTestBed(FAKE_EMAIL_TOKEN, FAKE_USERNAME)));
 
   describe('---YES---', () => {
     beforeEach(() => {
@@ -90,41 +90,17 @@ describe('ActivateComponent', () => {
 
     beforeEach( async(() => {
       TestBed.resetTestingModule();
-
-      activatedRoute = new ActivatedRouteStub();
-      activatedRoute.testParams = { emailToken: FAKE_BAD_EMAIL_TOKEN, userName: FAKE_BAD_USERNAME };
-
-      TestBed.configureTestingModule({
-        declarations: [ ActivateComponent, RouterLinkStubDirective, RouterOutletStubComponent ],
-        schemas:      [ NO_ERRORS_SCHEMA ]
-      }).overrideComponent(ActivateComponent, {
-        set: {
-          providers: [
-            { provide: ActivatedRoute, useValue: activatedRoute },
-            { provide: AuthService, useClass: FakeAuthService }
-          ]
-        }
-      }).compileComponents();
-
-      fixture = TestBed.createComponent(ActivateComponent);
-      comp = fixture.componentInstance;
-
-      fixture.detectChanges();
-      return fixture.whenStable().then(() => fixture.detectChanges());
+      return initTestBed(FAKE_BAD_EMAIL_TOKEN, FAKE_BAD_USERNAME);
     }));
 
     it('can instantiate it', () => expect(comp).not.toBeNull());
 
     it('should NOT activate the local account, displaying username and an error message', () => {
-
-      fixture.detectChanges();
       const element: DebugElement = fixture.debugElement;
 
       const alert: DebugElement[] = element.queryAll(By.css('h4'));
       expect(alert.length).toBe(1);
       expect(alert[0].nativeElement.textContent).toBe(`Welcome ${FAKE_BAD_USERNAME}`);
-
-      fixture.detectChanges();
 
       const welcomeNames: DebugElement[] = element.queryAll(By.css('div.alert.alert-danger'));
       expect(welcomeNames.length).toBe(1);
