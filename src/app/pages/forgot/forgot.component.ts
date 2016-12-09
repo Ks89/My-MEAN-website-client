@@ -1,20 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { EmailValidators } from 'ng2-validators';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
 import { AuthService } from '../../common/services';
+import { Subscription } from "rxjs";
 
 @Component({
   selector: 'mmw-forgot-page',
   templateUrl: 'forgot.html'
 })
-export default class ForgotComponent {
+export default class ForgotComponent implements OnDestroy {
   public pageHeader: Object;
   public formModel: FormGroup;
   public forgotAlert: Object = { visible: false }; // hidden by default
   public isWaiting: boolean = false; // enable button's spinner
   public showFormError: boolean = false;
+  private subscription: Subscription;
   // this class is used when you click on the 'forgot password' to reset your password
 
   constructor(private authService: AuthService,
@@ -61,6 +63,12 @@ export default class ForgotComponent {
         },
         () => console.log('Done')
       );
+    }
+  }
+
+  ngOnDestroy(): any {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
     }
   }
 }

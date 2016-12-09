@@ -56,6 +56,7 @@ function initTestBed(emailToken, userName) {
   return fixture.whenStable().then(() => fixture.detectChanges());
 }
 
+
 describe('ActivateComponent', () => {
   beforeEach( async(() => initTestBed(FAKE_EMAIL_TOKEN, FAKE_USERNAME)));
 

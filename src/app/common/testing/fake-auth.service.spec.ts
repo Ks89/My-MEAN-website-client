@@ -16,4 +16,16 @@ export class FakeAuthService {
       });
     }
   }
+
+  forgot(email: any): Observable<any> {
+    if(email !== FAKE_BAD_EMAIL_TOKEN) {
+      return Observable.of({
+        "email": email
+      });
+    } else {
+      return Observable.throw({
+        _body :  JSON.stringify({"message":"No account with that email address exists."})
+      });
+    }
+  }
 }
