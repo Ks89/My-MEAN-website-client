@@ -44,7 +44,7 @@ function initTestBed() {
     set: {
       providers: [
         { provide: Router, useValue: router },
-        {provide: AuthService, useClass: FakeAuthService}
+        { provide: AuthService, useClass: FakeAuthService }
       ]
     }
   }).compileComponents();

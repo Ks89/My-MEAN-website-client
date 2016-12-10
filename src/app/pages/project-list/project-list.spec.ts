@@ -1,27 +1,37 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
+import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
 import ProjectListComponent from './project-list.component';
 import { ProjectSearchPipe } from '../../common/pipes';
 import { PROJECTS, FakeProjectService } from '../../common/testing/fake-project.service.spec';
 import { ProjectService } from '../../common/services';
+import PageHeaderComponent from "../../common/components/page-header/page-header.component";
+import { RouterLinkStubDirective, RouterOutletStubComponent, RouterStub } from "../../common/testing/router-stubs.spec";
+import { Router } from "@angular/router";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 let comp: ProjectListComponent;
 let fixture: ComponentFixture<ProjectListComponent>;
+let router: RouterStub;
+let links: RouterLinkStubDirective[];
+let linkDes: DebugElement[];
 
 function initTestBed() {
+  router = new RouterStub();
+
   TestBed.configureTestingModule({
-    declarations: [ ProjectListComponent, ProjectSearchPipe ],
-    schemas:      [ NO_ERRORS_SCHEMA ]
-  })
-    .overrideComponent(ProjectListComponent, {
-      set: {
-        providers: [
-          { provide: ProjectService, useClass: FakeProjectService }
-        ]
-      }
-    }).compileComponents();
+    imports: [FormsModule, ReactiveFormsModule],
+    declarations: [ ProjectListComponent, ProjectSearchPipe, PageHeaderComponent, RouterLinkStubDirective, RouterOutletStubComponent  ],
+    // schemas:      [ NO_ERRORS_SCHEMA ]
+  }).overrideComponent(ProjectListComponent, {
+    set: {
+      providers: [
+        { provide: Router, useValue: router },
+        { provide: ProjectService, useClass: FakeProjectService }
+      ]
+    }
+  }).compileComponents();
 
   fixture = TestBed.createComponent(ProjectListComponent);
   comp = fixture.componentInstance; // ProjectListComponent test instance
@@ -37,7 +47,25 @@ describe('ProjectListComponent', () => {
 
   describe('---YES---', () => {
 
-    beforeEach(() => fixture.detectChanges());
+    beforeEach(() => {
+      fixture.detectChanges();
+      linkDes = fixture.debugElement.queryAll(By.directive(RouterLinkStubDirective));
+      links = linkDes.map(de => de.injector.get(RouterLinkStubDirective) as RouterLinkStubDirective);
+    });
+
+    it('can display the projectlist page', () => {
+      const element: DebugElement = fixture.debugElement;
+
+      const title: DebugElement[] = element.queryAll(By.css('h1'));
+      expect(title.length).toBe(1);
+      expect(title[0].nativeElement.textContent.trim()).toBe('Projects');
+
+      fixture.detectChanges();
+
+      const message: DebugElement[] = element.queryAll(By.css('small'));
+      expect(message.length).toBe(1); //because pageHeader has a <small> tag in its template
+      expect(message[0].nativeElement.textContent.trim()).toBe('');
+    });
 
     it('should check if projects are displayed correctly', () => {
       fixture.detectChanges(); // trigger data binding
