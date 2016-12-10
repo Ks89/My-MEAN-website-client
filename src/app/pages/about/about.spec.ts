@@ -15,10 +15,11 @@
  */
 
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import {NO_ERRORS_SCHEMA, DebugElement} from '@angular/core';
+import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
 import AboutComponent from './about.component';
+import PageHeaderComponent from "../../common/components/page-header/page-header.component";
 
 let comp: AboutComponent;
 let fixture: ComponentFixture<AboutComponent>;
@@ -27,8 +28,8 @@ describe('AboutComponent', () => {
   beforeEach( async(() => {
 
     TestBed.configureTestingModule({
-      declarations: [ AboutComponent ],
-      schemas:      [ NO_ERRORS_SCHEMA ]
+      declarations: [ AboutComponent, PageHeaderComponent ]
+      // schemas:      [ NO_ERRORS_SCHEMA ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(AboutComponent);
@@ -46,14 +47,16 @@ describe('AboutComponent', () => {
     it('should display the about page', () => {
       const element: DebugElement = fixture.debugElement;
 
-      // not working because About is inside PageHeader
-      // const title: DebugElement[] = element.queryAll(By.css('h1'));
-      // expect(title.length).toBe(1);
-      // expect(title[0].nativeElement.textContent).toBe('About');
+      const title: DebugElement[] = element.queryAll(By.css('h1'));
+      expect(title.length).toBe(1);
+      expect(title[0].nativeElement.textContent.trim()).toBe('About');
+
+      fixture.detectChanges();
 
       const message: DebugElement[] = element.queryAll(By.css('small'));
-      expect(message.length).toBe(1);
-      expect(message[0].nativeElement.textContent.trim()).toBe('Not implemented yet');
+      expect(message.length).toBe(2); //because pageHeader has a <small> tag in its template
+      expect(message[0].nativeElement.textContent.trim()).toBe('');
+      expect(message[1].nativeElement.textContent.trim()).toBe('Not implemented yet');
     });
   });
 });

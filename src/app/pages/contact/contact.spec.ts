@@ -15,21 +15,24 @@
  */
 
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
+import {DebugElement, NO_ERRORS_SCHEMA} from '@angular/core';
 import { By } from '@angular/platform-browser';
 
 import ContactComponent from './contact.component';
 import { FakeContactService } from "../../common/testing/fake-contact.service.spec";
 import { ContactService } from "../../common/services/contact.service";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import PageHeaderComponent from "../../common/components/page-header/page-header.component";
+import { LaddaModule } from "angular2-ladda";
 
 let comp: ContactComponent;
 let fixture: ComponentFixture<ContactComponent>;
 
 function initTestBed() {
+  //TODO Find a way to remove NO_ERRORS_SCHEMA and add RecaptchaModule
   TestBed.configureTestingModule({
-    imports: [FormsModule, ReactiveFormsModule],
-    declarations: [ContactComponent],
+    imports: [FormsModule, ReactiveFormsModule, LaddaModule],
+    declarations: [ContactComponent, PageHeaderComponent],
     schemas: [NO_ERRORS_SCHEMA],
   }).overrideComponent(ContactComponent, {
     set: {
@@ -49,10 +52,24 @@ function initTestBed() {
 describe('ContactComponent', () => {
   beforeEach(async(() => initTestBed()));
 
+  it('can instantiate it', () => expect(comp).not.toBeNull());
+
   describe('---YES---', () => {
     beforeEach(() => fixture.detectChanges());
 
-    it('can instantiate it', () => expect(comp).not.toBeNull());
+    it('can display the contact page', () => {
+      const element: DebugElement = fixture.debugElement;
+
+      const title: DebugElement[] = element.queryAll(By.css('h1'));
+      expect(title.length).toBe(1);
+      expect(title[0].nativeElement.textContent.trim()).toBe('Contact');
+
+      fixture.detectChanges();
+
+      const message: DebugElement[] = element.queryAll(By.css('small'));
+      expect(message.length).toBe(1); //because pageHeader has a <small> tag in its template
+      expect(message[0].nativeElement.textContent.trim()).toBe('');
+    });
 
     it('should send an email', () => {
       const element: DebugElement = fixture.debugElement;

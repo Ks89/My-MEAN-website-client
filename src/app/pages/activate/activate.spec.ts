@@ -15,13 +15,14 @@
  */
 
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
+import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
 import ActivateComponent from './activate.component';
 import { RouterLinkStubDirective, RouterOutletStubComponent, ActivatedRoute, ActivatedRouteStub }   from '../../common/testing/router-stubs.spec';
 import { AuthService } from "../../common/services/auth.service";
 import { FakeAuthService, FAKE_BAD_EMAIL_TOKEN } from "../../common/testing/fake-auth.service.spec";
+import PageHeaderComponent from "../../common/components/page-header/page-header.component";
 
 const FAKE_EMAIL_TOKEN = 'fake@fake.it';
 const FAKE_USERNAME = 'fake username';
@@ -38,8 +39,8 @@ function initTestBed(emailToken, userName) {
   activatedRoute.testParams = { emailToken: emailToken, userName: userName };
 
   TestBed.configureTestingModule({
-    declarations: [ ActivateComponent, RouterLinkStubDirective, RouterOutletStubComponent ],
-    schemas:      [ NO_ERRORS_SCHEMA ]
+    declarations: [ ActivateComponent, PageHeaderComponent, RouterLinkStubDirective, RouterOutletStubComponent ],
+    // schemas:      [ NO_ERRORS_SCHEMA ]
   }).overrideComponent(ActivateComponent, {
     set: {
       providers: [
@@ -60,6 +61,8 @@ function initTestBed(emailToken, userName) {
 describe('ActivateComponent', () => {
   beforeEach( async(() => initTestBed(FAKE_EMAIL_TOKEN, FAKE_USERNAME)));
 
+  it('can instantiate it', () => expect(comp).not.toBeNull());
+
   describe('---YES---', () => {
     beforeEach(() => {
       fixture.detectChanges();
@@ -67,7 +70,19 @@ describe('ActivateComponent', () => {
       links = linkDes.map(de => de.injector.get(RouterLinkStubDirective) as RouterLinkStubDirective);
     });
 
-    it('can instantiate it', () => expect(comp).not.toBeNull());
+    it('can display the activate page', () => {
+      const element: DebugElement = fixture.debugElement;
+
+      const title: DebugElement[] = element.queryAll(By.css('h1'));
+      expect(title.length).toBe(1);
+      expect(title[0].nativeElement.textContent.trim()).toBe('Activate');
+
+      fixture.detectChanges();
+
+      const message: DebugElement[] = element.queryAll(By.css('small'));
+      expect(message.length).toBe(1); //because pageHeader has a <small> tag in its template
+      expect(message[0].nativeElement.textContent.trim()).toBe('');
+    });
 
     it('can get RouterLinks from template', () => {
       expect(links.length).toBe(1, 'should have 1 links');
@@ -88,13 +103,10 @@ describe('ActivateComponent', () => {
   });
 
   describe('---ERROR---', () => {
-
     beforeEach( async(() => {
       TestBed.resetTestingModule();
       return initTestBed(FAKE_BAD_EMAIL_TOKEN, FAKE_BAD_USERNAME);
     }));
-
-    it('can instantiate it', () => expect(comp).not.toBeNull());
 
     it('should NOT activate the local account, displaying username and an error message', () => {
       const element: DebugElement = fixture.debugElement;

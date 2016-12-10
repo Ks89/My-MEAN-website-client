@@ -15,15 +15,16 @@
  */
 
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
+import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
 import ForgotComponent from './forgot.component';
-import {RouterLinkStubDirective, RouterOutletStubComponent, RouterStub} from '../../common/testing/helpers.spec';
+import { RouterLinkStubDirective, RouterOutletStubComponent, RouterStub } from '../../common/testing/helpers.spec';
 import { AuthService } from "../../common/services/auth.service";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { FakeAuthService, FAKE_BAD_EMAIL_TOKEN } from "../../common/testing/fake-auth.service.spec";
-import {Router} from "@angular/router";
+import { Router } from "@angular/router";
+import PageHeaderComponent from "../../common/components/page-header/page-header.component";
 
 let comp: ForgotComponent;
 let fixture: ComponentFixture<ForgotComponent>;
@@ -37,8 +38,8 @@ function initTestBed() {
 
   TestBed.configureTestingModule({
     imports: [FormsModule, ReactiveFormsModule],
-    declarations: [ForgotComponent, RouterLinkStubDirective, RouterOutletStubComponent ],
-    schemas: [NO_ERRORS_SCHEMA],
+    declarations: [ForgotComponent, PageHeaderComponent, RouterLinkStubDirective, RouterOutletStubComponent ],
+    // schemas: [NO_ERRORS_SCHEMA],
   }).overrideComponent(ForgotComponent, {
     set: {
       providers: [
@@ -61,6 +62,8 @@ function initTestBed() {
 describe('ForgotComponent', () => {
   beforeEach(async(() => initTestBed()));
 
+  it('can instantiate it', () => expect(comp).not.toBeNull());
+
   describe('---YES---', () => {
     beforeEach(() => {
       fixture.detectChanges();
@@ -68,7 +71,19 @@ describe('ForgotComponent', () => {
       links = linkDes.map(de => de.injector.get(RouterLinkStubDirective) as RouterLinkStubDirective);
     });
 
-    it('can instantiate it', () => expect(comp).not.toBeNull());
+    it('can display the forgot page', () => {
+      const element: DebugElement = fixture.debugElement;
+
+      const title: DebugElement[] = element.queryAll(By.css('h1'));
+      expect(title.length).toBe(1);
+      expect(title[0].nativeElement.textContent.trim()).toBe('Forgot');
+
+      fixture.detectChanges();
+
+      const message: DebugElement[] = element.queryAll(By.css('small'));
+      expect(message.length).toBe(1); //because pageHeader has a <small> tag in its template
+      expect(message[0].nativeElement.textContent.trim()).toBe('');
+    });
 
     it('should reset the password and redirect to login page', () => {
       const element: DebugElement = fixture.debugElement;

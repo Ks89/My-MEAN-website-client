@@ -10,12 +10,11 @@ import { ProjectService } from '../../common/services';
 let comp: ProjectListComponent;
 let fixture: ComponentFixture<ProjectListComponent>;
 
-describe('ProjectListComponent', () => {
-  beforeEach( async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ ProjectListComponent, ProjectSearchPipe ],
-      schemas:      [ NO_ERRORS_SCHEMA ]
-    })
+function initTestBed() {
+  TestBed.configureTestingModule({
+    declarations: [ ProjectListComponent, ProjectSearchPipe ],
+    schemas:      [ NO_ERRORS_SCHEMA ]
+  })
     .overrideComponent(ProjectListComponent, {
       set: {
         providers: [
@@ -24,12 +23,15 @@ describe('ProjectListComponent', () => {
       }
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ProjectListComponent);
-    comp = fixture.componentInstance; // ProjectListComponent test instance
+  fixture = TestBed.createComponent(ProjectListComponent);
+  comp = fixture.componentInstance; // ProjectListComponent test instance
 
-    fixture.detectChanges();
-    return fixture.whenStable().then(() => fixture.detectChanges());
-  }));
+  fixture.detectChanges();
+  return fixture.whenStable().then(() => fixture.detectChanges());
+}
+
+describe('ProjectListComponent', () => {
+  beforeEach(async(() => initTestBed()));
 
   it('can instantiate it', () => expect(comp).not.toBeNull());
 
