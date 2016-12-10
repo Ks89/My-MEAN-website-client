@@ -120,13 +120,14 @@ describe('ResetComponent', () => {
       const element: DebugElement = fixture.debugElement;
 
       //TODO implement click on login url
-
-      // const link: DebugElement = element.query(By.css('a'));
-      // link.triggerEventHandler(newEvent('click'));
+      // const links: DebugElement[] = element.queryAll(By.css('a'));
+      // expect(links.length).toBe(1);
+      // links[0].nativeElement.triggerEventHandler('click', null);
       //
-      // const results: DebugElement[] = element.queryAll(By.css('div.alert.alert-success'));
-      // expect(results.length).toBe(1);
-      // expect(results[0].nativeElement.textContent.trim()).toBe(`Success An e-mail has been sent to ${FAKE_EMAIL_TOKEN} with further instructions.`);
+      // fixture.detectChanges();
+      //
+      // expect(page.navSpy.calls.any()).toBe(true, 'navigate called');
+      // expect(router.navigate).toHaveBeenCalledWith(['/login']);
     });
   });
 
