@@ -111,6 +111,8 @@ describe('ActivateComponent', () => {
     }));
 
     it('should NOT activate the local account, displaying username and an error message', () => {
+
+      fixture.detectChanges();
       const element: DebugElement = fixture.debugElement;
 
       const alert: DebugElement[] = element.queryAll(By.css('h4'));
