@@ -22,11 +22,6 @@ const profileUpdateSuccess: ProfileResponse = {
   message: "Profile updated successfully!"
 };
 
-// TODO work in progress
-const profileUpdateError: ProfileResponse = {
-  message: "???????????????????????"
-};
-
 describe('Http-ProfileService (mockBackend)', () => {
 
   beforeEach( async(() => {
