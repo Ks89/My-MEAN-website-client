@@ -102,7 +102,7 @@ describe('RegisterComponent', () => {
     });
 
     it(`should register a new local account and redirect to login`, () => {
-      
+
       fillForm(FAKE_USER, FAKE_EMAIL, FAKE_EMAIL, FAKE_PASSWORD, FAKE_PASSWORD);
       expect(comp.formModel.valid).toBe(true);
 

@@ -13,7 +13,7 @@ export default class Post3dAuthComponent implements OnInit {
   constructor(private authService: AuthService,
               private router: Router) {
     this.pageHeader = {
-      title: 'Activate',
+      title: 'PostLogin',
       strapline: ''
     };
   }
@@ -23,10 +23,10 @@ export default class Post3dAuthComponent implements OnInit {
     // 3dparty authentication
     this.authService.post3dAuthAfterCallback().subscribe(
       jwtTokenAsString => {
-        // console.log(jwtTokenAsString);
+        console.log("post3dauth - getLoggedUser called");
         this.authService.getLoggedUser().subscribe(
           user => {
-            // console.log(user);
+            console.log("post3dauth - redirecting");
             this.authService.loginEvent.emit(user);
             this.router.navigate(['/profile']);
           }
