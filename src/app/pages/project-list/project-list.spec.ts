@@ -31,7 +31,7 @@ function initTestBed() {
         { provide: ProjectService, useClass: FakeProjectService }
       ]
     }
-  }).compileComponents();
+  }); // not necessary with webpack .compileComponents();
 
   fixture = TestBed.createComponent(ProjectListComponent);
   comp = fixture.componentInstance; // ProjectListComponent test instance

@@ -40,7 +40,7 @@ function initTestBed() {
         {provide: ContactService, useClass: FakeContactService}
       ]
     }
-  }).compileComponents();
+  }); // not necessary with webpack .compileComponents();
 
   fixture = TestBed.createComponent(ContactComponent);
   comp = fixture.componentInstance;

@@ -55,7 +55,7 @@ function initTestBed(emailToken) {
         { provide: AuthService, useClass: FakeAuthService }
       ]
     }
-  }).compileComponents();
+  }); // not necessary with webpack .compileComponents();
 
   fixture = TestBed.createComponent(ResetComponent);
   comp = fixture.componentInstance;

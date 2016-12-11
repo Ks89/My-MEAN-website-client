@@ -48,7 +48,7 @@ function initTestBed(projectId) {
         { provide: ProjectService, useClass: FakeProjectService }
       ]
     }
-  }).compileComponents();
+  }); // not necessary with webpack .compileComponents();
 
   fixture = TestBed.createComponent(ProjectDetailComponent);
   comp = fixture.componentInstance;
@@ -74,8 +74,6 @@ describe('ProjectDetailComponent', () => {
 
     it('should display the project detail page', () => {
       const element: DebugElement = fixture.debugElement;
-
-      fixture.detectChanges();
 
       // TODO FIXME wait ngInit
 

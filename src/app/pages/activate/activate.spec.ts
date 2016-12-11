@@ -48,12 +48,14 @@ function initTestBed(emailToken, userName) {
         { provide: AuthService, useClass: FakeAuthService }
       ]
     }
-  }).compileComponents();
+  }); // not necessary with webpack .compileComponents();
 
   fixture = TestBed.createComponent(ActivateComponent);
   comp = fixture.componentInstance;
 
+  // 1st change detection triggers ngOnInit
   fixture.detectChanges();
+  // 2nd change detection displays the async-fetched data
   return fixture.whenStable().then(() => fixture.detectChanges());
 }
 

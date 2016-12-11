@@ -30,7 +30,7 @@ describe('CvComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ CvComponent, PageHeaderComponent ]
       // schemas:      [ NO_ERRORS_SCHEMA ]
-    }).compileComponents();
+    }); // not necessary with webpack .compileComponents();
 
     fixture = TestBed.createComponent(CvComponent);
     comp = fixture.componentInstance;

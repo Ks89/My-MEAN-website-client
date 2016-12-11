@@ -16,7 +16,6 @@ export default class ProjectDetailComponent implements OnInit, OnDestroy {
   public pageHeader: any;
   public images: Object[];
 
-  public self = this;
   public descriptionHtml: any;
   public changelogHtml: any;
   public releasesHtml: any;

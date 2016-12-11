@@ -30,7 +30,7 @@ describe('AboutComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ AboutComponent, PageHeaderComponent ]
       // schemas:      [ NO_ERRORS_SCHEMA ]
-    }).compileComponents();
+    }); // not necessary with webpack .compileComponents();
 
     fixture = TestBed.createComponent(AboutComponent);
     comp = fixture.componentInstance;

@@ -55,7 +55,7 @@ function initTestBed() {
         { provide: AuthService, useClass: FakeAuthService }
       ]
     }
-  }).compileComponents();
+  }); // not necessary with webpack .compileComponents();
 
   fixture = TestBed.createComponent(RegisterComponent);
   comp = fixture.componentInstance;
