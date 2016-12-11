@@ -228,7 +228,9 @@ export class FakeProjectService {
   }
 
   getProjectsById(projectid: string): Observable<Project[]> {
-    return Observable.of(PROJECTS);
+    return Observable.of(PROJECTS.filter((val, index) => {
+      return val._id === projectid;
+    }));
   }
 
   getProjectsForHomepage(): Observable<Project[]> {
