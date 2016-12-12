@@ -2,7 +2,10 @@ import { EventEmitter } from '@angular/core';
 import { Observable } from "rxjs";
 
 export const FAKE_BAD_EMAIL_TOKEN = 'bad@fake.it';
-export const FAKE_ALREADY_EXISTING_EMAIL = 'already@esisting.email';
+export const FAKE_ALREADY_EXISTING_EMAIL = 'already@existing.email';
+export const FAKE_NOT_EXISTING_EMAIL = 'not@existing.email';
+export const FAKE_BAD_PASSWORD = "fake bad password";
+export const JWT_TOKEN = 'valid.jwt.token';
 
 class User {
   constructor(
@@ -16,6 +19,17 @@ export class FakeAuthService {
 
   public loginEvent: EventEmitter<any> = new EventEmitter();
 
+  login(user: User): Observable<any> {
+    if(user.email !== FAKE_NOT_EXISTING_EMAIL && user.password !== FAKE_BAD_PASSWORD) {
+      return Observable.of({
+        "token": JWT_TOKEN
+      });
+    } else {
+      return Observable.throw({
+        _body :  JSON.stringify({"message":"Incorrect username or password. Or this account is not activated, check your mailbox."})
+      });
+    }
+  }
 
   activate(emailToken: string, userName: string): Observable<any> {
 
