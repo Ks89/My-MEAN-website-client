@@ -13,21 +13,38 @@ module.exports = function (config) {
     basePath: '',
     frameworks: ['jasmine'],
     files: [
-      {
-        pattern: './config/karma-test-runner.js',
-        watched: false
-      }
+      "./config/karma-test-runner.js"
     ],
+    // files: [
+    //   {
+    //     pattern: './config/karma-test-runner.js',
+    //     watched: false
+    //   }
+    // ],
+    exclude: [],
     preprocessors: {
-      './config/karma-test-runner.js': ['coverage', 'webpack', 'sourcemap']
+      './config/karma-test-runner.js': ['webpack', 'sourcemap']
     },
     webpack: webpackConfig,
 
     webpackMiddleware: {
-      stats: 'errors-only'
+      stats: {
+        chunks: false
+      }
     },
 
-    webpackServer: {noInfo: true},
+    reporters: ['progress', 'kjhtml', 'coverage', 'remap-coverage'],
+
+
+    // webpackServer: {noInfo: true},
+
+    port: 9876,
+    colors: true,
+    logLevel: config.LOG_INFO,
+    autoWatch: true,
+    browsers: getBrowsers(),
+    singleRun: true,
+    // concurrency: travis ? 4 : undefined,
 
     coverageReporter: {
       type: 'in-memory'
@@ -39,12 +56,8 @@ module.exports = function (config) {
       'html': './coverage/html',
       'lcovonly': './coverage/lcov.info'
     },
-
-    reporters: ['progress', 'mocha', 'coverage', 'remap-coverage'],
-    port: 9876,
-    colors: true,
-    logLevel: config.LOG_INFO,
-    browsers: getBrowsers(),
-    singleRun: true
+    jasmineDiffReporter: {
+      multiline: true
+    }
   });
 };
