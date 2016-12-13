@@ -16,7 +16,7 @@ module.exports = {
       {
         test: /\.(js|ts)$/,
         enforce: 'post',
-        loader: 'istanbul-instrumenter-loader',
+        loader: 'istanbul-instrumenter-loader?esModules=true',
         include: helpers.root('src'),
         exclude: [
           /\.(e2e|spec)\.ts$/,
@@ -27,9 +27,7 @@ module.exports = {
         test: /\.ts$/,
         loader: 'awesome-typescript-loader',
         query: {
-          module: 'commonjs',
-          sourceMap: false,
-          inlineSourceMap: true
+          module: 'commonjs'
         }
       },
       {
