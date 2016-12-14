@@ -16,7 +16,7 @@ module.exports = {
       {
         test: /\.(js|ts)$/,
         enforce: 'post',
-        loader: 'istanbul-instrumenter-loader?esModules=true',
+        loader: 'istanbul-instrumenter-loader',
         include: helpers.root('src'),
         exclude: [
           /\.(e2e|spec)\.ts$/,

@@ -23,7 +23,7 @@ module.exports = function (config) {
     // ],
     exclude: [],
     preprocessors: {
-      './config/karma-test-runner.js': ['webpack', 'sourcemap']
+      './config/karma-test-runner.js': ['coverage', 'webpack', 'sourcemap']
     },
     webpack: webpackConfig,
 
@@ -31,9 +31,10 @@ module.exports = function (config) {
       stats: {
         chunks: false
       }
+      // stats: 'errors-only'
     },
 
-    reporters: ['progress', 'kjhtml', 'coverage', 'remap-coverage'],
+    reporters: ['progress', 'mocha', 'kjhtml', 'coverage', 'remap-coverage'],
 
 
     // webpackServer: {noInfo: true},
@@ -44,7 +45,6 @@ module.exports = function (config) {
     autoWatch: true,
     browsers: getBrowsers(),
     singleRun: true,
-    // concurrency: travis ? 4 : undefined,
 
     coverageReporter: {
       type: 'in-memory'
