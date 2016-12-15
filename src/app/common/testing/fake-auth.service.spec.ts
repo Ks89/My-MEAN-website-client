@@ -80,6 +80,13 @@ export class FakeAuthService {
     }
   }
 
+  logout(): Observable<any> {
+    //TODO FIXME add the real value
+    return Observable.of({
+      "message": `Logout called`
+    });
+  }
+
   post3dAuthAfterCallback(): Observable<any> {
     return Observable.of('fsdfsdf.543tr.gfweg');
     // return this.getTokenRedis()
