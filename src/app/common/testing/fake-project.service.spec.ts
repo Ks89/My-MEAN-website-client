@@ -1,17 +1,36 @@
 import { ProjectHomeView, Project } from '../services/projects.service';
 import { Observable } from "rxjs";
 
-var homeView: ProjectHomeView = {
-  "_id": "57f4409c1ef2e2165ff70348",
-  "carouselImagePath": "http://placehold.it/1000x400",
-  "carouselText": "sdjs fshfs fhfsdhf",
-  "thumbImagePath": "http://placehold.it/720x300",
-  "thumbText": "sfsfasf",
-  "bigThumbImagePath": "http://placehold.it/500x500",
-  "bigThumbText": "dasdasdas"
-};
+export const homeViews: ProjectHomeView[] = [{
+    "carouselImagePath": "http://placehold.it/1000x400",
+    "carouselText": "sdjs fshfs fhfsdhf",
+    "thumbImagePath": "http://placehold.it/720x300",
+    "thumbText": "sfsfasf",
+    "bigThumbImagePath": "http://placehold.it/500x500",
+    "bigThumbText": "dasdasdas",
+    "_id": "57f4409c1ef2e2165ff70348"
+  },
+  {
+    "carouselImagePath":"http://placehold.it/1000x400",
+    "carouselText":"sdjs fshfs fhfsdhf",
+    "thumbImagePath":"http://placehold.it/720x300",
+    "thumbText":"sfsfasf",
+    "bigThumbImagePath":"http://placehold.it/500x500",
+    "bigThumbText":"dasdasdas",
+    "_id":"57f7f29baef1d41fc4a7d782"
+  },
+  {
+    "carouselImagePath":"http://placehold.it/1000x400",
+    "carouselText":"sdjs fshfs fhfsdhf",
+    "thumbImagePath":"http://placehold.it/720x300",
+    "thumbText":"sfsfasf",
+    "bigThumbImagePath":"http://placehold.it/500x500",
+    "bigThumbText":"dasdasdas",
+    "_id":"57f7f29baef1d41fc4a7d783"
+  }
+];
 
-export var PROJECTS: Project[] = [
+export const PROJECTS: Project[] = [
   {
     "_id": "57632b61009f08db1623b606",
     "name": "BYAManager prj",
@@ -22,7 +41,7 @@ export var PROJECTS: Project[] = [
     "license": "apache-v2",
     "licenseText": "assets/html/projects/bya/license.html",
     "visible": true,
-    "projectHomeView": [homeView],
+    "projectHomeView": [homeViews[0]],
     "lastUpdate": "2013-07-15T22:00:00.000Z",
     "filePaths": [],
     "gallery": [
@@ -126,15 +145,7 @@ export var PROJECTS: Project[] = [
     "license":"apache-v2",
     "licenseText":"assets/html/projects/bya/license.html",
     "visible":true,
-    "projectHomeView": [{
-      "carouselImagePath":"http://placehold.it/1000x400",
-      "carouselText":"sdjs fshfs fhfsdhf",
-      "thumbImagePath":"http://placehold.it/720x300",
-      "thumbText":"sfsfasf",
-      "bigThumbImagePath":"http://placehold.it/500x500",
-      "bigThumbText":"dasdasdas",
-      "_id":"57f7f29baef1d41fc4a7d782"
-    }],
+    "projectHomeView": [homeViews[1]],
     "lastUpdate":"2013-07-15T22:00:00.000Z",
     "filePaths":[],
     "gallery":[{
@@ -174,15 +185,7 @@ export var PROJECTS: Project[] = [
     "license":"apache-v2",
     "licenseText":"assets/html/projects/bya/license.html",
     "visible":true,
-    "projectHomeView":[{
-      "carouselImagePath":"http://placehold.it/1000x400",
-      "carouselText":"sdjs fshfs fhfsdhf",
-      "thumbImagePath":"http://placehold.it/720x300",
-      "thumbText":"sfsfasf",
-      "bigThumbImagePath":"http://placehold.it/500x500",
-      "bigThumbText":"dasdasdas",
-      "_id":"57f7f29baef1d41fc4a7d783"
-    }],
+    "projectHomeView":[homeViews[2]],
     "lastUpdate":"2013-07-15T22:00:00.000Z",
     "filePaths":[],
     "gallery":[

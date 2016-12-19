@@ -6,32 +6,32 @@ import 'rxjs/add/operator/catch';
 
 export class ProjectHomeView {
   constructor(
-    _id: string,
-    carouselImagePath: string,
-    carouselText: string,
-    thumbImagePath: string,
-    thumbText: string,
-    bigThumbImagePath: string,
-    bigThumbText: string) {
+    public _id: string,
+    public carouselImagePath: string,
+    public carouselText: string,
+    public thumbImagePath: string,
+    public thumbText: string,
+    public bigThumbImagePath: string,
+    public bigThumbText: string) {
   }
 }
 
 export class ProjectGallery {
   constructor(
-    _id: string,
-    thumb: string,
-    img: string,
-    description: string) {
+    public _id: string,
+    public thumb: string,
+    public img: string,
+    public description: string) {
   }
 }
 
 export class Author {
   constructor(
-    _id: string,
-    name: string,
-    surname: string,
-    url: string,
-    urlAvailable: boolean) {
+    public _id: string,
+    public name: string,
+    public surname: string,
+    public url: string,
+    public urlAvailable: boolean) {
   }
 }
 

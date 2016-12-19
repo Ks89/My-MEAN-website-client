@@ -117,7 +117,7 @@
     "postcss-loader": "^1.2.1",
     "protractor": "^4.0.13",
     "raw-loader": "^0.5.1",
-    "remap-istanbul": "^0.8.0",
+    "remap-istanbul": "0.8.0",
     "resolve-url-loader": "^1.6.1",
     "rimraf": "^2.5.4",
     "sass-loader": "^4.1.0",
@@ -130,10 +130,10 @@
     "tslint-loader": "^3.2.0",
     "typescript": "2.0.10",
     "url-loader": "^0.5.7",
-    "webpack": "^2.1.0-beta.28",
+    "webpack": "^2.2.0-rc.1",
     "webpack-dev-server": "^2.1.0-beta.11",
     "webpack-manifest-plugin": "^1.1.0",
     "webpack-md5-hash": "^0.0.5",
-    "webpack-merge": "^1.1.1"
+    "webpack-merge": "^1.1.2"
   }
 }
