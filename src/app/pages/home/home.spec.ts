@@ -89,7 +89,19 @@ describe('HomeComponent', () => {
       expect(message.length).toBe(1); //because pageHeader has a <small> tag in its template
       expect(message[0].nativeElement.textContent.trim()).toBe('Welcome');
 
-      //TODO check carousel's slides
+      const carouselTitles: DebugElement[] = element.queryAll(By.css('h3'));
+      expect(carouselTitles.length).toBe(PROJECTS.filter(val => val.projectHomeView.length > 0).length);
+      expect(carouselTitles[0].nativeElement.textContent.trim()).toBe(PROJECTS[0].name);
+      expect(carouselTitles[1].nativeElement.textContent.trim()).toBe(PROJECTS[1].name);
+      expect(carouselTitles[2].nativeElement.textContent.trim()).toBe(PROJECTS[2].name);
+
+      // const carouselTexts: DebugElement[] = element.queryAll(By.css('.carousel-caption > p'));
+      // expect(carouselTexts.length).toBe(HOME_PROJECTS.length);
+      // expect(carouselTexts[0].nativeElement.textContent.trim()).toBe(HOME_PROJECTS[0].carouselText);
+      // expect(carouselTexts[1].nativeElement.textContent.trim()).toBe(HOME_PROJECTS[1].carouselText);
+      // expect(carouselTexts[2].nativeElement.textContent.trim()).toBe(HOME_PROJECTS[2].carouselText);
+
+      //TODO check carousel image paths
     });
 
     it('can get RouterLinks from template', () => {
@@ -99,47 +111,34 @@ describe('HomeComponent', () => {
       expect(links[2].linkParams).toEqual(['/projects', HOME_PROJECTS[2]._id], '1st link should go to the 3nd project detail');
     });
 
-    it('can display the projects', () => {
+    it('can display projects and carousel into homepage', () => {
       const element: DebugElement = fixture.debugElement;
 
       const cardTitles: DebugElement[] = element.queryAll(By.css('h4.card-title'));
-      expect(cardTitles.length).toBe(3);
+      expect(cardTitles.length).toBe(PROJECTS.filter(val => val.projectHomeView.length > 0).length);
       expect(cardTitles[0].nativeElement.textContent.trim()).toBe(PROJECTS[0].name);
       expect(cardTitles[1].nativeElement.textContent.trim()).toBe(PROJECTS[1].name);
       expect(cardTitles[2].nativeElement.textContent.trim()).toBe(PROJECTS[2].name);
 
       // const cardTexts: DebugElement[] = element.queryAll(By.css('p.card-text'));
-      // expect(cardTexts.length).toBe(3);
+      // expect(cardTexts.length).toBe(HOME_PROJECTS.length);
       // expect(cardTexts[0].nativeElement.textContent.trim()).toBe(HOME_PROJECTS[0].thumbText);
       // expect(cardTexts[1].nativeElement.textContent.trim()).toBe(HOME_PROJECTS[1].thumbText);
       // expect(cardTexts[2].nativeElement.textContent.trim()).toBe(HOME_PROJECTS[2].thumbText);
 
       const bigThumbTitles: DebugElement[] = element.queryAll(By.css('h2.featurette-heading'));
-      expect(bigThumbTitles.length).toBe(3);
+      expect(bigThumbTitles.length).toBe(PROJECTS.filter(val => val.projectHomeView.length > 0).length);
       expect(bigThumbTitles[0].nativeElement.textContent.trim()).toBe(PROJECTS[0].name + ` It'll blow your mind.`);
       expect(bigThumbTitles[1].nativeElement.textContent.trim()).toBe(PROJECTS[1].name + ` It'll blow your mind.`);
       expect(bigThumbTitles[2].nativeElement.textContent.trim()).toBe(PROJECTS[2].name + ` It'll blow your mind.`);
 
       // const bigThumbTexts: DebugElement[] = element.queryAll(By.css('p.lead'));
-      // expect(bigThumbTexts.length).toBe(3);
+      // expect(bigThumbTexts.length).toBe(HOME_PROJECTS.length);
       // expect(bigThumbTexts[0].nativeElement.textContent.trim()).toBe(HOME_PROJECTS[0].bigThumbText);
       // expect(bigThumbTexts[1].nativeElement.textContent.trim()).toBe(HOME_PROJECTS[1].bigThumbText);
       // expect(bigThumbTexts[2].nativeElement.textContent.trim()).toBe(HOME_PROJECTS[2].bigThumbText);
 
       // TODO test imagePaths
-    });
-  });
-
-  describe('---ERROR---', () => {
-    beforeEach(() => {
-      TestBed.resetTestingModule();
-      return initTestBed();
-    });
-
-
-    it(`should ?????`, () => {
-      // TODO test if projects are empty
-      const element: DebugElement = fixture.debugElement;
     });
   });
 });
