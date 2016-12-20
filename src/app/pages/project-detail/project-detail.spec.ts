@@ -33,7 +33,7 @@ let router: RouterStub;
 let links: RouterLinkStubDirective[];
 let linkDes: DebugElement[];
 
-function initTestBed(projectId) {
+function initTestBed(projectId: string) {
   activatedRoute = new ActivatedRouteStub();
   activatedRoute.testParams = { projectId: projectId };
 

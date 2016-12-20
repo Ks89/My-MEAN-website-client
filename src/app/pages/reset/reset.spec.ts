@@ -38,7 +38,7 @@ let links: RouterLinkStubDirective[];
 let linkDes: DebugElement[];
 let page: Page;
 
-function initTestBed(emailToken) {
+function initTestBed(emailToken: string) {
   router = new RouterStub();
   activatedRoute = new ActivatedRouteStub();
   activatedRoute.testParams = { emailToken: emailToken};

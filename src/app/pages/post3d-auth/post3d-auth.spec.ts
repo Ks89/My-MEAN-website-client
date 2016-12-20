@@ -68,7 +68,7 @@ function initTestBed() {
 
 
 describe('Post3dAuthComponent', () => {
-  beforeEach( async(() => initTestBed()));
+  beforeEach(() => initTestBed());
 
   it('can instantiate it', () => expect(comp).not.toBeNull());
 
@@ -105,13 +105,13 @@ describe('Post3dAuthComponent', () => {
   });
 
   describe('---ERROR---', () => {
-    beforeEach( async(() => {
+    beforeEach(() => {
       TestBed.resetTestingModule();
       return initTestBed();
-    }));
+    });
 
     it(`should return to login`, () => {
-
+      //TODO FIXME implement
     });
 
     it(`should return to profile page`, () => {
