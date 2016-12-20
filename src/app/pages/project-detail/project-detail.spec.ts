@@ -19,7 +19,7 @@ import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
 import ProjectDetailComponent from './project-detail.component';
-import { RouterLinkStubDirective, RouterOutletStubComponent, ActivatedRoute, ActivatedRouteStub, RouterStub }   from '../../common/testing/router-stubs.spec';
+import { RouterLinkStubDirective, RouterOutletStubComponent, ActivatedRoute, ActivatedRouteStub, RouterStub } from '../../common/testing/router-stubs.spec';
 import { ProjectService } from "../../common/services/projects.service";
 import { FakeProjectService, PROJECTS } from '../../common/testing/fake-project.service.spec';
 import PageHeaderComponent from "../../common/components/page-header/page-header.component";

@@ -7,8 +7,8 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/toPromise';
 
-import { Project, ProjectHomeView, ProjectService } from './projects.service';
-import { PROJECTS } from '../testing/fake-project.service.spec';
+import { ProjectService } from './projects.service';
+import { PROJECTS, HOMEVIEWS } from '../testing/fake-project.service.spec';
 
 describe('Http-ProjectService (mockBackend)', () => {
 
@@ -78,20 +78,18 @@ describe('Http-ProjectService (mockBackend)', () => {
     let service: ProjectService;
     let response: Response;
 
-    let homeProjects: ProjectHomeView[] = PROJECTS.map(prj => prj.projectHomeView);
-
     beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
       backend = be;
       service = new ProjectService(http);
-      let options = new ResponseOptions({status: 200, body: homeProjects});
+      let options = new ResponseOptions({status: 200, body: HOMEVIEWS});
       response = new Response(options);
     }));
 
     it('should have expected fake dashboard-projects', async(inject([], () => {
       backend.connections.subscribe((c: MockConnection) => c.mockRespond(response));
       service.getProjectsForHomepage().subscribe(projects => {
-          expect(projects.length).toBe(homeProjects.length, 'should have expected no. of projects');
-          expect(projects).toEqual(homeProjects, 'should have expected all dashboard projects');
+          expect(projects.length).toBe(HOMEVIEWS.length, 'should have expected no. of projects');
+          expect(projects).toEqual(HOMEVIEWS, 'should have expected all dashboard projects');
       });
     })));
 
