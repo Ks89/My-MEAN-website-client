@@ -19,17 +19,12 @@ import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
 import NavbarComponent from './navbar.component';
-import {
-  RouterLinkStubDirective, RouterOutletStubComponent, ActivatedRoute, ActivatedRouteStub,
-  RouterStub
-}   from '../../testing/router-stubs.spec';
+import { RouterLinkStubDirective, RouterOutletStubComponent, RouterStub } from '../../testing/router-stubs.spec';
 import { AuthService } from "../../services/auth.service";
-import { FakeAuthService, FAKE_BAD_EMAIL_TOKEN } from "../../testing/fake-auth.service.spec";
-import {Router} from "@angular/router";
+import { FakeAuthService } from "../../testing/fake-auth.service.spec";
+import { Router } from "@angular/router";
 
-const FAKE_EMAIL_TOKEN = 'fake@fake.it';
 const FAKE_USERNAME = 'fake username';
-const FAKE_BAD_USERNAME = 'bad username';
 
 let comp: NavbarComponent;
 let fixture: ComponentFixture<NavbarComponent>;
@@ -37,8 +32,7 @@ let links: RouterLinkStubDirective[];
 let router: RouterStub;
 let linkDes: DebugElement[];
 
-function initTestBed(emailToken, userName) {
-
+function initTestBed(forceLogIn: boolean) {
   router = new RouterStub();
 
   TestBed.configureTestingModule({
@@ -56,84 +50,107 @@ function initTestBed(emailToken, userName) {
   fixture = TestBed.createComponent(NavbarComponent);
   comp = fixture.componentInstance;
 
+  if(forceLogIn) {
+    comp.isLoggedIn = true;
+    comp.currentUser = { name : FAKE_USERNAME };
+  }
+
   // 1st change detection triggers ngOnInit
   fixture.detectChanges();
   // 2nd change detection displays the async-fetched data
   return fixture.whenStable().then(() => fixture.detectChanges());
 }
 
-
 describe('NavbarComponent', () => {
-  beforeEach( async(() => initTestBed(FAKE_EMAIL_TOKEN, FAKE_USERNAME)));
-
-  it('can instantiate it', () => expect(comp).not.toBeNull());
 
   describe('---YES---', () => {
-    beforeEach(() => {
-      fixture.detectChanges();
-      linkDes = fixture.debugElement.queryAll(By.directive(RouterLinkStubDirective));
-      links = linkDes.map(de => de.injector.get(RouterLinkStubDirective) as RouterLinkStubDirective);
+    beforeEach( async(() => {
+      return initTestBed(true);
+    })); // logged in
+
+    it('can instantiate it', () => expect(comp).not.toBeNull());
+
+    describe('---LOGGED IN---', () => {
+
+      beforeEach(() => {
+        fixture.detectChanges();
+        linkDes = fixture.debugElement.queryAll(By.directive(RouterLinkStubDirective));
+        links = linkDes.map(de => de.injector.get(RouterLinkStubDirective) as RouterLinkStubDirective);
+      });
+
+      it('can display the navbar with Projects as current page', () => {
+        const element: DebugElement = fixture.debugElement;
+
+        const navbarBrand: DebugElement = element.query(By.css('a.navbar-brand.m-b-0'));
+        expect(navbarBrand.nativeElement.textContent.trim()).toBe('KS');
+
+        const navLinks: DebugElement[] = element.queryAll(By.css('a.nav-link'));
+        expect(navLinks.length).toBe(6);
+        expect(navLinks[0].nativeElement.textContent.trim()).toBe('Projects (current)');
+        expect(navLinks[1].nativeElement.textContent.trim()).toBe('CV');
+        expect(navLinks[2].nativeElement.textContent.trim()).toBe('Contact');
+        expect(navLinks[3].nativeElement.textContent.trim()).toBe('About');
+        expect(navLinks[4].nativeElement.textContent.trim()).toBe('Profile');
+        expect(navLinks[5].nativeElement.textContent.trim()).toBe(FAKE_USERNAME);
+      });
+
+      it(`can display the navbar's dropdown`, () => {
+        //TODO click on FAKE_USERNAME to show the dropdown
+      });
+
+      it('can get RouterLinks from template, when user is NOT logged in', () => {
+        expect(links.length).toBe(7, 'should have 7 links');
+        expect(links[0].linkParams).toEqual(['/'], 'should go to home');
+        expect(links[1].linkParams).toEqual(['/projects'], 'should go to project list');
+        expect(links[2].linkParams).toEqual(['/cv'], 'should go to cv');
+        expect(links[3].linkParams).toEqual(['/contact'], 'should go to contact');
+        expect(links[4].linkParams).toEqual(['/about'], 'should go to about');
+        expect(links[5].linkParams).toEqual(['/profile'], 'should go to login');
+        expect(links[6].linkParams).toEqual(['/profile'], 'should go to profile');
+      });
     });
-
-    it('can display the navbar with Projects as current page', () => {
-      const element: DebugElement = fixture.debugElement;
-
-      const navbarBrand: DebugElement = element.query(By.css('a.navbar-brand.m-b-0'));
-      expect(navbarBrand.nativeElement.textContent.trim()).toBe('KS');
-
-      const navLinks: DebugElement[] = element.queryAll(By.css('a.nav-link'));
-      expect(navLinks.length).toBe(5);
-      expect(navLinks[0].nativeElement.textContent.trim()).toBe('Projects (current)');
-      expect(navLinks[1].nativeElement.textContent.trim()).toBe('CV');
-      expect(navLinks[2].nativeElement.textContent.trim()).toBe('Contact');
-      expect(navLinks[3].nativeElement.textContent.trim()).toBe('About');
-      expect(navLinks[4].nativeElement.textContent.trim()).toBe('Sign in');
-    });
-
-    it('can get RouterLinks from template, when user is NOT logged in', () => {
-      expect(links.length).toBe(6, 'should have 6 links');
-      expect(links[0].linkParams).toEqual(['/'], 'should go to home');
-      expect(links[1].linkParams).toEqual(['/projects'], 'should go to project list');
-      expect(links[2].linkParams).toEqual(['/cv'], 'should go to cv');
-      expect(links[3].linkParams).toEqual(['/contact'], 'should go to contact');
-      expect(links[4].linkParams).toEqual(['/about'], 'should go to about');
-      expect(links[5].linkParams).toEqual(['/login'], 'should go to login');
-      // expect(links[6].linkParams).toEqual(['/login'], 'should go to login');
-      // expect(links[7].linkParams).toEqual(['/profile'], 'should go to profile');
-    });
-
-    // it('should activate the local account, displaying username and a success message', () => {
-    //   const element: DebugElement = fixture.debugElement;
-    //
-    //   const alert: DebugElement[] = element.queryAll(By.css('h4'));
-    //   expect(alert.length).toBe(1);
-    //   expect(alert[0].nativeElement.textContent).toBe(`Welcome ${FAKE_USERNAME}`);
-    //
-    //   const welcomeName: DebugElement[] = element.queryAll(By.css('div.alert.alert-success'));
-    //   expect(welcomeName.length).toBe(1);
-    //   expect(welcomeName[0].nativeElement.textContent.trim()).toBe(`Success An e-mail has been sent to ${FAKE_EMAIL_TOKEN} with further instructions.`);
-    // });
   });
 
-  // describe('---ERROR---', () => {
-  //   beforeEach( async(() => {
-  //     TestBed.resetTestingModule();
-  //     return initTestBed(FAKE_BAD_EMAIL_TOKEN, FAKE_BAD_USERNAME);
-  //   }));
-  //
-  //   it('should NOT activate the local account, displaying username and an error message', () => {
-  //
-  //     fixture.detectChanges();
-  //     const element: DebugElement = fixture.debugElement;
-  //
-  //     const alert: DebugElement[] = element.queryAll(By.css('h4'));
-  //     expect(alert.length).toBe(1);
-  //     expect(alert[0].nativeElement.textContent).toBe(`Welcome ${FAKE_BAD_USERNAME}`);
-  //
-  //     const welcomeNames: DebugElement[] = element.queryAll(By.css('div.alert.alert-danger'));
-  //     expect(welcomeNames.length).toBe(1);
-  //     expect(welcomeNames[0].nativeElement.textContent.trim()).toBe('Danger No account with that token exists.');
-  //   });
-  //
-  // });
+  describe('---NO---', () => {
+    beforeEach( async(() => {
+      TestBed.resetTestingModule();
+      return initTestBed(false);
+    })); // not logged in
+
+    it('can instantiate it', () => expect(comp).not.toBeNull());
+
+    describe('---NOT LOGGED IN---', () => {
+
+      beforeEach(() => {
+        fixture.detectChanges();
+        linkDes = fixture.debugElement.queryAll(By.directive(RouterLinkStubDirective));
+        links = linkDes.map(de => de.injector.get(RouterLinkStubDirective) as RouterLinkStubDirective);
+      });
+
+      it('can display the navbar with Projects as current page', () => {
+        const element: DebugElement = fixture.debugElement;
+
+        const navbarBrand: DebugElement = element.query(By.css('a.navbar-brand.m-b-0'));
+        expect(navbarBrand.nativeElement.textContent.trim()).toBe('KS');
+
+        const navLinks: DebugElement[] = element.queryAll(By.css('a.nav-link'));
+        expect(navLinks.length).toBe(5);
+        expect(navLinks[0].nativeElement.textContent.trim()).toBe('Projects (current)');
+        expect(navLinks[1].nativeElement.textContent.trim()).toBe('CV');
+        expect(navLinks[2].nativeElement.textContent.trim()).toBe('Contact');
+        expect(navLinks[3].nativeElement.textContent.trim()).toBe('About');
+        expect(navLinks[4].nativeElement.textContent.trim()).toBe('Sign in');
+      });
+
+      it('can get RouterLinks from template, when user is NOT logged in', () => {
+        expect(links.length).toBe(6, 'should have 6 links');
+        expect(links[0].linkParams).toEqual(['/'], 'should go to home');
+        expect(links[1].linkParams).toEqual(['/projects'], 'should go to project list');
+        expect(links[2].linkParams).toEqual(['/cv'], 'should go to cv');
+        expect(links[3].linkParams).toEqual(['/contact'], 'should go to contact');
+        expect(links[4].linkParams).toEqual(['/about'], 'should go to about');
+        expect(links[5].linkParams).toEqual(['/login'], 'should go to login');
+      });
+    });
+  });
 });

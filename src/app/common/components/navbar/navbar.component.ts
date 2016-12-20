@@ -10,7 +10,6 @@ import { AuthService } from '../../services';
 export default class NavbarComponent implements OnInit {
   public isLoggedIn: boolean = false;
   public currentUser: any = { name : '' };
-  public currentPath: string = 'fakeString';
 
   constructor(private authService: AuthService, private router: Router) {}
 
