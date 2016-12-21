@@ -99,10 +99,19 @@ describe('ProjectDetailComponent', () => {
       // expect(video.length).toBe(1);
       // expect(video[0].nativeElement.textContent.trim()).toBe(PROJECTS[0].video);
 
-      // TODO find a way to test this - it's difficult
-      // const images: DebugElement[] = element.queryAll(By.css('section#Images div'));
-      // expect(images.length).toBe(1);
-      // expect(images[0].nativeElement.textContent.trim()).toBe(PROJECTS[0].images);
+      const images: DebugElement[] = element.queryAll(By.css('img.ng-thumb'));
+      expect(images.length).toBe(PROJECTS[0].gallery.length);
+      expect(images[0].nativeElement.getAttribute('src')).toBe(PROJECTS[0].gallery[0].thumb);
+      expect(images[1].nativeElement.getAttribute('src')).toBe(PROJECTS[0].gallery[1].thumb);
+      expect(images[2].nativeElement.getAttribute('src')).toBe(PROJECTS[0].gallery[2].thumb);
+      expect(images[3].nativeElement.getAttribute('src')).toBe(PROJECTS[0].gallery[3].thumb);
+      expect(images[4].nativeElement.getAttribute('src')).toBe(PROJECTS[0].gallery[4].thumb);
+      expect(images[5].nativeElement.getAttribute('src')).toBe(PROJECTS[0].gallery[5].thumb);
+      expect(images[6].nativeElement.getAttribute('src')).toBe(PROJECTS[0].gallery[6].thumb);
+      expect(images[7].nativeElement.getAttribute('src')).toBe(PROJECTS[0].gallery[7].thumb);
+      expect(images[8].nativeElement.getAttribute('src')).toBe(PROJECTS[0].gallery[8].thumb);
+      expect(images[9].nativeElement.getAttribute('src')).toBe(PROJECTS[0].gallery[9].thumb);
+      expect(images[10].nativeElement.getAttribute('src')).toBe(PROJECTS[0].gallery[10].thumb);
 
       const license: DebugElement = element.query(By.css('section#License div'));
       expect(license.nativeElement.textContent.trim()).toBe(PROJECTS[0].licenseText);
@@ -142,10 +151,8 @@ describe('ProjectDetailComponent', () => {
       // expect(video.length).toBe(1);
       // expect(video[0].nativeElement.textContent.trim()).toBe('');
 
-      // TODO find a way to test this - it's difficult
-      // const images: DebugElement[] = element.queryAll(By.css('section#Images div'));
-      // expect(images.length).toBe(1);
-      // expect(images[0].nativeElement.textContent.trim()).toBe('');
+      const images: DebugElement[] = element.queryAll(By.css('img.ng-thumb'));
+      expect(images.length).toBe(0);
 
       const license: DebugElement = element.query(By.css('section#License div'));
       expect(license.nativeElement.textContent.trim()).toBe('');
@@ -161,6 +168,15 @@ function checkSidebar(element: DebugElement) {
   expect(element.query(By.css('a#Video')).nativeElement.textContent.trim()).toBe('Video');
   expect(element.query(By.css('a#Images')).nativeElement.textContent.trim()).toBe('Images');
   expect(element.query(By.css('a#License')).nativeElement.textContent.trim()).toBe('License');
+
+  // check links
+  expect(element.query(By.css('a#Description')).nativeElement.getAttribute('href')).toBe('#Description');
+  expect(element.query(By.css('a#News')).nativeElement.getAttribute('href')).toBe('#News');
+  expect(element.query(By.css('a#Features')).nativeElement.getAttribute('href')).toBe('#Features');
+  expect(element.query(By.css('a#FutureExtensions')).nativeElement.getAttribute('href')).toBe('#FutureExtensions');
+  expect(element.query(By.css('a#Video')).nativeElement.getAttribute('href')).toBe('#Video');
+  expect(element.query(By.css('a#Images')).nativeElement.getAttribute('href')).toBe('#Images');
+  expect(element.query(By.css('a#License')).nativeElement.getAttribute('href')).toBe('#License');
 }
 
 function checkTitles(element: DebugElement, projectName: string) {

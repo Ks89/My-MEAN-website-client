@@ -152,7 +152,7 @@ export const PROJECTS: Project[] = [
     "projectHomeView": [HOMEVIEWS[0]],
     "lastUpdate": "2013-07-15T22:00:00.000Z",
     "filePaths": [],
-    "gallery": [...PROJECTGALLERY_SPF],
+    "gallery": [...PROJECTGALLERY_BYA],
     "futureExtensions": [
       "assets/html/projects/bya/future_extensions.html"
     ],
@@ -181,7 +181,7 @@ export const PROJECTS: Project[] = [
     "projectHomeView": [HOMEVIEWS[1]],
     "lastUpdate":"2013-07-15T22:00:00.000Z",
     "filePaths":[],
-    "gallery":[...PROJECTGALLERY_BYA],
+    "gallery":[...PROJECTGALLERY_SPF],
     "futureExtensions":["assets/html/projects/bya/future_extensions.html"],
     "features":["assets/html/projects/bya/features.html"],
     "releases":["assets/html/projects/bya/releases.html"],
