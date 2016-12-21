@@ -19,9 +19,9 @@ import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
 import ProjectDetailComponent from './project-detail.component';
-import { RouterLinkStubDirective, RouterOutletStubComponent, ActivatedRoute, ActivatedRouteStub, RouterStub } from '../../common/testing/router-stubs.spec';
+import { RouterLinkStubDirective, RouterOutletStubComponent, ActivatedRoute, ActivatedRouteStub, RouterStub }   from '../../common/testing/router-stubs.spec';
 import { ProjectService } from "../../common/services/projects.service";
-import { FakeProjectService, PROJECTS } from '../../common/testing/fake-project.service.spec';
+import { FakeProjectService, PROJECTS, WRONG_PROJECT_ID } from '../../common/testing/fake-project.service.spec';
 import PageHeaderComponent from "../../common/components/page-header/page-header.component";
 import { ImageModal } from 'angular2-image-popup/directives/angular2-image-popup/image-modal-popup';
 import { Router } from "@angular/router";
@@ -33,7 +33,9 @@ let router: RouterStub;
 let links: RouterLinkStubDirective[];
 let linkDes: DebugElement[];
 
-function initTestBed(projectId: string) {
+const DEFAULT_PROJECT_TITLE = 'Project';
+
+function initTestBed(projectId) {
   activatedRoute = new ActivatedRouteStub();
   activatedRoute.testParams = { projectId: projectId };
 
@@ -75,24 +77,22 @@ describe('ProjectDetailComponent', () => {
     it('should display the project detail page', () => {
       const element: DebugElement = fixture.debugElement;
 
-      // TODO FIXME wait ngInit
-
       checkTitles(element, PROJECTS[0].name);
 
       const description: DebugElement = element.query(By.css('section#Description div'));
-      //expect(description.nativeElement.textContent.trim()).toBe(PROJECTS[0].description);
+      expect(description.nativeElement.textContent.trim()).toBe(PROJECTS[0].description);
 
       const changelog: DebugElement = element.query(By.css('div#Changelog div'));
-      // expect(changelog[0].nativeElement.textContent.trim()).toBe(PROJECTS[0].changelog);
+      expect(changelog.nativeElement.textContent.trim()).toBe(PROJECTS[0].changelog[0]);
 
       const releases: DebugElement = element.query(By.css('div#Releases div'));
-      // expect(releases[0].nativeElement.textContent.trim()).toBe(PROJECTS[0].releases);
+      expect(releases.nativeElement.textContent.trim()).toBe(PROJECTS[0].releases[0]);
 
       const features: DebugElement = element.query(By.css('section#Features div'));
-      // expect(features[0].nativeElement.textContent.trim()).toBe(PROJECTS[0].features);
+      expect(features.nativeElement.textContent.trim()).toBe(PROJECTS[0].features[0]);
 
       const futureExtensions: DebugElement = element.query(By.css('section#FutureExtensions div'));
-      // expect(futureExtensions[0].nativeElement.textContent.trim()).toBe(PROJECTS[0].futureExtensions);
+      expect(futureExtensions.nativeElement.textContent.trim()).toBe(PROJECTS[0].futureExtensions[0]);
 
       // TODO find a way to test this - probably it's impossible
       // const video: DebugElement[] = element.queryAll(By.css('section#Video div'));
@@ -105,15 +105,14 @@ describe('ProjectDetailComponent', () => {
       // expect(images[0].nativeElement.textContent.trim()).toBe(PROJECTS[0].images);
 
       const license: DebugElement = element.query(By.css('section#License div'));
-      // expect(license[0].nativeElement.textContent.trim()).toBe(PROJECTS[0].licenseText);
-
+      expect(license.nativeElement.textContent.trim()).toBe(PROJECTS[0].licenseText);
     });
   });
 
   describe('---ERROR---', () => {
     beforeEach( async(() => {
       TestBed.resetTestingModule();
-      return initTestBed('wrong_project_id');
+      return initTestBed(WRONG_PROJECT_ID);
     }));
 
     it('should display the sidebar', () => checkSidebar(fixture.debugElement));
@@ -121,11 +120,35 @@ describe('ProjectDetailComponent', () => {
     it('should NOT display the project detail, because project._id is wrong', () => {
       const element: DebugElement = fixture.debugElement;
 
-      fixture.detectChanges();
+      checkTitles(element, DEFAULT_PROJECT_TITLE);
 
-      checkTitles(element, 'Project');
+      const description: DebugElement = element.query(By.css('section#Description div'));
+      expect(description.nativeElement.textContent.trim()).toBe('');
 
-      //TODO copy and paste the same code of the YES case, but all toBe must be '', or probably null - I'm not sure
+      const changelog: DebugElement = element.query(By.css('div#Changelog div'));
+      expect(changelog.nativeElement.textContent.trim()).toBe('');
+
+      const releases: DebugElement = element.query(By.css('div#Releases div'));
+      expect(releases.nativeElement.textContent.trim()).toBe('');
+
+      const features: DebugElement = element.query(By.css('section#Features div'));
+      expect(features.nativeElement.textContent.trim()).toBe('');
+
+      const futureExtensions: DebugElement = element.query(By.css('section#FutureExtensions div'));
+      expect(futureExtensions.nativeElement.textContent.trim()).toBe('');
+
+      // TODO find a way to test this - probably it's impossible
+      // const video: DebugElement[] = element.queryAll(By.css('section#Video div'));
+      // expect(video.length).toBe(1);
+      // expect(video[0].nativeElement.textContent.trim()).toBe('');
+
+      // TODO find a way to test this - it's difficult
+      // const images: DebugElement[] = element.queryAll(By.css('section#Images div'));
+      // expect(images.length).toBe(1);
+      // expect(images[0].nativeElement.textContent.trim()).toBe('');
+
+      const license: DebugElement = element.query(By.css('section#License div'));
+      expect(license.nativeElement.textContent.trim()).toBe('');
     });
   });
 });
@@ -144,8 +167,11 @@ function checkTitles(element: DebugElement, projectName: string) {
   const h1: DebugElement[] = element.queryAll(By.css('h1'));
   expect(h1.length).toBe(1); // without a valid id, title will be simply `Project`
 
-  // TODO FIXME the same as above
-  //expect(h1[0].nativeElement.textContent.trim()).toBe(projectName);
+  if(projectName === DEFAULT_PROJECT_TITLE) {
+    expect(h1[0].nativeElement.textContent.trim()).toBe('');
+  } else {
+    expect(h1[0].nativeElement.textContent.trim()).toBe(projectName);
+  }
 
   const h3: DebugElement[] = element.queryAll(By.css('h3'));
   expect(h3.length).toBe(7);

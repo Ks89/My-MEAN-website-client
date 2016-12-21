@@ -1,33 +1,34 @@
 import {ProjectHomeView, Project, Author, ProjectGallery} from '../services/projects.service';
 import { Observable } from "rxjs";
 
-export const HOMEVIEWS: ProjectHomeView[] = [
-  {
-    "_id": "57f4409c1ef2e2165ff70348",
+export const WRONG_PROJECT_ID: string = 'wrong_project_id';
+
+export const HOMEVIEWS: ProjectHomeView[] = [{
     "carouselImagePath": "http://placehold.it/1000x400",
     "carouselText": "sdjs fshfs fhfsdhf",
     "thumbImagePath": "http://placehold.it/720x300",
     "thumbText": "sfsfasf",
     "bigThumbImagePath": "http://placehold.it/500x500",
-    "bigThumbText": "dasdasdas"
+    "bigThumbText": "dasdasdas",
+    "_id":"57f7f29baef1d41fc4a7d781"
   },
   {
-    "_id":"57f7f29baef1d41fc4a7d782",
     "carouselImagePath":"http://placehold.it/1000x400",
     "carouselText":"sdjs fshfs fhfsdhf",
     "thumbImagePath":"http://placehold.it/720x300",
     "thumbText":"sfsfasf",
     "bigThumbImagePath":"http://placehold.it/500x500",
-    "bigThumbText":"dasdasdas"
+    "bigThumbText":"dasdasdas",
+    "_id":"57f7f29baef1d41fc4a7d782"
   },
   {
-    "_id":"57f7f29baef1d41fc4a7d783",
     "carouselImagePath":"http://placehold.it/1000x400",
     "carouselText":"sdjs fshfs fhfsdhf",
     "thumbImagePath":"http://placehold.it/720x300",
     "thumbText":"sfsfasf",
     "bigThumbImagePath":"http://placehold.it/500x500",
-    "bigThumbText":"dasdasdas"
+    "bigThumbText":"dasdasdas",
+    "_id":"57f7f29baef1d41fc4a7d783"
   }
 ];
 
@@ -217,10 +218,16 @@ export class FakeProjectService {
     return Observable.of(PROJECTS);
   }
 
-  getProjectsById(projectid: string): Observable<Project[]> {
-    return Observable.of(PROJECTS.filter((val, index) => {
-      return val._id === projectid;
-    }));
+  getProjectsById(projectid: string): Observable<any> {
+    // return only a single element
+    // I decided to use Observable<any>, because it's easier to manage in a mock
+    if(projectid === WRONG_PROJECT_ID) {
+      return Observable.of([]); // empty projects
+    } else {
+      return Observable.of(PROJECTS.filter((val, index) => {
+        return val._id === projectid;
+      })[0]);
+    }
   }
 
   getProjectsForHomepage(): Observable<Project[]> {
