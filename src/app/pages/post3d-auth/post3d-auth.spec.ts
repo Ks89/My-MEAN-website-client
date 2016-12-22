@@ -21,17 +21,11 @@ import { By } from '@angular/platform-browser';
 import Post3dAuthComponent from './post3d-auth.component';
 import { RouterLinkStubDirective, RouterOutletStubComponent, RouterStub } from '../../common/testing/helpers.spec';
 import { AuthService } from "../../common/services/auth.service";
-import { FakeAuthService } from "../../common/testing/fake-auth.service.spec";
+import { FakeAuthService, FakeWrongAuthService } from "../../common/testing/fake-auth.service.spec";
 import PageHeaderComponent from "../../common/components/page-header/page-header.component";
 import { LaddaModule } from "angular2-ladda";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { Router } from "@angular/router";
-
-const FAKE_EMAIL = 'fake@fake.it';
-const FAKE_BAD_EMAIL = 'fake@bad.com';
-const FAKE_USER = 'fake username';
-const FAKE_PASSWORD = 'Qw12345678';
-const FAKE_BAD_PASSWORD = 'Qw1234bad';
 
 let comp: Post3dAuthComponent;
 let fixture: ComponentFixture<Post3dAuthComponent>;
@@ -40,7 +34,7 @@ let links: RouterLinkStubDirective[];
 let linkDes: DebugElement[];
 let page: Page;
 
-function initTestBed() {
+function initTestBed(authServiceMocked) {
   router = { navigate: jasmine.createSpy('navigate') };
 
   TestBed.configureTestingModule({
@@ -51,7 +45,7 @@ function initTestBed() {
     set: {
       providers: [
         { provide: Router, useValue: router },
-        { provide: AuthService, useClass: FakeAuthService }
+        authServiceMocked
       ]
     }
   }); // not necessary with webpack .compileComponents();
@@ -68,7 +62,7 @@ function initTestBed() {
 
 
 describe('Post3dAuthComponent', () => {
-  beforeEach(() => initTestBed());
+  beforeEach(() => initTestBed({ provide: AuthService, useClass: FakeAuthService }));
 
   it('can instantiate it', () => expect(comp).not.toBeNull());
 
@@ -104,12 +98,16 @@ describe('Post3dAuthComponent', () => {
   describe('---ERROR---', () => {
     beforeEach(() => {
       TestBed.resetTestingModule();
-      return initTestBed();
+      return initTestBed({ provide: AuthService, useClass: FakeWrongAuthService });
+    });
+
+    it('can get RouterLinks from template', () => {
+      expect(links.length).toBe(1, 'should have 1 links');
+      expect(links[0].linkParams).toEqual(['/profile'], '1st link should go to profile');
     });
 
     it(`should return to login`, () => {
-      // TODO FIXME
-      // expect(router.navigate).toHaveBeenCalledWith(['/login']);
+      expect(router.navigate).toHaveBeenCalledWith(['/login']);
     });
 
     it(`should return to profile page`, () => {
@@ -139,3 +137,4 @@ class Page {
     // this.navSpy = spyOn(router, 'navigate');
   };
 }
+
