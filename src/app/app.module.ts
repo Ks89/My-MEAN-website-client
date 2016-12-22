@@ -30,7 +30,7 @@ import { SERVICES } from './common/services/services';
 
 import { ReCaptchaModule } from 'angular2-recaptcha/angular2-recaptcha';
 import { ImageModal } from 'angular2-image-popup/directives/angular2-image-popup/image-modal-popup';
-import { SimplePageScroll } from 'ng2-simple-page-scroll';
+import { Ng2SimplePageScrollModule } from 'ng2-simple-page-scroll';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LaddaModule } from 'angular2-ladda';
 
@@ -41,6 +41,7 @@ import { LaddaModule } from 'angular2-ladda';
     FormsModule,
     ReactiveFormsModule,
     NgbModule.forRoot(),
+    Ng2SimplePageScrollModule.forRoot(),
     LaddaModule,
     ReCaptchaModule,
     routing
@@ -65,8 +66,7 @@ import { LaddaModule } from 'angular2-ladda';
     NavbarComponent,
     PageHeaderComponent,
     ProjectSearchPipe,
-    ImageModal,
-    SimplePageScroll
+    ImageModal
   ],
   providers: [
     SERVICES
