@@ -109,7 +109,7 @@ export class FakeAuthService {
   }
 
   getLoggedUser(): Observable<any> {
-    console.log('getLoggedUser entered');
+    console.log('getLoggedUser mock entered');
     return Observable.of({
       local: {
         email: "fake.local@email.it",

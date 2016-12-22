@@ -42,6 +42,11 @@ export class RouterStub {
   navigate(commands: any[], extras?: NavigationExtras) { }
 }
 
+// @Injectable
+// export class RouterStub {
+//   navigate: jasmine.createSpy('navigate')
+// };
+
 
 // Only implements params and part of snapshot.params
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';

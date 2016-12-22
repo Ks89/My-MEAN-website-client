@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
@@ -41,7 +41,7 @@ let linkDes: DebugElement[];
 let page: Page;
 
 function initTestBed() {
-  router = new RouterStub();
+  router = { navigate: jasmine.createSpy('navigate') };
 
   TestBed.configureTestingModule({
     imports: [FormsModule, ReactiveFormsModule, LaddaModule],
@@ -97,10 +97,7 @@ describe('Post3dAuthComponent', () => {
     });
 
     it(`should redirect to profile`, () => {
-      fixture.detectChanges();
-      console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-      // expect(page.navSpy.calls.any()).toBe(true, 'navigate called');
-      // expect(router.navigate).toHaveBeenCalledWith(['/profile']);
+      expect(router.navigate).toHaveBeenCalledWith(['/profile']);
     });
   });
 
@@ -111,31 +108,34 @@ describe('Post3dAuthComponent', () => {
     });
 
     it(`should return to login`, () => {
-      //TODO FIXME implement
+      // TODO FIXME
+      // expect(router.navigate).toHaveBeenCalledWith(['/login']);
     });
 
     it(`should return to profile page`, () => {
       const element: DebugElement = fixture.debugElement;
 
-      //TODO implement click on login url
+      // TODO implement click on login url
       // const links: DebugElement[] = element.queryAll(By.css('a'));
       // expect(links.length).toBe(1);
       // links[0].nativeElement.triggerEventHandler('click', null);
       //
       // fixture.detectChanges();
       //
-      // expect(page.navSpy.calls.any()).toBe(true, 'navigate called');
       // expect(router.navigate).toHaveBeenCalledWith(['/login']);
     });
   });
 });
 
 class Page {
-  navSpy: jasmine.Spy;
+  // navSpy: jasmine.Spy;
 
   constructor(fixture) {
     // Get the component's injected router and spy on it
-    const router = fixture.debugElement.injector.get(Router);
-    this.navSpy = spyOn(router, 'navigate');
+    // Use component's injector to see the services it injected.
+    const compInjector = fixture.debugElement.injector;
+    const router = compInjector.get(Router);
+
+    // this.navSpy = spyOn(router, 'navigate');
   };
 }
