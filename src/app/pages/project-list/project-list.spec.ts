@@ -17,6 +17,8 @@ let router: RouterStub;
 let links: RouterLinkStubDirective[];
 let linkDes: DebugElement[];
 
+const BASEURL= '/projects/';
+
 function initTestBed() {
   router = new RouterStub();
 
@@ -60,32 +62,44 @@ describe('ProjectListComponent', () => {
       expect(title.length).toBe(1);
       expect(title[0].nativeElement.textContent.trim()).toBe('Projects');
 
-      fixture.detectChanges();
-
       const message: DebugElement[] = element.queryAll(By.css('small'));
       expect(message.length).toBe(1); //because pageHeader has a <small> tag in its template
       expect(message[0].nativeElement.textContent.trim()).toBe('');
     });
 
     it('should check if projects are displayed correctly', () => {
-      fixture.detectChanges(); // trigger data binding
       const element: DebugElement = fixture.debugElement;
 
       const values: DebugElement[] = element.queryAll(By.css('a'));
       expect(values.length).toBe(9);
+
+      // const projectLeftHrefs: DebugElement[] = element.queryAll(By.css('div.media-left a'));
+      // expect(projectLeftHrefs.length).toBe(3);
+      // expect(projectLeftHrefs[0].nativeElement.getAttribute('href')).toBe(BASEURL + PROJECTS[0]._id);
+      // expect(projectLeftHrefs[1].nativeElement.getAttribute('href')).toBe(BASEURL + PROJECTS[1]._id);
+      // expect(projectLeftHrefs[2].nativeElement.getAttribute('href')).toBe(BASEURL + PROJECTS[2]._id);
+
+      const projectLeftImages: DebugElement[] = element.queryAll(By.css('img.media-object'));
+      expect(projectLeftImages.length).toBe(3);
+      expect(projectLeftImages[0].nativeElement.getAttribute('src')).toBe(PROJECTS[0].iconPath);
+      expect(projectLeftImages[1].nativeElement.getAttribute('src')).toBe(PROJECTS[1].iconPath);
+      expect(projectLeftImages[2].nativeElement.getAttribute('src')).toBe(PROJECTS[2].iconPath);
 
       const projectHeaders: DebugElement[] = element.queryAll(By.css('h4.media-heading a'));
       expect(projectHeaders.length).toBe(6);
       expect(projectHeaders[1].nativeElement.textContent).toBe(PROJECTS[0].name);
       expect(projectHeaders[3].nativeElement.textContent).toBe(PROJECTS[1].name);
       expect(projectHeaders[5].nativeElement.textContent).toBe(PROJECTS[2].name);
-      // expect(projectHeaders[1].nativeElement.href).toBe(baseUrl + PROJECTS[0]._id);
-      // expect(projectHeaders[3].nativeElement.href).toBe(baseUrl + PROJECTS[1]._id);
-      // expect(projectHeaders[5].nativeElement.href).toBe(baseUrl + PROJECTS[2]._id);
-      //because there are also github icons
-      expect(projectHeaders[0].nativeElement.href).toBe(PROJECTS[0].url);
-      expect(projectHeaders[2].nativeElement.href).toBe(PROJECTS[1].url);
-      expect(projectHeaders[4].nativeElement.href).toBe(PROJECTS[2].url);
+      // expect(projectHeaders[1].nativeElement.getAttribute('href')).toBe(BASEURL + PROJECTS[0]._id);
+      // expect(projectHeaders[3].nativeElement.getAttribute('href')).toBe(BASEURL + PROJECTS[1]._id);
+      // expect(projectHeaders[5].nativeElement.getAttribute('href')).toBe(BASEURL + PROJECTS[2]._id);
+      // because there are also github icons
+      // expect(projectHeaders[0].nativeElement.getAttribute('src')).toBe(PROJECTS[0].iconPath);
+      // expect(projectHeaders[2].nativeElement.getAttribute('src')).toBe(PROJECTS[1].iconPath);
+      // expect(projectHeaders[4].nativeElement.getAttribute('src')).toBe(PROJECTS[2].iconPath);
+      expect(projectHeaders[0].nativeElement.getAttribute('href')).toBe(PROJECTS[0].url);
+      expect(projectHeaders[2].nativeElement.getAttribute('href')).toBe(PROJECTS[1].url);
+      expect(projectHeaders[4].nativeElement.getAttribute('href')).toBe(PROJECTS[2].url);
 
       const shortDescriptions: DebugElement[] = element.queryAll(By.css('p.name'));
       expect(shortDescriptions.length).toBe(3);
@@ -124,16 +138,16 @@ describe('ProjectListComponent', () => {
       expect(timelineTexts[3].nativeElement.textContent).toBe(comp.sidebar.timeline[3].body);
       expect(timelineTexts[4].nativeElement.textContent).toBe(comp.sidebar.timeline[4].body);
 
-      // const timelineIconBadge = element.query(By.css('div.timeline-badge.badge i'));
-      // expect(timelineIconBadge.nativeElement.classes['fa fa-' + comp.sidebar.timeline[0].icon]).toBe(true, 'it is ok');
-      // const timelineIconDanger = element.query(By.css('div.timeline-badge.danger i'));
-      // expect(timelineIconDanger.nativeElement.css).toBe('fa fa-' + comp.sidebar.timeline[1].icon);
-      // const timelineIconWarning = element.query(By.css('div.timeline-badge.warning i'));
-      // expect(timelineIconWarning.nativeElement.css).toBe('fa fa-' + comp.sidebar.timeline[2].icon);
-      // const timelineIconInfo = element.query(By.css('div.timeline-badge.info i'));
-      // expect(timelineIconInfo.nativeElement.css).toBe('fa fa-' + comp.sidebar.timeline[3].icon);
-      // const timelineIconSuccess = element.query(By.css('div.timeline-badge.success i'));
-      // expect(timelineIconSuccess.nativeElement.css).toBe('fa fa-' + comp.sidebar.timeline[4].icon);
+      const timelineIconBadge = element.query(By.css('div.timeline-badge.badge i'));
+      expect(timelineIconBadge.nativeElement.getAttribute('class')).toBe('fa fa-' + comp.sidebar.timeline[0].icon);
+      const timelineIconDanger = element.query(By.css('div.timeline-badge.danger i'));
+      expect(timelineIconDanger.nativeElement.getAttribute('class')).toBe('fa fa-' + comp.sidebar.timeline[1].icon);
+      const timelineIconWarning = element.query(By.css('div.timeline-badge.warning i'));
+      expect(timelineIconWarning.nativeElement.getAttribute('class')).toBe('fa fa-' + comp.sidebar.timeline[2].icon);
+      const timelineIconInfo = element.query(By.css('div.timeline-badge.info i'));
+      expect(timelineIconInfo.nativeElement.getAttribute('class')).toBe('fa fa-' + comp.sidebar.timeline[3].icon);
+      const timelineIconSuccess = element.query(By.css('div.timeline-badge.success i'));
+      expect(timelineIconSuccess.nativeElement.getAttribute('class')).toBe('fa fa-' + comp.sidebar.timeline[4].icon);
     });
   });
 });
