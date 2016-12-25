@@ -6,6 +6,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { AuthService, ProfileService } from '../../common/services';
+import { EmailValidators } from "ng2-validators";
 
 @Component({
   selector: 'mmw-profile-page',
@@ -81,7 +82,7 @@ export default class ProfileComponent implements OnInit, OnDestroy {
         'name': [null, Validators.minLength(3)],
         'surname': [null, Validators.minLength(3)],
         'nickname': [null, Validators.minLength(3)],
-        'email': [null, Validators.minLength(3)]
+        'email': [null, EmailValidators.simple()]
       })
     }
 
