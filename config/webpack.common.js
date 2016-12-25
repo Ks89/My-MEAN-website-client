@@ -1,3 +1,5 @@
+'use strict';
+
 const webpack                      = require('webpack');
 const DefinePlugin                 = require('webpack/lib/DefinePlugin');
 const ProvidePlugin                = require('webpack/lib/ProvidePlugin');

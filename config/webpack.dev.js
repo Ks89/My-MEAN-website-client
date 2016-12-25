@@ -1,3 +1,5 @@
+'use strict';
+
 const webpack               = require('webpack');
 const DefinePlugin          = require('webpack/lib/DefinePlugin');
 const CommonsChunkPlugin    = require('webpack/lib/optimize/CommonsChunkPlugin');

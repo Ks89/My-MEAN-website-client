@@ -1,6 +1,8 @@
+'use strict';
+
 require('ts-node/register');
 
-var helpers = require('./helpers');
+const helpers = require('./helpers');
 
 exports.config = {
   baseUrl: 'http://localhost:8080/',
