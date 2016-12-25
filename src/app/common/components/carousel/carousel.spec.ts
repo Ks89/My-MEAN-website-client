@@ -67,6 +67,12 @@ describe('CarouselComponent', () => {
       expect(carouselTitles[1].nativeElement.textContent.trim()).toBe(PROJECTS[1].name);
       expect(carouselTitles[2].nativeElement.textContent.trim()).toBe(PROJECTS[2].name);
 
+      const slides: DebugElement[] = element.queryAll(By.css('img'));
+      expect(slides.length).toBe(PROJECTS.length);
+      // expect(slides[0].nativeElement.getAttribute('src')).toBe(PROJECTS[0].projectHomeView[0].carouselImagePath);
+      // expect(slides[1].nativeElement.getAttribute('src')).toBe(PROJECTS[1].projectHomeView[0].carouselImagePath);
+      // expect(slides[2].nativeElement.getAttribute('src')).toBe(PROJECTS[2].projectHomeView[0].carouselImagePath);
+
       const carouselTexts: DebugElement[] = element.queryAll(By.css('.carousel-caption p'));
       expect(carouselTexts.length).toBe(PROJECTS.length);
       // expect(carouselTexts[0].nativeElement.textContent.trim()).toBe(PROJECTS[0].projectHomeView[0].carouselText);
