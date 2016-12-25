@@ -21,7 +21,7 @@ import { By } from '@angular/platform-browser';
 import Post3dAuthComponent from './post3d-auth.component';
 import { RouterLinkStubDirective, RouterOutletStubComponent, RouterStub } from '../../common/testing/helpers.spec';
 import { AuthService } from "../../common/services/auth.service";
-import { FakeAuthService, FakeWrongAuthService } from "../../common/testing/fake-auth.service.spec";
+import { FakeAuthService, FakeWrongPost3dAuthService, FakeWrongPost3dLoggedUserAuthService } from "../../common/testing/fake-auth.service.spec";
 import PageHeaderComponent from "../../common/components/page-header/page-header.component";
 import { LaddaModule } from "angular2-ladda";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
@@ -96,32 +96,44 @@ describe('Post3dAuthComponent', () => {
   });
 
   describe('---ERROR---', () => {
-    beforeEach(() => {
-      TestBed.resetTestingModule();
-      return initTestBed({ provide: AuthService, useClass: FakeWrongAuthService });
+
+    describe('---Fake wrong post3d-auth authService---', () => {
+      beforeEach(() => {
+        TestBed.resetTestingModule();
+        //this will cause a redirect to login, automatically
+        return initTestBed({provide: AuthService, useClass: FakeWrongPost3dAuthService});
+      });
+
+      it(`should return to login`, () => {
+        expect(router.navigate).toHaveBeenCalledWith(['/login']);
+      });
     });
 
-    it('can get RouterLinks from template', () => {
-      expect(links.length).toBe(1, 'should have 1 links');
-      expect(links[0].linkParams).toEqual(['/profile'], '1st link should go to profile');
-    });
-
-    it(`should return to login`, () => {
-      expect(router.navigate).toHaveBeenCalledWith(['/login']);
-    });
-
-    it(`should return to profile page`, () => {
-      const element: DebugElement = fixture.debugElement;
-
-      // TODO implement click on login url
-      // const links: DebugElement[] = element.queryAll(By.css('a'));
-      // expect(links.length).toBe(1);
-      // links[0].nativeElement.triggerEventHandler('click', null);
-      //
-      // fixture.detectChanges();
-      //
-      // expect(router.navigate).toHaveBeenCalledWith(['/login']);
-    });
+    // describe('---Fake post3d-auth with wrong loggedUser authService---', () => {
+    //   beforeEach(() => {
+    //     TestBed.resetTestingModule();
+    //     //this won't call redirect, because post3dAuthAfterCallback is ok, but getLoggedUser will throw an error
+    //     //so post3d-auth webpage will be displayed with a button to go back
+    //     return initTestBed({provide: AuthService, useClass: FakeWrongPost3dLoggedUserAuthService});
+    //   });
+    //
+    //   it('can get RouterLinks from template', () => {
+    //     expect(links.length).toBe(1, 'should have 1 links');
+    //     expect(links[0].linkParams).toEqual(['/profile'], '1st link should go to profile');
+    //   });
+    //
+    //   it(`should return to profile page`, () => {
+    //     const element: DebugElement = fixture.debugElement;
+    //
+    //     const links: DebugElement[] = element.queryAll(By.css('a'));
+    //     expect(links.length).toBe(1);
+    //     links[0].nativeElement.triggerEventHandler('click', null);
+    //     //
+    //     // fixture.detectChanges();
+    //     //
+    //     // expect(router.navigate).toHaveBeenCalledWith(['/profile']);
+    //   });
+    // });
   });
 });
 

@@ -102,10 +102,22 @@ export class FakeAuthService {
   }
 }
 
-// I created this fake service to wrong-mock methods that doesn't receive input parameters
-export class FakeWrongAuthService {
+// I created this fake service to wrong-mock post3dAuthAfterCallback, because it doesn't receive input parameters
+export class FakeWrongPost3dAuthService {
 
   post3dAuthAfterCallback(): Observable<any> {
+    return Observable.throw('an error message');
+  }
+}
+
+// I created this fake service to wrong-mock getLoggedUser, because it doesn't receive input parameters
+export class FakeWrongPost3dLoggedUserAuthService {
+
+  post3dAuthAfterCallback(): Observable<any> {
+    return Observable.of('fsdfsdf.543tr.gfweg');
+  }
+
+  getLoggedUser(): Observable<any> {
     return Observable.throw('an error message');
   }
 }
