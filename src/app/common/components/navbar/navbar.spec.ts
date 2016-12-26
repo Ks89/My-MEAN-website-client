@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2016 Stefano Cappa
+ * Copyright (C) 2015-2017 Stefano Cappa
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed, tick, fakeAsync} from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
@@ -23,6 +23,7 @@ import { RouterLinkStubDirective, RouterOutletStubComponent, RouterStub } from '
 import { AuthService } from "../../services/auth.service";
 import { FakeAuthService } from "../../testing/fake-auth.service.spec";
 import { Router } from "@angular/router";
+import {click} from "../../testing/helpers.spec";
 
 const FAKE_USERNAME = 'fake username';
 
@@ -33,7 +34,7 @@ let router: RouterStub;
 let linkDes: DebugElement[];
 
 function initTestBed(forceLogIn: boolean) {
-  router = new RouterStub();
+  router = { navigate: jasmine.createSpy('navigate') };
 
   TestBed.configureTestingModule({
     declarations: [ NavbarComponent, RouterLinkStubDirective, RouterOutletStubComponent ],
@@ -94,8 +95,20 @@ describe('NavbarComponent', () => {
         expect(navLinks[5].nativeElement.textContent.trim()).toBe(FAKE_USERNAME);
       });
 
-      it(`can display the navbar's dropdown`, () => {
-        //TODO click on FAKE_USERNAME to show the dropdown
+      it(`can display the navbar's dropdown and logout`, () => {
+        const element: DebugElement = fixture.debugElement;
+
+        const loggedUser: DebugElement = element.query(By.css('a.nav-link.dropdown-toggle'));
+        expect(loggedUser.nativeElement.textContent).toBe(FAKE_USERNAME);
+        click(loggedUser);
+
+        const logoutItems: DebugElement[] = element.queryAll(By.css('a.dropdown-item'));
+        expect(logoutItems[0].nativeElement.textContent).toBe('Profile');
+        expect(logoutItems[1].nativeElement.textContent).toBe('Logout');
+
+        click(logoutItems[1]);
+
+        expect(router.navigate).toHaveBeenCalledWith(['/']);
       });
 
       it('can get RouterLinks from template, when user is NOT logged in', () => {
