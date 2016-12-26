@@ -29,14 +29,18 @@ export default class Post3dAuthComponent implements OnInit {
             console.log("post3dauth - redirecting");
             this.authService.loginEvent.emit(user);
             this.router.navigate(['/profile']);
-          }
+          },
+          (err) => {
+            console.error(err);
+          },
+          () => console.log('getLoggedUser Done')
         );
       },
       (err) => {
         console.error(err);
         this.router.navigate(['/login']);
       },
-      () => console.log('Done')
+      () => console.log('post3dAuthAfterCallback Done')
     );
   }
 }
