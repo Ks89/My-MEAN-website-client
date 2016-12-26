@@ -21,13 +21,17 @@ import { By } from '@angular/platform-browser';
 import ProfileComponent from './profile.component';
 import { RouterLinkStubDirective, RouterOutletStubComponent, RouterStub } from '../../common/testing/helpers.spec';
 import { AuthService } from "../../common/services/auth.service";
-import { FakeAuthService } from "../../common/testing/fake-auth.service.spec";
+import {
+  FakeAuthService, FakeUser2ServicesNoLocalAuthService,
+  FakeUser2ServicesAuthService, FakeLocalUserWithProfileAuthService, FAKE_USER_PROFILE,
+  FakeUser3ServicesNoLocalAuthService
+} from "../../common/testing/fake-auth.service.spec";
 import PageHeaderComponent from "../../common/components/page-header/page-header.component";
 import { LaddaModule } from "angular2-ladda";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { ProfileService } from "../../common/services/profile.service";
-import { FakeProfileService, PROFILE_RESPONSE } from "../../common/testing/fake-profile.service.spec";
+import { FakeProfileService } from "../../common/testing/fake-profile.service.spec";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { ActivatedRouteStub } from "../../common/testing/router-stubs.spec";
 
@@ -41,13 +45,24 @@ const FAKE_NAME = 'fake name';
 const FAKE_SURNAME = 'fake surname';
 const FAKE_NICKNAME = 'fake nickname';
 const FAKE_EMAIL = 'fake@email.it';
-const FAKE_WRONG_EMAIL = 'wrong-email.it'
+const FAKE_WRONG_EMAIL = 'wrong-email.it';
 
+const FAKE_AUTH_SERVICE = { provide: AuthService, useClass: FakeAuthService };
+const FAKE_AUTH_WITH_PROFILE_SERVICE = { provide: AuthService, useClass: FakeLocalUserWithProfileAuthService };
+const FAKE_AUTH_2_SERVICE = { provide: AuthService, useClass: FakeUser2ServicesAuthService };
+const FAKE_AUTH_2NOLOCAL_SERVICE = { provide: AuthService, useClass: FakeUser2ServicesNoLocalAuthService };
+const FAKE_AUTH_3NOLOCAL_SERVICE = { provide: AuthService, useClass: FakeUser3ServicesNoLocalAuthService };
 
-function initTestBed() {
+function initTestBed(withToken: boolean, authServiceMocked: any) {
+  TestBed.resetTestingModule();
+
   router = new RouterStub();
   activatedRoute = new ActivatedRouteStub();
-  activatedRoute.testParams = { token: 'dsadasd'};
+
+  if(withToken === true) {
+    // to load profile page with token
+    activatedRoute.testParams = {token: 'dsadasd'};
+  }
 
   TestBed.configureTestingModule({
     imports: [FormsModule, ReactiveFormsModule, LaddaModule, NgbModule.forRoot()],
@@ -59,7 +74,7 @@ function initTestBed() {
         { provide: ActivatedRoute, useValue: activatedRoute },
         { provide: Router, useValue: router },
         { provide: ProfileService, useClass: FakeProfileService },
-        { provide: AuthService, useClass: FakeAuthService }
+        authServiceMocked
       ]
     }
   }); // not necessary with webpack .compileComponents();
@@ -74,16 +89,14 @@ function initTestBed() {
   });
 }
 
-
 describe('ProfileComponent', () => {
-  beforeEach( async(() => initTestBed()));
 
-  it('can instantiate it', () => expect(comp).not.toBeNull());
+  describe(`---COMMON/CREATIONAL---`, () => {
+    beforeEach( async(() => initTestBed(true, FAKE_AUTH_SERVICE))); // init with token
 
-  describe('---YES---', () => {
-    beforeEach(() => fixture.detectChanges());
+    it(`can instantiate it`, () => expect(comp).not.toBeNull());
 
-    it('can display the profile page', () => {
+    it(`can display the profile page`, () => {
       const element: DebugElement = fixture.debugElement;
 
       // main page
@@ -113,59 +126,131 @@ describe('ProfileComponent', () => {
       expect(h6s[0].nativeElement.textContent.trim()).toBe(`Connect this account with other services!\n				You'll be able to access to the same account with many services.`);
       expect(h6s[1].nativeElement.textContent.trim()).toBe(`Unlink a service from this account!\n				You won't be able to login anymore with that service.`);
     });
-
-    it(`should update the profile`, () => {
-      const element: DebugElement = fixture.debugElement;
-
-      fillForm(FAKE_NAME, FAKE_SURNAME, FAKE_NICKNAME, FAKE_EMAIL);
-      expect(comp.formModel.valid).toBe(true);
-
-      comp.onProfileUpdate();
-
-      fixture.detectChanges();
-
-      const results: DebugElement[] = element.queryAll(By.css('div.alert.alert-success'));
-      expect(results.length).toBe(1);
-      expect(results[0].nativeElement.textContent.trim()).toBe(`Success Profile updated successfully!`);
-    });
-
   });
 
-  describe('---ERROR---', () => {
-    beforeEach( async(() => {
-      TestBed.resetTestingModule();
-      return initTestBed();
-    }));
+  describe(`---YES---`, () => {
 
-    const BAD = 'a'; // short value length < 3, because i'm using a length validator into the component
-    const FORMS = [
-      { info: 'name bad', name: BAD, surname: FAKE_SURNAME, nickname: FAKE_NICKNAME, email: FAKE_EMAIL },
-      { info: 'surname bad', name: FAKE_NAME, surname: BAD, nickname: FAKE_NICKNAME, email: FAKE_EMAIL },
-      { info: 'nickname bad', name: FAKE_NAME, surname: FAKE_SURNAME, nickname: BAD, email: FAKE_EMAIL },
-      { info: 'email bad', name: FAKE_NAME, surname: FAKE_SURNAME, nickname: FAKE_NICKNAME, email: FAKE_WRONG_EMAIL },
-      { info: 'all bad', name: BAD, surname: BAD, nickname: BAD, email: FAKE_WRONG_EMAIL }
-    ];
+    describe(`add profile info`, () => {
+      beforeEach( async(() => initTestBed(true, FAKE_AUTH_SERVICE))); // init with token
 
-    for(let i=0; i<FORMS.length; i++) {
-      it(`should NOT update the profile, because all fields are mandatory. Test i=${i} => ${FORMS[i].info}`, () => {
+      it(`should update the profile`, () => {
         const element: DebugElement = fixture.debugElement;
 
-        fillForm(FORMS[i].name, FORMS[i].surname, FORMS[i].nickname, FORMS[i].email);
-        expect(comp.formModel.valid).toBe(false);
+        fillForm(FAKE_NAME, FAKE_SURNAME, FAKE_NICKNAME, FAKE_EMAIL);
+        expect(comp.formModel.valid).toBe(true);
 
         comp.onProfileUpdate();
 
         fixture.detectChanges();
 
         const results: DebugElement[] = element.queryAll(By.css('div.alert.alert-success'));
-        expect(results.length).toBe(0);
-
-        const errors: DebugElement[] = element.queryAll(By.css('div.alert.alert-danger'));
-        expect(errors.length).toBe(0);
+        expect(results.length).toBe(1);
+        expect(results[0].nativeElement.textContent.trim()).toBe(`Success Profile updated successfully!`);
       });
-    }
+
+    });
+
+    describe(`update existing profile info`, () => {
+      beforeEach( async(() => initTestBed(true, FAKE_AUTH_WITH_PROFILE_SERVICE))); // init with token
+
+      it(`can display the profile page`, () => {
+        expect(comp.formModel.controls['name'].value).toBe(FAKE_USER_PROFILE.name);
+        expect(comp.formModel.controls['surname'].value).toBe(FAKE_USER_PROFILE.surname);
+        expect(comp.formModel.controls['nickname'].value).toBe(FAKE_USER_PROFILE.nickname);
+        expect(comp.formModel.controls['email'].value).toBe(FAKE_USER_PROFILE.email);
+        expect(comp.formModel.valid).toBe(true);
+      });
+
+      it(`should update the profile`, () => {
+        const element: DebugElement = fixture.debugElement;
+
+        //form already filled by initTestBed AuthService's mock
+        comp.onProfileUpdate();
+
+        fixture.detectChanges();
+
+        const results: DebugElement[] = element.queryAll(By.css('div.alert.alert-success'));
+        expect(results.length).toBe(1);
+        expect(results[0].nativeElement.textContent.trim()).toBe(`Success Profile updated successfully!`);
+      });
+    });
+
+    describe(`connect 2 accounts (without local)`, () => {
+      beforeEach( async(() => initTestBed(true, FAKE_AUTH_2NOLOCAL_SERVICE))); // init with token
+      //TODO
+    });
+
+    describe(`connect 2 accounts (with local)`, () => {
+      beforeEach( async(() => initTestBed(true, FAKE_AUTH_2_SERVICE))); // init with token
+      //TODO
+    });
+
+    describe(`connect 3 accounts`, () => {
+      beforeEach( async(() => initTestBed(true, FAKE_AUTH_3NOLOCAL_SERVICE))); // init with token
+      //TODO
+    });
+
+    describe(`unlink`, () => {
+      beforeEach( async(() => initTestBed(true, FAKE_AUTH_3NOLOCAL_SERVICE))); // init with token
+      //TODO
+    });
+
+    describe(`last unlink`, () => {
+      beforeEach( async(() => initTestBed(true, FAKE_AUTH_2_SERVICE))); // init with token
+      //TODO
+    });
 
   });
+
+  describe(`---NO---`, () => {
+
+    describe(`update profile`, () => {
+      beforeEach( async(() => initTestBed(true, FAKE_AUTH_SERVICE))); // init with token
+
+      const BAD = 'a'; // short value length < 3, because i'm using a length validator into the component
+      const FORMS = [
+        { info: 'name bad', name: BAD, surname: FAKE_SURNAME, nickname: FAKE_NICKNAME, email: FAKE_EMAIL },
+        { info: 'surname bad', name: FAKE_NAME, surname: BAD, nickname: FAKE_NICKNAME, email: FAKE_EMAIL },
+        { info: 'nickname bad', name: FAKE_NAME, surname: FAKE_SURNAME, nickname: BAD, email: FAKE_EMAIL },
+        { info: 'email bad', name: FAKE_NAME, surname: FAKE_SURNAME, nickname: FAKE_NICKNAME, email: FAKE_WRONG_EMAIL },
+        { info: 'all bad', name: BAD, surname: BAD, nickname: BAD, email: FAKE_WRONG_EMAIL }
+      ];
+
+      for(let i=0; i<FORMS.length; i++) {
+        it(`should NOT update the profile, because all fields are mandatory. Test i=${i} => ${FORMS[i].info}`, () => {
+          const element: DebugElement = fixture.debugElement;
+
+          fillForm(FORMS[i].name, FORMS[i].surname, FORMS[i].nickname, FORMS[i].email);
+          expect(comp.formModel.valid).toBe(false);
+
+          comp.onProfileUpdate();
+
+          fixture.detectChanges();
+
+          const results: DebugElement[] = element.queryAll(By.css('div.alert.alert-success'));
+          expect(results.length).toBe(0);
+
+          const errors: DebugElement[] = element.queryAll(By.css('div.alert.alert-danger'));
+          expect(errors.length).toBe(0);
+        });
+      }
+
+    });
+
+    describe(`connect error`, () => {
+      //TODO
+    });
+
+    describe(`unlink error`, () => {
+      //TODO
+    });
+
+    describe(`last unlink error`, () => {
+      //TODO
+    });
+
+  });
+
 });
 
 function fillForm(name, surname, nickname, email) {
