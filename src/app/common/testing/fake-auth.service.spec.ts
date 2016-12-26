@@ -155,13 +155,7 @@ export class FakeWrongPost3dLoggedUserAuthService {
 
 
 // I created this fake service to mock a logged user with profile info already available
-export class FakeLocalUserWithProfileAuthService {
-
-  public loginEvent: EventEmitter<any> = new EventEmitter();
-
-  post3dAuthAfterCallback(): Observable<any> {
-    return Observable.of(FAKE_JWT_TOKEN);
-  }
+export class FakeLocalUserWithProfileAuthService extends FakeAuthService {
 
   getLoggedUser(): Observable<any> {
     return Observable.of({
@@ -173,13 +167,7 @@ export class FakeLocalUserWithProfileAuthService {
 }
 
 // I created this fake service to mock a logged user as both local and github
-export class FakeUser2ServicesAuthService {
-
-  public loginEvent: EventEmitter<any> = new EventEmitter();
-
-  post3dAuthAfterCallback(): Observable<any> {
-    return Observable.of(FAKE_JWT_TOKEN);
-  }
+export class FakeUser2ServicesAuthService extends FakeAuthService {
 
   getLoggedUser(): Observable<any> {
     return Observable.of({
@@ -193,13 +181,7 @@ export class FakeUser2ServicesAuthService {
 }
 
 // I created this fake service to mock a logged user as both google and github without local user
-export class FakeUser2ServicesNoLocalAuthService {
-
-  public loginEvent: EventEmitter<any> = new EventEmitter();
-
-  post3dAuthAfterCallback(): Observable<any> {
-    return Observable.of(FAKE_JWT_TOKEN);
-  }
+export class FakeUser2ServicesNoLocalAuthService extends FakeAuthService {
 
   getLoggedUser(): Observable<any> {
     return Observable.of({
@@ -212,13 +194,7 @@ export class FakeUser2ServicesNoLocalAuthService {
 
 
 // I created this fake service to mock a logged user as both google, facebook and github (without local)
-export class FakeUser3ServicesNoLocalAuthService {
-
-  public loginEvent: EventEmitter<any> = new EventEmitter();
-
-  post3dAuthAfterCallback(): Observable<any> {
-    return Observable.of(FAKE_JWT_TOKEN);
-  }
+export class FakeUser3ServicesNoLocalAuthService extends FakeAuthService {
 
   getLoggedUser(): Observable<any> {
     return Observable.of({
