@@ -138,15 +138,15 @@ describe('ProjectListComponent', () => {
       expect(timelineTexts[3].nativeElement.textContent).toBe(comp.sidebar.timeline[3].body);
       expect(timelineTexts[4].nativeElement.textContent).toBe(comp.sidebar.timeline[4].body);
 
-      const timelineIconBadge = element.query(By.css('div.timeline-badge.badge i'));
+      const timelineIconBadge: DebugElement = element.query(By.css('div.timeline-badge.badge i'));
       expect(timelineIconBadge.nativeElement.getAttribute('class')).toBe('fa fa-' + comp.sidebar.timeline[0].icon);
-      const timelineIconDanger = element.query(By.css('div.timeline-badge.danger i'));
+      const timelineIconDanger: DebugElement = element.query(By.css('div.timeline-badge.danger i'));
       expect(timelineIconDanger.nativeElement.getAttribute('class')).toBe('fa fa-' + comp.sidebar.timeline[1].icon);
-      const timelineIconWarning = element.query(By.css('div.timeline-badge.warning i'));
+      const timelineIconWarning: DebugElement = element.query(By.css('div.timeline-badge.warning i'));
       expect(timelineIconWarning.nativeElement.getAttribute('class')).toBe('fa fa-' + comp.sidebar.timeline[2].icon);
-      const timelineIconInfo = element.query(By.css('div.timeline-badge.info i'));
+      const timelineIconInfo: DebugElement = element.query(By.css('div.timeline-badge.info i'));
       expect(timelineIconInfo.nativeElement.getAttribute('class')).toBe('fa fa-' + comp.sidebar.timeline[3].icon);
-      const timelineIconSuccess = element.query(By.css('div.timeline-badge.success i'));
+      const timelineIconSuccess: DebugElement = element.query(By.css('div.timeline-badge.success i'));
       expect(timelineIconSuccess.nativeElement.getAttribute('class')).toBe('fa fa-' + comp.sidebar.timeline[4].icon);
     });
   });

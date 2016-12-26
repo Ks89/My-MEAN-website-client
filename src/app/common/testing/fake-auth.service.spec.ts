@@ -129,6 +129,10 @@ export class FakeAuthService {
       local: FAKE_USER_LOCAL
     });
   }
+
+  unlink(serviceName: string): Observable<any> {
+    return Observable.of('User unlinked correctly!');
+  };
 }
 
 // I created this fake service to wrong-mock post3dAuthAfterCallback, because it doesn't receive input parameters
@@ -174,7 +178,6 @@ export class FakeUser2ServicesAuthService extends FakeAuthService {
       _id: FAKE_ROOT_USER_ID,
       local: FAKE_USER_LOCAL,
       github: FAKE_USER_GITHUB,
-      google: FAKE_USER_GOOGLE,
       profile: FAKE_USER_PROFILE
     });
   }

@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed, fakeAsync, tick, async} from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
 import Post3dAuthComponent from './post3d-auth.component';
-import { RouterLinkStubDirective, RouterOutletStubComponent, RouterStub } from '../../common/testing/helpers.spec';
+import {RouterLinkStubDirective, RouterOutletStubComponent, RouterStub, click} from '../../common/testing/helpers.spec';
 import { AuthService } from "../../common/services/auth.service";
 import { FakeAuthService, FakeWrongPost3dAuthService, FakeWrongPost3dLoggedUserAuthService } from "../../common/testing/fake-auth.service.spec";
 import PageHeaderComponent from "../../common/components/page-header/page-header.component";
@@ -32,9 +32,10 @@ let fixture: ComponentFixture<Post3dAuthComponent>;
 let router: RouterStub;
 let links: RouterLinkStubDirective[];
 let linkDes: DebugElement[];
-let page: Page;
 
 function initTestBed(authServiceMocked) {
+  TestBed.resetTestingModule();
+
   router = { navigate: jasmine.createSpy('navigate') };
 
   TestBed.configureTestingModule({
@@ -54,10 +55,7 @@ function initTestBed(authServiceMocked) {
   comp = fixture.componentInstance;
 
   fixture.detectChanges();
-  return fixture.whenStable().then(() => {
-    fixture.detectChanges();
-    page = new Page(fixture);
-  });
+  return fixture.whenStable().then(() => fixture.detectChanges());
 }
 
 
@@ -98,55 +96,44 @@ describe('Post3dAuthComponent', () => {
   describe('---ERROR---', () => {
 
     describe('---Fake wrong post3d-auth authService---', () => {
-      beforeEach(() => {
-        TestBed.resetTestingModule();
-        //this will cause a redirect to login, automatically
-        return initTestBed({provide: AuthService, useClass: FakeWrongPost3dAuthService});
-      });
+      //this will cause a redirect to login, automatically
+      beforeEach(() => initTestBed({provide: AuthService, useClass: FakeWrongPost3dAuthService}));
 
       it(`should return to login`, () => {
         expect(router.navigate).toHaveBeenCalledWith(['/login']);
       });
     });
 
-    // describe('---Fake post3d-auth with wrong loggedUser authService---', () => {
-    //   beforeEach(() => {
-    //     TestBed.resetTestingModule();
-    //     //this won't call redirect, because post3dAuthAfterCallback is ok, but getLoggedUser will throw an error
-    //     //so post3d-auth webpage will be displayed with a button to go back
-    //     return initTestBed({provide: AuthService, useClass: FakeWrongPost3dLoggedUserAuthService});
-    //   });
-    //
-    //   it('can get RouterLinks from template', () => {
-    //     expect(links.length).toBe(1, 'should have 1 links');
-    //     expect(links[0].linkParams).toEqual(['/profile'], '1st link should go to profile');
-    //   });
-    //
-    //   it(`should return to profile page`, () => {
-    //     const element: DebugElement = fixture.debugElement;
-    //
-    //     const links: DebugElement[] = element.queryAll(By.css('a'));
-    //     expect(links.length).toBe(1);
-    //     links[0].nativeElement.triggerEventHandler('click', null);
-    //     //
-    //     // fixture.detectChanges();
-    //     //
-    //     // expect(router.navigate).toHaveBeenCalledWith(['/profile']);
-    //   });
-    // });
+    describe('---Fake post3d-auth with wrong loggedUser authService---', () => {
+      //this won't call redirect, because post3dAuthAfterCallback is ok, but getLoggedUser will throw an error
+      //so post3d-auth webpage will be displayed with a button to go back
+
+      beforeEach(() => initTestBed({provide: AuthService, useClass: FakeWrongPost3dLoggedUserAuthService}));
+
+      it('can get RouterLinks from template', () => {
+        fixture.detectChanges();
+        linkDes = fixture.debugElement.queryAll(By.directive(RouterLinkStubDirective));
+        links = linkDes.map(de => de.injector.get(RouterLinkStubDirective) as RouterLinkStubDirective);
+
+        expect(links.length).toBe(1, 'should have 1 links');
+        expect(links[0].linkParams).toEqual(['/profile'], '1st link should go to profile');
+      });
+
+      it(`should return to profile page`, () => {
+        const element: DebugElement = fixture.debugElement;
+
+        const anchors: DebugElement[] = element.queryAll(By.css('a'));
+        expect(anchors.length).toBe(1);
+        expect(anchors[0].nativeElement.textContent).toBe('profile');
+
+        expect(element.query(By.css('h4')).nativeElement.textContent).toBe('You are successfully logged in with the chosen external service');
+
+        click(anchors[0]);
+
+        // expect(router.navigate).toHaveBeenCalledWith(['/profile']);
+      });
+    });
   });
+
 });
-
-class Page {
-  // navSpy: jasmine.Spy;
-
-  constructor(fixture) {
-    // Get the component's injected router and spy on it
-    // Use component's injector to see the services it injected.
-    const compInjector = fixture.debugElement.injector;
-    const router = compInjector.get(Router);
-
-    // this.navSpy = spyOn(router, 'navigate');
-  };
-}
 

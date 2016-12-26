@@ -14,12 +14,15 @@
  * limitations under the License.
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed, fakeAsync, tick} from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
 import ResetComponent from './reset.component';
-import { RouterLinkStubDirective, RouterOutletStubComponent, ActivatedRoute, ActivatedRouteStub, RouterStub, newEvent } from '../../common/testing/helpers.spec';
+import {
+  RouterLinkStubDirective, RouterOutletStubComponent, ActivatedRoute, ActivatedRouteStub, RouterStub, newEvent,
+  click
+} from '../../common/testing/helpers.spec';
 import { AuthService } from "../../common/services/auth.service";
 import { FakeAuthService, FAKE_BAD_EMAIL_TOKEN } from "../../common/testing/fake-auth.service.spec";
 import PageHeaderComponent from "../../common/components/page-header/page-header.component";
@@ -36,10 +39,13 @@ let router: RouterStub;
 let activatedRoute: ActivatedRouteStub;
 let links: RouterLinkStubDirective[];
 let linkDes: DebugElement[];
-let page: Page;
+// let page: Page;
 
 function initTestBed(emailToken: string) {
-  router = new RouterStub();
+  TestBed.resetTestingModule();
+
+  router = { navigate: jasmine.createSpy('navigate') };
+
   activatedRoute = new ActivatedRouteStub();
   activatedRoute.testParams = { emailToken: emailToken};
 
@@ -63,7 +69,7 @@ function initTestBed(emailToken: string) {
   fixture.detectChanges();
   return fixture.whenStable().then(() => {
     fixture.detectChanges();
-    page = new Page(fixture);
+    // page = new Page(fixture);
   });
 }
 
@@ -120,22 +126,24 @@ describe('ResetComponent', () => {
       const element: DebugElement = fixture.debugElement;
 
       //TODO implement click on login url
-      // const links: DebugElement[] = element.queryAll(By.css('a'));
-      // expect(links.length).toBe(1);
-      // links[0].nativeElement.triggerEventHandler('click', null);
-      //
-      // fixture.detectChanges();
-      //
+      const anchors: DebugElement[] = element.queryAll(By.css('a'));
+      expect(anchors.length).toBe(1);
+      expect(anchors[0].nativeElement.textContent).toBe('login');
+
+      anchors[0].nativeElement.click();
+      click(anchors[0]);
+      anchors[0].triggerEventHandler('click', null);
+
+      fixture.detectChanges();
+
       // expect(page.navSpy.calls.any()).toBe(true, 'navigate called');
+      // expect(spyOn(router, 'navigate').calls.any()).toBe(true, 'router.navigate called');
       // expect(router.navigate).toHaveBeenCalledWith(['/login']);
     });
   });
 
   describe('---ERROR---', () => {
-    beforeEach( async(() => {
-      TestBed.resetTestingModule();
-      return initTestBed(FAKE_BAD_EMAIL_TOKEN);
-    }));
+    beforeEach( async(() => initTestBed(FAKE_BAD_EMAIL_TOKEN)));
 
     it(`should NOT reset local account's password`, () => {
       const element: DebugElement = fixture.debugElement;
@@ -156,12 +164,12 @@ describe('ResetComponent', () => {
   });
 });
 
-class Page {
-  navSpy: jasmine.Spy;
-
-  constructor(fixture) {
-    // Get the component's injected router and spy on it
-    const router = fixture.debugElement.injector.get(Router);
-    this.navSpy = spyOn(router, 'navigate');
-  };
-}
+// class Page {
+//   navSpy: jasmine.Spy;
+//
+//   constructor(fixture) {
+//     // Get the component's injected router and spy on it
+//     const router = fixture.debugElement.injector.get(Router);
+//     this.navSpy = spyOn(router, 'navigate');
+//   };
+// }
