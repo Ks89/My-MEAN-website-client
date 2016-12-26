@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed, fakeAsync, tick} from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
 import ProfileComponent from './profile.component';
-import { RouterLinkStubDirective, RouterOutletStubComponent, RouterStub } from '../../common/testing/helpers.spec';
+import {RouterLinkStubDirective, RouterOutletStubComponent, RouterStub, click} from '../../common/testing/helpers.spec';
 import { AuthService } from "../../common/services/auth.service";
 import {
   FakeAuthService, FakeUser2ServicesNoLocalAuthService,
@@ -39,7 +39,6 @@ let comp: ProfileComponent;
 let fixture: ComponentFixture<ProfileComponent>;
 let router: RouterStub;
 let activatedRoute: ActivatedRouteStub;
-let page: Page;
 
 const FAKE_NAME = 'fake name';
 const FAKE_SURNAME = 'fake surname';
@@ -56,7 +55,8 @@ const FAKE_AUTH_3NOLOCAL_SERVICE = { provide: AuthService, useClass: FakeUser3Se
 function initTestBed(withToken: boolean, authServiceMocked: any) {
   TestBed.resetTestingModule();
 
-  router = new RouterStub();
+  router = { navigate: jasmine.createSpy('navigate') };
+
   activatedRoute = new ActivatedRouteStub();
 
   if(withToken === true) {
@@ -83,10 +83,7 @@ function initTestBed(withToken: boolean, authServiceMocked: any) {
   comp = fixture.componentInstance;
 
   fixture.detectChanges();
-  return fixture.whenStable().then(() => {
-    fixture.detectChanges();
-    page = new Page(fixture);
-  });
+  return fixture.whenStable().then(() => fixture.detectChanges());
 }
 
 describe('ProfileComponent', () => {
@@ -175,29 +172,224 @@ describe('ProfileComponent', () => {
       });
     });
 
-    describe(`connect 2 accounts (without local)`, () => {
+    describe(`connect the third account (without local)`, () => {
       beforeEach( async(() => initTestBed(true, FAKE_AUTH_2NOLOCAL_SERVICE))); // init with token
-      //TODO
+
+      it('should display profile page with 2 services', () => {
+        const element: DebugElement = fixture.debugElement;
+
+        const local = element.query(By.css('span.fa.fa-user.fa-2x'));
+        expect(local).toBeNull();
+        const facebook = element.query(By.css('span.fa.fa-facebook.fa-2x'));
+        expect(facebook).toBeNull();
+        const github = element.query(By.css('span.fa.fa-github.fa-2x'));
+        expect(github.nativeElement).not.toBeNull();
+        const google = element.query(By.css('span.fa.fa-google.fa-2x'));
+        expect(google.nativeElement).not.toBeNull();
+        const linkedin = element.query(By.css('span.fa.fa-linkedin.fa-2x'));
+        expect(linkedin).toBeNull();
+        const twitter = element.query(By.css('span.fa.fa-twitter.fa-2x'));
+        expect(twitter).toBeNull();
+
+        // connect buttons
+        const buttons : DebugElement[] = element.queryAll(By.css('a.btn.btn-primary.white-button'));
+        expect(buttons[0].nativeElement.textContent.trim()).toBe('connect');
+        expect(buttons[0].children[0].nativeElement.getAttribute('class')).toBe('fa fa-facebook fa-lg');
+        expect(buttons[1].nativeElement.textContent.trim()).toBe('connect');
+        expect(buttons[1].children[0].nativeElement.getAttribute('class')).toBe('fa fa-twitter fa-lg');
+        expect(buttons[2].nativeElement.textContent.trim()).toBe('connect');
+        expect(buttons[2].children[0].nativeElement.getAttribute('class')).toBe('fa fa-linkedin fa-lg');
+
+        // unlink buttons
+        expect(buttons[3].nativeElement.textContent.trim()).toBe('unlink');
+        expect(buttons[3].children[0].nativeElement.getAttribute('class')).toBe('fa fa-github fa-lg');
+        expect(buttons[4].nativeElement.textContent.trim()).toBe('unlink');
+        expect(buttons[4].children[0].nativeElement.getAttribute('class')).toBe('fa fa-google fa-lg');
+      });
+
+      it('should connect another service (facebook)', fakeAsync(() => {
+        const element: DebugElement = fixture.debugElement;
+
+        const buttons : DebugElement[] = element.queryAll(By.css('a.btn.btn-primary.white-button'));
+
+        click(buttons[0]);
+        // expect(router.navigate).toHaveBeenCalledWith(['/post3dauth']);
+
+        tick();
+
+        fixture.detectChanges();
+
+        tick();
+
+        fixture.detectChanges();
+
+        // expect(router.navigate).toHaveBeenCalledWith(['/profile']);
+
+        // connect buttons
+        // const btns : DebugElement[] = element.queryAll(By.css('a.btn.btn-primary.white-button'));
+        // expect(btns[0].nativeElement.textContent.trim()).toBe('connect');
+        // expect(btns[0].children[0].nativeElement.getAttribute('class')).toBe('fa fa-twitter fa-lg');
+        // expect(btns[1].nativeElement.textContent.trim()).toBe('connect');
+        // expect(btns[1].children[0].nativeElement.getAttribute('class')).toBe('fa fa-linkedin fa-lg');
+        //
+        // // unlink btns
+        // expect(btns[2].nativeElement.textContent.trim()).toBe('unlink');
+        // expect(btns[2].children[0].nativeElement.getAttribute('class')).toBe('fa fa-facebook fa-lg');
+        // expect(btns[3].nativeElement.textContent.trim()).toBe('unlink');
+        // expect(btns[3].children[0].nativeElement.getAttribute('class')).toBe('fa fa-github fa-lg');
+        // expect(btns[4].nativeElement.textContent.trim()).toBe('unlink');
+        // expect(btns[4].children[0].nativeElement.getAttribute('class')).toBe('fa fa-google fa-lg');
+
+      }));
     });
 
-    describe(`connect 2 accounts (with local)`, () => {
+    describe(`connect the third (with local)`, () => {
       beforeEach( async(() => initTestBed(true, FAKE_AUTH_2_SERVICE))); // init with token
-      //TODO
+
+      it('should display profile page with 2 services', () => {
+        const element: DebugElement = fixture.debugElement;
+
+        const local = element.query(By.css('span.fa.fa-user.fa-2x'));
+        expect(local.nativeElement).not.toBeNull();
+        const facebook = element.query(By.css('span.fa.fa-facebook.fa-2x'));
+        expect(facebook).toBeNull();
+        const github = element.query(By.css('span.fa.fa-github.fa-2x'));
+        expect(github.nativeElement).not.toBeNull();
+        const google = element.query(By.css('span.fa.fa-google.fa-2x'));
+        expect(google).toBeNull();
+        const linkedin = element.query(By.css('span.fa.fa-linkedin.fa-2x'));
+        expect(linkedin).toBeNull();
+        const twitter = element.query(By.css('span.fa.fa-twitter.fa-2x'));
+        expect(twitter).toBeNull();
+
+        // connect buttons
+        const buttons : DebugElement[] = element.queryAll(By.css('a.btn.btn-primary.white-button'));
+        expect(buttons[0].nativeElement.textContent.trim()).toBe('connect');
+        expect(buttons[0].children[0].nativeElement.getAttribute('class')).toBe('fa fa-facebook fa-lg');
+        expect(buttons[1].nativeElement.textContent.trim()).toBe('connect');
+        expect(buttons[1].children[0].nativeElement.getAttribute('class')).toBe('fa fa-google fa-lg');
+        expect(buttons[2].nativeElement.textContent.trim()).toBe('connect');
+        expect(buttons[2].children[0].nativeElement.getAttribute('class')).toBe('fa fa-twitter fa-lg');
+        expect(buttons[3].nativeElement.textContent.trim()).toBe('connect');
+        expect(buttons[3].children[0].nativeElement.getAttribute('class')).toBe('fa fa-linkedin fa-lg');
+
+        // unlink buttons
+        expect(buttons[4].nativeElement.textContent.trim()).toBe('unlink');
+        expect(buttons[4].children[0].nativeElement.getAttribute('class')).toBe('fa fa-user fa-lg');
+        expect(buttons[5].nativeElement.textContent.trim()).toBe('unlink');
+        expect(buttons[5].children[0].nativeElement.getAttribute('class')).toBe('fa fa-github fa-lg');
+      });
     });
 
-    describe(`connect 3 accounts`, () => {
+    describe(`connect the fourth account (without local)`, () => {
       beforeEach( async(() => initTestBed(true, FAKE_AUTH_3NOLOCAL_SERVICE))); // init with token
-      //TODO
+
+      it('should display profile page with 3 services', () => {
+        const element: DebugElement = fixture.debugElement;
+
+        const local = element.query(By.css('span.fa.fa-user.fa-2x'));
+        expect(local).toBeNull();
+        const facebook = element.query(By.css('span.fa.fa-facebook.fa-2x'));
+        expect(facebook.nativeElement).not.toBeNull();
+        const github = element.query(By.css('span.fa.fa-github.fa-2x'));
+        expect(github.nativeElement).not.toBeNull();
+        const google = element.query(By.css('span.fa.fa-google.fa-2x'));
+        expect(google.nativeElement).not.toBeNull();
+        const linkedin = element.query(By.css('span.fa.fa-linkedin.fa-2x'));
+        expect(linkedin).toBeNull();
+        const twitter = element.query(By.css('span.fa.fa-twitter.fa-2x'));
+        expect(twitter).toBeNull();
+
+        // connect buttons
+        const buttons : DebugElement[] = element.queryAll(By.css('a.btn.btn-primary.white-button'));
+        expect(buttons[0].nativeElement.textContent.trim()).toBe('connect');
+        expect(buttons[0].children[0].nativeElement.getAttribute('class')).toBe('fa fa-twitter fa-lg');
+        expect(buttons[1].nativeElement.textContent.trim()).toBe('connect');
+        expect(buttons[1].children[0].nativeElement.getAttribute('class')).toBe('fa fa-linkedin fa-lg');
+
+        // unlink buttons
+        expect(buttons[2].nativeElement.textContent.trim()).toBe('unlink');
+        expect(buttons[2].children[0].nativeElement.getAttribute('class')).toBe('fa fa-facebook fa-lg');
+        expect(buttons[3].nativeElement.textContent.trim()).toBe('unlink');
+        expect(buttons[3].children[0].nativeElement.getAttribute('class')).toBe('fa fa-github fa-lg');
+        expect(buttons[4].nativeElement.textContent.trim()).toBe('unlink');
+        expect(buttons[4].children[0].nativeElement.getAttribute('class')).toBe('fa fa-google fa-lg');
+      });
     });
 
     describe(`unlink`, () => {
       beforeEach( async(() => initTestBed(true, FAKE_AUTH_3NOLOCAL_SERVICE))); // init with token
-      //TODO
+
+      it('should display profile page with 3 services', () => {
+        const element: DebugElement = fixture.debugElement;
+
+        const local = element.query(By.css('span.fa.fa-user.fa-2x'));
+        expect(local).toBeNull();
+        const facebook = element.query(By.css('span.fa.fa-facebook.fa-2x'));
+        expect(facebook.nativeElement).not.toBeNull();
+        const github = element.query(By.css('span.fa.fa-github.fa-2x'));
+        expect(github.nativeElement).not.toBeNull();
+        const google = element.query(By.css('span.fa.fa-google.fa-2x'));
+        expect(google.nativeElement).not.toBeNull();
+        const linkedin = element.query(By.css('span.fa.fa-linkedin.fa-2x'));
+        expect(linkedin).toBeNull();
+        const twitter = element.query(By.css('span.fa.fa-twitter.fa-2x'));
+        expect(twitter).toBeNull();
+
+        // connect buttons
+        const buttons : DebugElement[] = element.queryAll(By.css('a.btn.btn-primary.white-button'));
+        expect(buttons[0].nativeElement.textContent.trim()).toBe('connect');
+        expect(buttons[0].children[0].nativeElement.getAttribute('class')).toBe('fa fa-twitter fa-lg');
+        expect(buttons[1].nativeElement.textContent.trim()).toBe('connect');
+        expect(buttons[1].children[0].nativeElement.getAttribute('class')).toBe('fa fa-linkedin fa-lg');
+
+        // unlink buttons
+        expect(buttons[2].nativeElement.textContent.trim()).toBe('unlink');
+        expect(buttons[2].children[0].nativeElement.getAttribute('class')).toBe('fa fa-facebook fa-lg');
+        expect(buttons[3].nativeElement.textContent.trim()).toBe('unlink');
+        expect(buttons[3].children[0].nativeElement.getAttribute('class')).toBe('fa fa-github fa-lg');
+        expect(buttons[4].nativeElement.textContent.trim()).toBe('unlink');
+        expect(buttons[4].children[0].nativeElement.getAttribute('class')).toBe('fa fa-google fa-lg');
+      });
     });
 
     describe(`last unlink`, () => {
       beforeEach( async(() => initTestBed(true, FAKE_AUTH_2_SERVICE))); // init with token
-      //TODO
+
+      it('should display profile page with 2 services', () => {
+        const element: DebugElement = fixture.debugElement;
+
+        const local = element.query(By.css('span.fa.fa-user.fa-2x'));
+        expect(local.nativeElement).not.toBeNull();
+        const facebook = element.query(By.css('span.fa.fa-facebook.fa-2x'));
+        expect(facebook).toBeNull();
+        const github = element.query(By.css('span.fa.fa-github.fa-2x'));
+        expect(github.nativeElement).not.toBeNull();
+        const google = element.query(By.css('span.fa.fa-google.fa-2x'));
+        expect(google).toBeNull();
+        const linkedin = element.query(By.css('span.fa.fa-linkedin.fa-2x'));
+        expect(linkedin).toBeNull();
+        const twitter = element.query(By.css('span.fa.fa-twitter.fa-2x'));
+        expect(twitter).toBeNull();
+
+        // connect buttons
+        const buttons : DebugElement[] = element.queryAll(By.css('a.btn.btn-primary.white-button'));
+        expect(buttons[0].nativeElement.textContent.trim()).toBe('connect');
+        expect(buttons[0].children[0].nativeElement.getAttribute('class')).toBe('fa fa-facebook fa-lg');
+        expect(buttons[1].nativeElement.textContent.trim()).toBe('connect');
+        expect(buttons[1].children[0].nativeElement.getAttribute('class')).toBe('fa fa-google fa-lg');
+        expect(buttons[2].nativeElement.textContent.trim()).toBe('connect');
+        expect(buttons[2].children[0].nativeElement.getAttribute('class')).toBe('fa fa-twitter fa-lg');
+        expect(buttons[3].nativeElement.textContent.trim()).toBe('connect');
+        expect(buttons[3].children[0].nativeElement.getAttribute('class')).toBe('fa fa-linkedin fa-lg');
+
+        // unlink buttons
+        expect(buttons[4].nativeElement.textContent.trim()).toBe('unlink');
+        expect(buttons[4].children[0].nativeElement.getAttribute('class')).toBe('fa fa-user fa-lg');
+        expect(buttons[5].nativeElement.textContent.trim()).toBe('unlink');
+        expect(buttons[5].children[0].nativeElement.getAttribute('class')).toBe('fa fa-github fa-lg');
+      });
+
     });
 
   });
@@ -234,21 +426,7 @@ describe('ProfileComponent', () => {
           expect(errors.length).toBe(0);
         });
       }
-
     });
-
-    describe(`connect error`, () => {
-      //TODO
-    });
-
-    describe(`unlink error`, () => {
-      //TODO
-    });
-
-    describe(`last unlink error`, () => {
-      //TODO
-    });
-
   });
 
 });
@@ -258,14 +436,4 @@ function fillForm(name, surname, nickname, email) {
   comp.formModel.controls['surname'].setValue(surname);
   comp.formModel.controls['nickname'].setValue(nickname);
   comp.formModel.controls['email'].setValue(email);
-}
-
-class Page {
-  navSpy: jasmine.Spy;
-
-  constructor(fixture) {
-    // Get the component's injected router and spy on it
-    const router = fixture.debugElement.injector.get(Router);
-    this.navSpy = spyOn(router, 'navigate');
-  };
 }
