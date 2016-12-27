@@ -295,6 +295,53 @@ describe('Http-AuthService (mockBackend)', () => {
     })));
   });
 
+  describe('#getTokenRedis()', () => {
+    let backend: MockBackend;
+    let service: AuthService;
+
+    const getTokenRedisRespOk: string = "valid.jwt.token";
+    const getTokenRedisRespNotExists: any = {"message":"Authtoken not available as session data"};
+
+    beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
+      backend = be;
+      service = new AuthService(http);
+    }));
+
+    it('should be OK', async(inject([], () => {
+      let resp = new Response(new ResponseOptions({status: 200, body: getTokenRedisRespOk}));
+      service.getTokenRedis()
+        .subscribe(resp => expect(resp).toEqual(getTokenRedisRespOk));
+    })));
+
+    it('should treat 404 as an Observable error', async(inject([], () => {
+      let resp = new Response(new ResponseOptions({status: 404, body: getTokenRedisRespNotExists}));
+      service.getTokenRedis()
+        .subscribe(resp => expect(resp).toEqual(getTokenRedisRespNotExists));
+    })));
+  });
+
+  describe('#saveToken()', () => {
+    let backend: MockBackend;
+    let service: AuthService;
+
+    const key: string = "auth";
+    const token: any = "valid.jwt.token";
+
+    beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
+      backend = be;
+      service = new AuthService(http);
+    }));
+
+    it('should be OK', async(inject([], () => {
+      service.saveToken(key, token);
+      expect(service.getToken(key)).toBe(token);
+    })));
+  });
+
+  //TODO decodeJwtToken, post3dAuthAfterCallback, getLoggedUser, getUserFromSessionStorage tests
+
+  
+
 });
 
 function getMockedResponse(backend: MockBackend, status: number, body: any) {
