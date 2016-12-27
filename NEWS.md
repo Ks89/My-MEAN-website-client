@@ -1,0 +1,1 @@
+For news, upcoming features and so on, refers to https://github.com/Ks89/My-MEAN-website-client/milestones
