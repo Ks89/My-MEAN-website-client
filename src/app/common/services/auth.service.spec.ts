@@ -8,6 +8,8 @@ import 'rxjs/add/operator/do';
 
 import { AuthService } from './auth.service';
 
+const TOKEN = 'valid.jwt.token';
+
 describe('Http-AuthService (mockBackend)', () => {
 
   beforeEach( async(() => {
@@ -36,9 +38,9 @@ describe('Http-AuthService (mockBackend)', () => {
     let backend: MockBackend;
     let service: AuthService;
 
-    const registerRespAlreadyExists: any = {"message": "User already exists. Try to login."};
-    const registerRespAllRequired: any = {"message":"All fields required"};
-    const registerRespOk: any = {"message":"User with email valid@email.com registered."};
+    const REGISTER_RESP_ALREADY_EXISTS: any = {"message": "User already exists. Try to login."};
+    const REGISTER_RESP_ALL_REQUIRED: any = {"message":"All fields required"};
+    const REGISTER_RESP_OK: any = {"message":"User with email valid@email.com registered."};
 
     beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
       backend = be;
@@ -46,21 +48,21 @@ describe('Http-AuthService (mockBackend)', () => {
     }));
 
     it('should be NOT OK', async(inject([], () => {
-      let resp = new Response(new ResponseOptions({status: 400, body: registerRespAlreadyExists}));
+      let resp = new Response(new ResponseOptions({status: 400, body: REGISTER_RESP_ALREADY_EXISTS}));
       service.register(getRegisterReq("fake", "alreadyused@email.com", "fake"))
-        .subscribe(resp => expect(resp).toEqual(registerRespAlreadyExists));
+        .subscribe(resp => expect(resp).toEqual(REGISTER_RESP_ALREADY_EXISTS));
     })));
 
     it('should be NOT OK', async(inject([], () => {
-      let resp = new Response(new ResponseOptions({status: 400, body: registerRespAllRequired}));
+      let resp = new Response(new ResponseOptions({status: 400, body: REGISTER_RESP_ALL_REQUIRED}));
       service.register(getRegisterReq("fake", null, null))
-        .subscribe(resp => expect(resp).toEqual(registerRespAllRequired));
+        .subscribe(resp => expect(resp).toEqual(REGISTER_RESP_ALL_REQUIRED));
     })));
 
     it('should be OK', async(inject([], () => {
-      let resp = new Response(new ResponseOptions({status: 200, body: registerRespOk}));
+      let resp = new Response(new ResponseOptions({status: 200, body: REGISTER_RESP_OK}));
       service.register(getRegisterReq("fake", "valid@email.com", "fake"))
-        .subscribe(resp => expect(resp).toEqual(registerRespOk));
+        .subscribe(resp => expect(resp).toEqual(REGISTER_RESP_OK));
     })));
 
     it('should treat 404 as an Observable error', async(inject([], () => {
@@ -77,9 +79,9 @@ describe('Http-AuthService (mockBackend)', () => {
     let backend: MockBackend;
     let service: AuthService;
 
-    const loginRespIncorrect: any = {"message":"Incorrect username or password. Or this account is not activated, check your mailbox."};
-    const loginRespAllRequired: any = {"message":"All fields required"};
-    const loginRespOk: any = {"token":"JWT.TOKEN"};
+    const LOGIN_RESP_INCORRECT: any = {"message":"Incorrect username or password. Or this account is not activated, check your mailbox."};
+    const LOGIN_RESP_ALL_REQUIRED: any = {"message":"All fields required"};
+    const LOGIN_RESP_OK: any = {"token":"JWT.TOKEN"};
 
     beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
       backend = be;
@@ -87,21 +89,21 @@ describe('Http-AuthService (mockBackend)', () => {
     }));
 
     it('should be NOT OK', async(inject([], () => {
-      let resp = new Response(new ResponseOptions({status: 401, body: loginRespIncorrect}));
+      let resp = new Response(new ResponseOptions({status: 401, body: LOGIN_RESP_INCORRECT}));
       service.login(getLoginReq("notValidOrNotActivated@email.com", "fake"))
-        .subscribe(resp => expect(resp).toEqual(loginRespIncorrect));
+        .subscribe(resp => expect(resp).toEqual(LOGIN_RESP_INCORRECT));
     })));
 
     it('should be NOT OK', async(inject([], () => {
-      let resp = new Response(new ResponseOptions({status: 400, body: loginRespAllRequired}));
+      let resp = new Response(new ResponseOptions({status: 400, body: LOGIN_RESP_ALL_REQUIRED}));
       service.login(getLoginReq("valid@email.com", null))
-        .subscribe(resp => expect(resp).toEqual(loginRespAllRequired));
+        .subscribe(resp => expect(resp).toEqual(LOGIN_RESP_ALL_REQUIRED));
     })));
 
     it('should be OK', async(inject([], () => {
-      let resp = new Response(new ResponseOptions({status: 200, body: loginRespOk}));
+      let resp = new Response(new ResponseOptions({status: 200, body: LOGIN_RESP_OK}));
       service.login(getLoginReq("valid@email.com", "fake"))
-        .subscribe(resp => expect(resp).toEqual(loginRespOk));
+        .subscribe(resp => expect(resp).toEqual(LOGIN_RESP_OK));
     })));
 
     it('should treat 404 as an Observable error', async(inject([], () => {
@@ -118,8 +120,8 @@ describe('Http-AuthService (mockBackend)', () => {
     let backend: MockBackend;
     let service: AuthService;
 
-    const forgotRespAllRequired: any = {"message":"Email fields is required."};
-    const forgotRespOk: any = {"message":"An e-mail has been sent to valid@email.com with further instructions."};
+    const FORGOT_RESP_ALL_REQUIRED: any = {"message":"Email fields is required."};
+    const FORGOT_RESP_OK: any = {"message":"An e-mail has been sent to valid@email.com with further instructions."};
 
     beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
       backend = be;
@@ -127,15 +129,15 @@ describe('Http-AuthService (mockBackend)', () => {
     }));
 
     it('should be NOT OK', async(inject([], () => {
-      let resp = new Response(new ResponseOptions({status: 400, body: forgotRespAllRequired}));
+      let resp = new Response(new ResponseOptions({status: 400, body: FORGOT_RESP_ALL_REQUIRED}));
       service.forgot({ "email": null })
-        .subscribe(resp => expect(resp).toEqual(forgotRespAllRequired));
+        .subscribe(resp => expect(resp).toEqual(FORGOT_RESP_ALL_REQUIRED));
     })));
 
     it('should be OK', async(inject([], () => {
-      let resp = new Response(new ResponseOptions({status: 200, body: forgotRespOk}));
+      let resp = new Response(new ResponseOptions({status: 200, body: FORGOT_RESP_OK}));
       service.forgot({ "email": "valid@email.com" })
-        .subscribe(resp => expect(resp).toEqual(forgotRespOk));
+        .subscribe(resp => expect(resp).toEqual(FORGOT_RESP_OK));
     })));
 
     it('should treat 404 as an Observable error', async(inject([], () => {
@@ -152,8 +154,8 @@ describe('Http-AuthService (mockBackend)', () => {
     let backend: MockBackend;
     let service: AuthService;
 
-    const activateRespNotExists: any = {"message":"No account with that token exists."};
-    const activateRespOk: any = {"message":"An e-mail has been sent to fakeValid@email.com with further instructions."};
+    const ACTIVATE_RESP_NOT_EXISTS: any = {"message":"No account with that token exists."};
+    const ACTIVATE_RESP_OK: any = {"message":"An e-mail has been sent to fakeValid@email.com with further instructions."};
 
     beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
       backend = be;
@@ -161,15 +163,15 @@ describe('Http-AuthService (mockBackend)', () => {
     }));
 
     it('should be NOT OK', async(inject([], () => {
-      let resp = new Response(new ResponseOptions({status: 400, body: activateRespNotExists}));
+      let resp = new Response(new ResponseOptions({status: 400, body: ACTIVATE_RESP_NOT_EXISTS}));
       service.activate('wrongToken', 'fakeuser')
-        .subscribe(resp => expect(resp).toEqual(activateRespNotExists));
+        .subscribe(resp => expect(resp).toEqual(ACTIVATE_RESP_NOT_EXISTS));
     })));
 
     it('should be OK', async(inject([], () => {
-      let resp = new Response(new ResponseOptions({status: 200, body: activateRespOk}));
+      let resp = new Response(new ResponseOptions({status: 200, body: ACTIVATE_RESP_OK}));
       service.activate('fakeToken', 'fakeuser')
-        .subscribe(resp => expect(resp).toEqual(activateRespOk));
+        .subscribe(resp => expect(resp).toEqual(ACTIVATE_RESP_OK));
     })));
 
     it('should treat 404 as an Observable error', async(inject([], () => {
@@ -182,8 +184,8 @@ describe('Http-AuthService (mockBackend)', () => {
     let backend: MockBackend;
     let service: AuthService;
 
-    const resetRespAllRequired: any = {"message":"No account with that token exists."};
-    const resetRespOk: any = {"message":"An e-mail has been sent to valid@email.com with further instructions."};
+    const RESET_RESP_ALL_REQUIRED: any = {"message":"No account with that token exists."};
+    const RESET_RESP_OK: any = {"message":"An e-mail has been sent to valid@email.com with further instructions."};
 
     beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
       backend = be;
@@ -191,15 +193,15 @@ describe('Http-AuthService (mockBackend)', () => {
     }));
 
     it('should be NOT OK', async(inject([], () => {
-      let resp = new Response(new ResponseOptions({status: 400, body: resetRespAllRequired}));
+      let resp = new Response(new ResponseOptions({status: 400, body: RESET_RESP_ALL_REQUIRED}));
       service.reset("valid@email.com", "newPassword")
-        .subscribe(resp => expect(resp).toEqual(resetRespAllRequired));
+        .subscribe(resp => expect(resp).toEqual(RESET_RESP_ALL_REQUIRED));
     })));
 
     it('should be OK', async(inject([], () => {
-      let resp = new Response(new ResponseOptions({status: 200, body: resetRespOk}));
+      let resp = new Response(new ResponseOptions({status: 200, body: RESET_RESP_OK}));
       service.reset("valid@email.com", "newPassword")
-        .subscribe(resp => expect(resp).toEqual(resetRespOk));
+        .subscribe(resp => expect(resp).toEqual(RESET_RESP_OK));
     })));
 
     it('should treat 404 as an Observable error', async(inject([], () => {
@@ -212,7 +214,7 @@ describe('Http-AuthService (mockBackend)', () => {
     let backend: MockBackend;
     let service: AuthService;
 
-    const unlinkRespOk: any = "User unlinked correctly!";
+    const UNLINK_RESP_OK: any = "User unlinked correctly!";
 
     beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
       backend = be;
@@ -220,9 +222,9 @@ describe('Http-AuthService (mockBackend)', () => {
     }));
 
     it('should be OK', async(inject([], () => {
-      let resp = new Response(new ResponseOptions({status: 200, body: unlinkRespOk}));
+      let resp = new Response(new ResponseOptions({status: 200, body: UNLINK_RESP_OK}));
       service.unlink('github') // a valid serviceName
-        .subscribe(resp => expect(resp).toEqual(unlinkRespOk));
+        .subscribe(resp => expect(resp).toEqual(UNLINK_RESP_OK));
     })));
 
     it('should treat 404 as an Observable error', async(inject([], () => {
@@ -276,7 +278,7 @@ describe('Http-AuthService (mockBackend)', () => {
     let backend: MockBackend;
     let service: AuthService;
 
-    const logoutRespOk: any = {"message":"Logout succeeded"};
+    const LOGOUT_RESP_OK: any = {"message":"Logout succeeded"};
 
     beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
       backend = be;
@@ -284,9 +286,9 @@ describe('Http-AuthService (mockBackend)', () => {
     }));
 
     it('should be OK', async(inject([], () => {
-      let resp = new Response(new ResponseOptions({status: 200, body: logoutRespOk}));
+      let resp = new Response(new ResponseOptions({status: 200, body: LOGOUT_RESP_OK}));
       service.logout()
-        .subscribe(resp => expect(resp).toEqual(logoutRespOk));
+        .subscribe(resp => expect(resp).toEqual(LOGOUT_RESP_OK));
     })));
 
     it('should treat 404 as an Observable error', async(inject([], () => {
@@ -299,8 +301,7 @@ describe('Http-AuthService (mockBackend)', () => {
     let backend: MockBackend;
     let service: AuthService;
 
-    const getTokenRedisRespOk: string = "valid.jwt.token";
-    const getTokenRedisRespNotExists: any = {"message":"Authtoken not available as session data"};
+    const GET_TOKEN_REDIS_RESP_OK: string = "valid.jwt.token";
 
     beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
       backend = be;
@@ -308,19 +309,18 @@ describe('Http-AuthService (mockBackend)', () => {
     }));
 
     it('should be OK', async(inject([], () => {
-      let resp = new Response(new ResponseOptions({status: 200, body: getTokenRedisRespOk}));
+      let resp = new Response(new ResponseOptions({status: 200, body: GET_TOKEN_REDIS_RESP_OK}));
       service.getTokenRedis()
-        .subscribe(resp => expect(resp).toEqual(getTokenRedisRespOk));
+        .subscribe(resp => expect(resp).toEqual(GET_TOKEN_REDIS_RESP_OK));
     })));
 
     it('should treat 404 as an Observable error', async(inject([], () => {
-      let resp = new Response(new ResponseOptions({status: 404, body: getTokenRedisRespNotExists}));
-      service.getTokenRedis()
-        .subscribe(resp => expect(resp).toEqual(getTokenRedisRespNotExists));
+      let resp = getMockedResponse(backend, 404, undefined);
+      testFor404(service.getTokenRedis());
     })));
   });
 
-  describe('#saveToken()', () => {
+  describe('#saveToken(), #getToken(), #removeToken()', () => {
     let backend: MockBackend;
     let service: AuthService;
 
@@ -330,17 +330,104 @@ describe('Http-AuthService (mockBackend)', () => {
     beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
       backend = be;
       service = new AuthService(http);
+      service.removeToken(key);
     }));
 
-    it('should be OK', async(inject([], () => {
+    it(`should save and return the same token from session storage`, async(inject([], () => {
       service.saveToken(key, token);
+      expect(service.getToken(key)).toBe(token);
+    })));
+
+    it(`should overwrite the existing token into session storage with a new one`, async(inject([], () => {
+      service.saveToken(key, token + 'new');
+      expect(service.getToken(key)).toBe(token + 'new');
+    })));
+
+    it(`should remove token from session storage`, async(inject([], () => {
+      service.saveToken(key, token);
+      service.removeToken(key);
+      expect(service.getToken(key)).toBeNull();
+    })));
+
+    it(`shouldn't get token, because not inside the session storage`, async(inject([], () => {
+      expect(service.getToken(key)).toBeNull();
+    })));
+
+    it(`shouldn't remove token using a wrong key`, async(inject([], () => {
+      service.saveToken(key, token);
+      service.removeToken(key + 'wrong');
       expect(service.getToken(key)).toBe(token);
     })));
   });
 
   //TODO decodeJwtToken, post3dAuthAfterCallback, getLoggedUser, getUserFromSessionStorage tests
 
-  
+  const jwtMock = {
+    "_id": "57686655022691a4306b76b9",
+    "user": {
+      "_id": "57686655022691a4306b76b9",
+      "__v": 0,
+      "local": {
+        "hash": "$2a$10$hHCcxNQmzzNCecReX1Rbeu5PJCosbjITXA1x./feykYcI2JW3npTW",
+        "email": 'fake@email.it',
+        "name": 'fake username'
+      }
+    },
+    "exp": 1466721597694,
+    "iat": 1466720997
+  };
+
+  describe('#decodeJwtToken()', () => {
+    let backend: MockBackend;
+    let service: AuthService;
+
+    const TOKEN_NOT_FOUND: any = {"message": "No token found"};
+    const TOKEN_NOT_VALID: any = {"message":"Jwt not valid or corrupted"};
+    const TOKEN_EXPIRED: any = {"message":"Token Session expired (date)."};
+    const TOKEN_IMPOSSIBLE_TO_DECODE: any = {"message":"Impossible to decode token."};
+    const TOKEN_NOT_CHECKABLE: any = {"message":"Impossible to check if jwt is valid"};
+
+    beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
+      backend = be;
+      service = new AuthService(http);
+    }));
+
+    it('should be OK', async(inject([], () => {
+      let resp = new Response(new ResponseOptions({status: 200, body: jwtMock}));
+      service.decodeJwtToken(TOKEN)
+        .subscribe(resp => expect(resp).toEqual(jwtMock));
+    })));
+
+    it('should NOT OK', async(inject([], () => {
+      let resp = new Response(new ResponseOptions({status: 401, body: TOKEN_NOT_VALID}));
+      service.decodeJwtToken(TOKEN)
+        .subscribe(resp => expect(resp).toEqual(TOKEN_NOT_VALID));
+    })));
+
+    it('should NOT OK', async(inject([], () => {
+      let resp = new Response(new ResponseOptions({status: 401, body: TOKEN_EXPIRED}));
+      service.decodeJwtToken(TOKEN)
+        .subscribe(resp => expect(resp).toEqual(TOKEN_EXPIRED));
+    })));
+
+    it('should NOT OK', async(inject([], () => {
+      let resp = new Response(new ResponseOptions({status: 401, body: TOKEN_IMPOSSIBLE_TO_DECODE}));
+      service.decodeJwtToken(TOKEN)
+        .subscribe(resp => expect(resp).toEqual(TOKEN_IMPOSSIBLE_TO_DECODE));
+    })));
+
+    it('should NOT OK', async(inject([], () => {
+      let resp = new Response(new ResponseOptions({status: 500, body: TOKEN_NOT_CHECKABLE}));
+      service.decodeJwtToken(TOKEN)
+        .subscribe(resp => expect(resp).toEqual(TOKEN_NOT_CHECKABLE));
+    })));
+
+    it('should treat 404 as an Observable error', async(inject([], () => {
+      let resp = getMockedResponse(backend, 404, undefined);
+      testFor404(service.decodeJwtToken(TOKEN));
+    })));
+  });
+
 
 });
 
