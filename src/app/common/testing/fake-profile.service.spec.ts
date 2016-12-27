@@ -21,10 +21,21 @@ export const PROFILE_RESPONSE: ProfileResponse = {
   message: "Profile updated successfully!"
 };
 
-export class FakeProfileService {
+export const PROFILE_WRONG_RESPONSE: ProfileResponse = {
+  message: "Update profile error"
+};
 
+
+export class FakeProfileService {
   update(profile: any): Observable<ProfileResponse> {
     return Observable.of(PROFILE_RESPONSE);
   }
+}
 
+export class FakeWrongProfileService {
+  update(profile: any): Observable<ProfileResponse> {
+    return Observable.throw({
+      _body :  JSON.stringify(PROFILE_WRONG_RESPONSE)
+    });
+  }
 }

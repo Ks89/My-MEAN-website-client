@@ -24,14 +24,18 @@ import { AuthService } from "../../common/services/auth.service";
 import {
   FakeAuthService, FakeUser2ServicesNoLocalAuthService,
   FakeUser2ServicesAuthService, FakeLocalUserWithProfileAuthService, FAKE_USER_PROFILE,
-  FakeUser3ServicesNoLocalAuthService
+  FakeUser3ServicesNoLocalAuthService, FakeUserLocalAuthService, FakeUserTwitterAuthService,
+  FakeUserLinkedinAuthService, FakeUserGoogleAuthService, FakeUserGithubAuthService, FakeUserFacebookAuthService
 } from "../../common/testing/fake-auth.service.spec";
 import PageHeaderComponent from "../../common/components/page-header/page-header.component";
 import { LaddaModule } from "angular2-ladda";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { ProfileService } from "../../common/services/profile.service";
-import { FakeProfileService } from "../../common/testing/fake-profile.service.spec";
+import {
+  FakeProfileService, FakeWrongProfileService,
+  PROFILE_WRONG_RESPONSE
+} from "../../common/testing/fake-profile.service.spec";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { ActivatedRouteStub } from "../../common/testing/router-stubs.spec";
 
@@ -52,7 +56,19 @@ const FAKE_AUTH_2_SERVICE = { provide: AuthService, useClass: FakeUser2ServicesA
 const FAKE_AUTH_2NOLOCAL_SERVICE = { provide: AuthService, useClass: FakeUser2ServicesNoLocalAuthService };
 const FAKE_AUTH_3NOLOCAL_SERVICE = { provide: AuthService, useClass: FakeUser3ServicesNoLocalAuthService };
 
-function initTestBed(withToken: boolean, authServiceMocked: any) {
+const FAKE_PROFILE_SERVICE = { provide: ProfileService, useClass: FakeProfileService };
+const FAKE_WRONG_PROFILE_SERVICE = { provide: ProfileService, useClass: FakeWrongProfileService };
+
+// logged user with a single service
+const FAKE_AUTH_LOCAL_ONLY_SERVICE = { provide: AuthService, useClass: FakeUserLocalAuthService };
+const FAKE_AUTH_FACEBOOK_ONLY_SERVICE = { provide: AuthService, useClass: FakeUserFacebookAuthService };
+const FAKE_AUTH_GITHUB_ONLY_SERVICE = { provide: AuthService, useClass: FakeUserGithubAuthService };
+const FAKE_AUTH_GOOGLE_ONLY_SERVICE = { provide: AuthService, useClass: FakeUserGoogleAuthService };
+const FAKE_AUTH_LINKEDIN_ONLY_SERVICE = { provide: AuthService, useClass: FakeUserLinkedinAuthService };
+const FAKE_AUTH_TWITTER_ONLY_SERVICE = { provide: AuthService, useClass: FakeUserTwitterAuthService };
+
+
+function initTestBed(withToken: boolean, authServiceMocked: any, profileServiceMocked: any) {
   TestBed.resetTestingModule();
 
   router = { navigate: jasmine.createSpy('navigate') };
@@ -73,7 +89,7 @@ function initTestBed(withToken: boolean, authServiceMocked: any) {
       providers: [
         { provide: ActivatedRoute, useValue: activatedRoute },
         { provide: Router, useValue: router },
-        { provide: ProfileService, useClass: FakeProfileService },
+        profileServiceMocked,
         authServiceMocked
       ]
     }
@@ -89,7 +105,7 @@ function initTestBed(withToken: boolean, authServiceMocked: any) {
 describe('ProfileComponent', () => {
 
   describe(`---COMMON/CREATIONAL---`, () => {
-    beforeEach( async(() => initTestBed(true, FAKE_AUTH_SERVICE))); // init with token
+    beforeEach( async(() => initTestBed(true, FAKE_AUTH_SERVICE, FAKE_PROFILE_SERVICE))); // init with token
 
     it(`can instantiate it`, () => expect(comp).not.toBeNull());
 
@@ -127,28 +143,37 @@ describe('ProfileComponent', () => {
 
   describe(`---YES---`, () => {
 
-    describe(`add profile info`, () => {
-      beforeEach( async(() => initTestBed(true, FAKE_AUTH_SERVICE))); // init with token
+    const AUTH_SERVICES = [
+      {name: 'local', authService: FAKE_AUTH_LOCAL_ONLY_SERVICE},
+      {name: 'facebook', authService: FAKE_AUTH_FACEBOOK_ONLY_SERVICE},
+      {name: 'github', authService: FAKE_AUTH_GITHUB_ONLY_SERVICE},
+      {name: 'google', authService: FAKE_AUTH_GOOGLE_ONLY_SERVICE},
+      {name: 'linkedin', authService: FAKE_AUTH_LINKEDIN_ONLY_SERVICE},
+      {name: 'twitter', authService: FAKE_AUTH_TWITTER_ONLY_SERVICE},
+    ];
+    for(let i=0; i<AUTH_SERVICES.length; i++) {
+      describe(`add profile info. Test i=${i}, name=${AUTH_SERVICES[i].name}`, () => {
+        beforeEach(async(() => initTestBed(true, AUTH_SERVICES[i].authService, FAKE_PROFILE_SERVICE))); // init with token
 
-      it(`should update the profile`, () => {
-        const element: DebugElement = fixture.debugElement;
+        it(`should update the profile`, () => {
+          const element: DebugElement = fixture.debugElement;
 
-        fillForm(FAKE_NAME, FAKE_SURNAME, FAKE_NICKNAME, FAKE_EMAIL);
-        expect(comp.formModel.valid).toBe(true);
+          fillForm(FAKE_NAME, FAKE_SURNAME, FAKE_NICKNAME, FAKE_EMAIL);
+          expect(comp.formModel.valid).toBe(true);
 
-        comp.onProfileUpdate();
+          comp.onProfileUpdate();
 
-        fixture.detectChanges();
+          fixture.detectChanges();
 
-        const results: DebugElement[] = element.queryAll(By.css('div.alert.alert-success'));
-        expect(results.length).toBe(1);
-        expect(results[0].nativeElement.textContent.trim()).toBe(`Success Profile updated successfully!`);
+          const results: DebugElement[] = element.queryAll(By.css('div.alert.alert-success'));
+          expect(results.length).toBe(1);
+          expect(results[0].nativeElement.textContent.trim()).toBe(`Success Profile updated successfully!`);
+        });
       });
-
-    });
+    }
 
     describe(`update existing profile info`, () => {
-      beforeEach( async(() => initTestBed(true, FAKE_AUTH_WITH_PROFILE_SERVICE))); // init with token
+      beforeEach( async(() => initTestBed(true, FAKE_AUTH_WITH_PROFILE_SERVICE, FAKE_PROFILE_SERVICE))); // init with token
 
       it(`can display the profile page`, () => {
         expect(comp.formModel.controls['name'].value).toBe(FAKE_USER_PROFILE.name);
@@ -173,7 +198,7 @@ describe('ProfileComponent', () => {
     });
 
     describe(`connect the third account (without local)`, () => {
-      beforeEach( async(() => initTestBed(true, FAKE_AUTH_2NOLOCAL_SERVICE))); // init with token
+      beforeEach( async(() => initTestBed(true, FAKE_AUTH_2NOLOCAL_SERVICE, FAKE_PROFILE_SERVICE))); // init with token
 
       it('should display profile page with 2 services', () => {
         const element: DebugElement = fixture.debugElement;
@@ -244,7 +269,7 @@ describe('ProfileComponent', () => {
     });
 
     describe(`connect the third (with local)`, () => {
-      beforeEach( async(() => initTestBed(true, FAKE_AUTH_2_SERVICE))); // init with token
+      beforeEach( async(() => initTestBed(true, FAKE_AUTH_2_SERVICE, FAKE_PROFILE_SERVICE))); // init with token
 
       it('should display profile page with 2 services', () => {
         const element: DebugElement = fixture.debugElement;
@@ -282,7 +307,7 @@ describe('ProfileComponent', () => {
     });
 
     describe(`connect the fourth account (without local)`, () => {
-      beforeEach( async(() => initTestBed(true, FAKE_AUTH_3NOLOCAL_SERVICE))); // init with token
+      beforeEach( async(() => initTestBed(true, FAKE_AUTH_3NOLOCAL_SERVICE, FAKE_PROFILE_SERVICE))); // init with token
 
       it('should display profile page with 3 services', () => {
         const element: DebugElement = fixture.debugElement;
@@ -318,7 +343,7 @@ describe('ProfileComponent', () => {
     });
 
     describe(`unlink`, () => {
-      beforeEach( async(() => initTestBed(true, FAKE_AUTH_3NOLOCAL_SERVICE))); // init with token
+      beforeEach( async(() => initTestBed(true, FAKE_AUTH_3NOLOCAL_SERVICE, FAKE_PROFILE_SERVICE))); // init with token
 
       it('should display profile page with 3 services', () => {
         const element: DebugElement = fixture.debugElement;
@@ -354,7 +379,7 @@ describe('ProfileComponent', () => {
     });
 
     describe(`last unlink`, () => {
-      beforeEach( async(() => initTestBed(true, FAKE_AUTH_2_SERVICE))); // init with token
+      beforeEach( async(() => initTestBed(true, FAKE_AUTH_2_SERVICE, FAKE_PROFILE_SERVICE))); // init with token
 
       it('should display profile page with 2 services', () => {
         const element: DebugElement = fixture.debugElement;
@@ -397,7 +422,7 @@ describe('ProfileComponent', () => {
   describe(`---NO---`, () => {
 
     describe(`update profile`, () => {
-      beforeEach( async(() => initTestBed(true, FAKE_AUTH_SERVICE))); // init with token
+      beforeEach( async(() => initTestBed(true, FAKE_AUTH_SERVICE, FAKE_PROFILE_SERVICE))); // init with token
 
       const BAD = 'a'; // short value length < 3, because i'm using a length validator into the component
       const FORMS = [
@@ -426,6 +451,28 @@ describe('ProfileComponent', () => {
           expect(errors.length).toBe(0);
         });
       }
+    });
+  });
+
+  describe(`---ERROR---`, () => {
+
+    describe(`update profile error`, () => {
+      beforeEach( async(() => initTestBed(true, FAKE_AUTH_SERVICE, FAKE_WRONG_PROFILE_SERVICE))); // init with token
+
+        it(`should NOT update the profile and return an error`, () => {
+          const element: DebugElement = fixture.debugElement;
+
+          fillForm(FAKE_NAME, FAKE_SURNAME, FAKE_NICKNAME, FAKE_EMAIL);
+          expect(comp.formModel.valid).toBe(true);
+
+          comp.onProfileUpdate();
+
+          fixture.detectChanges();
+
+          const result: DebugElement = element.query(By.css('div.alert.alert-danger'));
+          expect(result.nativeElement.textContent.trim()).toBe('Error' + ' ' + PROFILE_WRONG_RESPONSE.message);
+        });
+
     });
   });
 

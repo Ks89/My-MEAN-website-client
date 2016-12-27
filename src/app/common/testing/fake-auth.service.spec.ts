@@ -31,6 +31,16 @@ export const FAKE_USER_FACEBOOK = {
   id: "7325982735892",
   name: FAKE_OK_USERNAME
 };
+export const FAKE_USER_LINKEDIN = {
+  email: FAKE_OK_EMAIL_TOKEN,
+  id: "7325982735892",
+  name: FAKE_OK_USERNAME
+};
+export const FAKE_USER_TWITTER = {
+  email: FAKE_OK_EMAIL_TOKEN,
+  id: "7325982735892",
+  username: FAKE_OK_USERNAME
+};
 export const FAKE_USER_PROFILE = {
   email: FAKE_OK_EMAIL_TOKEN,
   name: FAKE_OK_NAME,
@@ -207,5 +217,38 @@ export class FakeUser3ServicesNoLocalAuthService extends FakeAuthService {
       facebook: FAKE_USER_FACEBOOK,
       profile: FAKE_USER_PROFILE
     });
+  }
+}
+
+
+// mocks with a single service
+export class FakeUserLocalAuthService extends FakeAuthService {
+  getLoggedUser(): Observable<any> {
+    return Observable.of({ _id: FAKE_ROOT_USER_ID, local: FAKE_USER_LOCAL });
+  }
+}
+export class FakeUserFacebookAuthService extends FakeAuthService {
+  getLoggedUser(): Observable<any> {
+    return Observable.of({ _id: FAKE_ROOT_USER_ID, facebook: FAKE_USER_FACEBOOK });
+  }
+}
+export class FakeUserGithubAuthService extends FakeAuthService {
+  getLoggedUser(): Observable<any> {
+    return Observable.of({ _id: FAKE_ROOT_USER_ID, github: FAKE_USER_GITHUB});
+  }
+}
+export class FakeUserGoogleAuthService extends FakeAuthService {
+  getLoggedUser(): Observable<any> {
+    return Observable.of({ _id: FAKE_ROOT_USER_ID, google: FAKE_USER_GOOGLE });
+  }
+}
+export class FakeUserLinkedinAuthService extends FakeAuthService {
+  getLoggedUser(): Observable<any> {
+    return Observable.of({ _id: FAKE_ROOT_USER_ID, linkedin: FAKE_USER_LINKEDIN });
+  }
+}
+export class FakeUserTwitterAuthService extends FakeAuthService {
+  getLoggedUser(): Observable<any> {
+    return Observable.of({ _id: FAKE_ROOT_USER_ID, twitter: FAKE_USER_TWITTER });
   }
 }
