@@ -3,12 +3,8 @@ import { Http } from '@angular/http';
 import { Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/reduce';
 import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/concatMap';
-import 'rxjs/add/operator/share';
 
 @Injectable()
 export class AuthService {
@@ -51,6 +47,7 @@ export class AuthService {
       this.removeToken('auth');
       return this.handleError(error);
     });
+
   }
 
   reset(emailToken: any, newPassword: any): Observable<any> {
@@ -62,12 +59,13 @@ export class AuthService {
     .map(response => {
       this.removeToken('auth'); // TODO check if it's correct to remove or I have to save it
       return response.json();
-    });
+    }).catch(this.handleError);
   }
 
   forgot(email: any): Observable<any> {
     return this.http.post('/api/reset', { email : email}, this.options)
-    .map(response => response.json());
+    .map(response => response.json())
+    .catch(this.handleError);
   }
 
   activate(emailToken: string, userName: string): Observable<any> {
@@ -76,12 +74,14 @@ export class AuthService {
       userName : userName
     };
     return this.http.post('/api/activateAccount', data, this.options)
-    .map(response => response.json());
+    .map(response => response.json())
+    .catch(this.handleError);
   }
 
   unlink(serviceName: string): Observable<any> {
     console.log('Called unlink ' + serviceName);
-    return this.http.get(`/api/unlink/${serviceName}`);
+    return this.http.get(`/api/unlink/${serviceName}`)
+    .catch(this.handleError);
   };
 
   // ---------------------------------------
@@ -90,7 +90,8 @@ export class AuthService {
   // function to call the /users/:id REST API
   getUserById(id: string): Observable<any> {
     return this.http.get(`/api/users/${id}`)
-    .map(response => response.json());
+    .map(response => response.json())
+    .catch(this.handleError);
   };
 
   logout(): Observable<any> {
@@ -99,7 +100,8 @@ export class AuthService {
 
     // call REST service to remove session data from redis
     return this.http.get('/api/logout')
-    .map(response => response.json());
+    .map(response => response.json())
+    .catch(this.handleError);
   }
 
   saveToken(key, token) {
@@ -109,13 +111,15 @@ export class AuthService {
 
   getTokenRedis(): Observable<any> {
     return this.http.get('/api/sessionToken')
-    .map(response => response.json());
+    .map(response => response.json())
+    .catch(this.handleError);
   }
 
   decodeJwtToken(jwtToken: string): Observable<any> {
     // TODO add an if (jwtToken) or something like that
     return this.http.get(`/api/decodeToken/${jwtToken}`)
-    .map(response => response.json());
+    .map(response => response.json())
+    .catch(this.handleError);
   }
 
   // For 3dauth I must save the auth token, before that I can call isLoggedIn.
@@ -130,6 +134,8 @@ export class AuthService {
       if (!tokenData) {
         return 'sessionToken not valid';
       }
+
+      // FIXME this could be a bug because in unit-test I have to stringify two times. Why?
       const tokenObj = JSON.parse(tokenData);
       console.log('tokenobj: ' + tokenObj);
       if (tokenObj && tokenObj.token) {
@@ -139,7 +145,8 @@ export class AuthService {
       } else {
         return 'sessionToken not valid. Cannot obtain token';
       }
-    });
+    })
+    .catch(this.handleError);
   }
 
   // Used to know if you are logged in or not
@@ -163,11 +170,8 @@ export class AuthService {
         console.log(user);
         return user;
       }
-    },
-    err => {
-      console.log(err);
-      return 'getLoggedUser error';
-    });
+    })
+    .catch(this.handleError);
   }
 
   // -----------------------------------
@@ -199,17 +203,17 @@ export class AuthService {
       return this.decodeJwtToken(sessionToken);
     } else {
       console.log('getUserFromSessionStorage sessionToken null or empty');
+      // FIXME find a better solution
       return Observable.of(null);
     }
   }
 
   private handleError (error: any) {
-    // In a real world app, we might send the error to remote logging infrastructure
+    // TODO In a real world app, we might send the error to remote logging infrastructure
     let errMsg = error.message || 'Server error';
     console.error(errMsg); // log to console instead
-    return Observable.throw(errMsg);
+    return Observable.throw(new Error(errMsg));
   }
-
 }
 
 
