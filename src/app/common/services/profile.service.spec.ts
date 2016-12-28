@@ -1,10 +1,7 @@
+import * as _ from "lodash";
 import { async, inject, TestBed } from '@angular/core/testing';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { HttpModule, Http, XHRBackend, Response, ResponseOptions } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/do';
 
 import { Response as ProfileResponse, ProfileService } from './profile.service';
 
@@ -61,14 +58,12 @@ describe('Http-ProfileService (mockBackend)', () => {
         .subscribe(response => expect(response).toEqual(PROFILE_UPDATE_SUCCESS, 'should be a success'));
     })));
 
-    it('should treat 404 as an Observable error', async(inject([], () => {
-      mockRespByStatusAndBody(backend, 404, undefined);
+    it('should catch an Observable error', async(inject([], () => {
+      mockError(backend);
       service.update(PROFILE_UPDATE_REQUEST)
-        .do(projects => fail('should not respond with a success'))
-        .catch(err => {
-          expect(err).toMatch(/Bad response status/, 'should catch bad response status code');
-          return Observable.of(null); // failure is the expected test result
-        });
+        .subscribe(
+          projects => fail(`shouldn't call this, because I'm expecting an error.`),
+          err => expect(_.isError(err)).toBeTruthy());
     })));
   });
 });
@@ -82,5 +77,8 @@ function mockRespByStatusAndBody(backend: MockBackend, status: number, body?: an
   }
   let resp = new Response(new ResponseOptions(data));
   backend.connections.subscribe((c: MockConnection) => c.mockRespond(resp));
-  return resp;
+}
+
+function mockError(backend: MockBackend) {
+  backend.connections.subscribe((c: MockConnection) => c.mockError(new Error()));
 }
