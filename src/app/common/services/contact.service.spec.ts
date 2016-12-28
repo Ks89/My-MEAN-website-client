@@ -64,7 +64,7 @@ describe('Http-ContactService (mockBackend)', () => {
     it('should have expected the fake contact response', async(inject([], () => {
       mockRespByStatusAndBody(backend, 200, CAPTCHA_SUCCESS);
       service.sendFormWithCaptcha(CONTACT_SENDFORM_WITH_CAPTCHA_RESPONSE)
-        .subscribe(response => expect(response).toEqual(CAPTCHA_SUCCESS'));
+        .subscribe(response => expect(response).toEqual(CAPTCHA_SUCCESS));
     })));
 
     it('should catch 401 - recaptcha response not valid', async(inject([], () => {
