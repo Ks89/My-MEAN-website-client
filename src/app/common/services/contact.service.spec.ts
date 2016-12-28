@@ -8,7 +8,7 @@ import 'rxjs/add/operator/do';
 
 import { ContactService } from './contact.service';
 
-const contactSendFormWithCaptchaRequest: any = {
+const CONTACT_SENDFORM_WITH_CAPTCHA_RESPONSE: any = {
   "response": "fdhijfkandlfjahsfdk-fsdfsdfdgsd-gsdsdgsdg",
   "emailFormData": {
     "email": "fake.email@email.it",
@@ -17,7 +17,7 @@ const contactSendFormWithCaptchaRequest: any = {
   }
 };
 
-const contactSendFormWithoutCaptchaRequest: any = {
+const CONTACT_SENDFORM_WITHOUT_CAPTCHA_REQUEST: any = {
   "emailFormData": {
     "email": "fake.email@email.it",
     "messageText": "gsdgsdgsadgsdgsdg",
@@ -25,8 +25,8 @@ const contactSendFormWithoutCaptchaRequest: any = {
   }
 };
 
-const contactSendFormWithCaptchaSuccess: any = { "message": contactSendFormWithCaptchaRequest.emailFormData.email };
-const contactSendFormWithCaptchaError: any = {"message":["missing-input-response"]};
+const CAPTCHA_SUCCESS: any = { "message": CONTACT_SENDFORM_WITH_CAPTCHA_RESPONSE.emailFormData.email };
+const CAPTCHA_ERROR: any = {"message":["missing-input-response"]};
 
 describe('Http-ContactService (mockBackend)', () => {
 
@@ -55,32 +55,27 @@ describe('Http-ContactService (mockBackend)', () => {
   describe('#when update()', () => {
     let backend: MockBackend;
     let service: ContactService;
-    let response: Response;
 
     beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
       backend = be;
       service = new ContactService(http);
-      let options = new ResponseOptions({status: 200, body: contactSendFormWithCaptchaSuccess});
-      response = new Response(options);
     }));
 
     it('should have expected the fake contact response', async(inject([], () => {
-      backend.connections.subscribe((c: MockConnection) => c.mockRespond(response));
-      service.sendFormWithCaptcha(contactSendFormWithCaptchaRequest)
-        .subscribe(response => expect(response).toEqual(contactSendFormWithCaptchaSuccess, 'should be a success'));
+      mockRespByStatusAndBody(backend, 200, CAPTCHA_SUCCESS);
+      service.sendFormWithCaptcha(CONTACT_SENDFORM_WITH_CAPTCHA_RESPONSE)
+        .subscribe(response => expect(response).toEqual(CAPTCHA_SUCCESS'));
     })));
 
     it('should catch 401 - recaptcha response not valid', async(inject([], () => {
-      let resp = new Response(new ResponseOptions({status: 401, body: contactSendFormWithCaptchaError}));
-      backend.connections.subscribe((c: MockConnection) => c.mockRespond(resp));
-      service.sendFormWithCaptcha(contactSendFormWithoutCaptchaRequest)
-        .subscribe(response => expect(response).toEqual(contactSendFormWithCaptchaError, 'should be a success'));
+      mockRespByStatusAndBody(backend, 401, CAPTCHA_ERROR);
+      service.sendFormWithCaptcha(CONTACT_SENDFORM_WITHOUT_CAPTCHA_REQUEST)
+        .subscribe(response => expect(response).toEqual(CAPTCHA_ERROR));
     })));
 
     it('should treat 404 as an Observable error', async(inject([], () => {
-      let resp = new Response(new ResponseOptions({status: 404}));
-      backend.connections.subscribe((c: MockConnection) => c.mockRespond(resp));
-      service.sendFormWithCaptcha(contactSendFormWithCaptchaRequest)
+      mockRespByStatusAndBody(backend, 404);
+      service.sendFormWithCaptcha(CONTACT_SENDFORM_WITH_CAPTCHA_RESPONSE)
         .do(projects => fail('should not respond with a success'))
         .catch(err => {
           expect(err).toMatch(/Bad response status/, 'should catch bad response status code');
@@ -89,3 +84,15 @@ describe('Http-ContactService (mockBackend)', () => {
     })));
   });
 });
+
+function mockRespByStatusAndBody(backend: MockBackend, status: number, body?: any) {
+  let data;
+  if(body !== undefined) {
+    data = {status: status, body: body};
+  } else {
+    data = {status: status};
+  }
+  let resp = new Response(new ResponseOptions(data));
+  backend.connections.subscribe((c: MockConnection) => c.mockRespond(resp));
+  return resp;
+}
