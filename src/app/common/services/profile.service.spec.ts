@@ -8,7 +8,7 @@ import 'rxjs/add/operator/do';
 
 import { Response as ProfileResponse, ProfileService } from './profile.service';
 
-const profileUpdateRequest: any = {
+const PROFILE_UPDATE_REQUEST: any = {
   "localUserEmail": "",
   "id": "105151560202467598897",
   "serviceName": "google",
@@ -18,7 +18,7 @@ const profileUpdateRequest: any = {
   "email": "vghbjn"
 };
 
-const profileUpdateSuccess: ProfileResponse = {
+const PROFILE_UPDATE_SUCCESS: ProfileResponse = {
   message: "Profile updated successfully!"
 };
 
@@ -46,28 +46,24 @@ describe('Http-ProfileService (mockBackend)', () => {
       expect(backend).not.toBeNull('backend should be provided');
   }));
 
-  describe('#when update()', () => {
+  describe('#update()', () => {
     let backend: MockBackend;
     let service: ProfileService;
-    let response: Response;
 
     beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
       backend = be;
       service = new ProfileService(http);
-      let options = new ResponseOptions({status: 200, body: profileUpdateSuccess});
-      response = new Response(options);
     }));
 
     it('should have expected the fake profile response', async(inject([], () => {
-      backend.connections.subscribe((c: MockConnection) => c.mockRespond(response));
-      service.update(profileUpdateRequest)
-        .subscribe(response => expect(response).toEqual(profileUpdateSuccess, 'should be a success'));
+      mockRespByStatusAndBody(backend, 200, PROFILE_UPDATE_SUCCESS);
+      service.update(PROFILE_UPDATE_REQUEST)
+        .subscribe(response => expect(response).toEqual(PROFILE_UPDATE_SUCCESS, 'should be a success'));
     })));
 
     it('should treat 404 as an Observable error', async(inject([], () => {
-      let resp = new Response(new ResponseOptions({status: 404}));
-      backend.connections.subscribe((c: MockConnection) => c.mockRespond(resp));
-      service.update(profileUpdateRequest)
+      mockRespByStatusAndBody(backend, 404, undefined);
+      service.update(PROFILE_UPDATE_REQUEST)
         .do(projects => fail('should not respond with a success'))
         .catch(err => {
           expect(err).toMatch(/Bad response status/, 'should catch bad response status code');
@@ -76,3 +72,15 @@ describe('Http-ProfileService (mockBackend)', () => {
     })));
   });
 });
+
+function mockRespByStatusAndBody(backend: MockBackend, status: number, body?: any) {
+  let data;
+  if(body !== undefined) {
+    data = {status: status, body: body};
+  } else {
+    data = {status: status};
+  }
+  let resp = new Response(new ResponseOptions(data));
+  backend.connections.subscribe((c: MockConnection) => c.mockRespond(resp));
+  return resp;
+}
