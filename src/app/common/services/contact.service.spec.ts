@@ -52,7 +52,7 @@ describe('Http-ContactService (mockBackend)', () => {
       expect(backend).not.toBeNull('backend should be provided');
   }));
 
-  describe('#when update()', () => {
+  describe('update()', () => {
     let backend: MockBackend;
     let service: ContactService;
 
