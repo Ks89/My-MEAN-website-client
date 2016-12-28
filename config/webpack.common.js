@@ -151,10 +151,11 @@ module.exports = {
       /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
       helpers.root('./src') // location of your src
     ),
-    new ChunkManifestPlugin({
-      filename: "manifest.json",
-      manifestVariable: "webpackManifest"
-    }),
+    // TODO FIXME restore this
+    // new ChunkManifestPlugin({
+    //   filename: "manifest.json",
+    //   manifestVariable: "webpackManifest"
+    // }),
     new LoaderOptionsPlugin({
       debug: true,
       options: {
