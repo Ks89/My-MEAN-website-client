@@ -50,19 +50,29 @@ describe('Http-AuthService (mockBackend)', () => {
     it('should be NOT OK', async(inject([], () => {
       mockRespByStatusAndBody(backend, 400, REGISTER_RESP_ALREADY_EXISTS);
       service.register(getRegisterReq("fake", "alreadyused@email.com", "fake"))
-        .subscribe(resp => expect(resp._body).toEqual(REGISTER_RESP_ALREADY_EXISTS));
+        .subscribe(resp => {
+          expect(resp._body).toEqual(REGISTER_RESP_ALREADY_EXISTS);
+          // session storage must be empty, because when registration fails, it removes session token (just to be safe)
+          expect(service.getToken('auth')).toBeUndefined();
+        });
     })));
 
     it('should be NOT OK', async(inject([], () => {
       mockRespByStatusAndBody(backend, 400, REGISTER_RESP_ALL_REQUIRED);
       service.register(getRegisterReq("fake", null, null))
-        .subscribe(resp => expect(resp._body).toEqual(REGISTER_RESP_ALL_REQUIRED));
+        .subscribe(resp => {
+          expect(resp._body).toEqual(REGISTER_RESP_ALL_REQUIRED);
+          // session storage must be empty, because when registration fails, it removes session token (just to be safe)
+          expect(service.getToken('auth')).toBeUndefined();
+        });
     })));
 
     it('should be OK', async(inject([], () => {
       mockRespByStatusAndBody(backend, 200, REGISTER_RESP_OK);
       service.register(getRegisterReq("fake", "valid@email.com", "fake"))
       .subscribe(resp => expect(resp._body).toEqual(REGISTER_RESP_OK));
+      // it's not important if session storage is empty or not, because
+      // login will overwrite session storage with the same key
     })));
 
     it('should treat 404 as an Observable error', async(inject([], () => {
@@ -96,9 +106,9 @@ describe('Http-AuthService (mockBackend)', () => {
     let backend: MockBackend;
     let service: AuthService;
 
-    const LOGIN_RESP_INCORRECT: Object = {"message":"Incorrect username or password. Or this account is not activated, check your mailbox."};
-    const LOGIN_RESP_ALL_REQUIRED: Object = {"message":"All fields required"};
-    const LOGIN_RESP_OK: Object = {"token":"JWT.TOKEN"};
+    const LOGIN_RESP_INCORRECT: Object = { "message": "Incorrect username or password. Or this account is not activated, check your mailbox." };
+    const LOGIN_RESP_ALL_REQUIRED: Object = { "message": "All fields required" };
+    const LOGIN_RESP_OK: any = { "token": "jwy.valid.token" };
 
     beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
       backend = be;
@@ -108,13 +118,21 @@ describe('Http-AuthService (mockBackend)', () => {
     it('should be NOT OK', async(inject([], () => {
       mockRespByStatusAndBody(backend, 401, LOGIN_RESP_INCORRECT);
       service.login(getLoginReq("notValidOrNotActivated@email.com", "fake"))
-        .subscribe(resp => expect(resp).toEqual(LOGIN_RESP_INCORRECT));
+        .subscribe(resp => {
+          expect(resp).toEqual(LOGIN_RESP_INCORRECT);
+          // session storage must be empty when login fails
+          expect(service.getToken('auth')).toBeUndefined();
+        });
     })));
 
     it('should be NOT OK', async(inject([], () => {
       mockRespByStatusAndBody(backend, 400, LOGIN_RESP_ALL_REQUIRED);
       service.login(getLoginReq("valid@email.com", null))
-        .subscribe(resp => expect(resp).toEqual(LOGIN_RESP_ALL_REQUIRED));
+        .subscribe(resp => {
+          expect(resp).toEqual(LOGIN_RESP_ALL_REQUIRED);
+          // session storage must be empty when login fails
+          expect(service.getToken('auth')).toBeUndefined();
+        });
     })));
 
     it('should be OK', async(inject([], () => {
@@ -122,6 +140,8 @@ describe('Http-AuthService (mockBackend)', () => {
       service.login(getLoginReq("valid@email.com", "fake"))
         .subscribe(resp => {
           expect(resp).toEqual(LOGIN_RESP_OK);
+          // session storage must contains the generated token
+          expect(service.getToken('auth')).toBe(LOGIN_RESP_OK.token);
         });
     })));
 
@@ -234,7 +254,11 @@ describe('Http-AuthService (mockBackend)', () => {
     it('should be OK', async(inject([], () => {
       mockRespByStatusAndBody(backend, 200, RESET_RESP_OK);
       service.reset("valid@email.com", "newPassword")
-        .subscribe(resp => expect(resp).toEqual(RESET_RESP_OK));
+        .subscribe(resp => {
+          expect(resp).toEqual(RESET_RESP_OK);
+          // session storage must be empty when reset completes
+          expect(service.getToken('auth')).toBeUndefined();
+        });
     })));
 
   //   it('should treat 404 as an Observable error', async(inject([], () => {
@@ -310,7 +334,7 @@ describe('Http-AuthService (mockBackend)', () => {
     let backend: MockBackend;
     let service: AuthService;
 
-    const LOGOUT_RESP_OK: Object = {"message":"Logout succeeded"};
+    const LOGOUT_RESP_OK: Object = {"message": "Logout succeeded"};
 
     beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
       backend = be;
@@ -320,7 +344,11 @@ describe('Http-AuthService (mockBackend)', () => {
     it('should be OK', async(inject([], () => {
       mockRespByStatusAndBody(backend, 200, LOGOUT_RESP_OK);
       service.logout()
-        .subscribe(resp => expect(resp).toEqual(LOGOUT_RESP_OK));
+        .subscribe(resp => {
+          expect(resp).toEqual(LOGOUT_RESP_OK);
+          // session storage must be empty when login fails
+          expect(service.getToken('auth')).toBeUndefined();
+        });
     })));
 
   //   it('should treat 404 as an Observable error', async(inject([], () => {
@@ -378,11 +406,11 @@ describe('Http-AuthService (mockBackend)', () => {
     it(`should remove token from session storage`, async(inject([], () => {
       service.saveToken(key, token);
       service.removeToken(key);
-      expect(service.getToken(key)).toBeNull();
+      expect(service.getToken(key)).toBeUndefined();
     })));
 
     it(`shouldn't get token, because not inside the session storage`, async(inject([], () => {
-      expect(service.getToken(key)).toBeNull();
+      expect(service.getToken(key)).toBeUndefined();
     })));
 
     it(`shouldn't remove token using a wrong key`, async(inject([], () => {
@@ -423,11 +451,13 @@ describe('Http-AuthService (mockBackend)', () => {
       service = new AuthService(http);
     }));
 
-    // it('should be OK', async(inject([], () => {
-    //   mockRespByStatusAndBody(backend, 200, JWT_MOCK);
-    //   service.decodeJwtToken(TOKEN)
-    //     .subscribe(resp => expect(resp).toEqual(JWT_MOCK));
-    // })));
+
+    // TODO FIXME
+    it('should be OK', async(inject([], () => {
+      mockRespByStatusAndBody(backend, 200, JWT_MOCK);
+      service.decodeJwtToken(TOKEN)
+        .subscribe(resp => expect(resp).toEqual(JWT_MOCK));
+    })));
 
     it('should NOT OK', async(inject([], () => {
       mockRespByStatusAndBody(backend, 401, TOKEN_NOT_VALID);
@@ -475,11 +505,15 @@ describe('Http-AuthService (mockBackend)', () => {
 
     // TODO - NOT SIMPLE BECAUSE post3dAuthAfterCallback uses JSON.parse with the result of another inner service
 
-    // it('should be OK', async(inject([], () => {
-    //   mockRespByStatusAndBody(backend, 200, JSON.stringify(GET_TOKEN_REDIS_RESP_OK));
-    //   service.post3dAuthAfterCallback()
-    //     .subscribe(resp => expect(resp).toEqual(GET_TOKEN_REDIS_RESP_OK.token));
-    // })));
+    it('should be OK', async(inject([], () => {
+      mockRespByStatusAndBody(backend, 200, JSON.stringify(JSON.stringify(GET_TOKEN_REDIS_RESP_OK)));
+      service.post3dAuthAfterCallback()
+        .subscribe(resp => expect(resp).toEqual(GET_TOKEN_REDIS_RESP_OK.token));
+    })));
+
+    // if fails
+    // session storage must be empty when login fails
+    // expect(service.getToken()('auth')).toBeUndefined();
 
     // it('should NOT OK, but with status 200', async(inject([], () => {
     //   mockRespByStatusAndBody(backend, 200, TOKEN_NOT_VALID);
@@ -504,7 +538,7 @@ describe('Http-AuthService (mockBackend)', () => {
     let backend: MockBackend;
     let service: AuthService;
 
-    const JWT_MOCK: any = {
+    const JWT_MOCK = {
       '_id': '57686655022691a4306b76b9',
       'user': {
         '_id': '57686655022691a4306b76b9',
@@ -526,11 +560,20 @@ describe('Http-AuthService (mockBackend)', () => {
 
     // TODO - NOT SIMPLE BECAUSE post3dAuthAfterCallback uses JSON.parse with the result of another inner service
 
-    // it('should be OK', async(inject([], () => {
-    //   mockRespByStatusAndBody(backend, 200, JSON.stringify(JWT_MOCK));
-    //   service.getLoggedUser()
-    //     .subscribe(resp => expect(resp).toEqual(JWT_MOCK.user));
-    // })));
+    it('should be OK', async(inject([], () => {
+      mockRespByStatusAndBody(backend, 200, JSON.stringify(JSON.stringify(JWT_MOCK)));
+      service.getLoggedUser()
+        .subscribe(resp => {
+          console.log("^^^^^^^^^^^^^^^^^^");
+          console.warn(resp);
+          console.log("^^^^^^^^^^^^^^^^^^");
+          expect(resp).toEqual(JWT_MOCK.user);
+        });
+    })));
+
+    // of fails add
+    //session storage must be empty when login fails
+    //expect(service.getToken()('auth')).toBeUndefined();
 
   });
 

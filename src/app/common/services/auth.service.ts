@@ -26,23 +26,17 @@ export class AuthService {
   login(user: any): Observable<any> {
     return this.http.post('/api/login', user, this.options)
     .map(response => {
-      console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
       console.log(response);
-      console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!! json");
-      console.log(response.json());
-      console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!! prima if");
       if(!response || !response.json()) {
         console.error("ERROREEEEEEEEEEE");
         return Observable.throw(new Error('response body is empty'));
         // return this.handleError('response body is empty');
       } else {
-        console.log("peppino");
         this.saveToken('auth', response.json().token);
         return response.json();
       }
     }).catch(error => {
       this.removeToken('auth');
-        console.log("called catch !!!!!!!!!!!!!!!!!!!!!!!!!!!!");
       return this.handleError(error);
     });
   }
@@ -50,10 +44,8 @@ export class AuthService {
   register(user: any): Observable<any> {
     return this.http.post('/api/register', user, this.options)
     .map(response => {
-      console.log('Done register');
+      console.log('Done register, response is:');
       console.log(response);
-      console.log("-----------------");
-      this.saveToken('auth', response.json().token);
       return response;
     }).catch(error => {
       this.removeToken('auth');
@@ -68,8 +60,7 @@ export class AuthService {
     };
     return this.http.post('/api/resetNewPassword', data, this.options)
     .map(response => {
-      //  saveToken('auth', data.token);
-      this.saveToken('auth', response.json().token);
+      this.removeToken('auth'); // TODO check if it's correct to remove or I have to save it
       return response.json();
     });
   }
@@ -161,7 +152,6 @@ export class AuthService {
       if (res === null || res === 'invalid-data') {
         console.log('getLoggedUser invalid');
         this.removeToken('auth');
-        // TODO remove session data with logout
         console.log('INVALID DATA !!!!');
         //  return Observable.throw(new Error('Invalid data!'));
         return 'INVALID DATA';
@@ -175,9 +165,8 @@ export class AuthService {
       }
     },
     err => {
-        console.log('getLoggedUser error ');
-        console.log(err);
-        return 'getLoggedUser error';
+      console.log(err);
+      return 'getLoggedUser error';
     });
   }
 
@@ -185,7 +174,13 @@ export class AuthService {
   // --- others functions - not exposed
   // -----------------------------------
   getToken(key): string {
-    return window.sessionStorage.getItem(key);
+    const sessionAuth: string | void = window.sessionStorage.getItem(key);
+
+    if(!sessionAuth || sessionAuth === 'undefined' || sessionAuth === 'null') {
+      return undefined;
+    }
+
+    return sessionAuth;
   }
 
   removeToken(key) {
