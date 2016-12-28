@@ -86,7 +86,7 @@ export class ProjectService {
     // TODO In a real world app, we might send the error to remote logging infrastructure
     let errMsg = error.message || 'Server error';
     console.error(errMsg); // log to console instead
-    return Observable.throw(errMsg);
+    return Observable.throw(new Error(errMsg));
   }
 
 }

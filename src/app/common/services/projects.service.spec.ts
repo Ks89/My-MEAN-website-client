@@ -1,12 +1,7 @@
+import * as _ from "lodash";
 import { async, inject, TestBed } from '@angular/core/testing';
 import { MockBackend, MockConnection } from '@angular/http/testing';
-import { HttpModule, Http, XHRBackend, Response, ResponseOptions } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/toPromise';
-
+import {HttpModule, Http, XHRBackend, Response, ResponseOptions, ResponseType} from '@angular/http';
 import { ProjectService } from './projects.service';
 import { PROJECTS, HOMEVIEWS } from '../testing/fake-project.service.spec';
 
@@ -34,88 +29,75 @@ describe('Http-ProjectService (mockBackend)', () => {
       expect(backend).not.toBeNull('backend should be provided');
   }));
 
-  describe('#when getProjects()', () => {
+  describe('#getProjects()', () => {
     let backend: MockBackend;
     let service: ProjectService;
-    let response: Response;
 
     beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
       backend = be;
       service = new ProjectService(http);
-      let options = new ResponseOptions({status: 200, body: PROJECTS });
-      response = new Response(options);
     }));
 
     it('should have expected fake projects', async(inject([], () => {
-      backend.connections.subscribe((c: MockConnection) => c.mockRespond(response));
-      service.getProjects().subscribe(projects => {
+      mockRespByStatusAndBody(backend, 200, PROJECTS);
+      service.getProjects()
+        .subscribe(projects => {
           expect(projects.length).toBe(PROJECTS.length, 'should have expected no. of projects');
           expect(projects).toEqual(PROJECTS, 'should have expected all mocked projects');
       });
     })));
 
     it('should be OK returning no projects', async(inject([], () => {
-      let resp = new Response(new ResponseOptions({status: 200, body: [] }));
-      backend.connections.subscribe((c: MockConnection) => c.mockRespond(resp));
+      mockRespByStatusAndBody(backend, 200, []);
       service.getProjects()
         .subscribe(projects => expect(projects.length).toBe(0, 'should have no projects'));
     })));
 
-    it('should treat 404 as an Observable error', async(inject([], () => {
-      let resp = new Response(new ResponseOptions({status: 404}));
-      backend.connections.subscribe((c: MockConnection) => c.mockRespond(resp));
+    it('should catch an Observable error', async(inject([], () => {
+      mockError(backend);
       service.getProjects()
-        .do(projects => fail('should not respond with projects'))
-        .catch(err => {
-          expect(err).toMatch(/Bad response status/, 'should catch bad response status code');
-          return Observable.of(null); // failure is the expected test result
-        });
+        .subscribe(
+          projects => fail(`shouldn't call this, because I'm expecting an error.`),
+          err => expect(_.isError(err)).toBeTruthy());
     })));
   });
 
   describe('#getProjectsForHomepage()', () => {
     let backend: MockBackend;
     let service: ProjectService;
-    let response: Response;
 
     beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
       backend = be;
       service = new ProjectService(http);
-      let options = new ResponseOptions({status: 200, body: HOMEVIEWS});
-      response = new Response(options);
     }));
 
     it('should have expected fake dashboard-projects', async(inject([], () => {
-      backend.connections.subscribe((c: MockConnection) => c.mockRespond(response));
-      service.getProjectsForHomepage().subscribe(projects => {
+      mockRespByStatusAndBody(backend, 200, HOMEVIEWS);
+      service.getProjectsForHomepage()
+        .subscribe(projects => {
           expect(projects.length).toBe(HOMEVIEWS.length, 'should have expected no. of projects');
           expect(projects).toEqual(HOMEVIEWS, 'should have expected all dashboard projects');
       });
     })));
 
     it('should be OK returning no projects', async(inject([], () => {
-      let resp = new Response(new ResponseOptions({status: 200, body: []}));
-      backend.connections.subscribe((c: MockConnection) => c.mockRespond(resp));
+      mockRespByStatusAndBody(backend, 200, []);
       service.getProjectsForHomepage()
         .subscribe(projects => expect(projects.length).toBe(0, 'should have no projects'));
     })));
 
-    it('should treat 404 as an Observable error', async(inject([], () => {
-      let resp = new Response(new ResponseOptions({status: 404}));
-      backend.connections.subscribe((c: MockConnection) => c.mockRespond(resp));
+    it('should catch an Observable error', async(inject([], () => {
+      mockError(backend);
       service.getProjectsForHomepage()
-        .do(projects => fail('should not respond with projects'))
-        .catch(err => {
-          expect(err).toMatch(/Bad response status/, 'should catch bad response status code');
-          return Observable.of(null); // failure is the expected test result
-        });
+        .subscribe(
+          projects => fail(`shouldn't call this, because I'm expecting an error.`),
+          err => expect(_.isError(err)).toBeTruthy());
     })));
   });
 
   describe('#getProjectsById()', () => {
     let backend: MockBackend;
     let service: ProjectService;
-    let response: Response;
 
     beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
       backend = be;
@@ -124,31 +106,41 @@ describe('Http-ProjectService (mockBackend)', () => {
 
     for(let i=0; i<PROJECTS.length; i++) {
       it(`should have expected a single project that match the id=${PROJECTS[i]._id}. Test i=${i}`, async(inject([], () => {
-        let options = new ResponseOptions({status: 200, body: PROJECTS[i]});
-        response = new Response(options);
-        backend.connections.subscribe((c: MockConnection) => c.mockRespond(response));
-        service.getProjectsById(PROJECTS[i]._id).subscribe(project => {
+        mockRespByStatusAndBody(backend, 200, PROJECTS[i]);
+        service.getProjectsById(PROJECTS[i]._id)
+          .subscribe(project => {
             expect(project).toEqual(PROJECTS[i], 'should have the single project by its id');
         });
       })));
     }
 
     it('should be OK returning no projects (because the requested project doesn\'t exists)', async(inject([], () => {
-      let resp = new Response(new ResponseOptions({status: 404, body: {"message":"Project not found"}}));
-      backend.connections.subscribe((c: MockConnection) => c.mockRespond(resp));
+      mockRespByStatusAndBody(backend, 404, { "message": "Project not found" });
       service.getProjectsById('ey7dhef879wgfh8w9e')
         .subscribe(project => expect(project).toEqual({"message":"Project not found"}, 'should have no projects'));
     })));
 
-    it('should treat 404 as an Observable error', async(inject([], () => {
-      let resp = new Response(new ResponseOptions({status: 404}));
-      backend.connections.subscribe((c: MockConnection) => c.mockRespond(resp));
+    it('should catch an Observable error', async(inject([], () => {
+      mockError(backend);
       service.getProjectsById(PROJECTS[1]._id)
-        .do(project => fail('should not respond with a project'))
-        .catch(err => {
-          expect(err).toMatch(/Bad response status/, 'should catch bad response status code');
-          return Observable.of(null); // failure is the expected test result
-        });
+        .subscribe(
+          projects => fail(`shouldn't call this, because I'm expecting an error.`),
+          err => expect(_.isError(err)).toBeTruthy());
     })));
   });
 });
+
+function mockRespByStatusAndBody(backend: MockBackend, status: number, body?: any) {
+  let data;
+  if(body !== undefined) {
+    data = {status: status, body: body};
+  } else {
+    data = {status: status};
+  }
+  let resp = new Response(new ResponseOptions(data));
+  backend.connections.subscribe((c: MockConnection) => c.mockRespond(resp));
+}
+
+function mockError(backend: MockBackend) {
+  backend.connections.subscribe((c: MockConnection) => c.mockError(new Error()));
+}
