@@ -26,23 +26,39 @@ export class AuthService {
   login(user: any): Observable<any> {
     return this.http.post('/api/login', user, this.options)
     .map(response => {
-      this.saveToken('auth', response.json().token);
-      return response.json();
-    }).map(res => {
-      //  this.loginStatus = res;
-      console.log('Result is: ' + res);
-      return res;
-    }); // on error removeToken('auth');
+      console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+      console.log(response);
+      console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!! json");
+      console.log(response.json());
+      console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!! prima if");
+      if(!response || !response.json()) {
+        console.error("ERROREEEEEEEEEEE");
+        return Observable.throw(new Error('response body is empty'));
+        // return this.handleError('response body is empty');
+      } else {
+        console.log("peppino");
+        this.saveToken('auth', response.json().token);
+        return response.json();
+      }
+    }).catch(error => {
+      this.removeToken('auth');
+        console.log("called catch !!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+      return this.handleError(error);
+    });
   }
 
   register(user: any): Observable<any> {
-    return this.http.post('/api/register', user, this.options).map(
-      response => {
-        console.log('Done register');
-        console.log(response);
-        this.saveToken('auth', response.json().token);
-        return response;
-      }); // removetoken on error
+    return this.http.post('/api/register', user, this.options)
+    .map(response => {
+      console.log('Done register');
+      console.log(response);
+      console.log("-----------------");
+      this.saveToken('auth', response.json().token);
+      return response;
+    }).catch(error => {
+      this.removeToken('auth');
+      return this.handleError(error);
+    });
   }
 
   reset(emailToken: any, newPassword: any): Observable<any> {
@@ -118,7 +134,8 @@ export class AuthService {
     return this.getTokenRedis()
     .map(tokenData => {
       console.log('token obtained from redis');
-      console.log('sessionToken ' + tokenData);
+      console.log('sessionToken ');
+      console.log(tokenData);
       if (!tokenData) {
         return 'sessionToken not valid';
       }
@@ -141,7 +158,7 @@ export class AuthService {
     .map(res => {
       console.log('getLoggedUser map res entered');
       console.log(res);
-      if (res == null || res === 'invalid-data') {
+      if (res === null || res === 'invalid-data') {
         console.log('getLoggedUser invalid');
         this.removeToken('auth');
         // TODO remove session data with logout
@@ -190,4 +207,15 @@ export class AuthService {
       return Observable.of(null);
     }
   }
+
+  private handleError (error: any) {
+    // In a real world app, we might send the error to remote logging infrastructure
+    let errMsg = error.message || 'Server error';
+    console.error(errMsg); // log to console instead
+    return Observable.throw(errMsg);
+  }
+
 }
+
+
+
