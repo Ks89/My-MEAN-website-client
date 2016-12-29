@@ -60,6 +60,11 @@ module.exports = function (config) {
     },
     jasmineDiffReporter: {
       multiline: true
-    }
+    },
+
+    // For AppVeyor to prevent timeouts
+    browserNoActivityTimeout: 60000,
+    browserDisconnectTimeout: 60000,
+    browserDisconnectTolerance: 10
   });
 };
