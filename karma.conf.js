@@ -4,7 +4,12 @@ const webpackConfig = require('./config/webpack.test');
 
 function getBrowsers() {
   if (process.env.CI) {
-    return ['Chrome'];
+    if(process.env.APPVEYOR) {
+      // only on AppVeyor
+      return ['Chrome'];
+    } else {
+      return ['PhantomJS'];
+    }
   } else {
     return ['PhantomJS', 'Chrome', 'Firefox'];
   }
@@ -60,11 +65,11 @@ module.exports = function (config) {
     },
     jasmineDiffReporter: {
       multiline: true
-    },
+    }
 
     // For AppVeyor to prevent timeouts
-    browserNoActivityTimeout: 60000,
-    browserDisconnectTimeout: 60000,
-    browserDisconnectTolerance: 10
+    //browserNoActivityTimeout: 60000,
+    //browserDisconnectTimeout: 60000,
+    //browserDisconnectTolerance: 10
   });
 };

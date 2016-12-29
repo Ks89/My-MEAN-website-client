@@ -5,9 +5,11 @@
 # Build version format
 version: "{build}"
 
-# Test against this version of Node.js
 environment:
   nodejs_version: "Stable"
+  NODE_ENV: test
+  CI: yes
+  APPVEYOR: yes
 
 build: off
 
