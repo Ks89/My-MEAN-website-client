@@ -150,7 +150,7 @@ test_script:
 #      artifacts configuration    #
 #---------------------------------#
 
-artifacts:
+#artifacts:
 
 #---------------------------------#
 #     deployment configuration    #
@@ -158,7 +158,7 @@ artifacts:
 
 # providers: Local, FTP, WebDeploy, AzureCS, AzureBlob, S3, NuGet, Environment
 # provider names are case-sensitive!
-deploy:
+#deploy:
 
 # scripts to run before deployment
 before_deploy:
@@ -174,22 +174,22 @@ deploy_script:
 #---------------------------------#
 
 # on successful build
-on_success:
+#on_success:
   # - do something
 
 # on build failure
-on_failure:
+#on_failure:
   # - do something
 
 # after build failure or success
-on_finish:
+#on_finish:
   # - do something
 
 #---------------------------------#
 #         notifications           #
 #---------------------------------#
 
-notifications:
+#notifications:
 # # Slack
 #  - provider: Slack
 #    incoming_webhook: http://incoming-webhook-url
