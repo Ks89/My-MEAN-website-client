@@ -42,6 +42,8 @@ describe('Http-AuthService (mockBackend)', () => {
     beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
       backend = be;
       service = new AuthService(http);
+      // I want a clean session storage to create independent tests
+      window.sessionStorage.removeItem('auth');
     }));
 
     it('should be NOT OK', async(inject([], () => {
@@ -96,6 +98,8 @@ describe('Http-AuthService (mockBackend)', () => {
     beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
       backend = be;
       service = new AuthService(http);
+      // I want a clean session storage to create independent tests
+      window.sessionStorage.removeItem('auth');
     }));
 
     it('should be NOT OK', async(inject([], () => {
@@ -151,6 +155,8 @@ describe('Http-AuthService (mockBackend)', () => {
     beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
       backend = be;
       service = new AuthService(http);
+      // I want a clean session storage to create independent tests
+      window.sessionStorage.removeItem('auth');
     }));
 
     it('should be NOT OK', async(inject([], () => {
@@ -184,6 +190,8 @@ describe('Http-AuthService (mockBackend)', () => {
     beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
       backend = be;
       service = new AuthService(http);
+      // I want a clean session storage to create independent tests
+      window.sessionStorage.removeItem('auth');
     }));
 
     it('should be NOT OK', async(inject([], () => {
@@ -217,6 +225,8 @@ describe('Http-AuthService (mockBackend)', () => {
     beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
       backend = be;
       service = new AuthService(http);
+      // I want a clean session storage to create independent tests
+      window.sessionStorage.removeItem('auth');
     }));
 
     it('should be NOT OK', async(inject([], () => {
@@ -253,6 +263,8 @@ describe('Http-AuthService (mockBackend)', () => {
     beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
       backend = be;
       service = new AuthService(http);
+      // I want a clean session storage to create independent tests
+      window.sessionStorage.removeItem('auth');
     }));
 
     it('should be OK', async(inject([], () => {
@@ -296,6 +308,8 @@ describe('Http-AuthService (mockBackend)', () => {
     beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
       backend = be;
       service = new AuthService(http);
+      // I want a clean session storage to create independent tests
+      window.sessionStorage.removeItem('auth');
     }));
 
     it('should be OK', async(inject([], () => {
@@ -322,6 +336,8 @@ describe('Http-AuthService (mockBackend)', () => {
     beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
       backend = be;
       service = new AuthService(http);
+      // I want a clean session storage to create independent tests
+      window.sessionStorage.removeItem('auth');
     }));
 
     it('should be OK', async(inject([], () => {
@@ -352,6 +368,8 @@ describe('Http-AuthService (mockBackend)', () => {
     beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
       backend = be;
       service = new AuthService(http);
+      // I want a clean session storage to create independent tests
+      window.sessionStorage.removeItem('auth');
     }));
 
     it('should be OK', async(inject([], () => {
@@ -379,6 +397,8 @@ describe('Http-AuthService (mockBackend)', () => {
     beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
       backend = be;
       service = new AuthService(http);
+      // I want a clean session storage to create independent tests
+      window.sessionStorage.removeItem('auth');
       service.removeToken(key);
     }));
 
@@ -436,6 +456,8 @@ describe('Http-AuthService (mockBackend)', () => {
     beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
       backend = be;
       service = new AuthService(http);
+      // I want a clean session storage to create independent tests
+      window.sessionStorage.removeItem('auth');
     }));
 
     it('should be OK', async(inject([], () => {
@@ -488,6 +510,8 @@ describe('Http-AuthService (mockBackend)', () => {
     beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
       backend = be;
       service = new AuthService(http);
+      // I want a clean session storage to create independent tests
+      window.sessionStorage.removeItem('auth');
     }));
 
     it('should be OK', async(inject([], () => {
@@ -544,10 +568,16 @@ describe('Http-AuthService (mockBackend)', () => {
     beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
       backend = be;
       service = new AuthService(http);
+      // I want a clean session storage to create independent tests
+      window.sessionStorage.removeItem('auth');
     }));
 
     it('should be OK', async(inject([], () => {
       mockRespByStatusAndBody(backend, 200, JSON.stringify(JSON.stringify(JWT_MOCK)));
+      // Since I'm using a service with another service inside that uses session storage I have to provide
+      // a fake element into session storage with key = 'auth'
+      // TODO FIXME - it's ok (because I'm testing getLoggedUser not the inner methods), but it could be a good idea to refactor getLoggedUser and getUserFromSessionStorage
+      window.sessionStorage.setItem('auth', JWT_TOKEN);
       service.getLoggedUser()
         .subscribe(resp => {
           console.log("^^^^^^^^^^^^^^^^^^");
@@ -575,21 +605,17 @@ describe('Http-AuthService (mockBackend)', () => {
         });
     })));
 
-    // TODO FIXME - really difficult to test - also it could be a good idea to refactor getLoggedUser and getUserFromSessionStorage
-    // it('should catch an Observable error', async(inject([], () => {
-    //   // mockError(backend);
-    //   backend.connections.subscribe((c: MockConnection) => c.mockError(new Error('something')));
-    //
-    //   console.log("HERE-----------------");
-    //   service.getLoggedUser()
-    //     .subscribe(
-    //       projects => fail(`shouldn't call this, because I'm expecting an error.`),
-    //       err => {
-    //         console.log("°°°°°°°°°°°°°°°°°°°");
-    //         console.error(err);
-    //         expect(_.isError(err)).toBeTruthy();
-    //       });
-    // })));
+    it('should catch an Observable error', async(inject([], () => {
+      mockError(backend);
+      // Since I'm using a service with another service inside that uses session storage I have to provide
+      // a fake element into session storage with key = 'auth'
+      // TODO FIXME - it's ok (because I'm testing getLoggedUser not the inner methods), but it could be a good idea to refactor getLoggedUser and getUserFromSessionStorage
+      window.sessionStorage.setItem('auth', JWT_TOKEN);
+      service.getLoggedUser()
+        .subscribe(
+          projects => fail(`shouldn't call this, because I'm expecting an error.`),
+          err => expect(_.isError(err)).toBeTruthy());
+    })));
   });
 
 });
