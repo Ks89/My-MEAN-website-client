@@ -5,7 +5,7 @@ const webpackConfig = require('./config/webpack.test');
 function getBrowsers() {
   if (process.env.CI) {
     if(process.env.APPVEYOR) {
-      // only on AppVeyor
+      // only for AppVeyor
       return ['Chrome'];
     } else {
       return ['PhantomJS'];
@@ -68,6 +68,7 @@ module.exports = function (config) {
     }
 
     // For AppVeyor to prevent timeouts
+    // removed because I switched to Chrome for AppVeyor
     //browserNoActivityTimeout: 60000,
     //browserDisconnectTimeout: 60000,
     //browserDisconnectTolerance: 10
