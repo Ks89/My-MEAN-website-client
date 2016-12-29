@@ -9,7 +9,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 then
   echo installing npm global packages
   sudo npm install -g karma-cli
-  sudo npm install -g webpack@2.1.0-beta.27
+  sudo npm install -g webpack@2.2.0-rc.2
   sudo npm install -g typescript@2.0.10
   sudo npm install -g typings
   sudo npm install -g remap-istanbul
