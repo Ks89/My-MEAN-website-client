@@ -1,10 +1,12 @@
-var webpackConfig = require('./config/webpack.test');
+'use strict';
+
+const webpackConfig = require('./config/webpack.test');
 
 function getBrowsers() {
   if (process.env.CI) {
     return ['PhantomJS'];
   } else {
-    return ['PhantomJS', 'Chrome', 'Firefox'];
+    return ['PhantomJS', /*'Chrome', 'Firefox'*/];
   }
 }
 
