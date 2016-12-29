@@ -18,7 +18,7 @@
   "scripts": {
     "start": "webpack-dev-server --progress --port 8080",
     "pretest": "npm run clean-coverage",
-    "test": "karma start --no-single-run",
+    "test": "karma start --single-run",
     "tslint": "tslint",
     "lint": "npm run tslint \"src/**/*.ts\"",
     "protractor": "protractor",
