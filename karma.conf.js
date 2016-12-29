@@ -4,9 +4,9 @@ const webpackConfig = require('./config/webpack.test');
 
 function getBrowsers() {
   if (process.env.CI) {
-    return ['PhantomJS'];
+    return ['Chrome'];
   } else {
-    return ['PhantomJS', /*'Chrome', 'Firefox'*/];
+    return ['PhantomJS', 'Chrome', 'Firefox'];
   }
 }
 
