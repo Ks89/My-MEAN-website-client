@@ -20,20 +20,21 @@ Attention! This project is still an alpha, so it's not production ready. Please 
 If you are interested, star this project on GitHub.
 
 Testing:
-- front-end unit: only some classes are tested. In alpha 3 and 4 I'll complete everything
-- front-end e2e: work in progress, In alpha 4 and 5 I'll complete everything
+- front-end unit: coverage >80%
+- front-end e2e: work in progress, In future alphas I'll complete everything
 
 ## Requirements
 - Node.js and npm
-- My-MEAN-website server Alpha3
+- My-MEAN-website server Alpha4 or greater
 - npm
-- Google Chrome and Firefox (mandatory for testing)
+- PhantomJS, Google Chrome and Firefox (mandatory for testing)
 - some global npm dependencies, for instance karma-cli, mocha, webpack, typescript, gulp 4.0 alpha, remap-istanbul, webdriver-manager, protractor
 - work in progress... (this is only an alpha, please be patient)
 
 
 ## News
-- *11/28/2016* - **My MEAN website** Alpha 3 public release [HERE](https://github.com/Ks89/My-MEAN-website-client/releases)
+- *12/30/2016* - **My MEAN website** Alpha 4 public release [HERE](https://github.com/Ks89/My-MEAN-website-client/releases/tag/v.alpha-4)
+- *11/28/2016* - **My MEAN website** Alpha 3 public release [HERE](https://github.com/Ks89/My-MEAN-website-client/releases/tag/v.alpha-3)
 - *10/27/2016* - **My MEAN website** Alpha 2 public release [HERE](https://github.com/Ks89/My-MEAN-website-server/releases/tag/v.alpha-2.2)
 - *08/15/2016* - **My MEAN website** Alpha 1 public release [HERE](https://github.com/Ks89/My-MEAN-website-server/releases/tag/v.alpha-1)
 
