@@ -6,7 +6,7 @@ function getBrowsers() {
   if (process.env.CI) {
     if(process.env.APPVEYOR) {
       // only for AppVeyor
-      return ['Chrome'];
+      return ['Chrome', 'Firefox'];
     } else {
       return ['PhantomJS'];
     }
