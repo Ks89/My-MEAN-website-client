@@ -117,7 +117,7 @@ A special thanks to the authors of these books, because very useful to understan
 
 ## License
 
-Copyright 2015-2016 Stefano Cappa
+Copyright 2015-2017 Stefano Cappa
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
