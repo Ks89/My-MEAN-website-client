@@ -121,7 +121,9 @@ after_build:
 
 # to run your custom scripts instead of automatic MSBuild
 build_script:
- # Output useful info for debugging.
+  # set codeclimate
+  - set CODECLIMATE_REPO_TOKEN=8992777c415fd321e37092b0c44837f6d0e9a5647c8369854e8e32e0a47e3850
+  # Output useful info for debugging.
   - node --version && npm --version
   - ps: "npm --version # PowerShell" # Pass comment to PS for easier debugging
   # build debug
@@ -175,7 +177,7 @@ deploy_script:
 
 # on successful build
 on_success:
-  - CODECLIMATE_REPO_TOKEN=8992777c415fd321e37092b0c44837f6d0e9a5647c8369854e8e32e0a47e3850 codeclimate-test-reporter < coverage/lcov.info
+  - codeclimate-test-reporter < coverage/lcov.info
 
 # on build failure
 #on_failure:
