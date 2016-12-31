@@ -3,7 +3,8 @@ matrix:
   include:
     - os: linux
       dist: trusty
-      sudo: required
+      node_js:
+        - "7" # latest nodejs 7
       env:
         - CXX=g++-4.8 NODE_ENV=test CI=yes
       addons:
@@ -16,6 +17,8 @@ matrix:
             - repo_token: 8992777c415fd321e37092b0c44837f6d0e9a5647c8369854e8e32e0a47e3850
     - os: osx
       osx_image: xcode7.2
+      node_js:
+        - "6.0"
       env:
         - NODE_ENV=test CI=yes
       addons:
@@ -27,10 +30,12 @@ matrix:
           code_climate:
             - repo_token: 8992777c415fd321e37092b0c44837f6d0e9a5647c8369854e8e32e0a47e3850
 
-node_js:
-  - "7" # latest nodejs 7
-  - "6" # latest nodejs 6
-  - "6.0"
+# TODO FIXME find a way to test osx + nodejs 6, 6 latest and 7 latest and linux + nodejs 6, 6 latest and 7 latest
+#node_js:
+#  - "7" # latest nodejs 7
+#  - "6" # latest nodejs 6
+#  - "6.0"
+sudo: required
 before_install:
   - bash travisci/before_install.sh
 # before_script:
