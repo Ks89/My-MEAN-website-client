@@ -174,8 +174,8 @@ deploy_script:
 #---------------------------------#
 
 # on successful build
-#on_success:
-  # - do something
+on_success:
+  - CODECLIMATE_REPO_TOKEN=8992777c415fd321e37092b0c44837f6d0e9a5647c8369854e8e32e0a47e3850 codeclimate-test-reporter < coverage/lcov.info
 
 # on build failure
 #on_failure:
