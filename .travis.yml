@@ -6,7 +6,7 @@ matrix:
       node_js:
         - "7" # latest nodejs 7
       env:
-        - CXX=g++-4.8 NODE_ENV=test CI=yes
+        - CXX=g++-4.8 NODE_ENV=test CI=yes FIREFOX_BIN=$HOME/firefox-latest/firefox PATH=$FIREFOX_BIN:$PATH
     - os: osx
       sudo: required
       node_js:
