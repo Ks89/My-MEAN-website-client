@@ -83,6 +83,9 @@ install:
   - ps: Write-Host 'Start install in PowerShell'
   # batch commands start from cmd:
   - cmd: echo Start install in cmd
+  # set codeclimate
+  - set CODECLIMATE_REPO_TOKEN=8992777c415fd321e37092b0c44837f6d0e9a5647c8369854e8e32e0a47e3850
+  - set PATH=%CODECLIMATE_REPO_TOKEN%;%PATH%
   # install nodejs and dependencies both global and local
   # use appveyor-retry to retry if npm install fails
   - cmd: appveyor-retry powershell Install-Product node $env:nodejs_version
@@ -121,8 +124,6 @@ after_build:
 
 # to run your custom scripts instead of automatic MSBuild
 build_script:
-  # set codeclimate
-  - set CODECLIMATE_REPO_TOKEN=8992777c415fd321e37092b0c44837f6d0e9a5647c8369854e8e32e0a47e3850
   # Output useful info for debugging.
   - node --version && npm --version
   - ps: "npm --version # PowerShell" # Pass comment to PS for easier debugging
