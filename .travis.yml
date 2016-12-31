@@ -29,10 +29,8 @@ addons:
   apt:
     sources:
       - ubuntu-toolchain-r-test
-      - google-chrome
     packages:
       - g++-4.8
-      - google-chrome-stable
 script:
   - bash travisci/travis_script.sh
 cache: # enable caching

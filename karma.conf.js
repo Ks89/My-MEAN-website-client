@@ -8,7 +8,7 @@ function getBrowsers() {
       // only for AppVeyor
       return ['Chrome', 'Firefox', 'IE'];
     } else {
-      return ['PhantomJS', 'Firefox', 'Chrome_travis_ci'];
+      return ['PhantomJS', 'Firefox'];
     }
   } else {
     return ['PhantomJS', 'Chrome', 'Firefox'];
@@ -65,13 +65,6 @@ module.exports = function (config) {
     },
     jasmineDiffReporter: {
       multiline: true
-    },
-
-    customLaunchers: {
-      Chrome_travis_ci: {
-        base: 'Chrome',
-        flags: ['--no-sandbox']
-      }
     },
 
     // For AppVeyor and TravisCI to prevent timeouts
