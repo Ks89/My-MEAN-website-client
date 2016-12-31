@@ -12,7 +12,7 @@ matrix:
       node_js:
         - "6.0"
       env:
-        - NODE_ENV=test CI=yes
+        - NODE_ENV=test CI=yes CODECLIMATE_REPO_TOKEN=8992777c415fd321e37092b0c44837f6d0e9a5647c8369854e8e32e0a47e3850
 
 # TODO FIXME find a way to test osx + nodejs 6, 6 latest and 7 latest and linux + nodejs 6, 6 latest and 7 latest
 #node_js:
