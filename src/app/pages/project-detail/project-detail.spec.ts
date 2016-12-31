@@ -131,10 +131,10 @@ describe('ProjectDetailComponent', () => {
 
       checkTitles(element, DEFAULT_PROJECT_TITLE);
 
-      // Broken with Internet Explorer on AppVeyor, instead of '' there is a 'null'. Why?
+      // FIXME Broken with Internet Explorer on AppVeyor, instead of '' there is a 'null'. Why?
       // const description: DebugElement = element.query(By.css('section#Description div'));
       // expect(description.nativeElement.textContent.trim()).toBe('');
-
+      //
       // const changelog: DebugElement = element.query(By.css('div#Changelog div'));
       // expect(changelog.nativeElement.textContent.trim()).toBe('');
       //
@@ -154,7 +154,8 @@ describe('ProjectDetailComponent', () => {
 
       const images: DebugElement[] = element.queryAll(By.css('img.ng-thumb'));
       expect(images.length).toBe(0);
-      //
+
+      // FIXME Broken with Internet Explorer on AppVeyor, instead of '' there is a 'null'. Why?
       // const license: DebugElement = element.query(By.css('section#License div'));
       // expect(license.nativeElement.textContent.trim()).toBe('');
     });
