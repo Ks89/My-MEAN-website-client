@@ -11,6 +11,9 @@ if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
     sudo npm install -g codeclimate-test-reporter
     sudo npm install -g istanbul
 else
+    export CHROME_BIN=chromium-browser
+    export DISPLAY=:99.0
+    sh -e /etc/init.d/xvfb start
     npm install -g karma-cli
     npm install -g webpack@2.2.0-rc.2
     npm install -g typescript@2.0.10
