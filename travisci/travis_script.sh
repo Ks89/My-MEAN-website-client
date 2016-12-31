@@ -2,3 +2,5 @@
 npm run buildDev
 npm run build
 npm test
+
+codeclimate-test-reporter < coverage/lcov.info

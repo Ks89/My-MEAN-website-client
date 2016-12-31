@@ -6,7 +6,7 @@ matrix:
       node_js:
         - "7" # latest nodejs 7
       env:
-        - CXX=g++-4.8 NODE_ENV=test CI=yes FIREFOX_BIN=$HOME/firefox-latest/firefox PATH=$FIREFOX_BIN:$PATH
+        - CXX=g++-4.8 NODE_ENV=test CI=yes FIREFOX_BIN=$HOME/firefox-latest/firefox PATH=$FIREFOX_BIN:$PATH CODECLIMATE_REPO_TOKEN=8992777c415fd321e37092b0c44837f6d0e9a5647c8369854e8e32e0a47e3850
     - os: osx
       sudo: required
       node_js:
@@ -24,8 +24,6 @@ before_install:
   - bash travisci/before_install.sh
 addons:
   firefox: latest
-  code_climate:
-    - repo_token: 8992777c415fd321e37092b0c44837f6d0e9a5647c8369854e8e32e0a47e3850
   apt:
     sources:
       - ubuntu-toolchain-r-test
