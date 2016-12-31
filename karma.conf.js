@@ -8,7 +8,7 @@ function getBrowsers() {
       // only for AppVeyor
       return ['Chrome', 'Firefox', 'IE'];
     } else {
-      return ['PhantomJS'];
+      return ['PhantomJS', 'Firefox'];
     }
   } else {
     return ['PhantomJS', 'Chrome', 'Firefox'];
@@ -65,11 +65,10 @@ module.exports = function (config) {
     },
     jasmineDiffReporter: {
       multiline: true
-    }
+    },
 
-    // For AppVeyor to prevent timeouts
-    // removed because I switched to Chrome for AppVeyor
-    //browserNoActivityTimeout: 60000,
+    // For AppVeyor and TravisCI to prevent timeouts
+    browserNoActivityTimeout: 60000,
     //browserDisconnectTimeout: 60000,
     //browserDisconnectTolerance: 10
   });
