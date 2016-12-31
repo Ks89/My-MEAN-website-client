@@ -2,42 +2,37 @@ language: node_js
 matrix:
   include:
     - os: linux
-      dist: trusty
+#      dist: trusty
       node_js:
         - "7" # latest nodejs 7
       env:
         - CXX=g++-4.8 NODE_ENV=test CI=yes FIREFOX_BIN=$HOME/firefox-latest/firefox PATH=$FIREFOX_BIN:$PATH
-      addons:
-        firefox: latest
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - g++-4.8
-          code_climate:
-            - repo_token: 8992777c415fd321e37092b0c44837f6d0e9a5647c8369854e8e32e0a47e3850
     - os: osx
       #osx_image: xcode7.3 #nothing to say: 'latest'
       node_js:
         - "6.0"
       env:
         - NODE_ENV=test CI=yes
-      addons:
-        firefox: latest
-        apt:
-          code_climate:
-            - repo_token: 8992777c415fd321e37092b0c44837f6d0e9a5647c8369854e8e32e0a47e3850
 
 # TODO FIXME find a way to test osx + nodejs 6, 6 latest and 7 latest and linux + nodejs 6, 6 latest and 7 latest
 #node_js:
 #  - "7" # latest nodejs 7
 #  - "6" # latest nodejs 6
 #  - "6.0"
+
 sudo: required
+
 before_install:
   - bash travisci/before_install.sh
-# before_script:
-#   - firefox: "latest"
+addons:
+  firefox: latest
+  code_climate:
+    - repo_token: 8992777c415fd321e37092b0c44837f6d0e9a5647c8369854e8e32e0a47e3850
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-4.8
 script:
   - bash travisci/travis_script.sh
 cache: # enable caching
