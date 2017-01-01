@@ -10,7 +10,7 @@ matrix:
       node_js:
         - "7"
     - os: osx
-        node_js:
+      node_js:
         - "6.0"
 before_install:
   - bash travisci/before_install.sh
