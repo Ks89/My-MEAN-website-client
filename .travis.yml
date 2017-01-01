@@ -1,38 +1,35 @@
 language: node_js
 matrix:
   include:
-    - os: linux
-      sudo: required
-      node_js:
-        - "7" # latest nodejs 7
-      env:
-        - CXX=g++-4.8 NODE_ENV=test CI=yes FIREFOX_BIN=$HOME/firefox-latest/firefox PATH=$FIREFOX_BIN:$PATH CODECLIMATE_REPO_TOKEN=8992777c415fd321e37092b0c44837f6d0e9a5647c8369854e8e32e0a47e3850
-    - os: osx
-      sudo: required
-      node_js:
-        - "6.0"
-      env:
-        - NODE_ENV=test CI=yes CODECLIMATE_REPO_TOKEN=8992777c415fd321e37092b0c44837f6d0e9a5647c8369854e8e32e0a47e3850
-
-# TODO FIXME find a way to test osx + nodejs 6, 6 latest and 7 latest and linux + nodejs 6, 6 latest and 7 latest
-#node_js:
-#  - "7" # latest nodejs 7
-#  - "6" # latest nodejs 6
-#  - "6.0"
-
+  - os: linux
+    sudo: required
+    node_js:
+    - '7'
+    env:
+    - CXX=g++-4.8 NODE_ENV=test CI=yes FIREFOX_BIN=$HOME/firefox-latest/firefox PATH=$FIREFOX_BIN:$PATH
+  - os: osx
+    sudo: required
+    node_js:
+    - '6.0'
+    env:
+    - NODE_ENV=test CI=yes
 before_install:
-  - bash travisci/before_install.sh
+- bash travisci/before_install.sh
 addons:
   firefox: latest
   apt:
     sources:
-      - ubuntu-toolchain-r-test
+    - ubuntu-toolchain-r-test
     packages:
-      - g++-4.8
+    - g++-4.8
 script:
-  - bash travisci/travis_script.sh
-cache: # enable caching
+- bash travisci/travis_script.sh
+cache:
   apt: true
   bundler: true
   directories:
-  - node_modules # NPM packages
+  - node_modules
+#codeclimate repo encrypted token
+env:
+  matrix:
+    secure: U9b9Smt+LjlqLBk+NjblB1+v8GKenRQyfkltZEZC8mKBs4S+gaKoXgAnTs1cvwy/+gEGHwy1sFDix29CsLJ6JQiQS6Arh7Oz1iXtAMDD6XNeVlTGs2XCJ5e1hq4MWK11lVPp23/BRwjlgwXZYDUuf3zOprE4RTqsW8m22bBH3MXfvg/l64efEbCzF1MpGrJSZEtt88G/uzdw4vfAgNIYMj8PPDfw1LNq1bMNvAQFl/tNiRropYCtAc9OEgy0vByv/KUnCxk4da9DWMfNyJGPPUXHnxZxQmZVvMLmJc+9gQbC9/k1qaarsGomhKiXOB6HAKaLLHGbYZUjkth6BiJtIJQR6JDF3IobDQnttMV3IO+c88goGWMv2kJE6UEBBhlegOb2iF+8M+14ya7sAvv2mssgAc448vPYGU4JRhXNh4gQxlR5psPY18QhRxJxmN+l8DAU6MauEHjmVwtfDLB4ST87SSyAAaguixqxh3OAaHRiE8gyF2j9c+oSq3ac6fGRYSWcfE9u2EcCQzaCESh93QDc8tg3M65OUYaPfmGSxsWtwvF0GrTr0ox1jBro71HOBBr4H64ozrvnVFXuGwZ9A1RsRCpk23VOIJGNjBtF6RMSaJ4HbDN4MgF3ObDyh6UD0VVlE5o6CfLPZSec67HXU585SdmRS60dQZo2Y/m5SK4=
