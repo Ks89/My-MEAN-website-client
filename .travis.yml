@@ -1,37 +1,31 @@
 language: node_js
+env:
+  global:
+    - secure: Rov9tYDaMYPBUeWDtD43S9h3llaljjMB0Khdi7P+kbkYOUPCm+Ol1Sr7nS+lwOQpF/3T1kva2OQ/LWkOM8kSng86EkMviEGQXpdlGRxP9clo8qmxyfbcKID5Q/a29kOIbkbbhx9cGFoepEjo+5T+Ya7GbbXIyMt1PNTCy5eLXnfU8BE/G3Ib8eVNBxGANiOuBTkKfzTyajH+pcsj0Wvr2Po/PjSIwYk6EfCzsYWbLDxjo86w7hD7F5OtjxPJTsYz3K1OwdneaUJ3bYLrGqpNewIfR4gASNTB4fBio0ZdBZ44UulKo6rO7tUMMQdCGm9+c54XeVGigJE9uhz8Fcim3FpfY9jraT9dhp5xPgvDl0OC/NVvHAGumak67X4Vkui5dAGGqbfNGfnWRvzkar/Xj3QpO7UJ0VEp2nFmZqgwE9CHhi+xMAh2+C5aoVsvtdb8LiACnN0YOfrMQvkoX2JGoGrLuJGJSTC3fRiLFIvWnX73L7+XKlrRUceoroyQ6WXEPkUbrtVtTN/yE0CVJmpVS1oE4Nre3zvOQAtIxGJWbk2rYTQ95C7cixAeo7ucFnX3J6YrSiTm0Ny+smdgv2KkXX8Q+UY0JG10BN3tHc67gqpvsaAPQaPGq4KF/jngE4a5H+skzpTnPRU0sozY4uNDXwGZmo4va03NFk6XVMk9rzo=
+  matrix:
+    - CXX=g++-4.8 NODE_ENV=test CI=yes FIREFOX_BIN=$HOME/firefox-latest/firefox PATH=$FIREFOX_BIN:$PATH
 matrix:
   include:
-  - os: linux
-    sudo: required
-    node_js:
-    - '7'
-    env:
-      global:
-        - secure: U9b9Smt+LjlqLBk+NjblB1+v8GKenRQyfkltZEZC8mKBs4S+gaKoXgAnTs1cvwy/+gEGHwy1sFDix29CsLJ6JQiQS6Arh7Oz1iXtAMDD6XNeVlTGs2XCJ5e1hq4MWK11lVPp23/BRwjlgwXZYDUuf3zOprE4RTqsW8m22bBH3MXfvg/l64efEbCzF1MpGrJSZEtt88G/uzdw4vfAgNIYMj8PPDfw1LNq1bMNvAQFl/tNiRropYCtAc9OEgy0vByv/KUnCxk4da9DWMfNyJGPPUXHnxZxQmZVvMLmJc+9gQbC9/k1qaarsGomhKiXOB6HAKaLLHGbYZUjkth6BiJtIJQR6JDF3IobDQnttMV3IO+c88goGWMv2kJE6UEBBhlegOb2iF+8M+14ya7sAvv2mssgAc448vPYGU4JRhXNh4gQxlR5psPY18QhRxJxmN+l8DAU6MauEHjmVwtfDLB4ST87SSyAAaguixqxh3OAaHRiE8gyF2j9c+oSq3ac6fGRYSWcfE9u2EcCQzaCESh93QDc8tg3M65OUYaPfmGSxsWtwvF0GrTr0ox1jBro71HOBBr4H64ozrvnVFXuGwZ9A1RsRCpk23VOIJGNjBtF6RMSaJ4HbDN4MgF3ObDyh6UD0VVlE5o6CfLPZSec67HXU585SdmRS60dQZo2Y/m5SK4=
-      matrix:
-        - CXX=g++-4.8 NODE_ENV=test CI=yes FIREFOX_BIN=$HOME/firefox-latest/firefox PATH=$FIREFOX_BIN:$PATH
-  - os: osx
-    sudo: required
-    node_js:
-    - '6.0'
-    env:
-      global:
-        - secure: U9b9Smt+LjlqLBk+NjblB1+v8GKenRQyfkltZEZC8mKBs4S+gaKoXgAnTs1cvwy/+gEGHwy1sFDix29CsLJ6JQiQS6Arh7Oz1iXtAMDD6XNeVlTGs2XCJ5e1hq4MWK11lVPp23/BRwjlgwXZYDUuf3zOprE4RTqsW8m22bBH3MXfvg/l64efEbCzF1MpGrJSZEtt88G/uzdw4vfAgNIYMj8PPDfw1LNq1bMNvAQFl/tNiRropYCtAc9OEgy0vByv/KUnCxk4da9DWMfNyJGPPUXHnxZxQmZVvMLmJc+9gQbC9/k1qaarsGomhKiXOB6HAKaLLHGbYZUjkth6BiJtIJQR6JDF3IobDQnttMV3IO+c88goGWMv2kJE6UEBBhlegOb2iF+8M+14ya7sAvv2mssgAc448vPYGU4JRhXNh4gQxlR5psPY18QhRxJxmN+l8DAU6MauEHjmVwtfDLB4ST87SSyAAaguixqxh3OAaHRiE8gyF2j9c+oSq3ac6fGRYSWcfE9u2EcCQzaCESh93QDc8tg3M65OUYaPfmGSxsWtwvF0GrTr0ox1jBro71HOBBr4H64ozrvnVFXuGwZ9A1RsRCpk23VOIJGNjBtF6RMSaJ4HbDN4MgF3ObDyh6UD0VVlE5o6CfLPZSec67HXU585SdmRS60dQZo2Y/m5SK4=
-      matrix:
-        - NODE_ENV=test CI=yes
+    - os: linux
+      node_js:
+        - '7'
+    - os: osx
+      node_js:
+        - '6.0'
 before_install:
-- bash travisci/before_install.sh
+  - bash travisci/before_install.sh
+sudo: required
 addons:
   firefox: latest
   apt:
     sources:
-    - ubuntu-toolchain-r-test
+      - ubuntu-toolchain-r-test
     packages:
-    - g++-4.8
+      - g++-4.8
 script:
-- bash travisci/travis_script.sh
+  - bash travisci/travis_script.sh
 cache:
   apt: true
   bundler: true
   directories:
-  - node_modules
+    - node_modules
