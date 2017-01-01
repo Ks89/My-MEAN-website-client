@@ -6,13 +6,19 @@ matrix:
     node_js:
     - '7'
     env:
-    - CXX=g++-4.8 NODE_ENV=test CI=yes FIREFOX_BIN=$HOME/firefox-latest/firefox PATH=$FIREFOX_BIN:$PATH
+      global:
+        - secure: U9b9Smt+LjlqLBk+NjblB1+v8GKenRQyfkltZEZC8mKBs4S+gaKoXgAnTs1cvwy/+gEGHwy1sFDix29CsLJ6JQiQS6Arh7Oz1iXtAMDD6XNeVlTGs2XCJ5e1hq4MWK11lVPp23/BRwjlgwXZYDUuf3zOprE4RTqsW8m22bBH3MXfvg/l64efEbCzF1MpGrJSZEtt88G/uzdw4vfAgNIYMj8PPDfw1LNq1bMNvAQFl/tNiRropYCtAc9OEgy0vByv/KUnCxk4da9DWMfNyJGPPUXHnxZxQmZVvMLmJc+9gQbC9/k1qaarsGomhKiXOB6HAKaLLHGbYZUjkth6BiJtIJQR6JDF3IobDQnttMV3IO+c88goGWMv2kJE6UEBBhlegOb2iF+8M+14ya7sAvv2mssgAc448vPYGU4JRhXNh4gQxlR5psPY18QhRxJxmN+l8DAU6MauEHjmVwtfDLB4ST87SSyAAaguixqxh3OAaHRiE8gyF2j9c+oSq3ac6fGRYSWcfE9u2EcCQzaCESh93QDc8tg3M65OUYaPfmGSxsWtwvF0GrTr0ox1jBro71HOBBr4H64ozrvnVFXuGwZ9A1RsRCpk23VOIJGNjBtF6RMSaJ4HbDN4MgF3ObDyh6UD0VVlE5o6CfLPZSec67HXU585SdmRS60dQZo2Y/m5SK4=
+      matrix:
+        - CXX=g++-4.8 NODE_ENV=test CI=yes FIREFOX_BIN=$HOME/firefox-latest/firefox PATH=$FIREFOX_BIN:$PATH
   - os: osx
     sudo: required
     node_js:
     - '6.0'
     env:
-    - NODE_ENV=test CI=yes
+      global:
+        - secure: U9b9Smt+LjlqLBk+NjblB1+v8GKenRQyfkltZEZC8mKBs4S+gaKoXgAnTs1cvwy/+gEGHwy1sFDix29CsLJ6JQiQS6Arh7Oz1iXtAMDD6XNeVlTGs2XCJ5e1hq4MWK11lVPp23/BRwjlgwXZYDUuf3zOprE4RTqsW8m22bBH3MXfvg/l64efEbCzF1MpGrJSZEtt88G/uzdw4vfAgNIYMj8PPDfw1LNq1bMNvAQFl/tNiRropYCtAc9OEgy0vByv/KUnCxk4da9DWMfNyJGPPUXHnxZxQmZVvMLmJc+9gQbC9/k1qaarsGomhKiXOB6HAKaLLHGbYZUjkth6BiJtIJQR6JDF3IobDQnttMV3IO+c88goGWMv2kJE6UEBBhlegOb2iF+8M+14ya7sAvv2mssgAc448vPYGU4JRhXNh4gQxlR5psPY18QhRxJxmN+l8DAU6MauEHjmVwtfDLB4ST87SSyAAaguixqxh3OAaHRiE8gyF2j9c+oSq3ac6fGRYSWcfE9u2EcCQzaCESh93QDc8tg3M65OUYaPfmGSxsWtwvF0GrTr0ox1jBro71HOBBr4H64ozrvnVFXuGwZ9A1RsRCpk23VOIJGNjBtF6RMSaJ4HbDN4MgF3ObDyh6UD0VVlE5o6CfLPZSec67HXU585SdmRS60dQZo2Y/m5SK4=
+      matrix:
+        - NODE_ENV=test CI=yes
 before_install:
 - bash travisci/before_install.sh
 addons:
@@ -29,7 +35,3 @@ cache:
   bundler: true
   directories:
   - node_modules
-#codeclimate repo encrypted token
-env:
-  matrix:
-    secure: U9b9Smt+LjlqLBk+NjblB1+v8GKenRQyfkltZEZC8mKBs4S+gaKoXgAnTs1cvwy/+gEGHwy1sFDix29CsLJ6JQiQS6Arh7Oz1iXtAMDD6XNeVlTGs2XCJ5e1hq4MWK11lVPp23/BRwjlgwXZYDUuf3zOprE4RTqsW8m22bBH3MXfvg/l64efEbCzF1MpGrJSZEtt88G/uzdw4vfAgNIYMj8PPDfw1LNq1bMNvAQFl/tNiRropYCtAc9OEgy0vByv/KUnCxk4da9DWMfNyJGPPUXHnxZxQmZVvMLmJc+9gQbC9/k1qaarsGomhKiXOB6HAKaLLHGbYZUjkth6BiJtIJQR6JDF3IobDQnttMV3IO+c88goGWMv2kJE6UEBBhlegOb2iF+8M+14ya7sAvv2mssgAc448vPYGU4JRhXNh4gQxlR5psPY18QhRxJxmN+l8DAU6MauEHjmVwtfDLB4ST87SSyAAaguixqxh3OAaHRiE8gyF2j9c+oSq3ac6fGRYSWcfE9u2EcCQzaCESh93QDc8tg3M65OUYaPfmGSxsWtwvF0GrTr0ox1jBro71HOBBr4H64ozrvnVFXuGwZ9A1RsRCpk23VOIJGNjBtF6RMSaJ4HbDN4MgF3ObDyh6UD0VVlE5o6CfLPZSec67HXU585SdmRS60dQZo2Y/m5SK4=
