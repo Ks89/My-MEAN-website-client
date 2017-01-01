@@ -1,8 +1,4 @@
 language: node_js
-node_js:
-  - "7"
-  - "6"
-  - "6.0"
 env:
   global:
     - secure: Rov9tYDaMYPBUeWDtD43S9h3llaljjMB0Khdi7P+kbkYOUPCm+Ol1Sr7nS+lwOQpF/3T1kva2OQ/LWkOM8kSng86EkMviEGQXpdlGRxP9clo8qmxyfbcKID5Q/a29kOIbkbbhx9cGFoepEjo+5T+Ya7GbbXIyMt1PNTCy5eLXnfU8BE/G3Ib8eVNBxGANiOuBTkKfzTyajH+pcsj0Wvr2Po/PjSIwYk6EfCzsYWbLDxjo86w7hD7F5OtjxPJTsYz3K1OwdneaUJ3bYLrGqpNewIfR4gASNTB4fBio0ZdBZ44UulKo6rO7tUMMQdCGm9+c54XeVGigJE9uhz8Fcim3FpfY9jraT9dhp5xPgvDl0OC/NVvHAGumak67X4Vkui5dAGGqbfNGfnWRvzkar/Xj3QpO7UJ0VEp2nFmZqgwE9CHhi+xMAh2+C5aoVsvtdb8LiACnN0YOfrMQvkoX2JGoGrLuJGJSTC3fRiLFIvWnX73L7+XKlrRUceoroyQ6WXEPkUbrtVtTN/yE0CVJmpVS1oE4Nre3zvOQAtIxGJWbk2rYTQ95C7cixAeo7ucFnX3J6YrSiTm0Ny+smdgv2KkXX8Q+UY0JG10BN3tHc67gqpvsaAPQaPGq4KF/jngE4a5H+skzpTnPRU0sozY4uNDXwGZmo4va03NFk6XVMk9rzo=
@@ -11,7 +7,11 @@ env:
 matrix:
   include:
     - os: linux
+      node_js:
+        - "7"
     - os: osx
+        node_js:
+        - "6.0"
 before_install:
   - bash travisci/before_install.sh
 sudo: required
