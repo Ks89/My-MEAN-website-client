@@ -64,6 +64,8 @@ environment:
   NODE_ENV: test
   CI: yes
   APPVEYOR: yes
+  CODECLIMATE_REPO_TOKEN:
+    secure: byRx0agrhNKcx2rY//XQ+BMDxO2nncnZGp0zpSCyYtl/59o6giXxdgxWkbHMTvfLiwazQqb8z7w97uqUy/gKAWhdp5pU5ioswTxKF6beR0o=
 
 # this is how to allow failing jobs in the matrix
 matrix:
@@ -83,9 +85,6 @@ install:
   - ps: Write-Host 'Start install in PowerShell'
   # batch commands start from cmd:
   - cmd: echo Start install in cmd
-  # set codeclimate
-  - set CODECLIMATE_REPO_TOKEN=8992777c415fd321e37092b0c44837f6d0e9a5647c8369854e8e32e0a47e3850
-  - set PATH=%CODECLIMATE_REPO_TOKEN%;%PATH%
   # install nodejs and dependencies both global and local
   # use appveyor-retry to retry if npm install fails
   - cmd: appveyor-retry powershell Install-Product node $env:nodejs_version
