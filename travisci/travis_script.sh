@@ -10,4 +10,4 @@ npm test
 # send test coverage to codeclimate.com
 codeclimate-test-reporter < coverage/lcov.info
 # send test coverage to coveralls.io
-cat coverage/lcov.info | node_modules/coveralls/bin/coveralls.js
+npm run coveralls
