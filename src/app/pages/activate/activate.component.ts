@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { AuthService } from '../../common/services';
-import { Subscription } from "rxjs";
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'mmw-activate-page',

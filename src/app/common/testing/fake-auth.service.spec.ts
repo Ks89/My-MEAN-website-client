@@ -1,5 +1,5 @@
 import { EventEmitter } from '@angular/core';
-import { Observable } from "rxjs";
+import { Observable } from 'rxjs/Observable';
 
 export const FAKE_OK_EMAIL_TOKEN = 'fake@email.it';
 export const FAKE_OK_USERNAME = 'user name';

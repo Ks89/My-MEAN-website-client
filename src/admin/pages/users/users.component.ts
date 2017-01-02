@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {UserService} from "../../common/services/users.service";
-import {Observable} from "rxjs";
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'mmw-admin-users-page',

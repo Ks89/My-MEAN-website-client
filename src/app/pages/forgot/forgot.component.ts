@@ -4,7 +4,7 @@ import { EmailValidators } from 'ng2-validators';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
 import { AuthService } from '../../common/services';
-import { Subscription } from "rxjs";
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'mmw-forgot-page',

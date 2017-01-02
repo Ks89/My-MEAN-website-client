@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Observable } from "rxjs";
+import { Observable } from 'rxjs/Observable';
 import { Response as ProfileResponse } from '../services/profile.service';
 
 export const PROFILE_RESPONSE: ProfileResponse = {

@@ -1,5 +1,6 @@
 import {ProjectHomeView, Project, Author, ProjectGallery} from '../services/projects.service';
-import { Observable } from "rxjs";
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
 
 export const WRONG_PROJECT_ID: string = 'wrong_project_id';
 

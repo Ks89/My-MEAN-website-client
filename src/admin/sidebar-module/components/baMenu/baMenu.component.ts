@@ -1,6 +1,6 @@
 import {Component, ViewEncapsulation, Input, Output, EventEmitter} from '@angular/core';
 import {Router, Routes, NavigationEnd} from '@angular/router';
-import {Subscription} from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Subscription';
 import * as _ from 'lodash';
 
 import {BaMenuService} from './baMenu.service';
