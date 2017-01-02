@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import HomeComponent from './pages/home/home.component';
 import ProjectListComponent from './pages/project-list/project-list.component';
-import CvComponent from './pages/cv/cv.component';
+// import CvComponent from './pages/cv/cv.component';
 import AboutComponent from './pages/about/about.component';
 import ContactComponent from './pages/contact/contact.component';
 import ProjectDetailComponent from './pages/project-detail/project-detail.component';
@@ -23,7 +23,7 @@ const appRoutes: Routes = [
   {path: 'dashboard',                            component: HomeComponent},
   {path: 'projects',                        component: ProjectListComponent},
   {path: 'projects/:projectId',             component: ProjectDetailComponent},
-  {path: 'cv',                              component: CvComponent},
+  {path: 'cv',                              loadChildren: './pages/cv/index#CvModule'},
   {path: 'contact',                         component: ContactComponent},
   {path: 'about',                           component: AboutComponent},
   {path: 'register',                        component: RegisterComponent},

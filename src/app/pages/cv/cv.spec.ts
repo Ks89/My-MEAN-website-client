@@ -19,7 +19,6 @@ import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
 import CvComponent from './cv.component';
-import PageHeaderComponent from "../../common/components/page-header/page-header.component";
 
 let comp: CvComponent;
 let fixture: ComponentFixture<CvComponent>;
@@ -28,7 +27,7 @@ describe('CvComponent', () => {
   beforeEach( async(() => {
 
     TestBed.configureTestingModule({
-      declarations: [ CvComponent, PageHeaderComponent ]
+      declarations: [ CvComponent/*, PageHeaderComponent*/ ]
       // schemas:      [ NO_ERRORS_SCHEMA ]
     }); // not necessary with webpack .compileComponents();
 
@@ -47,14 +46,14 @@ describe('CvComponent', () => {
     it('should display the cv page page', () => {
       const element: DebugElement = fixture.debugElement;
 
-      const title: DebugElement[] = element.queryAll(By.css('h1'));
-      expect(title.length).toBe(1);
-      expect(title[0].nativeElement.textContent.trim()).toBe('CV');
+      // const title: DebugElement[] = element.queryAll(By.css('h1'));
+      // expect(title.length).toBe(1);
+      // expect(title[0].nativeElement.textContent.trim()).toBe('CV');
 
       const message: DebugElement[] = element.queryAll(By.css('small'));
-      expect(message.length).toBe(2); //because pageHeader has a <small> tag in its template
-      expect(message[0].nativeElement.textContent.trim()).toBe('');
-      expect(message[1].nativeElement.textContent.trim()).toBe('Not implemented yet');
+      // expect(message.length).toBe(2); //because pageHeader has a <small> tag in its template
+      // expect(message[0].nativeElement.textContent.trim()).toBe('');
+      expect(message[0].nativeElement.textContent.trim()).toBe('Not implemented yet');
     });
   });
 });

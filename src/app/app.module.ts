@@ -7,7 +7,7 @@ import { routing }  from './app.routing';
 import ApplicationComponent from './application/application.component';
 import HomeComponent from './pages/home/home.component';
 import ProjectListComponent from './pages/project-list/project-list.component';
-import CvComponent from './pages/cv/cv.component';
+// import CvComponent from './pages/cv/cv.component';
 import AboutComponent from './pages/about/about.component';
 import ContactComponent from './pages/contact/contact.component';
 import ProjectDetailComponent from './pages/project-detail/project-detail.component';
@@ -50,7 +50,7 @@ import { LaddaModule } from 'angular2-ladda';
     ApplicationComponent,
     HomeComponent,
     ProjectListComponent,
-    CvComponent,
+    // CvComponent,
     AboutComponent,
     ContactComponent,
     ProjectDetailComponent,
