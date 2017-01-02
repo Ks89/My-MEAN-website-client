@@ -1,5 +1,15 @@
 #!/bin/bash
 
+
+# export env variables, thanks to https://github.com/travis-ci/travis-ci/issues/7099
+if [[ $TRAVIS_OS_NAME = 'linux' ]]; then
+    export CXX=g++-4.8 NODE_ENV=test CI=yes FIREFOX_BIN=$HOME/firefox-latest/firefox PATH=$FIREFOX_BIN:$PATH;
+else
+    export NODE_ENV=test CI=yes;
+fi
+
+
+# install global dependencies
 if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
     sudo npm install -g karma-cli
     sudo npm install -g webpack@2.2.0-rc.2

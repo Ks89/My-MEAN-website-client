@@ -8,6 +8,6 @@ npm run build
 npm test
 
 # send test coverage to codeclimate.com
-codeclimate-test-reporter < coverage/lcov.info
+npm run codeclimate
 # send test coverage to coveralls.io
 npm run coveralls
