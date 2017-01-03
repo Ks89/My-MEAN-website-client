@@ -35,9 +35,9 @@ module.exports = {
       {
         test: /\.ts$/,
         loaders: [
-          'angular2-template-loader',
-          'angular-router-loader'
-        ],
+          'angular2-template-loader'
+          // , 'angular-router-loader' // LAZY LOADING issue #44 - TEMPORARY REMOVED
+        ]
       },
       {
         test: /\.html$/,
