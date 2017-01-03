@@ -8,11 +8,12 @@ const HotModuleReplacementPlugin = require('webpack/lib/HotModuleReplacementPlug
 const BrowserSyncPlugin     = require('browser-sync-webpack-plugin');
 const webpackMerge          = require('webpack-merge');
 const ExtractTextPlugin     = require('extract-text-webpack-plugin');
+const { ForkCheckerPlugin } = require('awesome-typescript-loader');
 
 const commonConfig          = require('./webpack.common');
 const helpers               = require('./helpers');
 
-const ENV  = process.env.NODE_ENV = 'development';
+const ENV  = process.env.NODE_ENV = 'dev';
 const HOST = process.env.HOST || 'localhost';
 const PORT = process.env.PORT || 8080;
 
@@ -49,6 +50,7 @@ module.exports = webpackMerge(commonConfig, {
     publicPath: '/'
   },
   plugins: [
+    new ForkCheckerPlugin(),
     new CommonsChunkPlugin({
       name: ['admin', 'app', 'vendor', 'polyfills'],
       minChunks: Infinity

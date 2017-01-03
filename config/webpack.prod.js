@@ -13,7 +13,7 @@ const ExtractTextPlugin     = require('extract-text-webpack-plugin');
 const commonConfig          = require('./webpack.common.js');
 const helpers               = require('./helpers');
 
-const ENV = process.env.NODE_ENV = 'production';
+const ENV = process.env.NODE_ENV = 'prod';
 const METADATA = { env: ENV };
 
 module.exports = webpackMerge(commonConfig, {
