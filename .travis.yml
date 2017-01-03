@@ -23,8 +23,8 @@ addons:
       - g++-4.8
 script:
   - bash travisci/travis_script.sh
-cache:
-  apt: true
-  bundler: true
-  directories:
-    - node_modules
+#cache:
+ # apt: true
+  #bundler: true
+ # directories:
+  #  - node_modules
