@@ -4,6 +4,7 @@ const webpack               = require('webpack');
 const DefinePlugin          = require('webpack/lib/DefinePlugin');
 const CommonsChunkPlugin    = require('webpack/lib/optimize/CommonsChunkPlugin');
 
+const HotModuleReplacementPlugin = require('webpack/lib/HotModuleReplacementPlugin');
 const BrowserSyncPlugin     = require('browser-sync-webpack-plugin');
 const webpackMerge          = require('webpack-merge');
 const ExtractTextPlugin     = require('extract-text-webpack-plugin');
@@ -28,6 +29,7 @@ const DEV_SERVER_PATH = `http://${METADATA.host}:${METADATA.portWebpackDevServer
 
 module.exports = webpackMerge(commonConfig, {
   devServer: {
+    hot: true, // MANDATORY FOR HMR
     inline: true,
     port: METADATA.portWebpackDevServer,
     historyApiFallback: true,
@@ -56,6 +58,7 @@ module.exports = webpackMerge(commonConfig, {
     //   name: ['admin', 'vendor', 'polyfills'],
     //   minChunks: Infinity
     // }),
+    new HotModuleReplacementPlugin(),
     new ExtractTextPlugin({
       filename: '[name].css',
       allChunks: true

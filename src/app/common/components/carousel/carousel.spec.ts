@@ -24,6 +24,8 @@ import { ProjectService } from '../../services';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
+import 'rxjs/add/operator/share';
+
 let comp: CarouselComponent;
 let fixture: ComponentFixture<CarouselComponent>;
 

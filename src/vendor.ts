@@ -26,6 +26,8 @@ import 'rxjs/add/operator/toArray';
 import 'rxjs/Observable';
 import 'rxjs/Subject';
 import 'rxjs/Subscription';
+import 'rxjs/BehaviorSubject';
+import 'rxjs/add/operator/distinctUntilChanged';
 
 
 // Third party opensource libraries

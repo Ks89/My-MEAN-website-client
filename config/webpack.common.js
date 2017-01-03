@@ -7,6 +7,7 @@ const OccurrenceOrderPlugin        = require('webpack/lib/optimize/OccurrenceOrd
 const LoaderOptionsPlugin          = require('webpack/lib/LoaderOptionsPlugin');
 const ContextReplacementPlugin     = require('webpack/lib/ContextReplacementPlugin');
 const CopyWebpackPlugin            = require('copy-webpack-plugin');
+const NamedModulesPlugin           = require('webpack/lib/NamedModulesPlugin');
 
 const HtmlWebpackPlugin            = require('html-webpack-plugin');
 const ExtractTextPlugin            = require('extract-text-webpack-plugin');
@@ -44,9 +45,23 @@ module.exports = {
       },
       {
         test: /\.ts$/,
+        loaders: 'awesome-typescript-loader',
+        query: {
+          forkChecker: true
+        },
+        exclude: [/\.(spec|e2e)\.ts$/]
+      },
+      {
+        test: /\.ts$/,
         loaders: [
-          'awesome-typescript-loader',
           'angular2-template-loader',
+          '@angularclass/hmr-loader'
+        ],
+        exclude: [/\.(spec|e2e)\.ts$/]
+      },
+      {
+        test: /\.ts$/,
+        loaders: [
           'angular-router-loader'
         ],
         exclude: [/\.(spec|e2e)\.ts$/]
@@ -93,6 +108,7 @@ module.exports = {
               /@angular\/\*\*\/bundles\//]
   },
   plugins: [
+    new NamedModulesPlugin(),
     new ManifestPlugin(),
     new InlineManifestWebpackPlugin(), // TODO check if I can remove this
     new HtmlWebpackPlugin({
