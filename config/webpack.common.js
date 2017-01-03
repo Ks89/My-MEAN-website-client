@@ -59,13 +59,14 @@ module.exports = {
         ],
         exclude: [/\.(spec|e2e)\.ts$/]
       },
-      {
-        test: /\.ts$/,
-        loaders: [
-          'angular-router-loader'
-        ],
-        exclude: [/\.(spec|e2e)\.ts$/]
-      },
+      // LAZY LOADING issue #44 - TEMPORARY REMOVED
+      // {
+      //   test: /\.ts$/,
+      //   loaders: [
+      //     'angular-router-loader'
+      //   ],
+      //   exclude: [/\.(spec|e2e)\.ts$/]
+      // },
       {
         test: /\.html$/,
         loader: 'raw-loader'
