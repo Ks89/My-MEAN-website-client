@@ -3,7 +3,9 @@ import { Routes, RouterModule } from '@angular/router';
 
 import HomeComponent from './pages/home/home.component';
 import ProjectListComponent from './pages/project-list/project-list.component';
-// import CvComponent from './pages/cv/cv.component';
+
+// REMOVE THIS FOR LAZY LOADING issue #44
+import CvComponent from './pages/cv/cv.component';
 import AboutComponent from './pages/about/about.component';
 import ContactComponent from './pages/contact/contact.component';
 import ProjectDetailComponent from './pages/project-detail/project-detail.component';
@@ -21,10 +23,12 @@ import NotFound404Component from "./pages/404/not-found404.component";
 const appRoutes: Routes = [
 
   {path: '',                                component: HomeComponent},
-  {path: 'dashboard',                       component: HomeComponent},
+  {path: 'dashboard',                            component: HomeComponent},
   {path: 'projects',                        component: ProjectListComponent},
   {path: 'projects/:projectId',             component: ProjectDetailComponent},
-  {path: 'cv',                              loadChildren: './pages/cv/index#CvModule'},
+  {path: 'cv',                              component: CvComponent},
+  // TEMPORARY REMOVED LAZY LOADING issue #44
+  // {path: 'cv',                              loadChildren: './pages/cv/index#CvModule'},
   {path: 'contact',                         component: ContactComponent},
   {path: 'about',                           component: AboutComponent},
   {path: 'register',                        component: RegisterComponent},
