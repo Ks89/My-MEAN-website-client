@@ -72,7 +72,7 @@
     "@types/jasmine": "^2.5.40",
     "@types/jquery": "^2.0.39",
     "@types/lodash": "^4.14.45",
-    "@types/node": "^6.0.56",
+    "@types/node": "^6.0.57",
     "@types/selenium-webdriver": "^2.53.38",
     "angular-router-loader": "^0.4.0",
     "angular2-template-loader": "^0.6.0",
