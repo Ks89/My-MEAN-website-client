@@ -7,11 +7,11 @@ read -p "Would you install npm global packages? Press y or n: " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-  echo installing npm global packages (also windows-build-tools and node-gyp)
+  echo installing npm global packages also windows-build-tools and node-gyp
   npm install -g --production windows-build-tools
   npm install -g node-gyp
   npm install -g karma-cli
-  npm install -g webpack@2.2.0-rc.2
+  npm install -g webpack@2.2.0-rc.3
   npm install -g typescript@2.0.10
   npm install -g typings
   npm install -g npm-check
