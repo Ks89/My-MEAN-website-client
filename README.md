@@ -8,30 +8,30 @@
 ## Informations
 My MEAN website is a MEAN's web application that I'm creating as a personal website, but also for other users.
 It's composed by:
-- A: a front-end in Angular 2
-- N + E: a back-end in Node.js + Express js (and other useful libs like PassportJs)
 - M: a MongoDb's database
+- E: a back-end with Express js
+- A: a front-end in Angular 2
+- N: a back-end in Node.js
 - redis
-- webpack + gulp
+- webpack and gulp
 - and other stuff
 
 A possible extension of this project will be a configurable template to build a custom web app very quickly. This is my final goal, please be patient :)
 
 Attention! This project is still an alpha, so it's not production ready. Please be careful.
-If you are interested, star this project on GitHub.
+If you are interested, star this project on GitHub, share it and create pull requests.
 
 Testing:
 - front-end unit: coverage >80%
 - front-end e2e: work in progress, In future alphas I'll complete everything
 
 ## Requirements
-- Node.js and npm
+- macOS, Linux or Windows 10 with admin privileges
+- Node.js + npm
+- some global npm dependencies
 - My-MEAN-website server Alpha4 or greater
-- npm
-- PhantomJS, Google Chrome and Firefox (mandatory for testing)
-- some global npm dependencies, for instance karma-cli, mocha, webpack, typescript, gulp 4.0 alpha, remap-istanbul, webdriver-manager, protractor
+- PhantomJS, Google Chrome, Mozilla Firefox (mandatory if you want to run `npm test`) (also Internet Explorer if you are using Windows)
 - work in progress... (this is only an alpha, please be patient)
-
 
 ## News
 - *12/30/2016* - **My MEAN website** Alpha 4 public release [HERE](https://github.com/Ks89/My-MEAN-website-client/releases/tag/v.alpha-4)
@@ -39,46 +39,84 @@ Testing:
 - *10/27/2016* - **My MEAN website** Alpha 2 public release [HERE](https://github.com/Ks89/My-MEAN-website-server/releases/tag/v.alpha-2.2)
 - *08/15/2016* - **My MEAN website** Alpha 1 public release [HERE](https://github.com/Ks89/My-MEAN-website-server/releases/tag/v.alpha-1)
 
+
 ## How to install (MacOS)
+- install both [Mozilla Firefox](https://www.mozilla.org/en-US/firefox/new/) and [Google Chrome](https://www.google.com/chrome/browser/desktop/index.html)
 - from the `setup` folder of this project, run `bash install-macos.sh`
+- import the db dump (.json) from `docs`'s folder using MongoChef or another software
 
 ## How to install (Linux)
+- install both [Mozilla Firefox](https://www.mozilla.org/en-US/firefox/new/) and [Google Chrome](https://www.google.com/chrome/browser/desktop/index.html)
 - from the `setup` folder of this project, run `bash install-linux.sh`
+- import the db dump (.json) from `docs`'s folder using MongoChef or another software
 
-## How to install (Windows)
-- install Node.js, MongoDb, redis-server and so on
-- from the `setup` folder of this project, run `bash install-windows.sh`
-- TODO improve this tutorial :)
+## How to install (Windows 10)
+*Tested only on Windows 10*
+
+- install both [Mozilla Firefox](https://www.mozilla.org/en-US/firefox/new/) and [Google Chrome](https://www.google.com/chrome/browser/desktop/index.html)
+- install Node.js from the [official website](https://www.nodejs.org)
+- install MongoDb Community from the [official website](https://www.mongodb.com)
+- import the db dump (.json) from `docs`'s folder using MongoChef or another software [HERE](http://3t.io/mongochef/download/)
+- install redis-server for Windows (file .msi) [HERE](https://github.com/MSOpenTech/redis/releases)
+- install Python 2.7.x from the [official website](https://www.python.org)
+- from the `setup` folder of this project, run with PowerShell as administator `bash install-windows.sh`
+
+If you'll have problems with `node-zopfli`, you have to install it properly following [this tutorial](https://github.com/nodejs/node-gyp#installation). There are two options, try with the first one `npm install --global --production windows-build-tools`, if it will fail, use option 2.
+Both options will require to download really big files from microsoft.com (manually or automatically). So, be careful.
 
 ## How to setup
-1. install all necessary tools
-2. execute `npm install` into the root folder
-3. start My-MEAN-website server with `gulp`
-7. execute `npm start` into the root folder to start this application (client/front-end)
+1. if necessary rename (case-sensitive) the main folder of this project into `My-MEAN-website-client` (mandatory to run front-end side)
+2. put the main folder of this project near `My-MEAN-website-server` (in the future I'll give you a way to configure this)
+3. execute `npm install` into the root folder (if it will fail, run it again)
+4. follow [the tutorial](https://github.com/Ks89/My-MEAN-website-server) to prepare My-MEAN-website server (remember to start both MongoDb and redis-server)
+5. start My-MEAN-website server with `npm start`
+6. execute `npm start` into the root folder to start this application (client/front-end)
 
 This will start this application at http://localhost:3300
+
+PS: If you didn't start server-side before, you won't be able to see the entire home page (because created using data taken from DB)
 
 ## How to run tests (client-side)
 Execute `npm test`
 
-## How to start
-- cd MyWebsite (if necessary rename server-side's main folder)
-- `gulp`
-- cd ..
-- cd 'main folder of this project'
-- `npm start` (or `npm run build` for production)
-- Open your browser **http://localhost:3300** (if not automatically opened)
+## How to start (development mode with HMR and BrowserSync)
+1. cd `My-MEAN-website-server`
+2. `npm start`
+3. cd ..
+4. cd `My-MEAN-website-client` (if necessary rename it (case-sensitive) into `My-MEAN-website-client`)
+5. `npm start` (or `npm run build` for production)
+6. Surf to **http://localhost:3300**
 
 If you want to start the admin page, go to **http://localhost:3300/admin.html**
+Attention: it's very unstable, because I decided to implement only some basic features. I'll improve it in the next alphas.
+
+## How to start (development mode bundle)
+1. cd `My-MEAN-website-server`
+2. `npm start`
+3. cd ..
+4. cd `My-MEAN-website-client` (if necessary rename it (case-sensitive) into `My-MEAN-website-client`)
+5. `npm run buildDev`
+6. Surf to **http://localhost:3001**
+
+If you want to start the admin page, go to **http://localhost:3001/admin.html**
+Attention: it's very unstable, because I decided to implement only some basic features. I'll improve it in the next alphas.
+
+## How to start (production mode bundle)
+1. cd `My-MEAN-website-server`
+2. `npm start`
+3. cd ..
+4. cd `My-MEAN-website-client` (if necessary rename it (case-sensitive) into `My-MEAN-website-client`)
+5. `npm run build`
+6. Surf to **http://localhost:3001**
+
+If you want to start the admin page, go to **http://localhost:3001/admin.html**
 Attention: it's very unstable, because I decided to implement only some basic features. I'll improve it in the next alphas.
 
 ## Features
 Work in progress... (this is only an alpha, please be patient)
 
-
 ## Future extensions
 Work in progress... (this is only an alpha, please be patient)
-
 
 ## Images
 
@@ -113,7 +151,7 @@ Work in progress... (this is only an alpha, please be patient)
 
 
 ## Thanks
-A special thanks to the authors of these books, because very useful to understand how to develop a modern web application: [BOOK1](https://www.manning.com/books/getting-mean-with-mongo-express-angular-and-node) and [BOOK2](https://www.manning.com/books/angular-2-development-with-typescript). Also to [this project](https://github.com/AngularClass/angular2-webpack-starter)
+A special thanks to the authors of these books, because very useful to understand how to develop a modern web application: [BOOK1](https://www.manning.com/books/getting-mean-with-mongo-express-angular-and-node) and [BOOK2](https://www.manning.com/books/angular-2-development-with-typescript). Also to [this project](https://github.com/AngularClass/angular2-webpack-starter) and [this one](https://github.com/qdouble/angular-webpack2-starter/)
 
 
 ## License
