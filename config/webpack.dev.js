@@ -8,7 +8,6 @@ const HotModuleReplacementPlugin = require('webpack/lib/HotModuleReplacementPlug
 const BrowserSyncPlugin     = require('browser-sync-webpack-plugin');
 const webpackMerge          = require('webpack-merge');
 const ExtractTextPlugin     = require('extract-text-webpack-plugin');
-const { ForkCheckerPlugin } = require('awesome-typescript-loader');
 
 const commonConfig          = require('./webpack.common');
 const helpers               = require('./helpers');
@@ -50,11 +49,34 @@ module.exports = webpackMerge(commonConfig, {
     publicPath: '/'
   },
   plugins: [
-    new ForkCheckerPlugin(),
+    // Specify the correct order the scripts will be injected in
     new CommonsChunkPlugin({
-      name: ['admin', 'app', 'vendor', 'polyfills'],
+      name: 'vendor',
+      chunks: ['vendor'],
+      minChunks: module => /node_modules\//.test(module.resource)
+    }),
+    new CommonsChunkPlugin({
+      name: 'polyfills',
+      chunks: ['polyfills'],
       minChunks: Infinity
     }),
+    new CommonsChunkPlugin({
+      name: 'app',
+      chunks: ['app'],
+      minChunks: Infinity
+    }),
+    new CommonsChunkPlugin({
+      name: 'admin',
+      chunks: ['admin'],
+      minChunks: Infinity
+    }),
+    new CommonsChunkPlugin({
+      name: ['polyfills', 'vendor', 'app', 'admin' ].reverse()
+    }),
+    // new CommonsChunkPlugin({
+    //   name: ['admin', 'app', 'vendor', 'polyfills'],
+    //   minChunks: Infinity
+    // }),
     // new CommonsChunkPlugin({
     // //   name: 'admin',
     //   name: ['admin', 'vendor', 'polyfills'],

@@ -9,6 +9,7 @@ const WebpackMd5HashPlugin  = require('webpack-md5-hash');
 const CompressionPlugin     = require('compression-webpack-plugin');
 const webpackMerge          = require('webpack-merge');
 const ExtractTextPlugin     = require('extract-text-webpack-plugin');
+const BabiliPlugin          = require("babili-webpack-plugin");
 
 const commonConfig          = require('./webpack.common.js');
 const helpers               = require('./helpers');
@@ -24,10 +25,37 @@ module.exports = webpackMerge(commonConfig, {
     publicPath: './'
   },
   plugins: [
+    new BabiliPlugin(),
+    // new CommonsChunkPlugin({
+    //   name: ['admin', 'app', 'vendor', 'polyfills'],
+    //   minChunks: Infinity
+    // }),
+
+    // Specify the correct order the scripts will be injected in
     new CommonsChunkPlugin({
-      name: ['admin', 'app', 'vendor', 'polyfills'],
+      name: 'vendor',
+      chunks: ['vendor'],
+      minChunks: module => /node_modules\//.test(module.resource)
+    }),
+    new CommonsChunkPlugin({
+      name: 'polyfills',
+      chunks: ['polyfills'],
       minChunks: Infinity
     }),
+    new CommonsChunkPlugin({
+      name: 'app',
+      chunks: ['app'],
+      minChunks: Infinity
+    }),
+    new CommonsChunkPlugin({
+      name: 'admin',
+      chunks: ['admin'],
+      minChunks: Infinity
+    }),
+    new CommonsChunkPlugin({
+      name: ['polyfills', 'vendor', 'app', 'admin' ].reverse()
+    }),
+
     new ExtractTextPlugin({
       filename: '[name].css',
       allChunks: true
@@ -39,11 +67,11 @@ module.exports = webpackMerge(commonConfig, {
 
     new DefinePlugin({'webpack': {'ENV': JSON.stringify(METADATA.env)}}),
 
-    new UglifyJsPlugin({
-      beautify: false,
-      compress: {screw_ie8 : true},
-      mangle: {screw_ie8 : true, keep_fnames: true},
-      comments: false
-    })
+    // new UglifyJsPlugin({ // its not working with treeshaking because i'm forcing targe=es2015 in tsconfig.json
+    //   beautify: false,
+    //   compress: {screw_ie8 : true},
+    //   mangle: {screw_ie8 : true, keep_fnames: true},
+    //   comments: false
+    // })
     ],
 });

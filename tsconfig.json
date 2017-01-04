@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2015",
     "module": "es2015",
     "moduleResolution": "node",
     "sourceMap": true,
@@ -9,8 +9,12 @@
     "allowSyntheticDefaultImports": true,
     "removeComments": false,
     "noImplicitAny": false,
-    "typeRoots": [
-      "node_modules/@types"
+    "lib": [
+      "es2015",
+      "dom"
+    ],
+    "types": [
+      "node"
     ]
   },
   "exclude": [
