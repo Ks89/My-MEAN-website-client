@@ -144,7 +144,13 @@
   "greenkeeper": {
     "ignore": [
       "typescript",
-      "codelyzer"
+      "codelyzer",
+      "@types/core-js",
+      "@types/jasmine",
+      "@types/jquery",
+      "@types/lodash",
+      "@types/node",
+      "@types/selenium-webdriver"
     ]
   }
 }
