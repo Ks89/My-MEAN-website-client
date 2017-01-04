@@ -24,6 +24,7 @@ module.exports = webpackMerge(commonConfig, {
     publicPath: './'
   },
   plugins: [
+    // new BabiliPlugin(),
     // new CommonsChunkPlugin({
     //   name: ['admin', 'app', 'vendor', 'polyfills'],
     //   minChunks: Infinity
@@ -87,5 +88,5 @@ module.exports = webpackMerge(commonConfig, {
         negate_iife: false // we need this for lazy v8
       }
     })
-    ],
+    ]
 });
