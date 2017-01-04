@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "module": "commonjs",
+    "module": "es2015",
     "moduleResolution": "node",
     "sourceMap": true,
     "emitDecoratorMetadata": true,
@@ -9,6 +9,7 @@
     "allowSyntheticDefaultImports": true,
     "removeComments": false,
     "noImplicitAny": false,
+    "noEmit": true,
     "typeRoots": [
       "node_modules/@types"
     ]
@@ -22,6 +23,7 @@
     "**/*.spec.ts"
   ],
   "awesomeTypescriptLoaderOptions": {
+    "forkChecker": true,
     "useWebpackText": true
   },
   "compileOnSave": false,
