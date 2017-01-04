@@ -1,17 +1,22 @@
 'use strict';
 
 const webpackConfig = require('./config/webpack.test');
+const os = require('os');
 
 function getBrowsers() {
   if (process.env.CI) {
-    if(process.env.APPVEYOR) {
+    if(process.env.APPVEYOR) { // variable defined by APPVEYOR itself
       // only for AppVeyor
       return ['Chrome', 'Firefox', 'IE'];
     } else {
-      return ['PhantomJS', 'Firefox'];
+      return ['PhantomJS', 'Firefox'];  // Travis CI
     }
   } else {
-    return ['PhantomJS', 'Chrome', 'Firefox'];
+    if(os.platform() === 'win32') {
+      return ['PhantomJS', 'Chrome', 'Firefox', 'IE'];
+    } else {
+      return ['PhantomJS', 'Chrome', 'Firefox'];
+    }
   }
 }
 
