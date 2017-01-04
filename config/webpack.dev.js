@@ -52,9 +52,57 @@ module.exports = webpackMerge(commonConfig, {
   plugins: [
     new ForkCheckerPlugin(),
     new CommonsChunkPlugin({
-      name: ['admin', 'app', 'vendor', 'polyfills'],
-      minChunks: Infinity
+      name: 'polyfills',
+      chunks: ['polyfills'],
+      // minChunks: Infinity
     }),
+    new CommonsChunkPlugin({
+      name: 'vendor',
+      chunks: ['app'],
+      minChunks: module => /node_modules\//.test(module.resource)
+    }),
+    // new CommonsChunkPlugin({
+    //   name: 'app',
+    //   chunks: ['app'],
+    //   minChunks: Infinity
+    // }),
+    // new CommonsChunkPlugin({
+    //   name: 'admin',
+    //   chunks: ['admin'],
+    //   minChunks: Infinity
+    // }),
+    new CommonsChunkPlugin({
+      name: ['polyfills', 'vendor'/*, 'app', 'admin' */].reverse()
+    }),
+
+    // Specify the correct order the scripts will be injected in
+    // new CommonsChunkPlugin({
+    //   name: 'vendor',
+    //   chunks: ['vendor'],
+    //   minChunks: module => /node_modules\//.test(module.resource)
+    // }),
+    // new CommonsChunkPlugin({
+    //   name: 'polyfills',
+    //   chunks: ['polyfills'],
+    //   minChunks: Infinity
+    // }),
+    // new CommonsChunkPlugin({
+    //   name: 'app',
+    //   chunks: ['app'],
+    //   minChunks: Infinity
+    // }),
+    // new CommonsChunkPlugin({
+    //   name: 'admin',
+    //   chunks: ['admin'],
+    //   minChunks: Infinity
+    // }),
+    // new CommonsChunkPlugin({
+    //   name: ['polyfills', 'vendor', 'app', 'admin' ].reverse()
+    // }),
+    // new CommonsChunkPlugin({
+    //   name: ['admin', 'app', 'vendor', 'polyfills'],
+    //   minChunks: Infinity
+    // }),
     // new CommonsChunkPlugin({
     // //   name: 'admin',
     //   name: ['admin', 'vendor', 'polyfills'],
