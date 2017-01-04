@@ -25,6 +25,9 @@ Testing:
 - front-end unit: coverage >80%
 - front-end e2e: work in progress, In future alphas I'll complete everything
 
+## Experimental features
+- Tree shaking - working but with many bugs => [chech here for a preview](https://github.com/Ks89/My-MEAN-website-client/tree/treeshaking-rollup)
+
 ## Requirements
 - macOS, Linux or Windows 10 with admin privileges
 - Node.js + npm
