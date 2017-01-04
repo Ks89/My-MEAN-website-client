@@ -25,7 +25,7 @@ module.exports = webpackMerge(commonConfig, {
     publicPath: './'
   },
   plugins: [
-    new BabiliPlugin(),
+    // new BabiliPlugin(),
     // new CommonsChunkPlugin({
     //   name: ['admin', 'app', 'vendor', 'polyfills'],
     //   minChunks: Infinity
@@ -33,27 +33,27 @@ module.exports = webpackMerge(commonConfig, {
 
     // Specify the correct order the scripts will be injected in
     new CommonsChunkPlugin({
-      name: 'vendor',
-      chunks: ['vendor'],
-      minChunks: module => /node_modules\//.test(module.resource)
-    }),
-    new CommonsChunkPlugin({
       name: 'polyfills',
       chunks: ['polyfills'],
-      minChunks: Infinity
+      // minChunks: Infinity
     }),
     new CommonsChunkPlugin({
-      name: 'app',
+      name: 'vendor',
       chunks: ['app'],
-      minChunks: Infinity
+      minChunks: module => /node_modules\//.test(module.resource)
     }),
+    // new CommonsChunkPlugin({
+    //   name: 'app',
+    //   chunks: ['app'],
+    //   minChunks: Infinity
+    // }),
+    // new CommonsChunkPlugin({
+    //   name: 'admin',
+    //   chunks: ['admin'],
+    //   minChunks: Infinity
+    // }),
     new CommonsChunkPlugin({
-      name: 'admin',
-      chunks: ['admin'],
-      minChunks: Infinity
-    }),
-    new CommonsChunkPlugin({
-      name: ['polyfills', 'vendor', 'app', 'admin' ].reverse()
+      name: ['polyfills', 'vendor'/*, 'app', 'admin' */].reverse()
     }),
 
     new ExtractTextPlugin({
@@ -66,6 +66,29 @@ module.exports = webpackMerge(commonConfig, {
     // new CopyWebpackPlugin([{from: './src/index.html', to: 'index.html'}]),
 
     new DefinePlugin({'webpack': {'ENV': JSON.stringify(METADATA.env)}}),
+
+    new UglifyJsPlugin({
+      beautify: false,
+      mangle: {
+        screw_ie8 : true
+      },
+      output: {
+        comments: false
+      },
+      compress: {
+        screw_ie8: true,
+        warnings: false,
+        conditionals: true,
+        unused: true,
+        comparisons: true,
+        sequences: true,
+        dead_code: true,
+        evaluate: true,
+        if_return: true,
+        join_vars: true,
+        negate_iife: false // we need this for lazy v8
+      }
+    })
 
     // new UglifyJsPlugin({ // its not working with treeshaking because i'm forcing targe=es2015 in tsconfig.json
     //   beautify: false,

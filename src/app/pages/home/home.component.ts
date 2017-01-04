@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/share';
 
 import { Project, ProjectService } from '../../common/services';
 
