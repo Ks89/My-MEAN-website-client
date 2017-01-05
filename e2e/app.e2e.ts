@@ -37,3 +37,19 @@ describe('hello world', function() {
   });
 
 });
+
+// import { browser } from 'protractor';
+//
+// describe('App', () => {
+//
+//   beforeEach(() => {
+//     browser.get('/');
+//   });
+//
+//   it('should have a title', () => {
+//     let subject = browser.getTitle();
+//     let result  = 'My MEAN Website';
+//     expect(subject).toEqual(result);
+//   });
+//
+// });
