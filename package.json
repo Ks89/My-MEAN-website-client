@@ -138,7 +138,7 @@
     "webpack-dev-server": "^2.2.0-rc.0",
     "webpack-manifest-plugin": "^1.1.0",
     "webpack-md5-hash": "^0.0.5",
-    "webpack-merge": "^2.1.0"
+    "webpack-merge": "2.0.0"
   },
   "greenkeeper": {
     "ignore": [
@@ -149,7 +149,8 @@
       "@types/jquery",
       "@types/lodash",
       "@types/node",
-      "@types/selenium-webdriver"
+      "@types/selenium-webdriver",
+      "webpack-merge"
     ]
   }
 }
