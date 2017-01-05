@@ -18,10 +18,8 @@ addons:
   firefox: latest
   apt:
     sources:
-      - google-chrome
       - ubuntu-toolchain-r-test
     packages:
-      - google-chrome-stable
       - g++-4.8
 script:
   - bash travisci/travis_script.sh
