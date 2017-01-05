@@ -13,7 +13,8 @@ function getBrowsers() {
     }
   } else {
     if(os.platform() === 'win32') {
-      return ['PhantomJS', 'Chrome', 'Firefox', 'IE'];
+      // TODO add 'PhantomJS' - at the moment isn't working on Windows10 (only for test in ProfileComponent, WTF!!!)
+      return ['Chrome', 'Firefox', 'IE'];
     } else {
       return ['PhantomJS', 'Chrome', 'Firefox'];
     }
