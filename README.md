@@ -29,14 +29,15 @@ Testing:
 - Tree shaking - working but with many bugs => [chech here for a preview](https://github.com/Ks89/My-MEAN-website-client/tree/treeshaking-rollup)
 
 ## Requirements
-- macOS, Linux or Windows 10 with admin privileges
+- macOS, Linux or Windows 10 **with admin privileges**
 - Node.js + npm
 - some global npm dependencies
-- My-MEAN-website server Alpha4 or greater
-- PhantomJS, Google Chrome, Mozilla Firefox (mandatory if you want to run `npm test`) (also Internet Explorer if you are using Windows)
+- [My-MEAN-website server](https://github.com/Ks89/My-MEAN-website-server) Alpha4 or greater
+- Google Chrome and Mozilla Firefox (mandatory if you want to run `npm test`) (also Internet Explorer if you are using Windows)
 - work in progress... (this is only an alpha, please be patient)
 
 ## News
+- *01/**/2017* - **My MEAN website** Alpha 5 public release COMING SOON
 - *12/30/2016* - **My MEAN website** Alpha 4 public release [HERE](https://github.com/Ks89/My-MEAN-website-client/releases/tag/v.alpha-4)
 - *11/28/2016* - **My MEAN website** Alpha 3 public release [HERE](https://github.com/Ks89/My-MEAN-website-client/releases/tag/v.alpha-3)
 - *10/27/2016* - **My MEAN website** Alpha 2 public release [HERE](https://github.com/Ks89/My-MEAN-website-server/releases/tag/v.alpha-2.2)
@@ -68,11 +69,11 @@ If you'll have problems with `node-zopfli`, you have to install it properly foll
 Both options will require to download really big files from microsoft.com (manually or automatically). So, be careful.
 
 ## How to setup
-1. if necessary rename (case-sensitive) the main folder of this project into `My-MEAN-website-client` (mandatory to run front-end side)
+1. if necessary rename (case-sensitive) the main folder of this project into `My-MEAN-website-client` to match `FRONT_END_PATH` in `.env` file of [server-side](https://github.com/Ks89/My-MEAN-website-server)
 2. put the main folder of this project near `My-MEAN-website-server` (in the future I'll give you a way to configure this)
 3. execute `npm install` into the root folder (if it will fail, run it again)
-4. follow [the tutorial](https://github.com/Ks89/My-MEAN-website-server) to prepare My-MEAN-website server (remember to start both MongoDb and redis-server)
-5. start My-MEAN-website server with `npm start`
+4. follow [the tutorial](https://github.com/Ks89/My-MEAN-website-server) to prepare [My-MEAN-website server](https://github.com/Ks89/My-MEAN-website-server)  (remember to start both MongoDb and redis-server)
+5. start [My-MEAN-website server](https://github.com/Ks89/My-MEAN-website-server)  with `npm start`
 6. execute `npm start` into the root folder to start this application (client/front-end)
 
 This will start this application at http://localhost:3300
@@ -86,7 +87,7 @@ Execute `npm test`
 1. cd `My-MEAN-website-server`
 2. `npm start`
 3. cd ..
-4. cd `My-MEAN-website-client` (if necessary rename it (case-sensitive) into `My-MEAN-website-client`)
+4. cd `My-MEAN-website-client` (if necessary rename it (case-sensitive) to match `FRONT_END_PATH` in `.env` file of [server-side](https://github.com/Ks89/My-MEAN-website-server))
 5. `npm start` (or `npm run build` for production)
 6. Surf to **http://localhost:3300**
 
@@ -97,7 +98,7 @@ Attention: it's very unstable, because I decided to implement only some basic fe
 1. cd `My-MEAN-website-server`
 2. `npm start`
 3. cd ..
-4. cd `My-MEAN-website-client` (if necessary rename it (case-sensitive) into `My-MEAN-website-client`)
+4. cd `My-MEAN-website-client` (if necessary rename it (case-sensitive) to match `FRONT_END_PATH` in `.env` file of [server-side](https://github.com/Ks89/My-MEAN-website-server))
 5. `npm run buildDev`
 6. Surf to **http://localhost:3001**
 
@@ -108,9 +109,9 @@ Attention: it's very unstable, because I decided to implement only some basic fe
 1. cd `My-MEAN-website-server`
 2. `npm start`
 3. cd ..
-4. cd `My-MEAN-website-client` (if necessary rename it (case-sensitive) into `My-MEAN-website-client`)
+4. cd `My-MEAN-website-client` (if necessary rename it (case-sensitive) to match `FRONT_END_PATH` in `.env` file of [server-side](https://github.com/Ks89/My-MEAN-website-server))
 5. `npm run build`
-6. Surf to **http://localhost:3001**
+6. Surf to **http://localhost:3001** (if [My-MEAN-website server](https://github.com/Ks89/My-MEAN-website-server) is in dev mode, otherwise the correct port will be `3000`)
 
 If you want to start the admin page, go to **http://localhost:3001/admin.html**
 Attention: it's very unstable, because I decided to implement only some basic features. I'll improve it in the next alphas.
