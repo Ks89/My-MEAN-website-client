@@ -1,7 +1,6 @@
 language: node_js
 node_js:
   - "7"
-  - "7.0"
   - "6"
   - "6.0"
 os:
@@ -25,8 +24,8 @@ script:
   - bash travisci/travis_script.sh
 #branches:
 #  only: master
-#cache:
- # apt: true
-  #bundler: true
- # directories:
-  #  - node_modules
+cache:
+  apt: true
+  bundler: true
+  directories:
+    - node_modules

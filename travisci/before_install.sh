@@ -12,12 +12,12 @@ if [[ $TRAVIS_OS_NAME = 'osx' ]]; then
     echo "Exporting env variables - done"
 else
     echo "Exporting env variables - OS is $TRAVIS_OS_NAME"
-    export CXX=g++-4.8 NODE_ENV=test CI=yes FIREFOX_BIN=$HOME/firefox-latest/firefox PATH=$FIREFOX_BIN:$PATH;
+    export CXX=g++-4.8 NODE_ENV=test CI=yes #FIREFOX_BIN=$HOME/firefox-latest/firefox PATH=$FIREFOX_BIN:$PATH;
     echo "CXX = $CXX"
     echo "NODE_ENV = $NODE_ENV"
     echo "CI = $CI"
-    echo "FIREFOX_BIN = $FIREFOX_BIN"
-    echo "PATH = $PATH"
+    #echo "FIREFOX_BIN = $FIREFOX_BIN"
+    #echo "PATH = $PATH"
     echo "Exporting env variables - done"
 fi
 
