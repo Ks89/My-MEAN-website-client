@@ -18,7 +18,7 @@
     "test": "./node_modules/.bin/karma start --single-run",
     "tslint": "./node_modules/.bin/tslint",
     "lint": "npm run tslint \"src/**/*.ts\"",
-    "pree2e": "npm run webdriver:update",
+    "pree2e": "npm run webdriver:update -- --standalone",
     "e2e:live": "npm run e2e -- --elementExplorer",
     "e2e": "npm run protractor",
     "prebuild": "npm run clean-build",
