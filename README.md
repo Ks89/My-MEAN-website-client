@@ -80,8 +80,11 @@ This will start this application at http://localhost:3300
 
 PS: If you didn't start server-side before, you won't be able to see the entire home page (because created using data taken from DB)
 
-## How to run tests (client-side)
-Execute `npm test`
+## How to run unit tests (with karma)
+- `npm test`
+
+## How to run e2e tests (with protractor)
+- `npm run e2e`
 
 ## How to start (development mode with HMR and BrowserSync)
 1. cd `My-MEAN-website-server`

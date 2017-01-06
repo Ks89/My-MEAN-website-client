@@ -71,7 +71,7 @@
     "@types/jquery": "^2.0.39",
     "@types/lodash": "^4.14.45",
     "@types/node": "^6.0.57",
-    "@types/selenium-webdriver": "^2.53.38",
+    "@types/selenium-webdriver": "^2.53.39",
     "angular-router-loader": "^0.4.0",
     "angular2-template-loader": "^0.6.0",
     "autoprefixer": "^6.6.0",
@@ -109,6 +109,7 @@
     "karma-mocha-reporter": "^2.2.1",
     "karma-phantomjs-launcher": "^1.0.2",
     "karma-remap-coverage": "^0.1.4",
+    "karma-safari-launcher": "^1.0.0",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^1.8.1",
     "mkdirp": "^0.5.1",
@@ -138,7 +139,7 @@
     "webpack-dev-server": "^2.2.0-rc.0",
     "webpack-manifest-plugin": "^1.1.0",
     "webpack-md5-hash": "^0.0.5",
-    "webpack-merge": "2.0.0"
+    "webpack-merge": "^2.2.0"
   },
   "greenkeeper": {
     "ignore": [
@@ -149,8 +150,7 @@
       "@types/jquery",
       "@types/lodash",
       "@types/node",
-      "@types/selenium-webdriver",
-      "webpack-merge"
+      "@types/selenium-webdriver"
     ]
   }
 }
