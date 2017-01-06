@@ -27,6 +27,9 @@ Testing:
 
 ## Experimental features
 - Tree shaking - working but with many bugs => [chech here for a preview](https://github.com/Ks89/My-MEAN-website-client/tree/treeshaking-rollup)
+- Angular 4 - still not working => [check here for a preview](https://github.com/Ks89/My-MEAN-website-client/issues/59)
+    - angular2-image-popup needs an update (removing this lib everything is ok :))
+    - protractor is broken (probably protractor's developers should release an update)
 
 ## Requirements
 - macOS, Linux or Windows 10 **with admin privileges**
