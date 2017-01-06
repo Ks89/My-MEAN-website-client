@@ -12,11 +12,17 @@ function getBrowsers() {
       return ['PhantomJS', 'Firefox'];  // Travis CI
     }
   } else {
-    if(os.platform() === 'win32') {
-      // TODO add 'PhantomJS' - at the moment isn't working on Windows10 (only for test in ProfileComponent, WTF!!!)
-      return ['Chrome', 'Firefox', 'IE'];
-    } else {
-      return ['PhantomJS', 'Chrome', 'Firefox'];
+    switch(os.platform()) {
+      case 'win32': // Windows
+        // TODO add 'PhantomJS' - at the moment isn't working on Windows10 (only for test in ProfileComponent, WTF!!!)
+        return ['Chrome', 'Firefox', 'IE'];
+        break;
+      case 'darwin': // macOS
+        return ['PhantomJS', 'Chrome', 'Firefox'/*, 'Safari'*/];
+        break;
+      default: // other (linux, freebsd, openbsd, sunos, aix)
+        return ['PhantomJS', 'Chrome', 'Firefox'];
+        break;
     }
   }
 }

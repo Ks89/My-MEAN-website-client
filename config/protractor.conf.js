@@ -31,12 +31,17 @@ exports.config = {
   },
   directConnect: true,
 
-  capabilities: {
-    'browserName': 'chrome',
-    'chromeOptions': {
-      'args': ['show-fps-counter=true']
+  multiCapabilities: [
+    // {
+    //   browserName: 'firefox'
+    // },
+    {
+      browserName: 'chrome',
+      chromeOptions: {
+        args: ['show-fps-counter=true']
+      }
     }
-  },
+  ],
 
   onPrepare: function() {
     browser.ignoreSynchronization = true;
