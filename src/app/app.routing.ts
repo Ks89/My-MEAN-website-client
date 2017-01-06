@@ -16,6 +16,7 @@ import ProfileComponent from './pages/profile/profile.component';
 import Post3dAuthComponent from './pages/post3d-auth/post3d-auth.component';
 
 import { AuthGuard } from './common/services/auth-guard.service';
+import NotFound404Component from "./pages/404/not-found404.component";
 
 const appRoutes: Routes = [
 
@@ -34,7 +35,8 @@ const appRoutes: Routes = [
   // TODO in angular2 '?' isn't working -> find a better approach to do that
   {path: 'profile',                         component: ProfileComponent, canActivate: [AuthGuard] },
   {path: 'profile/:token',                  component: ProfileComponent, canActivate: [AuthGuard] },
-  {path: 'post3dauth',                      component: Post3dAuthComponent}
+  {path: 'post3dauth',                      component: Post3dAuthComponent},
+  {path: '**',                              component: NotFound404Component}
 ];
 
 export const routing: ModuleWithProviders = RouterModule.forRoot(appRoutes);

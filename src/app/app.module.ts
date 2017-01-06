@@ -5,6 +5,7 @@ import { HttpModule } from '@angular/http';
 import { routing }  from './app.routing';
 
 import ApplicationComponent from './application/application.component';
+import NotFound404Component from './pages/404/not-found404.component';
 import HomeComponent from './pages/home/home.component';
 import ProjectListComponent from './pages/project-list/project-list.component';
 // import CvComponent from './pages/cv/cv.component';
@@ -49,6 +50,7 @@ import {removeNgStyles, createNewHosts, createInputTransfer} from "@angularclass
   ],
   declarations: [
     ApplicationComponent,
+    NotFound404Component,
     HomeComponent,
     ProjectListComponent,
     // CvComponent,

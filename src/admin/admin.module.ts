@@ -5,6 +5,7 @@ import { HttpModule } from '@angular/http';
 import { routing }  from './admin.routing';
 
 import ApplicationAdminComponent from './application/application.component';
+import NotFound404Component from './pages/404/not-found404.component';
 import DashboardAdminComponent from './pages/dashboard/dashboard.component';
 import UsersAdminComponent from './pages/users/users.component';
 import NewsletterAdminComponent from './pages/newsletter/newsletter.component';
@@ -30,6 +31,7 @@ import { LaddaModule } from 'angular2-ladda';
   ],
   declarations: [
     ApplicationAdminComponent,
+    NotFound404Component,
     DashboardAdminComponent,
     UsersAdminComponent,
     NewsletterAdminComponent,
