@@ -35,12 +35,13 @@ export default class ResetComponent {
       PasswordValidators.lowercaseCharacterRule(1),
       PasswordValidators.uppercaseCharacterRule(1),
       PasswordValidators.repeatCharacterRegexRule(3),
-      Validators.minLength(8)]);
+      Validators.minLength(8),
+      Validators.required]);
 
     const fb = new FormBuilder();
     this.formModel = fb.group({
       'password': [null, passwordValidator],
-      'passwordConfirm': [null, null]
+      'passwordConfirm': [null, Validators.required]
     });
   }
 

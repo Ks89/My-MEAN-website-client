@@ -111,6 +111,7 @@ describe('ResetComponent', () => {
       const element: DebugElement = fixture.debugElement;
 
       comp.formModel.controls['password'].setValue('Qw12345678');
+      comp.formModel.controls['passwordConfirm'].setValue('Qw12345678');
       expect(comp.formModel.valid).toBe(true);
 
       comp.onReset();
@@ -145,10 +146,44 @@ describe('ResetComponent', () => {
   describe('---ERROR---', () => {
     beforeEach( async(() => initTestBed(FAKE_BAD_EMAIL_TOKEN)));
 
+    it(`should NOT reset local account's password, because all fields are mandatory`, () => {
+      const element: DebugElement = fixture.debugElement;
+
+      comp.formModel.controls['password'].setValue('Qw12345678');
+      comp.formModel.controls['passwordConfirm'].setValue(null);
+      expect(comp.formModel.valid).toBe(false);
+
+      comp.onReset();
+
+      fixture.detectChanges();
+
+      let results: DebugElement[] = element.queryAll(By.css('div.alert.alert-danger'));
+      expect(results.length).toBe(0);
+      results = element.queryAll(By.css('div.alert.alert-success'));
+      expect(results.length).toBe(0);
+    });
+
+    it(`should NOT reset local account's password, because passwords must the equal`, () => {
+      const element: DebugElement = fixture.debugElement;
+
+      comp.formModel.controls['password'].setValue('Qw12345678');
+      comp.formModel.controls['passwordConfirm'].setValue('Qw12345678_wrong');
+      expect(comp.formModel.valid).toBe(true);
+
+      comp.onReset();
+
+      fixture.detectChanges();
+
+      const results: DebugElement[] = element.queryAll(By.css('div.alert.alert-danger'));
+      expect(results.length).toBe(1);
+      expect(results[0].nativeElement.textContent.trim()).toBe('Danger Password and Password confirm must be equals');
+    });
+
     it(`should NOT reset local account's password`, () => {
       const element: DebugElement = fixture.debugElement;
 
       comp.formModel.controls['password'].setValue('Qw12345678');
+      comp.formModel.controls['passwordConfirm'].setValue('Qw12345678');
       expect(comp.formModel.valid).toBe(true);
 
       comp.onReset();
