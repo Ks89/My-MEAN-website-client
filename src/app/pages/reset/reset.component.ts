@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { AuthService } from '../../common/services';
+import { PasswordValidators } from "ng2-validators";
 
 @Component({
   selector: 'mmw-reset-page',
@@ -28,14 +29,35 @@ export default class ResetComponent {
       strapline: ''
     };
 
+    const passwordValidator = Validators.compose([
+      PasswordValidators.alphabeticalCharacterRule(1),
+      PasswordValidators.digitCharacterRule(1),
+      PasswordValidators.lowercaseCharacterRule(1),
+      PasswordValidators.uppercaseCharacterRule(1),
+      PasswordValidators.repeatCharacterRegexRule(3),
+      Validators.minLength(8)]);
+
     const fb = new FormBuilder();
     this.formModel = fb.group({
-      'password': [null, Validators.compose([Validators.required, Validators.minLength(8)])]
+      'password': [null, passwordValidator],
+      'passwordConfirm': [null, null]
     });
   }
 
   onReset() {
     if (this.formModel.valid) {
+      if (this.formModel.value.password !== this.formModel.value.passwordConfirm) {
+        this.resetAlert = {
+          visible: true,
+          status: 'danger',
+          strong : 'Danger',
+          message: 'Password and Password confirm must be equals'
+        };
+        this.isWaiting = false;
+        this.showFormError = true;
+        return;
+      }
+
       this.isWaiting = true;
       console.log('Calling reset...');
       this.authService.reset(this.emailToken, this.formModel.value.password).subscribe(

@@ -14,7 +14,22 @@
           <label for="password">New Password</label>
           <input type="password" class="form-control" id="password" placeholder="Enter your password" formControlName="password">
           <span class="form-text text-muted" *ngIf="!formModel.controls.password.valid">
-            Type at least 8 characters
+            Type a valid password with these rules:
+            <ul>
+              <li>at least a lowercase char</li>
+              <li>at least an uppercase char</li>
+              <li>at least a digit char</li>
+              <li>at least an alphabetical char</li>
+              <li>at least 8 characters</li>
+              <li>don't repeat 3 chars in a row</li>
+            </ul>
+          </span>
+        </div>
+        <div class="form-group" [class.has-warning]="!formModel.controls.passwordConfirm.valid" [class.has-danger]="showFormError">
+          <label for="passwordConfirm">Confirm password</label>
+          <input type="password" class="form-control" id="passwordConfirm" placeholder="Confirm password" formControlName="passwordConfirm">
+          <span class="form-text text-muted" *ngIf="!formModel.controls.passwordConfirm.valid">
+            Retype the same password
           </span>
         </div>
         <button type="submit" [disabled]="alreadyChanged" [ladda]='isWaiting' data-style="slide-right" data-spinner-color="White" class="btn btn-primary ladda-button"><span class="ladda-label">Change password!</span></button>
