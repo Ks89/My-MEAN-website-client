@@ -5,10 +5,10 @@ const CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
 const DefinePlugin = require('webpack/lib/DefinePlugin');
 const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
 
-const WebpackMd5HashPlugin = require('webpack-md5-hash');
-const CompressionPlugin = require('compression-webpack-plugin');
-const webpackMerge = require('webpack-merge');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const WebpackMd5HashPlugin  = require('webpack-md5-hash');
+const CompressionPlugin     = require('compression-webpack-plugin');
+const webpackMerge          = require('webpack-merge');
+const ExtractTextPlugin     = require('extract-text-webpack-plugin');
 
 const commonConfig = require('./webpack.common.js');
 const helpers = require('./helpers');
@@ -24,7 +24,6 @@ module.exports = webpackMerge(commonConfig, {
     publicPath: './'
   },
   plugins: [
-    // new BabiliPlugin(),
     // new CommonsChunkPlugin({
     //   name: ['admin', 'app', 'vendor', 'polyfills'],
     //   minChunks: Infinity
@@ -88,12 +87,5 @@ module.exports = webpackMerge(commonConfig, {
         negate_iife: false // we need this for lazy v8
       }
     })
-
-    // new UglifyJsPlugin({ // its not working with treeshaking because i'm forcing targe=es2015 in tsconfig.json
-    //   beautify: false,
-    //   compress: {screw_ie8 : true},
-    //   mangle: {screw_ie8 : true, keep_fnames: true},
-    //   comments: false
-    // })
     ],
 });
