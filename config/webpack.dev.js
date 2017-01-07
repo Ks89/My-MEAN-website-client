@@ -2,7 +2,6 @@
 
 const webpack               = require('webpack');
 const DefinePlugin          = require('webpack/lib/DefinePlugin');
-const CommonsChunkPlugin    = require('webpack/lib/optimize/CommonsChunkPlugin');
 
 const HotModuleReplacementPlugin = require('webpack/lib/HotModuleReplacementPlugin');
 const BrowserSyncPlugin     = require('browser-sync-webpack-plugin');
@@ -51,24 +50,6 @@ module.exports = webpackMerge(commonConfig, {
   },
   plugins: [
     new ForkCheckerPlugin(),
-    new CommonsChunkPlugin({
-      name: 'polyfills',
-      chunks: ['polyfills'],
-      // minChunks: Infinity
-    }),
-    new CommonsChunkPlugin({
-      name: 'vendor',
-      chunks: ['app'],
-      minChunks: module => /node_modules\//.test(module.resource)
-    }),
-    new CommonsChunkPlugin({
-      name: 'vendor',
-      chunks: ['admin'],
-      minChunks: module => /node_modules\//.test(module.resource)
-    }),
-    new CommonsChunkPlugin({
-      name: ['polyfills', 'vendor'].reverse()
-    }),
     new HotModuleReplacementPlugin(),
     new ExtractTextPlugin({
       filename: '[name].css',

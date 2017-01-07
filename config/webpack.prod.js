@@ -1,7 +1,6 @@
 'use strict';
 
 const webpack = require('webpack');
-const CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
 const DefinePlugin = require('webpack/lib/DefinePlugin');
 const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
 
@@ -24,20 +23,6 @@ module.exports = webpackMerge(commonConfig, {
     publicPath: './'
   },
   plugins: [
-    new CommonsChunkPlugin({
-      name: 'polyfills',
-      chunks: ['polyfills'],
-      // minChunks: Infinity
-    }),
-    new CommonsChunkPlugin({
-      name: 'vendor',
-      chunks: ['app', 'admin'],
-      minChunks: module => /node_modules\//.test(module.resource)
-    }),
-    new CommonsChunkPlugin({
-      name: ['polyfills', 'vendor'/*, 'app', 'admin' */].reverse()
-    }),
-
     new ExtractTextPlugin({
       filename: '[name].css',
       allChunks: true

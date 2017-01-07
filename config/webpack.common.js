@@ -3,7 +3,7 @@
 const webpack                      = require('webpack');
 const DefinePlugin                 = require('webpack/lib/DefinePlugin');
 const ProvidePlugin                = require('webpack/lib/ProvidePlugin');
-const OccurrenceOrderPlugin        = require('webpack/lib/optimize/OccurrenceOrderPlugin');
+const CommonsChunkPlugin           = require('webpack/lib/optimize/CommonsChunkPlugin');
 const LoaderOptionsPlugin          = require('webpack/lib/LoaderOptionsPlugin');
 const ContextReplacementPlugin     = require('webpack/lib/ContextReplacementPlugin');
 const CopyWebpackPlugin            = require('copy-webpack-plugin');
@@ -27,7 +27,6 @@ const TEMPLATE_ADMIN_HTML          = 'admin.html';
 module.exports = {
   entry: {
     polyfills: './src/polyfills.ts',
-    // vendor: './src/vendor.ts',
     app: './src/main.ts',
     admin: './src/admin.ts'
   },
@@ -112,6 +111,19 @@ module.exports = {
     new NamedModulesPlugin(),
     new ManifestPlugin(),
     new InlineManifestWebpackPlugin(), // TODO check if I can remove this
+    new CommonsChunkPlugin({
+      name: 'polyfills',
+      chunks: ['polyfills'],
+      // minChunks: Infinity
+    }),
+    new CommonsChunkPlugin({
+      name: 'vendor',
+      chunks: ['app', 'admin'],
+      minChunks: module => /node_modules\//.test(module.resource)
+    }),
+    new CommonsChunkPlugin({
+      name: ['polyfills', 'vendor'].reverse()
+    }),
     new HtmlWebpackPlugin({
       title: TITLE,
       inject: true,
