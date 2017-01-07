@@ -5,17 +5,10 @@ const CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
 const DefinePlugin = require('webpack/lib/DefinePlugin');
 const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
 
-<<<<<<< HEAD
 const WebpackMd5HashPlugin = require('webpack-md5-hash');
 const CompressionPlugin = require('compression-webpack-plugin');
 const webpackMerge = require('webpack-merge');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-=======
-const WebpackMd5HashPlugin  = require('webpack-md5-hash');
-const CompressionPlugin     = require('compression-webpack-plugin');
-const webpackMerge          = require('webpack-merge');
-const ExtractTextPlugin     = require('extract-text-webpack-plugin');
->>>>>>> finally a really working and complete implementation of three shaking #9
 
 const commonConfig = require('./webpack.common.js');
 const helpers = require('./helpers');
