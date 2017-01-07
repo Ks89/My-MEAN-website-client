@@ -23,5 +23,7 @@ node_modules
 
 .idea
 
+dll
+
 # Compiled front-end files
 dist
