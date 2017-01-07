@@ -13,8 +13,6 @@ import ApplicationComponent from './application/application.component';
 import NotFound404Component from './pages/404/not-found404.component';
 import HomeComponent from './pages/home/home.component';
 import ProjectListComponent from './pages/project-list/project-list.component';
-// REMOVE THIS FOR LAZY LOADING issue #44
-import CvComponent from './pages/cv/cv.component';
 import AboutComponent from './pages/about/about.component';
 import ContactComponent from './pages/contact/contact.component';
 import ProjectDetailComponent from './pages/project-detail/project-detail.component';
@@ -59,9 +57,6 @@ import {removeNgStyles, createNewHosts, createInputTransfer} from "@angularclass
     NotFound404Component,
     HomeComponent,
     ProjectListComponent,
-    // REMOVE THIS FOR LAZY LOADING issue #44
-    CvComponent,
-
     AboutComponent,
     ContactComponent,
     ProjectDetailComponent,
