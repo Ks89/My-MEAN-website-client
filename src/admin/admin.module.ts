@@ -9,6 +9,8 @@ import 'bootstrap-loader';
 import 'font-awesome/css/font-awesome.css';
 import '../loading.css'; // css to show a centered spinner before angular's booting
 
+import 'jquery-slimscroll';
+
 import ApplicationAdminComponent from './application/application.component';
 import NotFound404Component from './pages/404/not-found404.component';
 import DashboardAdminComponent from './pages/dashboard/dashboard.component';

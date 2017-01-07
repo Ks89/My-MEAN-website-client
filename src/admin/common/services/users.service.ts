@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
-
-
+import 'rxjs/add/operator/skip';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/take';
+import 'rxjs/add/operator/delay';
 
 const users: any = [
   {
@@ -74,10 +74,8 @@ export class UserService {
     console.log("upper: " + upper);
     console.log("lower: " + lower);
 
-    //TODO FIXME not working - replace with this.http....
+    //TODO replace with this.http....
     return Observable.of(users).delay(500).take(upper).skip(lower);
-    // return Observable.of(users);
-
   }
 
 }

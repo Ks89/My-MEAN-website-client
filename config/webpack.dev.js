@@ -61,6 +61,11 @@ module.exports = webpackMerge(commonConfig, {
       chunks: ['app'],
       minChunks: module => /node_modules\//.test(module.resource)
     }),
+    new CommonsChunkPlugin({
+      name: 'vendor',
+      chunks: ['admin'],
+      minChunks: module => /node_modules\//.test(module.resource)
+    }),
     // new CommonsChunkPlugin({
     //   name: 'app',
     //   chunks: ['app'],
