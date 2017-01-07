@@ -7,7 +7,7 @@ import NewsletterAdminComponent from './pages/newsletter/newsletter.component';
 import NotFound404Component from "./pages/404/not-found404.component";
 
 const appRoutes: Routes = [
-  // use http://localhost:3300/admin to login
+  // use http://localhost:3300/admin.html to login
   {path: '',                    component: DashboardAdminComponent},
   {path: 'allUsers',           component: UsersAdminComponent},
   {path: 'newsletterSearch',   component: NewsletterAdminComponent},
