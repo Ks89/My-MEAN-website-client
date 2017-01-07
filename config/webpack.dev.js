@@ -59,6 +59,30 @@ module.exports = webpackMerge(commonConfig, {
       allChunks: true
     }),
     new DefinePlugin({'webpack': {'ENV': JSON.stringify(METADATA.env)}}),
+
+    new DllReferencePlugin({
+      context: '.',
+      manifest: require(`../dll/polyfills-manifest.json`)
+    }),
+    new DllReferencePlugin({
+      context: '.',
+      manifest: require(`../dll/vendor-manifest.json`)
+    }),
+
+    /**
+     * Plugin: AddAssetHtmlPlugin
+     * Description: Adds the given JS or CSS file to the files
+     * Webpack knows about, and put it into the list of assets
+     * html-webpack-plugin injects into the generated html.
+     *
+     * See: https://github.com/SimenB/add-asset-html-webpack-plugin
+     */
+    new AddAssetHtmlPlugin([
+      {filepath: require.resolve('../dll/polyfills.dll.js')},
+      {filepath: require.resolve('../dll/vendor.dll.js')}
+    ]),
+
+
     new BrowserSyncPlugin(
       // BrowserSync options
       {
