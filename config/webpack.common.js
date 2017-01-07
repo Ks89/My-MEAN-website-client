@@ -18,18 +18,18 @@ const ChunkManifestPlugin          = require('chunk-manifest-webpack-plugin');
 
 const helpers                      = require('./helpers');
 const TITLE                        = 'My MEAN Website';
-// const TITLE_ADMIN                  = 'Admin My MEAN Website';
+const TITLE_ADMIN                  = 'Admin My MEAN Website';
 const TEMPLATE_PATH                = './src/index.ejs';
-// const TEMPLATE_ADMIN_PATH          = './src/admin.ejs';
+const TEMPLATE_ADMIN_PATH          = './src/admin.ejs';
 const TEMPLATE_HTML                = 'index.html';
-// const TEMPLATE_ADMIN_HTML          = 'admin.html';
+const TEMPLATE_ADMIN_HTML          = 'admin.html';
 
 module.exports = {
   entry: {
     polyfills: './src/polyfills.ts',
     // vendor: './src/vendor.ts',
     app: './src/main.ts',
-    // admin: './src/admin.ts'
+    admin: './src/admin.ts'
   },
   resolve: {
     descriptionFiles: ['package.json'],
@@ -74,7 +74,7 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        exclude: [helpers.root('src', 'app')/*, helpers.root('src', 'admin')*/],
+        exclude: [helpers.root('src', 'app'), helpers.root('src', 'admin')],
         loader: ExtractTextPlugin
           .extract({
               fallbackLoader: "style-loader",
@@ -83,7 +83,7 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        include: [helpers.root('src', 'app')/*, helpers.root('src', 'admin')*/],
+        include: [helpers.root('src', 'app'), helpers.root('src', 'admin')],
         loader: 'raw-loader!postcss-loader'
       },
       {
@@ -121,26 +121,25 @@ module.exports = {
       template: TEMPLATE_PATH,
       filename: TEMPLATE_HTML
     }),
-    // new HtmlWebpackPlugin({
-    //   title: TITLE_ADMIN,
-    //   inject: true,
-    //   chunksSortMode: function (chunk1, chunk2) {
-    //     let orders = ['polyfills', 'vendor', 'admin'];
-    //     let order1 = orders.indexOf(chunk1.names[0]);
-    //     let order2 = orders.indexOf(chunk2.names[0]);
-    //     if (order1 > order2) {
-    //       return 1;
-    //     } else if (order1 < order2) {
-    //       return -1;
-    //     } else {
-    //       return 0;
-    //     }
-    //   },
-    //   chunks: ['polyfills', 'vendor', 'admin'],
-    //   template: TEMPLATE_ADMIN_PATH,
-    //   filename: TEMPLATE_ADMIN_HTML
-    // }),
-    // new OccurrenceOrderPlugin(true),
+    new HtmlWebpackPlugin({
+      title: TITLE_ADMIN,
+      inject: true,
+      chunksSortMode: function (chunk1, chunk2) {
+        let orders = ['polyfills', 'vendor', 'admin'];
+        let order1 = orders.indexOf(chunk1.names[0]);
+        let order2 = orders.indexOf(chunk2.names[0]);
+        if (order1 > order2) {
+          return 1;
+        } else if (order1 < order2) {
+          return -1;
+        } else {
+          return 0;
+        }
+      },
+      chunks: ['polyfills', 'vendor', 'admin'],
+      template: TEMPLATE_ADMIN_PATH,
+      filename: TEMPLATE_ADMIN_HTML
+    }),
     new ProvidePlugin({
       jQuery: 'jquery',
       jquery: 'jquery',
