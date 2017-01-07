@@ -3,6 +3,9 @@
 const webpack               = require('webpack');
 const DefinePlugin          = require('webpack/lib/DefinePlugin');
 
+const AddAssetHtmlPlugin    = require('add-asset-html-webpack-plugin');
+const DllReferencePlugin    = require('webpack/lib/DllReferencePlugin');
+
 const HotModuleReplacementPlugin = require('webpack/lib/HotModuleReplacementPlugin');
 const BrowserSyncPlugin     = require('browser-sync-webpack-plugin');
 const webpackMerge          = require('webpack-merge');
