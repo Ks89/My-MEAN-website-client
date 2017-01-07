@@ -83,8 +83,8 @@ module.exports = webpackMerge(commonConfig, {
         dead_code: true,
         evaluate: true,
         if_return: true,
-        join_vars: true,
-        negate_iife: false // we need this for lazy v8
+        join_vars: true
+        // negate_iife: false // we need this for lazy v8
       }
     })
     ]
