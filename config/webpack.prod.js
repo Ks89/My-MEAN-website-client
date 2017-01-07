@@ -24,12 +24,6 @@ module.exports = webpackMerge(commonConfig, {
     publicPath: './'
   },
   plugins: [
-    // new CommonsChunkPlugin({
-    //   name: ['admin', 'app', 'vendor', 'polyfills'],
-    //   minChunks: Infinity
-    // }),
-
-    // Specify the correct order the scripts will be injected in
     new CommonsChunkPlugin({
       name: 'polyfills',
       chunks: ['polyfills'],
@@ -40,16 +34,6 @@ module.exports = webpackMerge(commonConfig, {
       chunks: ['app', 'admin'],
       minChunks: module => /node_modules\//.test(module.resource)
     }),
-    // new CommonsChunkPlugin({
-    //   name: 'app',
-    //   chunks: ['app'],
-    //   minChunks: Infinity
-    // }),
-    // new CommonsChunkPlugin({
-    //   name: 'admin',
-    //   chunks: ['admin'],
-    //   minChunks: Infinity
-    // }),
     new CommonsChunkPlugin({
       name: ['polyfills', 'vendor'/*, 'app', 'admin' */].reverse()
     }),
