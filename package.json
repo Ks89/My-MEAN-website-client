@@ -67,7 +67,6 @@
   "devDependencies": {
     "@angularclass/hmr": "^1.2.2",
     "@angularclass/hmr-loader": "^3.0.2",
-    "@types/core-js": "^0.9.34",
     "@types/jasmine": "^2.5.40",
     "@types/jquery": "^2.0.39",
     "@types/lodash": "^4.14.47",

@@ -16,16 +16,17 @@
   },
   "exclude": [
     "node_modules",
-    "dist",
     "coverage",
     "config",
     "report",
     "**/*.spec.ts"
   ],
+
   "awesomeTypescriptLoaderOptions": {
-    "forkChecker": true,
+
     "useWebpackText": true
   },
+
   "compileOnSave": false,
   "buildOnSave": false,
   "atom": { "rewriteTsconfig": false }

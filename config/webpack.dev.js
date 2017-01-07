@@ -8,7 +8,6 @@ const HotModuleReplacementPlugin = require('webpack/lib/HotModuleReplacementPlug
 const BrowserSyncPlugin     = require('browser-sync-webpack-plugin');
 const webpackMerge          = require('webpack-merge');
 const ExtractTextPlugin     = require('extract-text-webpack-plugin');
-const { ForkCheckerPlugin } = require('awesome-typescript-loader');
 
 const commonConfig          = require('./webpack.common');
 const helpers               = require('./helpers');
@@ -50,7 +49,7 @@ module.exports = webpackMerge(commonConfig, {
     publicPath: '/'
   },
   plugins: [
-    new ForkCheckerPlugin(),
+    // Specify the correct order the scripts will be injected in
     new CommonsChunkPlugin({
       name: 'polyfills',
       chunks: ['polyfills'],
