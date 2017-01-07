@@ -4,6 +4,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 import { routing }  from './admin.routing';
 
+// Third party opensource libraries (that are using scss/css)
+import 'bootstrap-loader';
+import 'font-awesome/css/font-awesome.css';
+import '../loading.css'; // css to show a centered spinner before angular's booting
+
 import ApplicationAdminComponent from './application/application.component';
 import DashboardAdminComponent from './pages/dashboard/dashboard.component';
 import UsersAdminComponent from './pages/users/users.component';
