@@ -2,6 +2,7 @@ import { enableProdMode } from '@angular/core';
 import { bootloader } from "@angularclass/hmr";
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AdminModule }  from './admin/admin.module';
+import { decorateModuleRef } from "./environment";
 
 if (webpack.ENV === 'prod') {
   enableProdMode();
@@ -9,7 +10,10 @@ if (webpack.ENV === 'prod') {
 
 // to be able to use Hot Module Replacement by AngularClass
 export function main(): any {
-  return platformBrowserDynamic().bootstrapModule(AdminModule);
+  return platformBrowserDynamic()
+    .bootstrapModule(AdminModule)
+    .then(decorateModuleRef)
+    .catch(err => console.error(err));
 }
 
 // boot on document ready
