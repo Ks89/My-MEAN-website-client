@@ -9,31 +9,31 @@
         <div *ngIf="registerAlert.visible" class="alert alert-{{registerAlert.status}}" role="alert">
           <strong>{{registerAlert.strong}}</strong> {{registerAlert.message}}
         </div>
-        <div class="form-group" [class.has-warning]="!formModel.controls.name.valid" [class.has-danger]="showFormError">
+        <div class="form-group" [class.has-warning]="!formModel.get('name').valid" [class.has-danger]="showFormError">
           <label for="name">Full name</label>
           <input type="text" class="form-control" id="name" placeholder="Enter your name" formControlName="name">
-          <span class="form-text text-muted" *ngIf="!formModel.controls.name.valid">
+          <span class="form-text text-muted" *ngIf="!formModel.get('name').valid">
             Type at least 3 characters and at maximum 30
           </span>
         </div>
-        <div class="form-group" [class.has-warning]="!formModel.controls.email.valid" [class.has-danger]="showFormError">
+        <div class="form-group" [class.has-warning]="!formModel.get('email').valid" [class.has-danger]="showFormError">
           <label for="email">Email address</label>
           <input type="email" class="form-control" id="email" placeholder="Email address" formControlName="email">
-          <span class="form-text text-muted" *ngIf="!formModel.controls.email.valid">
+          <span class="form-text text-muted" *ngIf="!formModel.get('email').valid">
             A valid email address is required
           </span>
         </div>
-        <div class="form-group" [class.has-warning]="!formModel.controls.emailConfirm.valid" [class.has-danger]="showFormError">
+        <div class="form-group" [class.has-warning]="!formModel.get('emailConfirm').valid" [class.has-danger]="showFormError">
           <label for="email">Confirm email address</label>
           <input type="email" class="form-control" id="emailConfirm" placeholder="Confirm email address" formControlName="emailConfirm">
-          <span class="form-text text-muted" *ngIf="!formModel.controls.emailConfirm.valid">
+          <span class="form-text text-muted" *ngIf="!formModel.get('emailConfirm').valid">
             Retype the same email address
           </span>
         </div>
-        <div class="form-group" [class.has-warning]="!formModel.controls.password.valid" [class.has-danger]="showFormError">
+        <div class="form-group" [class.has-warning]="!formModel.get('password').valid" [class.has-danger]="showFormError">
           <label for="password">Password</label>
           <input type="password" class="form-control" id="password" placeholder="Password" formControlName="password">
-          <span class="form-text text-muted" *ngIf="!formModel.controls.password.valid">
+          <span class="form-text text-muted" *ngIf="!formModel.get('password').valid">
             Type a valid password with these rules:
             <ul>
               <li>at least a lowercase char</li>
@@ -45,10 +45,10 @@
             </ul>
           </span>
         </div>
-        <div class="form-group" [class.has-warning]="!formModel.controls.passwordConfirm.valid" [class.has-danger]="showFormError">
+        <div class="form-group" [class.has-warning]="!formModel.get('passwordConfirm').valid" [class.has-danger]="showFormError">
           <label for="passwordConfirm">Confirm password</label>
           <input type="password" class="form-control" id="passwordConfirm" placeholder="Confirm password" formControlName="passwordConfirm">
-          <span class="form-text text-muted" *ngIf="!formModel.controls.passwordConfirm.valid">
+          <span class="form-text text-muted" *ngIf="!formModel.get('passwordConfirm').valid">
             Retype the same password
           </span>
         </div>

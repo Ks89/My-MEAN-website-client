@@ -49,35 +49,35 @@
           </div>
 
 		      <!-- <div role="alert" ng-show="formMessage" class="alert alert-{{formStatus}}">{{ formMessage}}</div> -->
-          <div class="form-group" [class.has-error]="formModel.hasError('minlength', 'name')">
+          <div class="form-group" [class.has-error]="formModel.hasError('name')">
             <label for="name">Name</label>
             <input type="text" class="form-control" id="name" placeholder="Enter your name"
                     minlength="3" formControlName="name">
-            <span class="form-text text-muted" [class.invisible]="!formModel.hasError('minlength', 'name')">
+            <span class="form-text text-muted" [class.invisible]="!formModel.hasError('name')">
               Type at least 3 characters
             </span>
           </div>
-          <div class="form-group" [class.has-error]="formModel.hasError('minlength', 'surname')">
+          <div class="form-group" [class.has-error]="formModel.hasError('surname')">
             <label for="surname">Surname</label>
             <input type="text" class="form-control" id="surname" placeholder="Enter your surname"
                     minlength="3" formControlName="surname">
-            <span class="form-text text-muted" [class.invisible]="!formModel.hasError('minlength', 'surname')">
+            <span class="form-text text-muted" [class.invisible]="!formModel.hasError('surname')">
               Type at least 3 characters
             </span>
           </div>
-          <div class="form-group" [class.has-error]="formModel.hasError('minlength', 'nickname')">
+          <div class="form-group" [class.has-error]="formModel.hasError('nickname')">
             <label for="nickname">Nickname</label>
             <input type="text" class="form-control" id="nickname" placeholder="Enter your nickname"
                     minlength="3" formControlName="nickname">
-            <span class="form-text text-muted" [class.invisible]="!formModel.hasError('minlength', 'nickname')">
+            <span class="form-text text-muted" [class.invisible]="!formModel.hasError('nickname')">
               Type at least 3 characters
             </span>
           </div>
-          <div class="form-group" [class.has-error]="formModel.hasError('minlength', 'email')">
+          <div class="form-group" [class.has-error]="formModel.hasError('email')">
             <label for="email">Email</label>
             <input type="email" class="form-control" id="email" placeholder="Enter your email"
                     minlength="3" formControlName="email">
-            <span class="form-text text-muted" [class.invisible]="!formModel.hasError('minlength', 'email')">
+            <span class="form-text text-muted" [class.invisible]="!formModel.hasError('email')">
               Type at least 3 characters
             </span>
           </div>
