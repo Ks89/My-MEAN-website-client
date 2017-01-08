@@ -11,7 +11,7 @@ export default class UsersAdminComponent {
   public users: Observable<any[]>;
   page = 1;
   public collectionSize = 120;
-  public maxSize = 5;
+  public maxSize = 1;
   public pageSize = 3;
 
   constructor(private userService: UserService) {
