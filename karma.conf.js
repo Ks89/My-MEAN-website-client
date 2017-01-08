@@ -3,6 +3,12 @@
 const webpackConfig = require('./config/webpack.test');
 const os = require('os');
 
+console.log(`Starting Karma with isCI=${!!isCI()}`);
+
+function isCI() {
+  return process.env.CI || process.env.APPVEYOR || process.env.TRAVIS;
+}
+
 function getBrowsers() {
   if (process.env.CI) {
     if(process.env.APPVEYOR) { // variable defined by APPVEYOR itself
@@ -63,7 +69,9 @@ module.exports = function (config) {
     logLevel: config.LOG_INFO,
     autoWatch: true,
     browsers: getBrowsers(),
-    singleRun: true,
+
+    // It's ok, but I'm forcing --single-run, at the moment, so this value will be ignored
+    singleRun: !!isCI(),
 
     coverageReporter: {
       type: 'in-memory'
