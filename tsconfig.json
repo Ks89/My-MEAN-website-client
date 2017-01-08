@@ -6,8 +6,6 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "lib": ["es5", "dom"],
-    "noEmitHelpers": true,
     "skipDefaultLibCheck": true,
     "pretty": true,
     "sourceMap": true,
