@@ -9,10 +9,10 @@ import { AuthService } from '../../common/services';
   styleUrls: ['login.scss'],
   templateUrl: 'login.html'
 })
-export default class LoginComponent {
-  public pageHeader: Object;
+export class LoginComponent {
+  public pageHeader: any;
   public formModel: FormGroup;
-  public loginAlert: Object = { visible: false }; // hidden by default
+  public loginAlert: any = { visible: false }; // hidden by default
   public isWaiting: boolean = false; // enable button's spinner
   public showFormError: boolean = false;
 

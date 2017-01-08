@@ -9,10 +9,10 @@ import { ContactService } from '../../common/services';
   selector: 'mmw-contact-page',
   templateUrl: 'contact.html'
 })
-export default class ContactComponent implements OnDestroy {
-  public pageHeader: Object;
+export class ContactComponent implements OnDestroy {
+  public pageHeader: any;
   public formModel: FormGroup;
-  public contactAlert: Object = { visible: false }; // hidden by default
+  public contactAlert: any = { visible: false }; // hidden by default
   public isWaiting: boolean = false; // enable button's spinner
   public showFormError: boolean = false;
   private subscription: Subscription;

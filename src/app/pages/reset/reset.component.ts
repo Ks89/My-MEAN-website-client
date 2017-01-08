@@ -9,11 +9,11 @@ import { PasswordValidators } from "ng2-validators";
   selector: 'mmw-reset-page',
   templateUrl: 'reset.html'
 })
-export default class ResetComponent {
-  public pageHeader: Object;
+export class ResetComponent {
+  public pageHeader: any;
   public formModel: FormGroup;
   public emailToken: string;
-  public resetAlert: Object = { visible: false }; // hidden by default
+  public resetAlert: any = { visible: false }; // hidden by default
   public isWaiting: boolean = false; // enable button's spinner
   public showFormError: boolean = false;
   public alreadyChanged: boolean = false;

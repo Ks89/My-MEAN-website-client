@@ -7,7 +7,7 @@ import { AuthService } from '../../common/services';
   selector: 'mmw-post3d-auth-page',
   templateUrl: 'post3d-auth.html'
 })
-export default class Post3dAuthComponent implements OnInit {
+export class Post3dAuthComponent implements OnInit {
   public pageHeader: any;
 
   constructor(private authService: AuthService,

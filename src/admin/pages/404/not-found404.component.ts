@@ -4,4 +4,4 @@ import { Component } from '@angular/core';
   template: '<h3>Error 404: Not found</h3>'
 })
 
-export default class NotFound404Component { }
+export class NotFound404Component { }

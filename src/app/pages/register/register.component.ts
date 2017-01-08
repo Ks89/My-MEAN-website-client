@@ -9,10 +9,10 @@ import { AuthService } from '../../common/services';
   selector: 'mmw-register-page',
   templateUrl: 'register.html'
 })
-export default class RegisterComponent {
-  public pageHeader: Object;
+export class RegisterComponent {
+  public pageHeader: any;
   public formModel: FormGroup;
-  public registerAlert: Object = { visible: false }; // hidden by default
+  public registerAlert: any = { visible: false }; // hidden by default
   public showFormError: boolean = false;
   public isWaiting: boolean = false; // enable button's spinner
 

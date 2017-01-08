@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'mmw-cv-page',
   templateUrl: 'cv.html'
 })
-export default class CvComponent {
+export class CvComponent {
   public pageHeader: any;
 
   constructor() {

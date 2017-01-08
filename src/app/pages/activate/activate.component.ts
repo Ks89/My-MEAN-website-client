@@ -8,11 +8,11 @@ import { Subscription } from 'rxjs/Subscription';
   selector: 'mmw-activate-page',
   templateUrl: 'activate.html'
 })
-export default class ActivateComponent implements OnInit, OnDestroy {
-  public pageHeader: Object;
+export class ActivateComponent implements OnInit, OnDestroy {
+  public pageHeader: any;
   public emailToken: string;
   public userName: string;
-  public activateAlert: Object = { visible: false }; // hidden by default
+  public activateAlert: any = { visible: false }; // hidden by default
   private subscription: Subscription;
 
   constructor(private authService: AuthService,

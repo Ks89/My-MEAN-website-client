@@ -13,25 +13,25 @@ import { EmailValidators } from "ng2-validators";
   styleUrls: ['profile.scss'],
   templateUrl: 'profile.html'
 })
-export default class ProfileComponent implements OnInit, OnDestroy {
-  public pageHeader: Object;
+export class ProfileComponent implements OnInit, OnDestroy {
+  public pageHeader: any;
   public formModel: FormGroup;
-  public token: string;
-  public bigProfileImage: string = 'assets/images/profile/bigProfile.png';
-  public profileAlert: Object = { visible: false }; // hidden by default
+  public token: any;
+  public bigProfileImage: any = 'assets/images/profile/bigProfile.png';
+  public profileAlert: any = { visible: false }; // hidden by default
   public isWaiting: boolean = false; // enable button's spinner
 
-  public sidebar: Object = {
+  public sidebar: any = {
     title: 'Other services',
     strapline: ' '
   };
 
   // 3dparty connect links
-  public facebookConnectOauthUrl: Object = 'api/connect/facebook';
-  public googleConnectOauthUrl: Object = 'api/connect/google';
-  public githubConnectOauthUrl: Object = 'api/connect/github';
-  public twitterConnectOauthUrl: Object = 'api/connect/twitter';
-  public linkedinConnectOauthUrl: Object = 'api/connect/linkedin';
+  public facebookConnectOauthUrl: any = 'api/connect/facebook';
+  public googleConnectOauthUrl: any = 'api/connect/google';
+  public githubConnectOauthUrl: any = 'api/connect/github';
+  public twitterConnectOauthUrl: any = 'api/connect/twitter';
+  public linkedinConnectOauthUrl: any = 'api/connect/linkedin';
 
   // local model
   public local: any = {
@@ -201,7 +201,7 @@ export default class ProfileComponent implements OnInit, OnDestroy {
       }
     }
 
-    unlink (serviceName: string): any {
+    unlink (serviceName: any): any {
       console.log('unlink ' + serviceName + ' called');
 
       if (this.checkIfLastUnlinkProfile(serviceName)) {

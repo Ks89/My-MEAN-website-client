@@ -10,10 +10,10 @@ import { Subscription } from 'rxjs/Subscription';
   selector: 'mmw-forgot-page',
   templateUrl: 'forgot.html'
 })
-export default class ForgotComponent implements OnDestroy {
-  public pageHeader: Object;
+export class ForgotComponent implements OnDestroy {
+  public pageHeader: any;
   public formModel: FormGroup;
-  public forgotAlert: Object = { visible: false }; // hidden by default
+  public forgotAlert: any = { visible: false }; // hidden by default
   public isWaiting: boolean = false; // enable button's spinner
   public showFormError: boolean = false;
   private subscription: Subscription;

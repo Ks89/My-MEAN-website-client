@@ -9,7 +9,7 @@ import 'rxjs/add/operator/catch';
 export class ContactService {
   constructor(private http: Http) {}
 
-  sendFormWithCaptcha(contact: Object): Observable<Object> {
+  sendFormWithCaptcha(contact: any): Observable<Object> {
     return this.http.post('/api/email', contact)
       .map(response => response.json())
       .catch(this.handleError);

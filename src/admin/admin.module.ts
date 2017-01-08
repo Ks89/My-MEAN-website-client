@@ -11,19 +11,19 @@ import '../loading.css'; // css to show a centered spinner before angular's boot
 
 import 'jquery-slimscroll';
 
-import ApplicationAdminComponent from './application/application.component';
-import NotFound404Component from './pages/404/not-found404.component';
-import DashboardAdminComponent from './pages/dashboard/dashboard.component';
-import UsersAdminComponent from './pages/users/users.component';
-import NewsletterAdminComponent from './pages/newsletter/newsletter.component';
+import { ApplicationAdminComponent } from './application/application.component';
+import { NotFound404Component } from './pages/404/not-found404.component';
+import { DashboardAdminComponent } from './pages/dashboard/dashboard.component';
+import { UsersAdminComponent } from './pages/users/users.component';
+import { NewsletterAdminComponent } from './pages/newsletter/newsletter.component';
 
-import NavbarAdminComponent from "./common/components/navbar/navbar.component";
+import { NavbarAdminComponent } from "./common/components/navbar/navbar.component";
 import { SidebarModule } from './sidebar-module/sidebar.module';
 
 import { SERVICES } from './common/services/services';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { LaddaModule } from 'angular2-ladda';
+// import { LaddaModule } from 'angular2-ladda';
 
 @NgModule({
   imports: [
@@ -32,7 +32,7 @@ import { LaddaModule } from 'angular2-ladda';
     FormsModule,
     ReactiveFormsModule,
     NgbModule.forRoot(),
-    LaddaModule,
+    // LaddaModule,
     SidebarModule,
     routing
   ],

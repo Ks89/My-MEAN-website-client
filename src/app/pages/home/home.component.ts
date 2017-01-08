@@ -9,11 +9,11 @@ import { Project, ProjectService } from '../../common/services';
   styleUrls: ['home.scss'],
   templateUrl: 'home.html'
 })
-export default class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit {
   public products: Observable<Project[]>;
   public thumbs: Observable<Project[]>;
 
-  public pageHeader: Object;
+  public pageHeader: any;
   public message: string;
 
   constructor(private projectService: ProjectService) {

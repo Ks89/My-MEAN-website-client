@@ -13,7 +13,7 @@ class FakeContact {
 
 export class FakeContactService {
 
-  sendFormWithCaptcha(contact: FakeContact): Observable<Object> {
+  sendFormWithCaptcha(contact: FakeContact): Observable<any> {
     if(!contact.response) {
       return Observable.throw({
         _body :  JSON.stringify({message: ["missing-input-response"]})

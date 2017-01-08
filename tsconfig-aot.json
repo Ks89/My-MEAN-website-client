@@ -7,18 +7,21 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "lib": ["es2015", "dom"],
-    "noImplicitAny": true,
+    "noImplicitAny": false,
+    "noEmit": true,
     "suppressImplicitAnyIndexErrors": true,
     "types": [
       "node"
     ]
   },
   "exclude": [
+    "src/admin/**/*.*",
     "node_modules",
     "coverage",
     "config",
     "report",
-    "**/*.spec.ts"
+    "**/*.spec.ts",
+    "**/*.e2e.ts"
   ],
 
   "awesomeTypescriptLoaderOptions": {

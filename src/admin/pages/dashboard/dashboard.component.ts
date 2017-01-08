@@ -5,6 +5,6 @@ import { Component } from '@angular/core';
   styleUrls: ['dashboard.scss'],
   templateUrl: 'dashboard.html'
 })
-export default class DashboardAdminComponent {
+export class DashboardAdminComponent {
   constructor() {}
 }
