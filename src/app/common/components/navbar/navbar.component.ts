@@ -15,7 +15,7 @@ export default class NavbarComponent implements OnInit {
 
   ngOnInit(){
     this.authService.loginEvent
-    .subscribe(user => {
+    .subscribe((user: any) => {
         console.log('NAVIGATION: ');
         console.log(user);
 
@@ -39,12 +39,12 @@ export default class NavbarComponent implements OnInit {
           }
         }
       },
-      err => console.log('Can\'t get logged user'),
+      (err: any) => console.log('Can\'t get logged user'),
       () => console.log('DONE')
     );
   }
 
-  isNavItemActive(location) {
+  isNavItemActive(location: any) {
     return location === this.router.url ? 'active' : '';
   };
 
@@ -67,7 +67,7 @@ export default class NavbarComponent implements OnInit {
     );
   }
 
-  private setCurrentUser(originData): void {
+  private setCurrentUser(originData: any): void {
     if (originData) {
       this.currentUser = {
         name : originData.name

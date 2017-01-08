@@ -84,10 +84,10 @@ export class AppModule {
 
   // ----------- Hot Module Replacement via AngularClass library - BEGIN ------------
   constructor(public appRef: ApplicationRef) {}
-  hmrOnInit(store) {
+  hmrOnInit(store: any): any {
     if (!store || !store.state) return;
     console.log('HMR store', store);
-    console.log('store.state.data:', store.state.data)
+    console.log('store.state.data:', store.state.data);
     // inject AppStore here and update it
     // this.AppStore.update(store.state)
     if ('restoreInputValues' in store) {
@@ -98,7 +98,7 @@ export class AppModule {
     delete store.state;
     delete store.restoreInputValues;
   }
-  hmrOnDestroy(store) {
+  hmrOnDestroy(store: any): any {
     var cmpLocation = this.appRef.components.map(cmp => cmp.location.nativeElement);
     // recreate elements
     store.disposeOldHosts = createNewHosts(cmpLocation);
@@ -111,7 +111,7 @@ export class AppModule {
     // remove styles
     removeNgStyles();
   }
-  hmrAfterDestroy(store) {
+  hmrAfterDestroy(store: any): any {
     // display new elements
     store.disposeOldHosts();
     delete store.disposeOldHosts;

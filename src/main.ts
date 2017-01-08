@@ -8,7 +8,7 @@ if (webpack.ENV === 'prod') {
 }
 
 // to be able to use Hot Module Replacement by AngularClass
-export function main() {
+export function main(): any {
   return platformBrowserDynamic().bootstrapModule(AppModule);
 }
 

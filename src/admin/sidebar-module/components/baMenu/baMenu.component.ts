@@ -61,7 +61,7 @@ export class BaMenu {
     this._onRouteChange.unsubscribe();
   }
 
-  public hoverItem($event):void {
+  public hoverItem($event: any):void {
     this.showHoverElem = true;
     this.hoverElemHeight = $event.currentTarget.clientHeight;
 
@@ -70,7 +70,7 @@ export class BaMenu {
     this.hoverElemLeft = $event.currentTarget.clientWidth + 11;
   }
 
-  public toggleSubMenu($event):boolean {
+  public toggleSubMenu($event: any):boolean {
     var submenu = jQuery($event.currentTarget).next();
 
     if (this.sidebarCollapsed) {

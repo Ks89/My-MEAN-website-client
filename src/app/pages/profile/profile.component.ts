@@ -57,7 +57,7 @@ export default class ProfileComponent implements OnInit, OnDestroy {
   };
 
   // used to get a reference to the modal dialog content
-  @ViewChild('modalDialogContent') modalDialogContent;
+  @ViewChild('modalDialogContent') modalDialogContent: any;
 
   private subscription: Subscription;
 
@@ -123,7 +123,7 @@ export default class ProfileComponent implements OnInit, OnDestroy {
         () => console.log('Done')
       );
 
-      function setObjectValues(originData, destData) {
+      function setObjectValues(originData: any, destData: any) {
         if (originData) {
           destData.id = originData.id;
           destData.email = originData.email;
@@ -131,7 +131,7 @@ export default class ProfileComponent implements OnInit, OnDestroy {
           destData.token = originData.token;
         }
       }
-      function setObjectValuesLocal(originData, destData) {
+      function setObjectValuesLocal(originData: any, destData: any) {
         if (originData) {
           destData.email = originData.email;
           destData.name = originData.name;
@@ -275,7 +275,7 @@ export default class ProfileComponent implements OnInit, OnDestroy {
       };
     }
 
-    private checkIfLastUnlinkProfile(serviceName) {
+    private checkIfLastUnlinkProfile(serviceName: any) {
       console.log('checkIfLastUnlinkProfile with serviceName: ' + serviceName);
       switch(serviceName) {
         case 'github':

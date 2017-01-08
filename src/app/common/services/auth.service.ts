@@ -104,7 +104,7 @@ export class AuthService {
     .catch(this.handleError);
   }
 
-  saveToken(key, token) {
+  saveToken(key: any, token: any) {
     console.log('saving token with key: ' + key);
     window.sessionStorage.setItem(key, token);
   };
@@ -177,7 +177,7 @@ export class AuthService {
   // -----------------------------------
   // --- others functions - not exposed
   // -----------------------------------
-  getToken(key): string {
+  getToken(key: any): string {
     const sessionAuth: string | void = window.sessionStorage.getItem(key);
 
     if(!sessionAuth || sessionAuth === 'undefined' || sessionAuth === 'null') {
@@ -187,7 +187,7 @@ export class AuthService {
     return sessionAuth;
   }
 
-  removeToken(key) {
+  removeToken(key: any) {
     window.sessionStorage.removeItem(key);
   }
 

@@ -51,7 +51,7 @@ export default class ContactComponent implements OnDestroy {
           }
       };
       this.contactService.sendFormWithCaptcha(dataToSend).subscribe(
-        response => {
+        (response: any) => {
           console.log('/api/email called -> OK');
           console.log(response);
           this.contactAlert = {

@@ -10,7 +10,7 @@ export default class NavbarAdminComponent {
 
   constructor(private router: Router) {}
 
-  isNavItemActive(location) {
+  isNavItemActive(location: any) {
     return location === this.router.url ? 'active' : '';
   };
 }

@@ -10,7 +10,7 @@ export class BaSlimScroll {
   constructor(private _elementRef:ElementRef) {
   }
 
-  ngOnChanges(changes) {
+  ngOnChanges(changes: any) {
     this._scroll();
   }
 

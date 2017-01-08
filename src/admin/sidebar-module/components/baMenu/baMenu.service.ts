@@ -20,7 +20,7 @@ export class BaMenuService {
   }
 
   public selectMenuItem(menuItems:any[]):any[] {
-    let items = [];
+    let items: any[] = [];
     menuItems.forEach((item) => {
       this._selectItem(item);
 
@@ -37,9 +37,9 @@ export class BaMenuService {
   }
 
   protected _skipEmpty(items:any[]):any[] {
-    let menu = [];
+    let menu: any[] = [];
     items.forEach((item) => {
-      let menuItem;
+      let menuItem: any;
       if (item.skip) {
         if (item.children && item.children.length > 0) {
           menuItem = item.children;
@@ -57,7 +57,7 @@ export class BaMenuService {
   }
 
   protected _convertArrayToItems(routes:any[], parent?:any):any[] {
-    let items = [];
+    let items: any[] = [];
     if(routes) {
       routes.forEach((route) => {
         items.push(this._convertObjectToItem(route, parent));
@@ -66,7 +66,7 @@ export class BaMenuService {
     return items;
   }
 
-  protected _convertObjectToItem(object, parent?:any):any {
+  protected _convertObjectToItem(object: any, parent?:any):any {
     let item:any = {};
     if (object.data && object.data.menu) {
       // this is a menu object
@@ -110,7 +110,7 @@ export class BaMenuService {
   }
 
   protected _selectItem(object:any):any {
-    object.selected = object.url == (/*'#' + */this._router.url);
+    object.selected = object.url === (/*'#' + */this._router.url);
     return object;
   }
 }

@@ -18,7 +18,7 @@ export default class UsersAdminComponent {
     this.users = this.userService.getUsers(this.page, this.pageSize);
   }
 
-  public onPageChange(event) {
+  public onPageChange(event: any) {
     console.log("onPageChange page: " + event + ", pageSize: " + this.pageSize);
     this.users = this.userService.getUsers(event, this.pageSize);
   }
