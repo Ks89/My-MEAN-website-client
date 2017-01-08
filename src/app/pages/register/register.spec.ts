@@ -19,11 +19,11 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
-import RegisterComponent from './register.component';
+import { RegisterComponent } from './register.component';
 import { RouterLinkStubDirective, RouterOutletStubComponent, RouterStub } from '../../common/testing/helpers.spec';
 import { AuthService } from "../../common/services/auth.service";
 import { FakeAuthService, FAKE_ALREADY_EXISTING_EMAIL } from "../../common/testing/fake-auth.service.spec";
-import PageHeaderComponent from "../../common/components/page-header/page-header.component";
+import { PageHeaderComponent } from "../../common/components/page-header/page-header.component";
 import { LaddaModule } from "angular2-ladda";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { Router } from "@angular/router";

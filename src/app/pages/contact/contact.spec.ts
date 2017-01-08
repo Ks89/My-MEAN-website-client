@@ -18,11 +18,11 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import {DebugElement, NO_ERRORS_SCHEMA} from '@angular/core';
 import { By } from '@angular/platform-browser';
 
-import ContactComponent from './contact.component';
+import { ContactComponent } from './contact.component';
 import { FakeContactService } from "../../common/testing/fake-contact.service.spec";
 import { ContactService } from "../../common/services/contact.service";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import PageHeaderComponent from "../../common/components/page-header/page-header.component";
+import { PageHeaderComponent } from "../../common/components/page-header/page-header.component";
 import { LaddaModule } from "angular2-ladda";
 
 let comp: ContactComponent;

@@ -18,7 +18,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
-import CarouselComponent from './carousel.component';
+import { CarouselComponent } from './carousel.component';
 import { PROJECTS, FakeProjectService } from '../../testing/fake-project.service.spec';
 import { ProjectService } from '../../services';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";

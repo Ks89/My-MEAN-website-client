@@ -18,7 +18,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
-import CvComponent from './cv.component';
+import { CvComponent } from './cv.component';
 
 let comp: CvComponent;
 let fixture: ComponentFixture<CvComponent>;

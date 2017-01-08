@@ -18,11 +18,11 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
-import ProjectDetailComponent from './project-detail.component';
+import { ProjectDetailComponent } from './project-detail.component';
 import { RouterLinkStubDirective, RouterOutletStubComponent, ActivatedRoute, ActivatedRouteStub, RouterStub }   from '../../common/testing/router-stubs.spec';
 import { ProjectService } from "../../common/services/projects.service";
 import { FakeProjectService, PROJECTS, WRONG_PROJECT_ID } from '../../common/testing/fake-project.service.spec';
-import PageHeaderComponent from "../../common/components/page-header/page-header.component";
+import { PageHeaderComponent } from "../../common/components/page-header/page-header.component";
 import { ImageModal } from 'angular2-image-popup/directives/angular2-image-popup/image-modal-popup';
 import { Router } from "@angular/router";
 

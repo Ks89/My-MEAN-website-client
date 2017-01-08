@@ -15,6 +15,9 @@
  */
 
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/observable/throw';
+
 import { Response as ProfileResponse } from '../services/profile.service';
 
 export const PROFILE_RESPONSE: ProfileResponse = {

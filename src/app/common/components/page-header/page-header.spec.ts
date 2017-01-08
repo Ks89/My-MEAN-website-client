@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By }              from '@angular/platform-browser';
 import { DebugElement }    from '@angular/core';
 
-import PageHeaderComponent from './page-header.component';
+import { PageHeaderComponent } from './page-header.component';
 
 const divider: string = '   ';
 const header: string = 'Header';

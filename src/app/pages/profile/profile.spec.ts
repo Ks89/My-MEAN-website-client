@@ -18,7 +18,7 @@ import {async, ComponentFixture, TestBed, fakeAsync, tick} from '@angular/core/t
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
-import ProfileComponent from './profile.component';
+import { ProfileComponent } from './profile.component';
 import {RouterLinkStubDirective, RouterOutletStubComponent, RouterStub, click} from '../../common/testing/helpers.spec';
 import { AuthService } from "../../common/services/auth.service";
 import {
@@ -27,7 +27,7 @@ import {
   FakeUser3ServicesNoLocalAuthService, FakeUserLocalAuthService, FakeUserTwitterAuthService,
   FakeUserLinkedinAuthService, FakeUserGoogleAuthService, FakeUserGithubAuthService, FakeUserFacebookAuthService
 } from "../../common/testing/fake-auth.service.spec";
-import PageHeaderComponent from "../../common/components/page-header/page-header.component";
+import { PageHeaderComponent } from "../../common/components/page-header/page-header.component";
 import { LaddaModule } from "angular2-ladda";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";

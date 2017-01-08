@@ -18,7 +18,7 @@ import {async, ComponentFixture, TestBed, tick, fakeAsync} from '@angular/core/t
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
-import NavbarComponent from './navbar.component';
+import { NavbarComponent } from './navbar.component';
 import { RouterLinkStubDirective, RouterOutletStubComponent, RouterStub } from '../../testing/router-stubs.spec';
 import { AuthService } from "../../services/auth.service";
 import { FakeAuthService } from "../../testing/fake-auth.service.spec";

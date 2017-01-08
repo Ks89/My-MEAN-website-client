@@ -2,11 +2,11 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
-import ProjectListComponent from './project-list.component';
+import { ProjectListComponent } from './project-list.component';
 import { ProjectSearchPipe } from '../../common/pipes';
 import { PROJECTS, FakeProjectService } from '../../common/testing/fake-project.service.spec';
 import { ProjectService } from '../../common/services';
-import PageHeaderComponent from "../../common/components/page-header/page-header.component";
+import { PageHeaderComponent } from "../../common/components/page-header/page-header.component";
 import { RouterLinkStubDirective, RouterOutletStubComponent, RouterStub } from "../../common/testing/router-stubs.spec";
 import { Router } from "@angular/router";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";

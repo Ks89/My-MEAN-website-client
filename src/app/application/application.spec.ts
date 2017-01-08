@@ -1,4 +1,4 @@
-import ApplicationComponent from './application.component';
+import { ApplicationComponent } from './application.component';
 
 describe('ApplicationComponent', () => {
   it('is successfully instantiated', () => {

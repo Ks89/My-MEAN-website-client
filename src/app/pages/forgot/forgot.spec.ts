@@ -18,13 +18,13 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
-import ForgotComponent from './forgot.component';
+import { ForgotComponent } from './forgot.component';
 import { RouterLinkStubDirective, RouterOutletStubComponent, RouterStub } from '../../common/testing/helpers.spec';
 import { AuthService } from "../../common/services/auth.service";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { FakeAuthService, FAKE_BAD_EMAIL_TOKEN } from "../../common/testing/fake-auth.service.spec";
 import { Router } from "@angular/router";
-import PageHeaderComponent from "../../common/components/page-header/page-header.component";
+import { PageHeaderComponent } from "../../common/components/page-header/page-header.component";
 
 let comp: ForgotComponent;
 let fixture: ComponentFixture<ForgotComponent>;

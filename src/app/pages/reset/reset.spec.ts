@@ -18,14 +18,14 @@ import {async, ComponentFixture, TestBed, fakeAsync, tick} from '@angular/core/t
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
-import ResetComponent from './reset.component';
+import { ResetComponent } from './reset.component';
 import {
   RouterLinkStubDirective, RouterOutletStubComponent, ActivatedRoute, ActivatedRouteStub, RouterStub, newEvent,
   click
 } from '../../common/testing/helpers.spec';
 import { AuthService } from "../../common/services/auth.service";
 import { FakeAuthService, FAKE_BAD_EMAIL_TOKEN } from "../../common/testing/fake-auth.service.spec";
-import PageHeaderComponent from "../../common/components/page-header/page-header.component";
+import { PageHeaderComponent } from "../../common/components/page-header/page-header.component";
 import { LaddaModule } from "angular2-ladda";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { Router } from "@angular/router";

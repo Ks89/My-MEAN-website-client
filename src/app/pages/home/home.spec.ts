@@ -18,13 +18,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
-import HomeComponent from './home.component';
+import { HomeComponent } from './home.component';
 import { RouterLinkStubDirective, RouterOutletStubComponent, RouterStub } from '../../common/testing/helpers.spec';
 import { ProjectService, Project, ProjectHomeView } from "../../common/services/projects.service";
 import { FakeProjectService, PROJECTS } from "../../common/testing/fake-project.service.spec";
-import PageHeaderComponent from "../../common/components/page-header/page-header.component";
+import { PageHeaderComponent } from "../../common/components/page-header/page-header.component";
 import { Router } from "@angular/router";
-import CarouselComponent from "../../common/components/carousel/carousel.component";
+import { CarouselComponent } from "../../common/components/carousel/carousel.component";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 let comp: HomeComponent;
