@@ -17,6 +17,8 @@ import { NotFound404Component } from "./pages/404/not-found404.component";
 
 import { AuthGuard } from './common/services/auth-guard.service';
 
+import { IdlePreload } from "@angularclass/idle-preload";
+
 const appRoutes: Routes = [
 
   {path: '',                                component: HomeComponent},
@@ -38,4 +40,4 @@ const appRoutes: Routes = [
   {path: '**',                              component: NotFound404Component}
 ];
 
-export const routing: ModuleWithProviders = RouterModule.forRoot(appRoutes);
+export const routing: ModuleWithProviders = RouterModule.forRoot(appRoutes, { useHash: false, preloadingStrategy: IdlePreload });

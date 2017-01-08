@@ -39,9 +39,11 @@ import { Ng2SimplePageScrollModule } from 'ng2-simple-page-scroll';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LaddaModule } from 'angular2-ladda';
 import { removeNgStyles, createNewHosts, createInputTransfer } from "@angularclass/hmr";
+import { IdlePreloadModule } from "@angularclass/idle-preload";
 
 @NgModule({
   imports: [
+    IdlePreloadModule.forRoot(), // forRoot ensures the providers are only created once
     BrowserModule,
     HttpModule,
     FormsModule,

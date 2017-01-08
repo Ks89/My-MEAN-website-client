@@ -5,6 +5,7 @@ import { DashboardAdminComponent } from './pages/dashboard/dashboard.component';
 import { UsersAdminComponent } from './pages/users/users.component';
 import { NewsletterAdminComponent } from './pages/newsletter/newsletter.component';
 import { NotFound404Component } from "./pages/404/not-found404.component";
+import { IdlePreload } from "@angularclass/idle-preload";
 
 const appRoutes: Routes = [
   // use http://localhost:3300/admin.html to login
@@ -14,4 +15,4 @@ const appRoutes: Routes = [
   {path: '**',                 component: NotFound404Component}
 ];
 
-export const routing: ModuleWithProviders = RouterModule.forRoot(appRoutes);
+export const routing: ModuleWithProviders = RouterModule.forRoot(appRoutes, { useHash: false, preloadingStrategy: IdlePreload });

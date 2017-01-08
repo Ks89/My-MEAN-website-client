@@ -25,9 +25,11 @@ import { SERVICES } from './common/services/services';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LaddaModule } from 'angular2-ladda';
 import { createNewHosts, createInputTransfer, removeNgStyles } from "@angularclass/hmr";
+import { IdlePreloadModule } from "@angularclass/idle-preload";
 
 @NgModule({
   imports: [
+    IdlePreloadModule.forRoot(), // forRoot ensures the providers are only created once
     BrowserModule,
     HttpModule,
     FormsModule,
