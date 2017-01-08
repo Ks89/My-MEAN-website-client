@@ -3,10 +3,15 @@
     "target": "es5",
     "module": "es2015",
     "moduleResolution": "node",
-    "sourceMap": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "noEmitHelpers": true,
+    "pretty": false,
+    "sourceMap": true,
     "lib": ["es2015", "dom"],
+    "strictNullChecks": false,
+    "skipDefaultLibCheck": true,
+    "outDir": "aot",
     "noImplicitAny": false,
     "noEmit": true,
     "suppressImplicitAnyIndexErrors": true,
@@ -19,13 +24,15 @@
     "node_modules",
     "coverage",
     "config",
-    "report",
+    "aot",
     "**/*.spec.ts",
     "**/*.e2e.ts"
   ],
 
   "awesomeTypescriptLoaderOptions": {
-    "useWebpackText": true
+    "useWebpackText": true,
+    "forkChecker": true,
+    "useCache": true
   },
   "angularCompilerOptions": {
     "genDir": "aot",
@@ -33,5 +40,7 @@
   },
   "compileOnSave": false,
   "buildOnSave": false,
-  "atom": { "rewriteTsconfig": false }
+  "atom": {
+    "rewriteTsconfig": false
+  }
 }
