@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'mmw-about-page',
   templateUrl: 'about.html'
 })
-export default class AboutComponent {
+export class AboutComponent {
   pageHeader: any;
 
   constructor() {

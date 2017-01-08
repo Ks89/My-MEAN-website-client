@@ -7,7 +7,7 @@ import { AuthService } from '../../services';
   selector: 'mmw-navigation',
   templateUrl: 'navbar.html'
 })
-export default class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit {
   public isLoggedIn: boolean = false;
   public currentUser: any = { name : '' };
 

@@ -8,7 +8,7 @@ import { Project, ProjectService } from '../../services';
   selector: 'mmw-carousel',
   templateUrl: 'carousel.html'
 })
-export default class CarouselComponent implements OnInit {
+export class CarouselComponent implements OnInit {
   public thumbs: Observable<Project[]>;
 
   constructor(private projectService: ProjectService) {}

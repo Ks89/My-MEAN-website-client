@@ -8,7 +8,7 @@ import { Project, ProjectService } from '../../common/services';
   styleUrls: ['timeline.scss'],
   templateUrl: 'project-list.html'
 })
-export default class ProjectListComponent {
+export class ProjectListComponent {
   public projects: Observable<Project[]>;
   public pageHeader: any;
   public sidebar: any;

@@ -9,7 +9,7 @@ import { ContactService } from '../../common/services';
   selector: 'mmw-contact-page',
   templateUrl: 'contact.html'
 })
-export default class ContactComponent implements OnDestroy {
+export class ContactComponent implements OnDestroy {
   public pageHeader: Object;
   public formModel: FormGroup;
   public contactAlert: Object = { visible: false }; // hidden by default

@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/Observable';
   styleUrls: ['users.scss'],
   templateUrl: 'users.html'
 })
-export default class UsersAdminComponent {
+export class UsersAdminComponent {
   public users: Observable<any[]>;
   page = 1;
   public collectionSize = 120;

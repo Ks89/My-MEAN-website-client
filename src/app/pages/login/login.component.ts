@@ -9,7 +9,7 @@ import { AuthService } from '../../common/services';
   styleUrls: ['login.scss'],
   templateUrl: 'login.html'
 })
-export default class LoginComponent {
+export class LoginComponent {
   public pageHeader: Object;
   public formModel: FormGroup;
   public loginAlert: Object = { visible: false }; // hidden by default

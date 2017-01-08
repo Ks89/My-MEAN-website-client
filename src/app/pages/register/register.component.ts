@@ -9,7 +9,7 @@ import { AuthService } from '../../common/services';
   selector: 'mmw-register-page',
   templateUrl: 'register.html'
 })
-export default class RegisterComponent {
+export class RegisterComponent {
   public pageHeader: Object;
   public formModel: FormGroup;
   public registerAlert: Object = { visible: false }; // hidden by default

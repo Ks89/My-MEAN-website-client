@@ -10,7 +10,7 @@ import { Subscription } from 'rxjs/Subscription';
   selector: 'mmw-forgot-page',
   templateUrl: 'forgot.html'
 })
-export default class ForgotComponent implements OnDestroy {
+export class ForgotComponent implements OnDestroy {
   public pageHeader: Object;
   public formModel: FormGroup;
   public forgotAlert: Object = { visible: false }; // hidden by default

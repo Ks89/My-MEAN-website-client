@@ -9,7 +9,7 @@ import { PasswordValidators } from "ng2-validators";
   selector: 'mmw-reset-page',
   templateUrl: 'reset.html'
 })
-export default class ResetComponent {
+export class ResetComponent {
   public pageHeader: Object;
   public formModel: FormGroup;
   public emailToken: string;

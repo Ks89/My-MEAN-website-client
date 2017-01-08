@@ -1,4 +1,4 @@
-import {NgModule, ApplicationRef} from '@angular/core';
+import { NgModule, ApplicationRef } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
@@ -11,13 +11,13 @@ import '../loading.css'; // css to show a centered spinner before angular's boot
 
 import 'jquery-slimscroll';
 
-import ApplicationAdminComponent from './application/application.component';
-import NotFound404Component from './pages/404/not-found404.component';
-import DashboardAdminComponent from './pages/dashboard/dashboard.component';
-import UsersAdminComponent from './pages/users/users.component';
-import NewsletterAdminComponent from './pages/newsletter/newsletter.component';
+import { ApplicationAdminComponent } from './application/application.component';
+import { DashboardAdminComponent } from './pages/dashboard/dashboard.component';
+import { UsersAdminComponent } from './pages/users/users.component';
+import { NewsletterAdminComponent } from './pages/newsletter/newsletter.component';
+import { NotFound404Component } from './pages/404/not-found404.component';
 
-import NavbarAdminComponent from "./common/components/navbar/navbar.component";
+import { NavbarAdminComponent } from "./common/components/navbar/navbar.component";
 import { SidebarModule } from './sidebar-module/sidebar.module';
 
 import { SERVICES } from './common/services/services';

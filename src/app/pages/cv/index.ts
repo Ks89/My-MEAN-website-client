@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { routes } from './cv.routing';
 
-import CvComponent from './cv.component';
+import { CvComponent } from './cv.component';
 
 @NgModule({
   imports: [

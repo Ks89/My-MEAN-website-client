@@ -5,6 +5,6 @@ import { Component } from '@angular/core';
   styleUrls: ['newsletter.scss'],
   templateUrl: 'newsletter.html'
 })
-export default class NewsletterAdminComponent {
+export class NewsletterAdminComponent {
   constructor() {}
 }

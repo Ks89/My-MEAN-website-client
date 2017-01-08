@@ -13,7 +13,7 @@ import { EmailValidators } from "ng2-validators";
   styleUrls: ['profile.scss'],
   templateUrl: 'profile.html'
 })
-export default class ProfileComponent implements OnInit, OnDestroy {
+export class ProfileComponent implements OnInit, OnDestroy {
   public pageHeader: Object;
   public formModel: FormGroup;
   public token: string;

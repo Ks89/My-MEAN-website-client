@@ -10,7 +10,7 @@ import { Project, ProjectService } from '../../common/services';
   styleUrls: ['bs_doc.scss'],
   templateUrl: 'project-detail.html'
 })
-export default class ProjectDetailComponent implements OnInit, OnDestroy {
+export class ProjectDetailComponent implements OnInit, OnDestroy {
   public project: Project;
   public projectId: string;
   public pageHeader: any;
