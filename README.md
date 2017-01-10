@@ -106,9 +106,9 @@ Attention: it's very unstable, because I decided to implement only some basic fe
 3. cd ..
 4. cd `My-MEAN-website-client` (if necessary rename it (case-sensitive) to match `FRONT_END_PATH` in `.env` file of [server-side](https://github.com/Ks89/My-MEAN-website-server))
 5. `npm run buildDev`
-6. Surf to **http://localhost:3001**
+6. Surf to **http://localhost:3000**
 
-If you want to start the admin page, go to **http://localhost:3001/admin.html**
+If you want to start the admin page, go to **http://localhost:3000/admin.html**
 Attention: it's very unstable, because I decided to implement only some basic features. I'll improve it in the next alphas.
 
 ## How to start (production mode bundle)
@@ -117,9 +117,9 @@ Attention: it's very unstable, because I decided to implement only some basic fe
 3. cd ..
 4. cd `My-MEAN-website-client` (if necessary rename it (case-sensitive) to match `FRONT_END_PATH` in `.env` file of [server-side](https://github.com/Ks89/My-MEAN-website-server))
 5. `npm run build`
-6. Surf to **http://localhost:3001** (if [My-MEAN-website server](https://github.com/Ks89/My-MEAN-website-server) is in dev mode, otherwise the correct port will be `3000`)
+6. Surf to **http://localhost:3000** (if [My-MEAN-website server](https://github.com/Ks89/My-MEAN-website-server) is in dev mode, otherwise the correct port will be `3000`)
 
-If you want to start the admin page, go to **http://localhost:3001/admin.html**
+If you want to start the admin page, go to **http://localhost:3000/admin.html**
 Attention: it's very unstable, because I decided to implement only some basic features. I'll improve it in the next alphas.
 
 ## Features
