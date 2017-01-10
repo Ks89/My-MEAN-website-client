@@ -19,7 +19,7 @@ const PORT = process.env.PORT || 8080;
 const METADATA = {
   env: ENV,
   host: HOST,
-  portServer: '3001',
+  portServer: '3000',
   portWebpackDevServer: PORT,
   portBrowserSync: '3300'
 };

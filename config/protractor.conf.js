@@ -10,7 +10,7 @@ const helpers = require('./helpers');
 // 3. now you can run `protractor` on port 3001
 
 exports.config = {
-  baseUrl: 'http://localhost:3001',
+  baseUrl: 'http://localhost:3000',
 
   specs: [
     helpers.root('e2e/**/*.e2e.ts'),
