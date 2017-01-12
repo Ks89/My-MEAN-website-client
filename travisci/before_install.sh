@@ -34,7 +34,8 @@ if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
     sudo npm install -g istanbul
 else
     echo "Installing $TRAVIS_OS_NAME global dependencies"
-    npm install -g buffer-shims # to fix a problem with nodejs 6 on linux
+    # to fix a problem with nodejs 6 on linux
+    npm install -g buffer-shims
     npm install -g karma-cli
     npm install -g webpack@2.2.0-rc.3
     npm install -g typescript@2.0.10
