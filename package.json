@@ -32,8 +32,8 @@
     "webdriver-manager": "./node_modules/.bin/webdriver-manager",
     "webdriver:start": "npm run webdriver-manager start",
     "webdriver:update": "npm run webdriver-manager update",
-    "coveralls": "./node_modules/.bin/coveralls < coverage/lcov.info",
-    "codelcimate": "./node_modules/.bin/codeclimate-test-reporter < coverage/lcov.info",
+    "coveralls": "coveralls < coverage/lcov.info",
+    "codeclimate": "./node_modules/.bin/codeclimate-test-reporter < coverage/lcov.info",
     "next-update": "./node_modules/.bin/next-update -k true --tldr"
   },
   "dependencies": {
