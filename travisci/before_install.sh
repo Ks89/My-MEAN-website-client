@@ -21,7 +21,7 @@ fi
 
 echo "Installing global dependencies"
 # install global dependencies
-if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
+if [[ $TRAVIS_OS_NAME = 'osx' ]]; then
     echo "Installing $TRAVIS_OS_NAME global dependencies"
     sudo npm install -g webpack@2.2.0-rc.4
     sudo npm install -g typescript@2.0.10
