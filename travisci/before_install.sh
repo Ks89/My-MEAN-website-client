@@ -6,7 +6,7 @@ echo "Exporting env variables dependencies"
 # export env variables, thanks to https://github.com/travis-ci/travis-ci/issues/7099
 if [[ $TRAVIS_OS_NAME = 'osx' ]]; then
     echo "Exporting env variables - OS is $TRAVIS_OS_NAME"
-    export NODE_ENV=test CI=yes;
+    export NODE_ENV=test CI=yes
     echo "NODE_ENV = $NODE_ENV"
     echo "CI = $CI"
     echo "Exporting env variables - done"
