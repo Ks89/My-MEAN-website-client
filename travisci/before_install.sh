@@ -16,6 +16,8 @@ else
     echo "CXX = $CXX"
     echo "NODE_ENV = $NODE_ENV"
     echo "CI = $CI"
+#    export CHROME_BIN=/usr/bin/google-chrome;
+#    echo "CHROME_BIN = $CHROME_BIN"
     echo "Exporting env variables - done"
 fi
 
