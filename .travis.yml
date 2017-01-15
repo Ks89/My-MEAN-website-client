@@ -22,9 +22,9 @@ addons:
       - google-chrome
     packages:
       - g++-4.8
-      - libfontconfig1
-      - lsb-base
-      - google-chrome-stable
+#      - libfontconfig1
+#      - lsb-base
+#      - google-chrome-stable
 before_script:
   - source travisci/before_script.sh # starts in the same shell
 script:
