@@ -15,7 +15,7 @@ function getBrowsers() {
       // only for AppVeyor
       return ['Chrome', 'Firefox', 'IE'];
     } else {
-      return ['PhantomJS', 'Firefox', 'Chrome_travis_ci'];  // Travis CI
+      return ['PhantomJS', 'Firefox'];  // Travis CI
     }
   } else {
     switch(os.platform()) {
