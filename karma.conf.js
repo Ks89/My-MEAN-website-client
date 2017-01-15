@@ -87,13 +87,6 @@ module.exports = function (config) {
       multiline: true
     },
 
-    customLaunchers: {
-      Chrome_travis_ci: {
-        base: 'Chrome',
-        flags: ['--no-sandbox']
-      }
-    },
-
     // For AppVeyor and TravisCI to prevent timeouts
     browserNoActivityTimeout: 60000,
     //browserDisconnectTimeout: 60000,
