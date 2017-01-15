@@ -6,7 +6,7 @@ node_js:
 os:
   - linux # uses precise. I should update this to trusty
   - osx
-dist: trusty # to use Ubuntu 14.04
+#dist: trusty # to use Ubuntu 14.04
 #osx_image: xcode8.2 # to use macOS Sierra
 env:
   global:
