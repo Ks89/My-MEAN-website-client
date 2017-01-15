@@ -24,10 +24,10 @@ then
   npm install -g snyk
 fi
 
-read -p "Would you update webdriver-manager to be able to use Selenium Server? Press y or n: " -n 1 -r
-echo
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
-  echo setting up a Selenium Server
-  sudo webdriver-manager update
-fi
+#read -p "Would you update webdriver-manager to be able to use Selenium Server? Press y or n: " -n 1 -r
+#echo
+#if [[ $REPLY =~ ^[Yy]$ ]]
+#then
+#  echo setting up a Selenium Server
+#  sudo webdriver-manager update
+#fi
