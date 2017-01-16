@@ -19,13 +19,13 @@ addons:
   firefox: latest
   apt:
     sources:
-#      - ubuntu-toolchain-r-test
+      - ubuntu-toolchain-r-test
       - google-chrome
     packages:
-#      - g++-4.8
+      - g++-4.8
 #      - libfontconfig1
 #      - lsb-base
-#      - google-chrome-stable
+      - google-chrome-stable
 before_script:
   - source travisci/before_script.sh # starts in the same shell
 script:
