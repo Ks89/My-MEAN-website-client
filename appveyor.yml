@@ -92,15 +92,10 @@ install:
   - cmd: appveyor-retry powershell Install-Product node $env:nodejs_version
   - npm install -g npm@latest
   - set PATH=%APPDATA%\npm;%PATH%
-  - npm install -g karma-cli
-  - npm install -g webpack@2.2.0-rc.2
   - npm install -g typescript@2.0.10
   - npm install -g typings
-  - npm install -g remap-istanbul
   - npm install -g webdriver-manager
   - npm install -g protractor
-  - npm install -g codeclimate-test-reporter
-  - npm install -g istanbul
   - npm install
 
 
@@ -179,8 +174,8 @@ deploy_script:
 
 # on successful build
 on_success:
-  - codeclimate-test-reporter < coverage/lcov.info
-  - node .\node_modules\coveralls\bin\coveralls.js < .\coverage\lcov.info
+  - npm run codeclimate
+  - npm run coveralls
 
 # on build failure
 #on_failure:
