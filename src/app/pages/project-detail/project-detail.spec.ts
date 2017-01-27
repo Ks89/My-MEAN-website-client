@@ -23,7 +23,7 @@ import { RouterLinkStubDirective, RouterOutletStubComponent, ActivatedRoute, Act
 import { ProjectService } from "../../common/services/projects.service";
 import { FakeProjectService, PROJECTS, WRONG_PROJECT_ID } from '../../common/testing/fake-project.service.spec';
 import { PageHeaderComponent } from "../../common/components/page-header/page-header.component";
-import { ImageModal } from 'angular2-image-popup/directives/angular2-image-popup/image-modal-popup';
+// import { ImageModal } from 'angular2-image-popup/directives/angular2-image-popup/image-modal-popup';
 import { Router } from "@angular/router";
 
 let comp: ProjectDetailComponent;

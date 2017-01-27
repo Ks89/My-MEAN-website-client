@@ -34,7 +34,7 @@ import { ProjectSearchPipe } from './common/pipes/project-search/project-search.
 import { SERVICES } from './common/services/services';
 
 import { ReCaptchaModule } from 'angular2-recaptcha/angular2-recaptcha';
-import { ImageModal } from 'angular2-image-popup/directives/angular2-image-popup/image-modal-popup';
+import { ModalGalleryModule } from 'angular-modal-gallery';
 import { Ng2SimplePageScrollModule } from 'ng2-simple-page-scroll';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LaddaModule } from 'angular2-ladda';
@@ -50,6 +50,7 @@ import { IdlePreloadModule } from "@angularclass/idle-preload";
     ReactiveFormsModule,
     NgbModule.forRoot(),
     Ng2SimplePageScrollModule.forRoot(),
+    ModalGalleryModule.forRoot(),
     LaddaModule,
     ReCaptchaModule,
     routing
@@ -73,8 +74,7 @@ import { IdlePreloadModule } from "@angularclass/idle-preload";
     FooterComponent,
     NavbarComponent,
     PageHeaderComponent,
-    ProjectSearchPipe,
-    ImageModal
+    ProjectSearchPipe
   ],
   providers: [
     SERVICES
