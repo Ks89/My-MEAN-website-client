@@ -16,6 +16,7 @@
 
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
+import { Router } from "@angular/router";
 import { By } from '@angular/platform-browser';
 
 import { ProjectDetailComponent } from './project-detail.component';
@@ -23,8 +24,7 @@ import { RouterLinkStubDirective, RouterOutletStubComponent, ActivatedRoute, Act
 import { ProjectService } from "../../common/services/projects.service";
 import { FakeProjectService, PROJECTS, WRONG_PROJECT_ID } from '../../common/testing/fake-project.service.spec';
 import { PageHeaderComponent } from "../../common/components/page-header/page-header.component";
-// import { ImageModal } from 'angular2-image-popup/directives/angular2-image-popup/image-modal-popup';
-import { Router } from "@angular/router";
+import { ModalGalleryModule } from "angular-modal-gallery";
 
 let comp: ProjectDetailComponent;
 let fixture: ComponentFixture<ProjectDetailComponent>;
@@ -40,7 +40,8 @@ function initTestBed(projectId) {
   activatedRoute.testParams = { projectId: projectId };
 
   TestBed.configureTestingModule({
-    declarations: [ ProjectDetailComponent, PageHeaderComponent, RouterLinkStubDirective, RouterOutletStubComponent, ImageModal ],
+    imports: [ ModalGalleryModule.forRoot() ],
+    declarations: [ ProjectDetailComponent, PageHeaderComponent, RouterLinkStubDirective, RouterOutletStubComponent ],
     // schemas:      [ NO_ERRORS_SCHEMA ]
   }).overrideComponent(ProjectDetailComponent, {
     set: {
