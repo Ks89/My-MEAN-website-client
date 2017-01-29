@@ -49,7 +49,7 @@
     "@angular/router": "^3.4.3",
     "@angularclass/idle-preload": "^1.0.4",
     "@ng-bootstrap/ng-bootstrap": "^1.0.0-alpha.16",
-    "angular-modal-gallery": "^2.0.0-alpha.1",
+    "angular-modal-gallery": "^2.0.1",
     "angular2-ladda": "^1.0.6",
     "angular2-recaptcha": "^0.3.6",
     "bootstrap": "4.0.0-alpha.5",
@@ -143,7 +143,7 @@
     "webpack-dev-server": "^2.2.0-rc.0",
     "webpack-manifest-plugin": "^1.1.0",
     "webpack-md5-hash": "^0.0.5",
-    "webpack-merge": "^2.4.0"
+    "webpack-merge": "^2.6.1"
   },
   "greenkeeper": {
     "ignore": [
