@@ -66,6 +66,7 @@
       "check-separator",
       "check-type"
     ],
+    "import-blacklist": [true, "rxjs"],
     "directive-selector": [true, "attribute", "mmw", "camelCase"],
     "component-selector": [true, "element", "mmw", "kebab-case"],
     "use-input-property-decorator": true,

@@ -33,9 +33,12 @@ import { ProjectSearchPipe } from './common/pipes/project-search/project-search.
 
 import { SERVICES } from './common/services/services';
 
-import { ReCaptchaModule } from 'angular2-recaptcha/angular2-recaptcha';
+import 'hammerjs';
+import 'mousetrap';
 import { ModalGalleryModule } from 'angular-modal-gallery';
-import { Ng2SimplePageScrollModule } from 'ng2-simple-page-scroll';
+
+import { ReCaptchaModule } from 'angular2-recaptcha/angular2-recaptcha';
+import { Ng2PageScrollModule, PageScrollConfig } from 'ng2-page-scroll';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LaddaModule } from 'angular2-ladda';
 import { removeNgStyles, createNewHosts, createInputTransfer } from "@angularclass/hmr";
@@ -49,7 +52,7 @@ import { IdlePreloadModule } from "@angularclass/idle-preload";
     FormsModule,
     ReactiveFormsModule,
     NgbModule.forRoot(),
-    Ng2SimplePageScrollModule.forRoot(),
+    Ng2PageScrollModule.forRoot(),
     ModalGalleryModule.forRoot(),
     LaddaModule,
     ReCaptchaModule,
@@ -84,8 +87,13 @@ import { IdlePreloadModule } from "@angularclass/idle-preload";
 
 export class AppModule {
 
+  constructor(public appRef: ApplicationRef) {
+    PageScrollConfig.defaultScrollOffset = 56;
+    PageScrollConfig.defaultDuration = 0;
+    PageScrollConfig.defaultInterruptible = true;
+  }
+
   // ----------- Hot Module Replacement via AngularClass library - BEGIN ------------
-  constructor(public appRef: ApplicationRef) {}
   hmrOnInit(store: any): any {
     if (!store || !store.state) return;
     console.log('HMR store', store);
