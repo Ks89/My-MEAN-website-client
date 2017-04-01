@@ -14,21 +14,21 @@ export class BaSidebar {
   };
 
   // public routes;
-  public menuHeight:number;
-  public isMenuCollapsed:boolean = false;
-  public isMenuShouldCollapsed:boolean = false;
+  public menuHeight: number;
+  public isMenuCollapsed: boolean = false;
+  public isMenuShouldCollapsed: boolean = false;
 
 
-  constructor(private _elementRef:ElementRef) {
+  constructor(private _elementRef: ElementRef) {
   }
 
-  public ngOnInit():void {
+  public ngOnInit(): void {
     if (this._shouldMenuCollapse()) {
       this.menuCollapse();
     }
   }
 
-  public ngAfterViewInit():void {
+  public ngAfterViewInit(): void {
     setTimeout(() => this.updateSidebarHeight());
   }
 
@@ -44,24 +44,24 @@ export class BaSidebar {
   //   this.updateSidebarHeight();
   // }
 
-  public menuExpand():void {
+  public menuExpand(): void {
     this.menuCollapseStateChange(false);
   }
 
-  public menuCollapse():void {
+  public menuCollapse(): void {
     this.menuCollapseStateChange(true);
   }
 
-  public menuCollapseStateChange(isCollapsed:boolean):void {
+  public menuCollapseStateChange(isCollapsed: boolean): void {
     this.isMenuCollapsed = isCollapsed;
   }
 
-  public updateSidebarHeight():void {
+  public updateSidebarHeight(): void {
     // TODO: get rid of magic 84 constant
     this.menuHeight = this._elementRef.nativeElement.childNodes[0].clientHeight - 84;
   }
 
-  private _shouldMenuCollapse():boolean {
+  private _shouldMenuCollapse(): boolean {
     return window.innerWidth <= this.layoutSizes.resWidthCollapseSidebar;
   }
 }

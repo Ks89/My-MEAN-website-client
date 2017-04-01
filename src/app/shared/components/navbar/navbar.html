@@ -1,0 +1,47 @@
+<nav class="navbar fixed-top navbar-toggleable-md navbar-light navbar-inverse bg-inverse">
+  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+          data-target="#exCollapsingNavbar2" aria-controls="exCollapsingNavbar2" aria-expanded="false"
+          aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <a pageScroll href="#home" class="navbar-brand" [routerLink]="['/']" href="#">KS</a>
+
+  <div class="collapse navbar-collapse" id="exCollapsingNavbar2">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" [ngClass]="isNavItemActive('/projects')" [routerLink]="['/projects']">Projects <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [ngClass]="isNavItemActive('/cv')" [routerLink]="['/cv']">CV</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [ngClass]="isNavItemActive('/contact')" [routerLink]="['/contact']">Contact</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [ngClass]="isNavItemActive('/about')" [routerLink]="['/about']">About</a>
+      </li>
+
+      <li *ngIf="isLoggedIn" class="nav-item">
+        <a class="nav-link" [ngClass]="isNavItemActive('/profile')" [routerLink]="['/profile']">Profile</a>
+      </li>
+
+      <li *ngIf="!isLoggedIn" class="nav-item pull-right">
+        <a class="nav-link {{isNavItemActive('/login')}}" [routerLink]="['/login']">Sign in</a>
+      </li>
+      <li *ngIf="isLoggedIn" class="nav-item dropdown pull-right">
+        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{ currentUser.name }}
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" [routerLink]="['/profile']">Profile</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" (click)="logout()">Logout</a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- User these <br>s to add an empty space between navigation and the body -->
+<br>
+<br>

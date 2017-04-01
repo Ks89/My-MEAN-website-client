@@ -19,10 +19,10 @@ import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
 import { ActivateComponent } from './activate.component';
-import { RouterLinkStubDirective, RouterOutletStubComponent, ActivatedRoute, ActivatedRouteStub }   from '../../common/testing/router-stubs.spec';
-import { AuthService } from "../../common/services/auth.service";
-import { FakeAuthService, FAKE_BAD_EMAIL_TOKEN } from "../../common/testing/fake-auth.service.spec";
-import { PageHeaderComponent } from "../../common/components/page-header/page-header.component";
+import { RouterLinkStubDirective, RouterOutletStubComponent, ActivatedRoute, ActivatedRouteStub }   from '../../shared/testing/router-stubs.spec';
+import { AuthService } from "../../shared/services/auth.service";
+import { FakeAuthService, FAKE_BAD_EMAIL_TOKEN } from "../../shared/testing/fake-auth.service.spec";
+import { PageHeaderComponent } from "../../shared/components/page-header/page-header.component";
 
 const FAKE_EMAIL_TOKEN = 'fake@fake.it';
 const FAKE_USERNAME = 'fake username';

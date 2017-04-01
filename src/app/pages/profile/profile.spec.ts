@@ -19,25 +19,25 @@ import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
 import { ProfileComponent } from './profile.component';
-import {RouterLinkStubDirective, RouterOutletStubComponent, RouterStub, click} from '../../common/testing/helpers.spec';
-import { AuthService } from "../../common/services/auth.service";
+import {RouterLinkStubDirective, RouterOutletStubComponent, RouterStub, click} from '../../shared/testing/helpers.spec';
+import { AuthService } from "../../shared/services/auth.service";
 import {
   FakeAuthService, FakeUser2ServicesNoLocalAuthService,
   FakeUser2ServicesAuthService, FakeLocalUserWithProfileAuthService, FAKE_USER_PROFILE,
   FakeUser3ServicesNoLocalAuthService, FakeUserLocalAuthService, FakeUserTwitterAuthService,
   FakeUserLinkedinAuthService, FakeUserGoogleAuthService, FakeUserGithubAuthService, FakeUserFacebookAuthService
-} from "../../common/testing/fake-auth.service.spec";
-import { PageHeaderComponent } from "../../common/components/page-header/page-header.component";
+} from "../../shared/testing/fake-auth.service.spec";
+import { PageHeaderComponent } from "../../shared/components/page-header/page-header.component";
 import { LaddaModule } from "angular2-ladda";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
-import { ProfileService } from "../../common/services/profile.service";
+import { ProfileService } from "../../shared/services/profile.service";
 import {
   FakeProfileService, FakeWrongProfileService,
   PROFILE_WRONG_RESPONSE
-} from "../../common/testing/fake-profile.service.spec";
+} from "../../shared/testing/fake-profile.service.spec";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
-import { ActivatedRouteStub } from "../../common/testing/router-stubs.spec";
+import { ActivatedRouteStub } from "../../shared/testing/router-stubs.spec";
 
 let comp: ProfileComponent;
 let fixture: ComponentFixture<ProfileComponent>;

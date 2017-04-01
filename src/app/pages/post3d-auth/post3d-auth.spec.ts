@@ -19,10 +19,10 @@ import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
 import { Post3dAuthComponent } from './post3d-auth.component';
-import {RouterLinkStubDirective, RouterOutletStubComponent, RouterStub, click} from '../../common/testing/helpers.spec';
-import { AuthService } from "../../common/services/auth.service";
-import { FakeAuthService, FakeWrongPost3dAuthService, FakeWrongPost3dLoggedUserAuthService } from "../../common/testing/fake-auth.service.spec";
-import { PageHeaderComponent } from "../../common/components/page-header/page-header.component";
+import {RouterLinkStubDirective, RouterOutletStubComponent, RouterStub, click} from '../../shared/testing/helpers.spec';
+import { AuthService } from "../../shared/services/auth.service";
+import { FakeAuthService, FakeWrongPost3dAuthService, FakeWrongPost3dLoggedUserAuthService } from "../../shared/testing/fake-auth.service.spec";
+import { PageHeaderComponent } from "../../shared/components/page-header/page-header.component";
 import { LaddaModule } from "angular2-ladda";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { Router } from "@angular/router";

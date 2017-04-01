@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 import * as _ from 'lodash';
 
 import {BaMenuService} from './baMenu.service';
-import {MenuService} from "../../../common/services/menu.service";
+import {MenuService} from "../../../shared/services/menu.service";
 
 @Component({
   selector: 'ba-menu',
@@ -13,19 +13,19 @@ import {MenuService} from "../../../common/services/menu.service";
 })
 export class BaMenu {
 
-  public menuRoutes:Routes = [];
+  menuRoutes:Routes = [];
   @Input() sidebarCollapsed:boolean = false;
   @Input() menuHeight:number;
 
   @Output() expandMenu = new EventEmitter<any>();
 
-  public menuItems:any[];
-  public showHoverElem:boolean;
-  public hoverElemHeight:number;
-  public hoverElemLeft: number;
-  public hoverElemTop:number;
-  protected _onRouteChange:Subscription;
-  public outOfArea:number = -200;
+  menuItems: any[];
+  showHoverElem: boolean;
+  hoverElemHeight: number;
+  hoverElemLeft:  number;
+  hoverElemTop: number;
+  protected _onRouteChange: Subscription;
+  outOfArea: number = -200;
 
   constructor(private _router:Router, private _service:BaMenuService, private menuService: MenuService) {
     this._onRouteChange = this._router.events.subscribe((event) => {
@@ -40,13 +40,13 @@ export class BaMenu {
     });
   }
 
-  public selectMenuAndNotify():void {
+  selectMenuAndNotify():void {
     if (this.menuItems) {
       this.menuItems = this._service.selectMenuItem(this.menuItems);
     }
   }
 
-  public ngOnInit():void {
+  ngOnInit():void {
     this.menuService.getMenu().subscribe(
       val => {
         let routes = _.cloneDeep(val);
@@ -57,11 +57,11 @@ export class BaMenu {
     );
   }
 
-  public ngOnDestroy():void {
+  ngOnDestroy():void {
     this._onRouteChange.unsubscribe();
   }
 
-  public hoverItem($event: any):void {
+  hoverItem($event: any):void {
     this.showHoverElem = true;
     this.hoverElemHeight = $event.currentTarget.clientHeight;
 
@@ -70,7 +70,7 @@ export class BaMenu {
     this.hoverElemLeft = $event.currentTarget.clientWidth + 11;
   }
 
-  public toggleSubMenu($event: any):boolean {
+  toggleSubMenu($event: any):boolean {
     var submenu = jQuery($event.currentTarget).next();
 
     if (this.sidebarCollapsed) {

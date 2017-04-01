@@ -5,7 +5,7 @@ import {Directive, Input, Output, ElementRef, EventEmitter} from '@angular/core'
 })
 export class BaSlimScroll {
 
-  @Input() public baSlimScrollOptions:Object;
+  @Input() public baSlimScrollOptions: any;
 
   constructor(private _elementRef:ElementRef) {
   }

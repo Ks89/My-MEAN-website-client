@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { AuthService } from '../../common/services';
+import { AuthService } from '../../shared/services/services';
 import { PasswordValidators } from "ng2-validators";
 
 @Component({
@@ -10,10 +10,10 @@ import { PasswordValidators } from "ng2-validators";
   templateUrl: 'reset.html'
 })
 export class ResetComponent {
-  public pageHeader: Object;
+  public pageHeader: any;
   public formModel: FormGroup;
   public emailToken: string;
-  public resetAlert: Object = { visible: false }; // hidden by default
+  public resetAlert: any = { visible: false }; // hidden by default
   public isWaiting: boolean = false; // enable button's spinner
   public showFormError: boolean = false;
   public alreadyChanged: boolean = false;

@@ -2,30 +2,25 @@ import { NgModule, ApplicationRef } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
-import { routing }  from './admin.routing';
+import { ROUTES }  from './admin.routing';
 
 // Third party opensource libraries (that are using scss/css)
 import 'bootstrap-loader';
-import 'font-awesome/css/font-awesome.css';
-import '../loading.css'; // css to show a centered spinner before angular's booting
+import '../styles/styles.scss';
+import '../styles/headings.css';
 
 import 'jquery-slimscroll';
 
-import { ApplicationAdminComponent } from './application/application.component';
-import { DashboardAdminComponent } from './pages/dashboard/dashboard.component';
-import { UsersAdminComponent } from './pages/users/users.component';
-import { NewsletterAdminComponent } from './pages/newsletter/newsletter.component';
-import { NotFound404Component } from './pages/404/not-found404.component';
+import { SharedModule } from './shared/shared.module';
+import { SidebarModule } from './sidebar-module/sidebar.module';
+import { ADMIN_COMPONENTS } from './pages/components';
+import { ApplicationAdminComponent } from './application/application.component';
 
-import { NavbarAdminComponent } from "./common/components/navbar/navbar.component";
-import { SidebarModule } from './sidebar-module/sidebar.module';
-
-import { SERVICES } from './common/services/services';
-
+import { LaddaModule } from "angular2-ladda";
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { LaddaModule } from 'angular2-ladda';
-import { createNewHosts, createInputTransfer, removeNgStyles } from "@angularclass/hmr";
-import { IdlePreloadModule } from "@angularclass/idle-preload";
+import { createNewHosts, createInputTransfer, removeNgStyles } from '@angularclass/hmr';
+import { IdlePreloadModule } from '@angularclass/idle-preload';
+import { RouterModule, PreloadAllModules } from '@angular/router';
 
 @NgModule({
   imports: [
@@ -35,21 +30,16 @@ import { IdlePreloadModule } from "@angularclass/idle-preload";
     FormsModule,
     ReactiveFormsModule,
     NgbModule.forRoot(),
+    RouterModule.forRoot(ROUTES, { useHash: false, preloadingStrategy: PreloadAllModules }),
     LaddaModule,
     SidebarModule,
-    routing
+    SharedModule
   ],
   declarations: [
     ApplicationAdminComponent,
-    NotFound404Component,
-    DashboardAdminComponent,
-    UsersAdminComponent,
-    NewsletterAdminComponent,
-    NavbarAdminComponent
+    ADMIN_COMPONENTS
   ],
-  providers: [
-    SERVICES
-  ],
+  providers: [],
   bootstrap: [ ApplicationAdminComponent ]
 })
 

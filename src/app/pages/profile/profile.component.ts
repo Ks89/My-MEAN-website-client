@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { AuthService, ProfileService } from '../../common/services';
+import { AuthService, ProfileService } from '../../shared/services/services';
 import { EmailValidators } from "ng2-validators";
 
 @Component({
@@ -14,24 +14,24 @@ import { EmailValidators } from "ng2-validators";
   templateUrl: 'profile.html'
 })
 export class ProfileComponent implements OnInit, OnDestroy {
-  public pageHeader: Object;
+  public pageHeader: any;
   public formModel: FormGroup;
   public token: string;
   public bigProfileImage: string = 'assets/images/profile/bigProfile.png';
-  public profileAlert: Object = { visible: false }; // hidden by default
+  public profileAlert: any = { visible: false }; // hidden by default
   public isWaiting: boolean = false; // enable button's spinner
 
-  public sidebar: Object = {
+  public sidebar: any = {
     title: 'Other services',
     strapline: ' '
   };
 
   // 3dparty connect links
-  public facebookConnectOauthUrl: Object = 'api/connect/facebook';
-  public googleConnectOauthUrl: Object = 'api/connect/google';
-  public githubConnectOauthUrl: Object = 'api/connect/github';
-  public twitterConnectOauthUrl: Object = 'api/connect/twitter';
-  public linkedinConnectOauthUrl: Object = 'api/connect/linkedin';
+  public facebookConnectOauthUrl: string = 'api/connect/facebook';
+  public googleConnectOauthUrl: string = 'api/connect/google';
+  public githubConnectOauthUrl: string = 'api/connect/github';
+  public twitterConnectOauthUrl: string = 'api/connect/twitter';
+  public linkedinConnectOauthUrl: string = 'api/connect/linkedin';
 
   // local model
   public local: any = {
@@ -82,7 +82,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         'name': [null, Validators.minLength(3)],
         'surname': [null, Validators.minLength(3)],
         'nickname': [null, Validators.minLength(3)],
-        'email': [null, EmailValidators.simple()]
+        'email': [null, EmailValidators.simple]
       })
     }
 

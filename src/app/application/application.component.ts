@@ -1,4 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
+
 @Component({
   selector: 'mmw-application',
   styleUrls: ['application.scss'],

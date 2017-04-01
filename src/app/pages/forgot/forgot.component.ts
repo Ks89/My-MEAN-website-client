@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { EmailValidators } from 'ng2-validators';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
-import { AuthService } from '../../common/services';
+import { AuthService } from '../../shared/services/services';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
@@ -11,9 +11,9 @@ import { Subscription } from 'rxjs/Subscription';
   templateUrl: 'forgot.html'
 })
 export class ForgotComponent implements OnDestroy {
-  public pageHeader: Object;
+  public pageHeader: any;
   public formModel: FormGroup;
-  public forgotAlert: Object = { visible: false }; // hidden by default
+  public forgotAlert: any = { visible: false }; // hidden by default
   public isWaiting: boolean = false; // enable button's spinner
   public showFormError: boolean = false;
   private subscription: Subscription;
@@ -28,7 +28,7 @@ export class ForgotComponent implements OnDestroy {
 
     const fb = new FormBuilder();
     this.formModel = fb.group({
-      'email': [null, EmailValidators.simple()]
+      'email': [null, EmailValidators.simple]
     });
   }
 

@@ -1,0 +1,37 @@
+.menu {
+    margin-top: 10px;
+}
+
+a {
+    display: block;
+    padding: .25rem .75rem;
+    color: #55595c;
+    font-size: 90%;
+    text-decoration: none;
+
+    &:hover {
+        color: #428bca;
+    }
+}
+
+.nav {
+    margin-top: 5px;
+    display: block;
+    list-style: none;
+    line-height: 1.5;
+
+    li {
+
+        a {
+            display: block;
+            padding: .25rem .75rem;
+            color: #99979c;
+            font-size: 90%;
+            text-decoration: none;
+
+            &:hover {
+                color: #428bca;
+            }
+        }
+    }
+}

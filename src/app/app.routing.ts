@@ -1,5 +1,4 @@
-import { ModuleWithProviders } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes } from '@angular/router';
 
 import { HomeComponent } from './pages/home/home.component';
 import { ProjectListComponent } from './pages/project-list/project-list.component';
@@ -15,17 +14,14 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { Post3dAuthComponent } from './pages/post3d-auth/post3d-auth.component';
 import { NotFound404Component } from "./pages/404/not-found404.component";
 
-import { AuthGuard } from './common/services/auth-guard.service';
+import { AuthGuard } from './shared/services/auth-guard.service';
 
-import { IdlePreload } from "@angularclass/idle-preload";
-
-const appRoutes: Routes = [
-
+export const ROUTES: Routes = [
   {path: '',                                component: HomeComponent},
   {path: 'dashboard',                       component: HomeComponent},
   {path: 'projects',                        component: ProjectListComponent},
   {path: 'projects/:projectId',             component: ProjectDetailComponent},
-  {path: 'cv',                              loadChildren: './pages/cv/index#CvModule'}, // lazy loading
+  {path: 'cv',                              loadChildren: './pages/cv/cv.module#CvModule'}, // lazy loading
   {path: 'contact',                         component: ContactComponent},
   {path: 'about',                           component: AboutComponent},
   {path: 'register',                        component: RegisterComponent},
@@ -39,5 +35,3 @@ const appRoutes: Routes = [
   {path: 'post3dauth',                      component: Post3dAuthComponent},
   {path: '**',                              component: NotFound404Component}
 ];
-
-export const routing: ModuleWithProviders = RouterModule.forRoot(appRoutes, { useHash: false, preloadingStrategy: IdlePreload });

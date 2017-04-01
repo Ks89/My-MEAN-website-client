@@ -19,7 +19,7 @@ import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
 import { AboutComponent } from './about.component';
-import { PageHeaderComponent } from "../../common/components/page-header/page-header.component";
+import { PageHeaderComponent } from "../../shared/components/page-header/page-header.component";
 
 let comp: AboutComponent;
 let fixture: ComponentFixture<AboutComponent>;

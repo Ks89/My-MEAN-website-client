@@ -5,12 +5,12 @@ import { Subscription } from 'rxjs';
 
 import { Image } from 'angular-modal-gallery';
 
-import { Project, ProjectService } from '../../common/services';
-import { ProjectGallery } from "../../common/services/projects.service";
+import { Project, ProjectService } from '../../shared/services/services';
+import { ProjectGallery } from "../../shared/services/projects.service";
 
 @Component({
   selector: 'mmw-project-detail-page',
-  styleUrls: ['bs_doc.scss'],
+  styleUrls: ['project-detail.scss'],
   templateUrl: 'project-detail.html'
 })
 export class ProjectDetailComponent implements OnInit, OnDestroy {

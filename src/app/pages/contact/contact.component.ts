@@ -3,16 +3,16 @@ import { Subscription } from 'rxjs/Subscription';
 import { EmailValidators } from 'ng2-validators';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { ContactService } from '../../common/services';
+import { ContactService } from '../../shared/services/services';
 
 @Component({
   selector: 'mmw-contact-page',
   templateUrl: 'contact.html'
 })
 export class ContactComponent implements OnDestroy {
-  public pageHeader: Object;
+  public pageHeader: any;
   public formModel: FormGroup;
-  public contactAlert: Object = { visible: false }; // hidden by default
+  public contactAlert: any = { visible: false }; // hidden by default
   public isWaiting: boolean = false; // enable button's spinner
   public showFormError: boolean = false;
   private subscription: Subscription;
@@ -26,7 +26,7 @@ export class ContactComponent implements OnDestroy {
 
     const fb = new FormBuilder();
     this.formModel = fb.group({
-      'email': [null, EmailValidators.simple()],
+      'email': [null, EmailValidators.simple],
       'subject': [null, Validators.minLength(4)],
       'message': [null, Validators.minLength(15)],
     });

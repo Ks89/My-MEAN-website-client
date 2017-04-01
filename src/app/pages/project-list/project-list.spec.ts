@@ -3,11 +3,11 @@ import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
 import { ProjectListComponent } from './project-list.component';
-import { ProjectSearchPipe } from '../../common/pipes';
-import { PROJECTS, FakeProjectService } from '../../common/testing/fake-project.service.spec';
-import { ProjectService } from '../../common/services';
-import { PageHeaderComponent } from "../../common/components/page-header/page-header.component";
-import { RouterLinkStubDirective, RouterOutletStubComponent, RouterStub } from "../../common/testing/router-stubs.spec";
+import { ProjectSearchPipe } from '../../shared/pipes';
+import { PROJECTS, FakeProjectService } from '../../shared/testing/fake-project.service.spec';
+import { ProjectService } from '../../shared/services/services';
+import { PageHeaderComponent } from "../../shared/components/page-header/page-header.component";
+import { RouterLinkStubDirective, RouterOutletStubComponent, RouterStub } from "../../shared/testing/router-stubs.spec";
 import { Router } from "@angular/router";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 

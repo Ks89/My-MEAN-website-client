@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { AuthService } from '../../common/services';
+import { AuthService } from '../../shared/services/services';
 
 @Component({
   selector: 'mmw-post3d-auth-page',

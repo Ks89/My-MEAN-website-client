@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { AuthService } from '../../common/services';
+import { AuthService } from '../../shared/services/services';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
@@ -9,10 +9,10 @@ import { Subscription } from 'rxjs/Subscription';
   templateUrl: 'activate.html'
 })
 export class ActivateComponent implements OnInit, OnDestroy {
-  public pageHeader: Object;
+  public pageHeader: any;
   public emailToken: string;
   public userName: string;
-  public activateAlert: Object = { visible: false }; // hidden by default
+  public activateAlert: any = { visible: false }; // hidden by default
   private subscription: Subscription;
 
   constructor(private authService: AuthService,

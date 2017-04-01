@@ -1,4 +1,26 @@
-'use strict';
+/*
+ * MIT License
+ *
+ * Copyright (c) 2017 Stefano Cappa
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 
 const webpack                      = require('webpack');
 const DefinePlugin                 = require('webpack/lib/DefinePlugin');
@@ -6,15 +28,15 @@ const ProvidePlugin                = require('webpack/lib/ProvidePlugin');
 const CommonsChunkPlugin           = require('webpack/lib/optimize/CommonsChunkPlugin');
 const LoaderOptionsPlugin          = require('webpack/lib/LoaderOptionsPlugin');
 const ContextReplacementPlugin     = require('webpack/lib/ContextReplacementPlugin');
-const CopyWebpackPlugin            = require('copy-webpack-plugin');
 const NamedModulesPlugin           = require('webpack/lib/NamedModulesPlugin');
 
+const CopyWebpackPlugin            = require('copy-webpack-plugin');
 const HtmlWebpackPlugin            = require('html-webpack-plugin');
-const ExtractTextPlugin            = require('extract-text-webpack-plugin');
-const ManifestPlugin               = require('webpack-manifest-plugin');
-const InlineManifestWebpackPlugin  = require('inline-manifest-webpack-plugin');
 const autoprefixer                 = require('autoprefixer');
-const ChunkManifestPlugin          = require('chunk-manifest-webpack-plugin');
+const ngcWebpack                   = require('ngc-webpack');
+const ScriptExtHtmlWebpackPlugin   = require('script-ext-html-webpack-plugin');
+
+const HtmlElementsPlugin           = require('./html-elements-plugin');
 
 const helpers                      = require('./helpers');
 const TITLE                        = 'My MEAN Website';
@@ -24,93 +46,95 @@ const TEMPLATE_ADMIN_PATH          = './src/admin.ejs';
 const TEMPLATE_HTML                = 'index.html';
 const TEMPLATE_ADMIN_HTML          = 'admin.html';
 
+const AOT                          = helpers.hasNpmFlag('aot');
+const TS_CONFIG                    = AOT ? 'tsconfig-aot.json' : 'tsconfig.json';
+
 module.exports = {
   entry: {
     polyfills: './src/polyfills.ts',
-    app: './src/main.ts',
-    admin: './src/admin.ts'
+    app: AOT ? './src/main.aot.ts' : './src/main.ts',
+    admin: AOT ? './src/admin.aot.ts' : './src/admin.ts',
   },
   resolve: {
-    descriptionFiles: ['package.json'],
-    extensions: ['.ts', '.js', '.css', '.scss', 'json', '.html'],
+    extensions: ['.ts', '.js', '.json'],
     modules: [helpers.root('src'), helpers.root('node_modules')]
   },
   module: {
     rules: [
       {
-        enforce: 'pre',
         test: /\.ts$/,
-        loader: 'tslint-loader',
-        exclude: [/\.(spec|e2e)\.ts$/, /node_modules/]
-      },
-      {
-        test: /\.ts$/,
-        loaders: 'awesome-typescript-loader',
-        query: {
-          forkChecker: true
-        },
-        exclude: [/\.(spec|e2e)\.ts$/]
-      },
-      {
-        test: /\.ts$/,
-        loaders: [
-          'angular2-template-loader',
-          '@angularclass/hmr-loader'
+        use: [
+          {
+            loader: '@angularclass/hmr-loader'
+            //, options: {
+            //   pretty: !isProd,
+            //   prod: isProd
+            // }
+          },
+          {
+            loader: 'ng-router-loader',
+            options: {
+              loader: 'async-import',
+              genDir: 'aot',
+              aot: AOT
+            }
+          },
+          {
+            loader: 'awesome-typescript-loader',
+            options: {
+              configFileName: '${TS_CONFIG}'
+            }
+          },
+          {
+            loader: 'angular2-template-loader'
+          }
         ],
         exclude: [/\.(spec|e2e)\.ts$/]
       },
       {
-        test: /\.ts$/,
-        loaders: [
-          'angular-router-loader' // lazy Loading
-        ],
-        exclude: [/\.(spec|e2e)\.ts$/]
-      },
-      {
-        test: /\.html$/,
-        loader: 'raw-loader'
+        test: /\.json$/,
+        use: 'json-loader'
       },
       {
         test: /\.css$/,
-        exclude: [helpers.root('src', 'app'), helpers.root('src', 'admin')],
-        loader: ExtractTextPlugin
-          .extract({
-              fallbackLoader: "style-loader",
-              loader: ['css-loader', 'postcss-loader']
-          })
-      },
-      {
-        test: /\.css$/,
-        include: [helpers.root('src', 'app'), helpers.root('src', 'admin')],
-        loader: 'raw-loader!postcss-loader'
+        use: ['to-string-loader', 'css-loader'],
+        exclude: [helpers.root('src', 'styles')]
       },
       {
         test: /\.scss$/,
-        exclude: /node_modules/,
-        loaders: ['raw-loader', 'sass-loader']
+        use: ['to-string-loader', 'css-loader', 'sass-loader'],
+        exclude: [helpers.root('src', 'styles')]
       },
-      // {
-      //   test: /\.json$/,
-      //   loader: 'json-loader'
-      // },
+      {
+        test: /\.html$/,
+        use: 'raw-loader',
+        exclude: [helpers.root('src/index.html')]
+      },
+      {
+        test: /\.(jpg|png|gif)$/,
+        use: 'file-loader'
+      },
       {
         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: "url-loader?limit=10000&mimetype=application/font-woff"
+        use: 'url-loader?limit=10000&mimetype=application/font-woff'
       },
       {
         test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: "file-loader"
+        use: 'file-loader'
       },
       // Bootstrap 4
-      { test: /bootstrap\/dist\/js\/umd\//, loader: 'imports?jQuery=jquery' }
+      {
+        test: /bootstrap\/dist\/js\/umd\//,
+        use: 'imports?jQuery=jquery'
+      }
     ],
-    noParse: [/node_modules\/@angular\/\*\*\/bundles\//,
-              /@angular\/\*\*\/bundles\//]
+    noParse: [
+      /node_modules\/@angular\/\*\*\/bundles\//,
+      /@angular\/\*\*\/bundles\//
+    ]
   },
   plugins: [
     new NamedModulesPlugin(),
-    new ManifestPlugin(),
-    new InlineManifestWebpackPlugin(), // TODO check if I can remove this
     new CommonsChunkPlugin({
       name: 'polyfills',
       chunks: ['polyfills'],
@@ -119,7 +143,7 @@ module.exports = {
     new CommonsChunkPlugin({
       name: 'vendor',
       chunks: ['app', 'admin'],
-      minChunks: module => /node_modules\//.test(module.resource)
+      minChunks: module => /node_modules\//.test(module.resource) // enables tree-shaking
     }),
     new CommonsChunkPlugin({
       name: ['polyfills', 'vendor'].reverse()
@@ -151,42 +175,80 @@ module.exports = {
       template: TEMPLATE_ADMIN_PATH,
       filename: TEMPLATE_ADMIN_HTML
     }),
-    new ProvidePlugin({
-      jQuery: 'jquery',
-      jquery: 'jquery',
-      $: 'jquery',
-      "Tether": 'tether',
-      "window.Tether": "tether",
-      //---------------------------------------------------
-      //------------- temporary workaround ----------------
-      // https://github.com/shakacode/bootstrap-loader/issues/172#issuecomment-247205500
-      //this requires exports-loader installed from npm
-      Tooltip: "exports-loader?Tooltip!bootstrap/js/dist/tooltip",
-      Alert: "exports-loader?Alert!bootstrap/js/dist/alert",
-      Button: "exports-loader?Button!bootstrap/js/dist/button",
-      Carousel: "exports-loader?Carousel!bootstrap/js/dist/carousel",
-      Collapse: "exports-loader?Collapse!bootstrap/js/dist/collapse",
-      Dropdown: "exports-loader?Dropdown!bootstrap/js/dist/dropdown",
-      Modal: "exports-loader?Modal!bootstrap/js/dist/modal",
-      Popover: "exports-loader?Popover!bootstrap/js/dist/popover",
-      Scrollspy: "exports-loader?Scrollspy!bootstrap/js/dist/scrollspy",
-      Tab: "exports-loader?Tab!bootstrap/js/dist/tab",
-      Util: "exports-loader?Util!bootstrap/js/dist/util"
-      //---------------------------------------------------
+    new ScriptExtHtmlWebpackPlugin({
+      defaultAttribute: 'defer'
     }),
-    new CopyWebpackPlugin([{from: './assets', to: './assets'}]),
+    /*
+     * Plugin: HtmlElementsPlugin
+     * Description: Generate html tags based on javascript maps.
+     *
+     * If a publicPath is set in the webpack output configuration, it will be automatically added to
+     * href attributes, you can disable that by adding a "=href": false property.
+     * You can also enable it to other attribute by settings "=attName": true.
+     *
+     * The configuration supplied is map between a location (key) and an element definition object (value)
+     * The location (key) is then exported to the template under then htmlElements property in webpack configuration.
+     *
+     * Example:
+     *  Adding this plugin configuration
+     *  new HtmlElementsPlugin({
+     *    headTags: { ... }
+     *  })
+     *
+     *  Means we can use it in the template like this:
+     *  <%= webpackConfig.htmlElements.headTags %>
+     *
+     * Dependencies: HtmlWebpackPlugin
+     */
+    new HtmlElementsPlugin({
+      headTags: require('./head-config.common')
+    }),
+    new CopyWebpackPlugin([
+      { from: './assets',
+        to: './assets'
+      },
+      {
+        from: 'node_modules/font-awesome/css/font-awesome.min.css',
+        to: 'assets/font-awesome/css/font-awesome.min.css',
+      },
+      {
+        from: 'node_modules/font-awesome/fonts',
+        to: 'assets/font-awesome/fonts'
+      }
+    ]),
     new ContextReplacementPlugin(
       // The (\\|\/) piece accounts for path separators in *nix and Windows
       /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
       helpers.root('./src') // location of your src
     ),
-    // TODO FIXME restore this
-    // new ChunkManifestPlugin({
-    //   filename: "manifest.json",
-    //   manifestVariable: "webpackManifest"
-    // }),
+    new ngcWebpack.NgcWebpackPlugin({
+      disabled: !AOT,
+      tsConfig: helpers.root('tsconfig-aot.json')
+    }),
+    new ProvidePlugin({
+      jQuery: 'jquery',
+      jquery: 'jquery',
+      $: 'jquery',
+      'Tether': 'tether',
+      'window.Tether': 'tether',
+      //---------------------------------------------------
+      //------------- temporary workaround ----------------
+      // https://github.com/shakacode/bootstrap-loader/issues/172#issuecomment-247205500
+      //this requires exports-loader installed from npm
+      Tooltip: 'exports-loader?Tooltip!bootstrap/js/dist/tooltip',
+      Alert: 'exports-loader?Alert!bootstrap/js/dist/alert',
+      Button: 'exports-loader?Button!bootstrap/js/dist/button',
+      Carousel: 'exports-loader?Carousel!bootstrap/js/dist/carousel',
+      Collapse: 'exports-loader?Collapse!bootstrap/js/dist/collapse',
+      Dropdown: 'exports-loader?Dropdown!bootstrap/js/dist/dropdown',
+      Modal: 'exports-loader?Modal!bootstrap/js/dist/modal',
+      Popover: 'exports-loader?Popover!bootstrap/js/dist/popover',
+      Scrollspy: 'exports-loader?Scrollspy!bootstrap/js/dist/scrollspy',
+      Tab: 'exports-loader?Tab!bootstrap/js/dist/tab',
+      Util: 'exports-loader?Util!bootstrap/js/dist/util'
+      //---------------------------------------------------
+    }),
     new LoaderOptionsPlugin({
-      debug: true,
       options: {
         context: __dirname,
         output: { path :  './' },
@@ -195,7 +257,7 @@ module.exports = {
           emitErrors: false,
           failOnHint: false,
           resourcePath: helpers.root('./src'),
-          formattersDirectory: "./node_modules/tslint-loader/formatters/"
+          formattersDirectory: './node_modules/tslint-loader/formatters/'
         }
       }
     })

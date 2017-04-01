@@ -3,16 +3,16 @@ import { Router } from '@angular/router';
 import { EmailValidators, PasswordValidators } from 'ng2-validators';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { AuthService } from '../../common/services';
+import { AuthService } from '../../shared/services/services';
 
 @Component({
   selector: 'mmw-register-page',
   templateUrl: 'register.html'
 })
 export class RegisterComponent {
-  public pageHeader: Object;
+  public pageHeader: any;
   public formModel: FormGroup;
-  public registerAlert: Object = { visible: false }; // hidden by default
+  public registerAlert: any = { visible: false }; // hidden by default
   public showFormError: boolean = false;
   public isWaiting: boolean = false; // enable button's spinner
 
@@ -34,8 +34,8 @@ export class RegisterComponent {
     const fb = new FormBuilder();
     this.formModel = fb.group({
       'name': [null, Validators.compose([Validators.required, Validators.minLength(3)])],
-      'email': [null, EmailValidators.simple()],
-      'emailConfirm': [null, EmailValidators.simple()],
+      'email': [null, EmailValidators.simple],
+      'emailConfirm': [null, EmailValidators.simple],
       'password': [null, passwordValidator],
       'passwordConfirm': [null, null]
     });

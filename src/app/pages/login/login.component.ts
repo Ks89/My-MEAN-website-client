@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
-import { AuthService } from '../../common/services';
+import { AuthService } from '../../shared/services/services';
 
 @Component({
   selector: 'mmw-login-page',
@@ -10,9 +10,9 @@ import { AuthService } from '../../common/services';
   templateUrl: 'login.html'
 })
 export class LoginComponent {
-  public pageHeader: Object;
+  public pageHeader: any;
   public formModel: FormGroup;
-  public loginAlert: Object = { visible: false }; // hidden by default
+  public loginAlert: any = { visible: false }; // hidden by default
   public isWaiting: boolean = false; // enable button's spinner
   public showFormError: boolean = false;
 
