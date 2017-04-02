@@ -13,7 +13,7 @@ function getBrowsers() {
   if (process.env.CI) {
     if(process.env.APPVEYOR) { // variable defined by APPVEYOR itself
       // only for AppVeyor
-      return ['PhantomJS', 'Chrome', 'Firefox', 'IE'];
+      return ['Chrome', 'Firefox', 'IE']; // 'PhantomJS' not working on AppVeyor
     } else {
       return ['PhantomJS', 'Firefox', 'Chrome_travis_ci'];  // Travis CI ('Chrome_travis_ci' is defined below)
     }
