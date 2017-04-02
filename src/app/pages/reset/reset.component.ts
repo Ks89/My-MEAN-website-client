@@ -1,15 +1,16 @@
-import { Component } from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { AuthService } from '../../shared/services/services';
 import { PasswordValidators } from "ng2-validators";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'mmw-reset-page',
   templateUrl: 'reset.html'
 })
-export class ResetComponent {
+export class ResetComponent implements OnDestroy {
   public pageHeader: any;
   public formModel: FormGroup;
   public emailToken: string;
@@ -17,6 +18,8 @@ export class ResetComponent {
   public isWaiting: boolean = false; // enable button's spinner
   public showFormError: boolean = false;
   public alreadyChanged: boolean = false;
+
+  private resetSubscription: Subscription;
 
   // this class is used when you click on the email to reset your password
 
@@ -61,7 +64,7 @@ export class ResetComponent {
 
       this.isWaiting = true;
       console.log('Calling reset...');
-      this.authService.reset(this.emailToken, this.formModel.value.password).subscribe(
+      this.resetSubscription = this.authService.reset(this.emailToken, this.formModel.value.password).subscribe(
         response => {
           console.log('Response');
           console.log(response);
@@ -88,6 +91,12 @@ export class ResetComponent {
         },
         () => console.log('Done')
       );
+    }
+  }
+
+  ngOnDestroy() {
+    if(this.resetSubscription) {
+      this.resetSubscription.unsubscribe();
     }
   }
 }

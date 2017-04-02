@@ -16,7 +16,7 @@ export class ForgotComponent implements OnDestroy {
   public forgotAlert: any = { visible: false }; // hidden by default
   public isWaiting: boolean = false; // enable button's spinner
   public showFormError: boolean = false;
-  private subscription: Subscription;
+  private forgotSubscription: Subscription;
   // this class is used when you click on the 'forgot password' to reset your password
 
   constructor(private authService: AuthService,
@@ -36,7 +36,7 @@ export class ForgotComponent implements OnDestroy {
     if (this.formModel.valid) {
       this.isWaiting = true;
       console.log('Calling forgot password...');
-      this.authService.forgot(this.formModel.value.email).subscribe(
+      this.forgotSubscription = this.authService.forgot(this.formModel.value.email).subscribe(
         response => {
           console.log('Response');
           console.log(response);
@@ -67,8 +67,8 @@ export class ForgotComponent implements OnDestroy {
   }
 
   ngOnDestroy(): any {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+    if (this.forgotSubscription) {
+      this.forgotSubscription.unsubscribe();
     }
   }
 }

@@ -15,7 +15,7 @@ export class ContactComponent implements OnDestroy {
   public contactAlert: any = { visible: false }; // hidden by default
   public isWaiting: boolean = false; // enable button's spinner
   public showFormError: boolean = false;
-  private subscription: Subscription;
+  private sendFormSubscription: Subscription;
   private recaptchaResponse: any;
 
   constructor(private contactService: ContactService) {
@@ -50,7 +50,7 @@ export class ContactComponent implements OnDestroy {
             object : this.formModel.value.subject
           }
       };
-      this.contactService.sendFormWithCaptcha(dataToSend).subscribe(
+      this.sendFormSubscription = this.contactService.sendFormWithCaptcha(dataToSend).subscribe(
         (response: any) => {
           console.log('/api/email called -> OK');
           console.log(response);
@@ -81,8 +81,8 @@ export class ContactComponent implements OnDestroy {
   }
 
   ngOnDestroy(): any {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+    if (this.sendFormSubscription) {
+      this.sendFormSubscription.unsubscribe();
     }
   }
 }

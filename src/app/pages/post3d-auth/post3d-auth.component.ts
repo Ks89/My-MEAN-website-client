@@ -1,17 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AuthService } from '../../shared/services/services';
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'mmw-post3d-auth-page',
   templateUrl: 'post3d-auth.html'
 })
-export class Post3dAuthComponent implements OnInit {
+export class Post3dAuthComponent implements OnInit, OnDestroy {
   public pageHeader: any;
 
-  constructor(private authService: AuthService,
-              private router: Router) {
+  private postAuthSubscription: Subscription;
+
+  constructor(private authService: AuthService, private router: Router) {
     this.pageHeader = {
       title: 'PostLogin',
       strapline: ''
@@ -21,7 +23,7 @@ export class Post3dAuthComponent implements OnInit {
   ngOnInit() {
     console.log('INIT post3dAuth');
     // 3dparty authentication
-    this.authService.post3dAuthAfterCallback().subscribe(
+    this.postAuthSubscription = this.authService.post3dAuthAfterCallback().subscribe(
       jwtTokenAsString => {
         console.log("post3dauth - getLoggedUser called");
         this.authService.getLoggedUser().subscribe(
@@ -42,5 +44,11 @@ export class Post3dAuthComponent implements OnInit {
       },
       () => console.log('post3dAuthAfterCallback Done')
     );
+  }
+
+  ngOnDestroy() {
+    if(this.postAuthSubscription) {
+      this.postAuthSubscription.unsubscribe();
+    }
   }
 }

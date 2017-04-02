@@ -24,8 +24,10 @@ export class BaMenu {
   hoverElemHeight: number;
   hoverElemLeft:  number;
   hoverElemTop: number;
-  protected _onRouteChange: Subscription;
   outOfArea: number = -200;
+
+  protected _onRouteChange: Subscription;
+  private menuSubscription: Subscription;
 
   constructor(private _router:Router, private _service:BaMenuService, private menuService: MenuService) {
     this._onRouteChange = this._router.events.subscribe((event) => {
@@ -47,7 +49,7 @@ export class BaMenu {
   }
 
   ngOnInit():void {
-    this.menuService.getMenu().subscribe(
+    this.menuSubscription = this.menuService.getMenu().subscribe(
       val => {
         let routes = _.cloneDeep(val);
         this.menuItems = this._service.convertRoutesToMenus(routes);
@@ -58,7 +60,12 @@ export class BaMenu {
   }
 
   ngOnDestroy():void {
-    this._onRouteChange.unsubscribe();
+    if(this._onRouteChange) {
+      this._onRouteChange.unsubscribe();
+    }
+    if(this.menuSubscription) {
+      this.menuSubscription.unsubscribe();
+    }
   }
 
   hoverItem($event: any):void {

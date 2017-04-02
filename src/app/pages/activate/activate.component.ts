@@ -13,7 +13,7 @@ export class ActivateComponent implements OnInit, OnDestroy {
   public emailToken: string;
   public userName: string;
   public activateAlert: any = { visible: false }; // hidden by default
-  private subscription: Subscription;
+  private activateSubscription: Subscription;
 
   constructor(private authService: AuthService,
               private route: ActivatedRoute) {
@@ -33,7 +33,7 @@ export class ActivateComponent implements OnInit, OnDestroy {
   private onActivate() {
     console.log('Calling activate...');
 
-    this.authService.activate(this.emailToken, this.userName)
+    this.activateSubscription = this.authService.activate(this.emailToken, this.userName)
     .subscribe(response => {
         console.log('Response');
         console.log(response);
@@ -58,8 +58,8 @@ export class ActivateComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): any {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+    if (this.activateSubscription) {
+      this.activateSubscription.unsubscribe();
     }
   }
 }

@@ -26,7 +26,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
   public futureExtensionsHtml: any;
   public licenseHtml: any;
 
-  private subscription: Subscription;
+  private projectSubscription: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -45,7 +45,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
   ngOnInit() {
     console.log("Projectid:" + this.projectId);
 
-    this.subscription = this.projectService.getProjectsById(this.projectId).subscribe(
+    this.projectSubscription = this.projectService.getProjectsById(this.projectId).subscribe(
       project => {
         this.project = project;
         this.images = project.gallery.map((val: ProjectGallery) => new Image(val.img, val.thumb, val.description, null));
@@ -61,8 +61,8 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): any {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+    if (this.projectSubscription) {
+      this.projectSubscription.unsubscribe();
     }
   }
 }

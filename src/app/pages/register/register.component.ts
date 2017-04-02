@@ -1,23 +1,25 @@
-import { Component } from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import { Router } from '@angular/router';
 import { EmailValidators, PasswordValidators } from 'ng2-validators';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { AuthService } from '../../shared/services/services';
+import {Subscription} from "rxjs/Subscription";
 
 @Component({
   selector: 'mmw-register-page',
   templateUrl: 'register.html'
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnDestroy {
   public pageHeader: any;
   public formModel: FormGroup;
   public registerAlert: any = { visible: false }; // hidden by default
   public showFormError: boolean = false;
   public isWaiting: boolean = false; // enable button's spinner
 
-  constructor(private authService: AuthService,
-              private router: Router) {
+  private registerSubscription: Subscription;
+
+  constructor(private authService: AuthService, private router: Router) {
     this.pageHeader = {
       title: 'Create a new accout',
       strapline: ''
@@ -68,7 +70,7 @@ export class RegisterComponent {
 
       this.isWaiting = true;
       console.log('Calling register...');
-      this.authService.register({
+      this.registerSubscription = this.authService.register({
         name: this.formModel.value.name,
         email: this.formModel.value.email,
         password: this.formModel.value.password
@@ -99,6 +101,12 @@ export class RegisterComponent {
         },
         () => console.log('Done')
       );
+    }
+  }
+
+  ngOnDestroy() {
+    if(this.registerSubscription) {
+      this.registerSubscription.unsubscribe();
     }
   }
 }
