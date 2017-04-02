@@ -74,7 +74,7 @@ describe('Http-ProjectService (mockBackend)', () => {
     it('should have expected fake dashboard-projects', async(inject([], () => {
       mockRespByStatusAndBody(backend, 200, HOMEVIEWS);
       service.getProjectsForHomepage()
-        .subscribe(projects => {
+        .subscribe((projects: any) => {
           expect(projects.length).toBe(HOMEVIEWS.length, 'should have expected no. of projects');
           expect(projects).toEqual(HOMEVIEWS, 'should have expected all dashboard projects');
       });
@@ -117,7 +117,7 @@ describe('Http-ProjectService (mockBackend)', () => {
     it('should be OK returning no projects (because the requested project doesn\'t exists)', async(inject([], () => {
       mockRespByStatusAndBody(backend, 404, { "message": "Project not found" });
       service.getProjectsById('ey7dhef879wgfh8w9e')
-        .subscribe(project => expect(project).toEqual({"message":"Project not found"}, 'should have no projects'));
+        .subscribe((project: any) => expect(project).toEqual({"message":"Project not found"}, 'should have no projects'));
     })));
 
     it('should catch an Observable error', async(inject([], () => {

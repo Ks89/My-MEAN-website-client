@@ -82,7 +82,8 @@ describe('NavbarComponent', () => {
       it('can display the navbar with Projects as current page', () => {
         const element: DebugElement = fixture.debugElement;
 
-        const navbarBrand: DebugElement = element.query(By.css('a.navbar-brand.m-b-0'));
+
+        const navbarBrand: DebugElement = element.query(By.css('a.navbar-brand'));
         expect(navbarBrand.nativeElement.textContent.trim()).toBe('KS');
 
         const navLinks: DebugElement[] = element.queryAll(By.css('a.nav-link'));
@@ -98,13 +99,13 @@ describe('NavbarComponent', () => {
       it(`can display the navbar's dropdown and logout`, () => {
         const element: DebugElement = fixture.debugElement;
 
-        const loggedUser: DebugElement = element.query(By.css('a.nav-link.dropdown-toggle'));
-        expect(loggedUser.nativeElement.textContent).toBe(FAKE_USERNAME);
+        const loggedUser: DebugElement = element.query(By.css('a#navbarDropdownMenuLink.nav-link.dropdown-toggle'));
+        expect(loggedUser.nativeElement.textContent.trim()).toBe(FAKE_USERNAME);
         click(loggedUser);
 
         const logoutItems: DebugElement[] = element.queryAll(By.css('a.dropdown-item'));
-        expect(logoutItems[0].nativeElement.textContent).toBe('Profile');
-        expect(logoutItems[1].nativeElement.textContent).toBe('Logout');
+        expect(logoutItems[0].nativeElement.textContent.trim()).toBe('Profile');
+        expect(logoutItems[1].nativeElement.textContent.trim()).toBe('Logout');
 
         click(logoutItems[1]);
 
@@ -143,7 +144,7 @@ describe('NavbarComponent', () => {
       it('can display the navbar with Projects as current page', () => {
         const element: DebugElement = fixture.debugElement;
 
-        const navbarBrand: DebugElement = element.query(By.css('a.navbar-brand.m-b-0'));
+        const navbarBrand: DebugElement = element.query(By.css('a.navbar-brand'));
         expect(navbarBrand.nativeElement.textContent.trim()).toBe('KS');
 
         const navLinks: DebugElement[] = element.queryAll(By.css('a.nav-link'));

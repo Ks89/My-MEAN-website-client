@@ -3,13 +3,12 @@ import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
 import { ProjectListComponent } from './project-list.component';
-import { ProjectSearchPipe } from '../../shared/pipes';
 import { PROJECTS, FakeProjectService } from '../../shared/testing/fake-project.service.spec';
 import { ProjectService } from '../../shared/services/services';
-import { PageHeaderComponent } from "../../shared/components/page-header/page-header.component";
 import { RouterLinkStubDirective, RouterOutletStubComponent, RouterStub } from "../../shared/testing/router-stubs.spec";
 import { Router } from "@angular/router";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { SharedModule } from "../../shared/shared.module";
 
 let comp: ProjectListComponent;
 let fixture: ComponentFixture<ProjectListComponent>;
@@ -23,8 +22,8 @@ function initTestBed() {
   router = new RouterStub();
 
   TestBed.configureTestingModule({
-    imports: [FormsModule, ReactiveFormsModule],
-    declarations: [ ProjectListComponent, ProjectSearchPipe, PageHeaderComponent, RouterLinkStubDirective, RouterOutletStubComponent  ],
+    imports: [FormsModule, ReactiveFormsModule, SharedModule],
+    declarations: [ ProjectListComponent, RouterLinkStubDirective, RouterOutletStubComponent  ],
     // schemas:      [ NO_ERRORS_SCHEMA ]
   }).overrideComponent(ProjectListComponent, {
     set: {
@@ -63,7 +62,7 @@ describe('ProjectListComponent', () => {
       expect(title[0].nativeElement.textContent.trim()).toBe('Projects');
 
       const message: DebugElement[] = element.queryAll(By.css('small'));
-      expect(message.length).toBe(1); //because pageHeader has a <small> tag in its template
+      expect(message.length).toBe(1); //because pageHeader has a <small> badge in its template
       expect(message[0].nativeElement.textContent.trim()).toBe('');
     });
 
@@ -107,17 +106,17 @@ describe('ProjectListComponent', () => {
       expect(shortDescriptions[1].nativeElement.textContent).toBe(PROJECTS[1].shortDescription);
       expect(shortDescriptions[2].nativeElement.textContent).toBe(PROJECTS[2].shortDescription);
 
-      const tags: DebugElement[] = element.queryAll(By.css('span.tag.tag-pill.tag-warning'));
-      expect(tags.length).toBe(9);
-      expect(tags[0].nativeElement.textContent.trim()).toBe(PROJECTS[0].tags[0]);
-      expect(tags[1].nativeElement.textContent.trim()).toBe(PROJECTS[0].tags[1]);
-      expect(tags[2].nativeElement.textContent.trim()).toBe(PROJECTS[0].tags[2]);
-      expect(tags[3].nativeElement.textContent.trim()).toBe(PROJECTS[1].tags[0]);
-      expect(tags[4].nativeElement.textContent.trim()).toBe(PROJECTS[1].tags[1]);
-      expect(tags[5].nativeElement.textContent.trim()).toBe(PROJECTS[1].tags[2]);
-      expect(tags[6].nativeElement.textContent.trim()).toBe(PROJECTS[2].tags[0]);
-      expect(tags[7].nativeElement.textContent.trim()).toBe(PROJECTS[2].tags[1]);
-      expect(tags[8].nativeElement.textContent.trim()).toBe(PROJECTS[2].tags[2]);
+      const badges: DebugElement[] = element.queryAll(By.css('span.badge.badge-warning'));
+      expect(badges.length).toBe(9);
+      expect(badges[0].nativeElement.textContent.trim()).toBe(PROJECTS[0].tags[0]);
+      expect(badges[1].nativeElement.textContent.trim()).toBe(PROJECTS[0].tags[1]);
+      expect(badges[2].nativeElement.textContent.trim()).toBe(PROJECTS[0].tags[2]);
+      expect(badges[3].nativeElement.textContent.trim()).toBe(PROJECTS[1].tags[0]);
+      expect(badges[4].nativeElement.textContent.trim()).toBe(PROJECTS[1].tags[1]);
+      expect(badges[5].nativeElement.textContent.trim()).toBe(PROJECTS[1].tags[2]);
+      expect(badges[6].nativeElement.textContent.trim()).toBe(PROJECTS[2].tags[0]);
+      expect(badges[7].nativeElement.textContent.trim()).toBe(PROJECTS[2].tags[1]);
+      expect(badges[8].nativeElement.textContent.trim()).toBe(PROJECTS[2].tags[2]);
 
       const timelineHeader: DebugElement = element.query(By.css('h3#timeline'));
       expect(timelineHeader.nativeElement.textContent).toBe(comp.sidebarTitle);
