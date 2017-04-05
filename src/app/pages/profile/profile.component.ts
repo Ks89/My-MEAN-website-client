@@ -1,12 +1,15 @@
 import {Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {Subscription} from 'rxjs/Subscription';
-import {Router} from '@angular/router';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {ActivatedRoute, Router} from '@angular/router';
 import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 
-import {AuthService, ProfileService} from '../../shared/services/services';
+import {Observable} from "rxjs/Observable";
+import {Subscription} from 'rxjs/Subscription';
+import 'rxjs/add/observable/combineLatest';
+
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {EmailValidators} from "ng2-validators";
+
+import {AuthService, ProfileService} from '../../shared/services/services';
 
 @Component({
   selector: 'mmw-profile-page',
@@ -60,11 +63,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
   @ViewChild('modalDialogContent') modalDialogContent: any;
 
   private postAuthSubscription: Subscription;
-  private loggedUserSubscription: Subscription;
   private updateSubscription: Subscription;
   private unlinkSubscription: Subscription;
   private unlinkSubscription2: Subscription;
-  private logoutSubscription: Subscription;
 
   constructor(private profileService: ProfileService,
               private route: ActivatedRoute, private router: Router,
@@ -92,41 +93,46 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log('INIT');
+    console.log('ngOnInit');
     // 3dparty authentication
-    this.postAuthSubscription = this.authService.post3dAuthAfterCallback().subscribe(
-      jwtTokenAsString => {
-        console.log('**************************');
-        console.log(jwtTokenAsString);
-        console.log('**************************');
-        this.loggedUserSubscription = this.authService.getLoggedUser().subscribe(
-          user => {
-            console.log('#########################');
-            console.log(user);
-            console.log('#########################');
 
-            console.log('setting data.........................');
-            setObjectValuesLocal(user.local, this.local);
-            setObjectValues(user.facebook, this.facebook);
-            setObjectValues(user.github, this.github);
-            setObjectValues(user.google, this.google);
-            setObjectValues(user.twitter, this.twitter);
-            setObjectValues(user.linkedin, this.linkedin);
-            if (user.profile) {
-              this.formModel.get('name').setValue(user.profile.name);
-              this.formModel.get('surname').setValue(user.profile.surname);
-              this.formModel.get('nickname').setValue(user.profile.nickname);
-              this.formModel.get('email').setValue(user.profile.email);
-            }
-            console.log('---------------setted----------------');
+    const postAuth$: Observable<any> = this.authService.post3dAuthAfterCallback();
+    const user$: Observable<any> = this.authService.getLoggedUser();
 
-            this.authService.loginEvent.emit(user);
+    this.postAuthSubscription = Observable.combineLatest(postAuth$, user$,
+      (postAuth, user) => ({ jwtTokenAsString: postAuth, user }))
+      .subscribe(
+        result => {
+          console.log('**************************');
+          console.log(result.jwtTokenAsString);
+          console.log('**************************');
+
+          console.log('#########################');
+          console.log(result.user);
+          console.log('#########################');
+
+          console.log('setting data.........................');
+          setObjectValuesLocal(result.user.local, this.local);
+          setObjectValues(result.user.facebook, this.facebook);
+          setObjectValues(result.user.github, this.github);
+          setObjectValues(result.user.google, this.google);
+          setObjectValues(result.user.twitter, this.twitter);
+          setObjectValues(result.user.linkedin, this.linkedin);
+          if (result.user.profile) {
+            this.formModel.get('name').setValue(result.user.profile.name);
+            this.formModel.get('surname').setValue(result.user.profile.surname);
+            this.formModel.get('nickname').setValue(result.user.profile.nickname);
+            this.formModel.get('email').setValue(result.user.profile.email);
           }
-        );
-      },
-      (err) => console.error(err),
-      () => console.log('Done')
-    );
+          console.log('---------------setted----------------');
+
+          this.authService.loginEvent.emit(result.user);
+        },
+        err => console.error(err),
+        () => {
+          console.log('Done');
+        }
+      );
 
     function setObjectValues(originData: any, destData: any) {
       if (originData) {
@@ -209,30 +215,23 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
       this.modalService.open(this.modalDialogContent).result.then((result) => {
         console.log(`Closed with: ${result}`);
-        this.unlinkSubscription = this.authService.unlink(serviceName)
+
+        const unlink$: Observable<any> = this.authService.unlink(serviceName);
+        const logout$: Observable<any> = this.authService.logout();
+
+        this.unlinkSubscription = Observable.combineLatest(unlink$, logout$,
+          (unlink, logout) => ({ unlink, logout }))
           .subscribe(
-            response => {
-              console.log('Unlinked: ' + response);
+            result => {
+              console.log('Unlink + Logout result = ');
+              console.log(result);
               this.authService.loginEvent.emit(null);
-              this.logoutSubscription = this.authService.logout()
-                .subscribe(
-                  result => {
-                    console.log('Logged out: ' + result);
-                    this.router.navigate(['/']);
-                  },
-                  err => {
-                    // logServer.error('profile impossible to logout', err);
-                    console.log('Impossible to logout: ' + err);
-                    this.router.navigate(['/']);
-                  },
-                  () => console.log('Last unlink - unlink done')
-                );
             },
-            err => {
-              // logServer.error('profile error unlink', err);
-              console.log('Impossible to unlink: ' + err);
-            },
-            () => console.log('Last unlink - unlink done')
+            err => console.error('Impossible to either unlink or logout: ' + err),
+            () => {
+              console.log('Last unlink - both unlink and logout completed');
+              this.router.navigate(['/']);
+            }
           );
 
       }, (reason) => {
@@ -270,9 +269,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
     if (this.postAuthSubscription) {
       this.postAuthSubscription.unsubscribe();
     }
-    if (this.loggedUserSubscription) {
-      this.loggedUserSubscription.unsubscribe();
-    }
     if (this.updateSubscription) {
       this.updateSubscription.unsubscribe();
     }
@@ -281,9 +277,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
     if (this.unlinkSubscription2) {
       this.unlinkSubscription2.unsubscribe();
-    }
-    if (this.logoutSubscription) {
-      this.logoutSubscription.unsubscribe();
     }
   }
 
