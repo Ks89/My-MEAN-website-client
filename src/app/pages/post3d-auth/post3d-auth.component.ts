@@ -1,8 +1,11 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import { Router } from '@angular/router';
+import {Router} from '@angular/router';
 
-import { AuthService } from '../../shared/services/services';
-import {Subscription} from "rxjs";
+import {Observable} from 'rxjs/Observable';
+import {Subscription} from "rxjs/Subscription";
+import 'rxjs/add/observable/combineLatest';
+
+import {AuthService} from '../../shared/services/services';
 
 @Component({
   selector: 'mmw-post3d-auth-page',
@@ -23,31 +26,33 @@ export class Post3dAuthComponent implements OnInit, OnDestroy {
   ngOnInit() {
     console.log('INIT post3dAuth');
     // 3dparty authentication
-    this.postAuthSubscription = this.authService.post3dAuthAfterCallback().subscribe(
-      jwtTokenAsString => {
-        console.log("post3dauth - getLoggedUser called");
-        this.authService.getLoggedUser().subscribe(
-          user => {
-            console.log("post3dauth - redirecting");
-            this.authService.loginEvent.emit(user);
-            this.router.navigate(['/profile']);
-          },
-          (err) => {
-            console.error(err);
-          },
-          () => console.log('getLoggedUser Done')
-        );
-      },
-      (err) => {
-        console.error(err);
-        this.router.navigate(['/login']);
-      },
-      () => console.log('post3dAuthAfterCallback Done')
-    );
+
+    const postAuth$: Observable<any> = this.authService.post3dAuthAfterCallback();
+    const user$: Observable<any> = this.authService.getLoggedUser();
+
+    this.postAuthSubscription = Observable.combineLatest(postAuth$, user$,
+      (postAuth, user) => ({jwtTokenAsString: postAuth, user}))
+      .subscribe(
+        result => {
+          console.log("post3dauth - getLoggedUser");
+          console.log('**************************');
+          console.log(result.jwtTokenAsString);
+          console.log('**************************');
+
+          console.log("redirecting to profile");
+          this.authService.loginEvent.emit(result.user);
+          this.router.navigate(['/profile']);
+        },
+        err => {
+          console.error(err);
+          this.router.navigate(['/login']);
+        },
+        () => console.log('Done')
+      );
   }
 
   ngOnDestroy() {
-    if(this.postAuthSubscription) {
+    if (this.postAuthSubscription) {
       this.postAuthSubscription.unsubscribe();
     }
   }
