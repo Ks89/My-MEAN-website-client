@@ -1,39 +1,37 @@
-import {Component, ElementRef, HostListener, ViewEncapsulation} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewEncapsulation } from '@angular/core';
 
 @Component({
-  selector: 'ba-sidebar',
+  selector: 'mmw-admin-ba-sidebar',
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['baSidebar.scss'],
   templateUrl: 'baSidebar.html',
 })
-export class BaSidebar {
+export class BaSidebarComponent implements OnInit, AfterViewInit {
+
+  // public routes;
+  menuHeight: number;
+  isMenuCollapsed = false;
+  isMenuShouldCollapsed = false;
 
   private layoutSizes = {
     resWidthCollapseSidebar: 1200,
     resWidthHideSidebar: 500
   };
 
-  // public routes;
-  public menuHeight: number;
-  public isMenuCollapsed: boolean = false;
-  public isMenuShouldCollapsed: boolean = false;
+  constructor(private _elementRef: ElementRef) {}
 
-
-  constructor(private _elementRef: ElementRef) {
-  }
-
-  public ngOnInit(): void {
+  ngOnInit() {
     if (this._shouldMenuCollapse()) {
       this.menuCollapse();
     }
   }
 
-  public ngAfterViewInit(): void {
+  ngAfterViewInit() {
     setTimeout(() => this.updateSidebarHeight());
   }
 
   // @HostListener('window:resize')
-  // public onWindowResize():void {
+  // onWindowResize( {
   //
   //   var isMenuShouldCollapsed = this._shouldMenuCollapse();
   //
@@ -44,19 +42,19 @@ export class BaSidebar {
   //   this.updateSidebarHeight();
   // }
 
-  public menuExpand(): void {
+  menuExpand() {
     this.menuCollapseStateChange(false);
   }
 
-  public menuCollapse(): void {
+  menuCollapse() {
     this.menuCollapseStateChange(true);
   }
 
-  public menuCollapseStateChange(isCollapsed: boolean): void {
+  menuCollapseStateChange(isCollapsed: boolean) {
     this.isMenuCollapsed = isCollapsed;
   }
 
-  public updateSidebarHeight(): void {
+  updateSidebarHeight() {
     // TODO: get rid of magic 84 constant
     this.menuHeight = this._elementRef.nativeElement.childNodes[0].clientHeight - 84;
   }

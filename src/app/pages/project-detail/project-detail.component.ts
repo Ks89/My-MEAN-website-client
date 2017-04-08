@@ -3,10 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { Image } from 'angular-modal-gallery';
-
 import { Project, ProjectService } from '../../shared/services/services';
-import { ProjectGallery } from "../../shared/services/projects.service";
+import { ProjectGallery } from '../../shared/services/projects.service';
+
+import { Image } from 'angular-modal-gallery';
 
 @Component({
   selector: 'mmw-project-detail-page',
@@ -14,17 +14,17 @@ import { ProjectGallery } from "../../shared/services/projects.service";
   templateUrl: 'project-detail.html'
 })
 export class ProjectDetailComponent implements OnInit, OnDestroy {
-  public project: Project;
-  public projectId: string;
-  public pageHeader: any;
-  public images: Image[] = [];
+  project: Project;
+  projectId: string;
+  pageHeader: any;
+  images: Image[] = [];
 
-  public descriptionHtml: any;
-  public changelogHtml: any;
-  public releasesHtml: any;
-  public featuresHtml: any;
-  public futureExtensionsHtml: any;
-  public licenseHtml: any;
+  descriptionHtml: any;
+  changelogHtml: any;
+  releasesHtml: any;
+  featuresHtml: any;
+  futureExtensionsHtml: any;
+  licenseHtml: any;
 
   private projectSubscription: Subscription;
 
@@ -43,21 +43,22 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log("Projectid:" + this.projectId);
+    console.log('Projectid:' + this.projectId);
 
-    this.projectSubscription = this.projectService.getProjectsById(this.projectId).subscribe(
-      project => {
-        this.project = project;
-        this.images = project.gallery.map((val: ProjectGallery) => new Image(val.img, val.thumb, val.description, null));
-        this.pageHeader.title = this.project.name; // replace pageHeader's title with projectName
-        this.descriptionHtml = this.project.description;
-        this.changelogHtml = this.project.changelog;
-        this.releasesHtml = this.project.releases;
-        this.featuresHtml = this.project.features;
-        this.futureExtensionsHtml = this.project.futureExtensions;
-        this.licenseHtml = this.project.licenseText;
-      }, error => console.error(error)
-    );
+    this.projectSubscription = this.projectService.getProjectsById(this.projectId)
+      .subscribe(
+        project => {
+          this.project = project;
+          this.images = project.gallery.map((val: ProjectGallery) => new Image(val.img, val.thumb, val.description, null));
+          this.pageHeader.title = this.project.name; // replace pageHeader's title with projectName
+          this.descriptionHtml = this.project.description;
+          this.changelogHtml = this.project.changelog;
+          this.releasesHtml = this.project.releases;
+          this.featuresHtml = this.project.features;
+          this.futureExtensionsHtml = this.project.futureExtensions;
+          this.licenseHtml = this.project.licenseText;
+        }, error => console.error(error)
+      );
   }
 
   ngOnDestroy(): any {

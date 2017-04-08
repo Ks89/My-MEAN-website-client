@@ -1,25 +1,24 @@
-import {Injectable} from '@angular/core';
-import {Router, Routes} from '@angular/router';
+import { Injectable } from '@angular/core';
+import { Router, Routes } from '@angular/router';
 
 @Injectable()
 export class BaMenuService {
 
   protected _currentMenuItem = {};
 
-  constructor(private _router:Router) {
-  }
+  constructor(private _router: Router) {}
 
-  public convertRoutesToMenus(routes:Routes):any[] {
+  public convertRoutesToMenus(routes: Routes): any[] {
     let items = this._convertArrayToItems(routes);
     console.log(items);
     return this._skipEmpty(items);
   }
 
-  public getCurrentItem():any {
+  public getCurrentItem(): any {
     return this._currentMenuItem;
   }
 
-  public selectMenuItem(menuItems:any[]):any[] {
+  public selectMenuItem(menuItems: any[]): any[] {
     let items: any[] = [];
     menuItems.forEach((item) => {
       this._selectItem(item);
@@ -36,7 +35,7 @@ export class BaMenuService {
     return items;
   }
 
-  protected _skipEmpty(items:any[]):any[] {
+  protected _skipEmpty(items: any[]): any[] {
     let menu: any[] = [];
     items.forEach((item) => {
       let menuItem: any;
@@ -56,9 +55,9 @@ export class BaMenuService {
     return [].concat.apply([], menu);
   }
 
-  protected _convertArrayToItems(routes:any[], parent?:any):any[] {
+  protected _convertArrayToItems(routes: any[], parent?: any): any[] {
     let items: any[] = [];
-    if(routes) {
+    if (routes) {
       routes.forEach((route) => {
         items.push(this._convertObjectToItem(route, parent));
       });
@@ -66,8 +65,8 @@ export class BaMenuService {
     return items;
   }
 
-  protected _convertObjectToItem(object: any, parent?:any):any {
-    let item:any = {};
+  protected _convertObjectToItem(object: any, parent?: any): any {
+    let item: any = {};
     if (object.data && object.data.menu) {
       // this is a menu object
       item = object.data.menu;
@@ -96,11 +95,11 @@ export class BaMenuService {
     return prepared;
   }
 
-  protected _prepareItem(object:any):any {
+  protected _prepareItem(object: any): any {
     if (!object.skip) {
 
       let itemUrl = this._router.serializeUrl(this._router.createUrlTree(object.route.paths));
-      object.url = /*object.url ? object.url : '#' + */itemUrl.substring(1,itemUrl.length);
+      object.url = /*object.url ? object.url : '#' + */itemUrl.substring(1, itemUrl.length);
 
       object.target = object.target || '';
       return this._selectItem(object);
@@ -109,7 +108,7 @@ export class BaMenuService {
     return object;
   }
 
-  protected _selectItem(object:any):any {
+  protected _selectItem(object: any): any {
     object.selected = object.url === (/*'#' + */this._router.url);
     return object;
   }

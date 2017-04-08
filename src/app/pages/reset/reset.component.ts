@@ -1,31 +1,34 @@
-import {Component, OnDestroy} from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
+import { Observable } from "rxjs/Observable";
+import { Subscription } from 'rxjs/Subscription';
+
 import { AuthService } from '../../shared/services/services';
-import { PasswordValidators } from "ng2-validators";
-import {Subscription} from "rxjs";
+
+import { PasswordValidators } from 'ng2-validators';
 
 @Component({
   selector: 'mmw-reset-page',
   templateUrl: 'reset.html'
 })
 export class ResetComponent implements OnDestroy {
-  public pageHeader: any;
-  public formModel: FormGroup;
-  public emailToken: string;
-  public resetAlert: any = { visible: false }; // hidden by default
-  public isWaiting: boolean = false; // enable button's spinner
-  public showFormError: boolean = false;
-  public alreadyChanged: boolean = false;
+  pageHeader: any;
+  formModel: FormGroup;
+  resetAlert: any = { visible: false }; // hidden by default
+  isWaiting = false; // enable button's spinner
+  showFormError = false;
+  alreadyChanged = false;
+
+  emailToken$: Observable<string>;
 
   private resetSubscription: Subscription;
 
   // this class is used when you click on the email to reset your password
 
-  constructor(private authService: AuthService,
-              private route: ActivatedRoute) {
-    this.emailToken = route.snapshot.params['emailToken'];
+  constructor(private authService: AuthService, private route: ActivatedRoute) {
+    this.emailToken$ = this.route.queryParams.map(params => params['emailToken'] || 'Not valid');
 
     this.pageHeader = {
       title: 'Password reset',
@@ -49,22 +52,29 @@ export class ResetComponent implements OnDestroy {
   }
 
   onReset() {
-    if (this.formModel.valid) {
-      if (this.formModel.value.password !== this.formModel.value.passwordConfirm) {
-        this.resetAlert = {
-          visible: true,
-          status: 'danger',
-          strong : 'Danger',
-          message: 'Password and Password confirm must be equals'
-        };
-        this.isWaiting = false;
-        this.showFormError = true;
-        return;
-      }
+    if (!this.formModel.valid) {
+      return;
+    }
 
-      this.isWaiting = true;
-      console.log('Calling reset...');
-      this.resetSubscription = this.authService.reset(this.emailToken, this.formModel.value.password).subscribe(
+    if (this.formModel.value.password !== this.formModel.value.passwordConfirm) {
+      this.resetAlert = {
+        visible: true,
+        status: 'danger',
+        strong : 'Danger',
+        message: `'Password' and 'Password confirm' must be equals`
+      };
+      this.isWaiting = false;
+      this.showFormError = true;
+      return;
+    }
+
+    this.isWaiting = true;
+    console.log('Calling reset...');
+
+    this.resetSubscription = this.emailToken$
+      .map(emailToken => this.authService.reset(emailToken, this.formModel.value.password))
+      .concatAll() // equivalent to mergeAll(1)
+      .subscribe(
         response => {
           console.log('Response');
           console.log(response);
@@ -91,7 +101,6 @@ export class ResetComponent implements OnDestroy {
         },
         () => console.log('Done')
       );
-    }
   }
 
   ngOnDestroy() {

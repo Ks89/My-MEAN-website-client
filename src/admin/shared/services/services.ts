@@ -15,10 +15,10 @@
  */
 
 import { UserService } from './users.service';
-import { MenuService } from "./menu.service";
+import { MenuService } from './menu.service';
 
 export { UserService } from './users.service';
-export { MenuService } from "./menu.service";
+export { MenuService } from './menu.service';
 
 export const SHARED_SERVICES = [
   UserService, MenuService

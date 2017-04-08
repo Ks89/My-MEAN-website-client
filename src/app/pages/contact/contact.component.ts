@@ -1,7 +1,9 @@
 import { Component, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
-import { EmailValidators } from 'ng2-validators';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+
+import { Subscription } from 'rxjs/Subscription';
+
+import { EmailValidators } from 'ng2-validators';
 
 import { ContactService } from '../../shared/services/services';
 
@@ -10,11 +12,13 @@ import { ContactService } from '../../shared/services/services';
   templateUrl: 'contact.html'
 })
 export class ContactComponent implements OnDestroy {
-  public pageHeader: any;
-  public formModel: FormGroup;
-  public contactAlert: any = { visible: false }; // hidden by default
-  public isWaiting: boolean = false; // enable button's spinner
-  public showFormError: boolean = false;
+
+  pageHeader: any;
+  formModel: FormGroup;
+  contactAlert: any = { visible: false }; // hidden by default
+  isWaiting = false; // enable button's spinner
+  showFormError = false;
+
   private sendFormSubscription: Subscription;
   private recaptchaResponse: any;
 
@@ -38,19 +42,22 @@ export class ContactComponent implements OnDestroy {
   }
 
   onSend() {
-    if (this.formModel.valid) {
-      this.isWaiting = true;
-      console.log('Sending email...');
-      console.log(this.formModel.value);
-      let dataToSend = {
-          response: this.recaptchaResponse,
-          emailFormData: {
-            email : this.formModel.value.email,
-            messageText : this.formModel.value.message,
-            object : this.formModel.value.subject
-          }
-      };
-      this.sendFormSubscription = this.contactService.sendFormWithCaptcha(dataToSend).subscribe(
+    if (!this.formModel.valid) {
+      return;
+    }
+    this.isWaiting = true;
+    console.log('Sending email...');
+    console.log(this.formModel.value);
+    let dataToSend = {
+        response: this.recaptchaResponse,
+        emailFormData: {
+          email : this.formModel.value.email,
+          messageText : this.formModel.value.message,
+          object : this.formModel.value.subject
+        }
+    };
+    this.sendFormSubscription = this.contactService.sendFormWithCaptcha(dataToSend)
+      .subscribe(
         (response: any) => {
           console.log('/api/email called -> OK');
           console.log(response);
@@ -77,7 +84,6 @@ export class ContactComponent implements OnDestroy {
         },
         () => console.log('Done')
       );
-    }
   }
 
   ngOnDestroy(): any {

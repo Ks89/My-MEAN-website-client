@@ -1,21 +1,21 @@
-import {Directive, Input, Output, EventEmitter, HostListener} from '@angular/core';
+import { Directive, Input, Output, EventEmitter, HostListener, OnInit } from '@angular/core';
 
 @Directive({
-  selector: '[baScrollPosition]'
+  selector: '[mmwBaScrollPosition]'
 })
-export class BaScrollPosition {
+export class BaScrollPositionDirective implements OnInit {
 
-  @Input() public maxHeight:number;
-  @Output() public scrollChange:EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Input() public maxHeight: number;
+  @Output() public scrollChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  private _isScrolled:boolean;
+  private _isScrolled: boolean;
 
-  public ngOnInit():void {
+  public ngOnInit() {
     this.onWindowScroll();
   }
 
   @HostListener('window:scroll')
-  onWindowScroll():void {
+  onWindowScroll() {
     let isScrolled = window.scrollY > this.maxHeight;
     if (isScrolled !== this._isScrolled) {
       this._isScrolled = isScrolled;

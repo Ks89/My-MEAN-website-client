@@ -5,6 +5,4 @@ import { Component } from '@angular/core';
   styleUrls: ['dashboard.scss'],
   templateUrl: 'dashboard.html'
 })
-export class DashboardAdminComponent {
-  constructor() {}
-}
+export class DashboardAdminComponent {}

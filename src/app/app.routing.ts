@@ -12,7 +12,7 @@ import { ForgotComponent } from './pages/forgot/forgot.component';
 import { ActivateComponent } from './pages/activate/activate.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { Post3dAuthComponent } from './pages/post3d-auth/post3d-auth.component';
-import { NotFound404Component } from "./pages/404/not-found404.component";
+import { NotFound404Component } from './pages/404/not-found404.component';
 
 import { AuthGuard } from './shared/services/auth-guard.service';
 
@@ -26,9 +26,9 @@ export const ROUTES: Routes = [
   {path: 'about',                           component: AboutComponent},
   {path: 'register',                        component: RegisterComponent},
   {path: 'login',                           component: LoginComponent},
-  {path: 'reset/:emailToken',               component: ResetComponent},
+  {path: 'reset',                           component: ResetComponent},
   {path: 'forgot',                          component: ForgotComponent},
-  {path: 'activate/:emailToken/:userName',  component: ActivateComponent},
+  {path: 'activate',                        component: ActivateComponent},
   // TODO in angular2 '?' isn't working -> find a better approach to do that
   {path: 'profile',                         component: ProfileComponent, canActivate: [AuthGuard] },
   {path: 'profile/:token',                  component: ProfileComponent, canActivate: [AuthGuard] },

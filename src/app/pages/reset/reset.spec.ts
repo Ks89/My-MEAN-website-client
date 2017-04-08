@@ -176,7 +176,7 @@ describe('ResetComponent', () => {
 
       const results: DebugElement[] = element.queryAll(By.css('div.alert.alert-danger'));
       expect(results.length).toBe(1);
-      expect(results[0].nativeElement.textContent.trim()).toBe('Danger Password and Password confirm must be equals');
+      expect(results[0].nativeElement.textContent.trim()).toBe(`Danger 'Password' and 'Password confirm' must be equals`);
     });
 
     it(`should NOT reset local account's password`, () => {

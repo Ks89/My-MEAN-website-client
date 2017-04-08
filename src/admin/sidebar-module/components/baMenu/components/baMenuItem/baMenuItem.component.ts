@@ -1,23 +1,23 @@
-import {Component, ViewEncapsulation, Input, Output, EventEmitter} from '@angular/core';
+import { Component, ViewEncapsulation, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'ba-menu-item',
+  selector: 'mmw-admin-ba-menu-item',
   encapsulation: ViewEncapsulation.None,
   templateUrl: 'baMenuItem.html',
 })
-export class BaMenuItem {
+export class BaMenuItemComponent {
 
-  @Input() menuItem:any;
-  @Input() child:boolean = false;
+  @Input() menuItem: any;
+  @Input() child = false;
 
   @Output() itemHover = new EventEmitter<any>();
   @Output() toggleSubMenu = new EventEmitter<any>();
 
-  public onHoverItem($event: any): void {
+  onHoverItem($event: any): void {
     this.itemHover.emit($event);
   }
 
-  public onToggleSubMenu($event: any, item: any): boolean {
+  onToggleSubMenu($event: any, item: any): boolean {
     $event.item = item;
     this.toggleSubMenu.emit($event);
     return false;

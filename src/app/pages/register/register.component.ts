@@ -1,21 +1,22 @@
-import {Component, OnDestroy} from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { EmailValidators, PasswordValidators } from 'ng2-validators';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs/Subscription';
+
+import { EmailValidators, PasswordValidators } from 'ng2-validators';
 
 import { AuthService } from '../../shared/services/services';
-import {Subscription} from "rxjs/Subscription";
 
 @Component({
   selector: 'mmw-register-page',
   templateUrl: 'register.html'
 })
 export class RegisterComponent implements OnDestroy {
-  public pageHeader: any;
-  public formModel: FormGroup;
-  public registerAlert: any = { visible: false }; // hidden by default
-  public showFormError: boolean = false;
-  public isWaiting: boolean = false; // enable button's spinner
+  pageHeader: any;
+  formModel: FormGroup;
+  registerAlert: any = {visible: false}; // hidden by default
+  showFormError = false;
+  isWaiting = false; // enable button's spinner
 
   private registerSubscription: Subscription;
 
@@ -44,44 +45,50 @@ export class RegisterComponent implements OnDestroy {
   }
 
   onRegister() {
-    if (this.formModel.valid) {
-      if (this.formModel.value.password !== this.formModel.value.passwordConfirm) {
-        this.registerAlert = {
-          visible: true,
-          status: 'danger',
-          strong : 'Danger',
-          message: 'Password and Password confirm must be equals'
-        };
-        this.isWaiting = false;
-        this.showFormError = true;
-        return;
-      }
-      if (this.formModel.value.email !== this.formModel.value.emailConfirm) {
-        this.registerAlert = {
-          visible: true,
-          status: 'danger',
-          strong : 'Danger',
-          message: 'Email and Email confirm must be equals'
-        };
-        this.isWaiting = false;
-        this.showFormError = true;
-        return;
-      }
+    if (!this.formModel.valid) {
+      return;
+    }
+    if (this.formModel.value.password !== this.formModel.value.passwordConfirm) {
+      this.registerAlert = {
+        visible: true,
+        status: 'danger',
+        strong: 'Danger',
+        message: 'Password and Password confirm must be equals'
+      };
+      this.isWaiting = false;
+      this.showFormError = true;
+      return;
+    }
+    if (this.formModel.value.email !== this.formModel.value.emailConfirm) {
+      this.registerAlert = {
+        visible: true,
+        status: 'danger',
+        strong: 'Danger',
+        message: 'Email and Email confirm must be equals'
+      };
+      this.isWaiting = false;
+      this.showFormError = true;
+      return;
+    }
 
-      this.isWaiting = true;
-      console.log('Calling register...');
-      this.registerSubscription = this.authService.register({
-        name: this.formModel.value.name,
-        email: this.formModel.value.email,
-        password: this.formModel.value.password
-      }).subscribe(
+    this.isWaiting = true;
+
+    const registerPayload: any = {
+      name: this.formModel.value.name,
+      email: this.formModel.value.email,
+      password: this.formModel.value.password
+    };
+
+    console.log('Calling register...');
+    this.registerSubscription = this.authService.register(registerPayload)
+      .subscribe(
         response => {
           console.log('Response');
           console.log(response);
           this.registerAlert = {
             visible: true,
             status: 'success',
-            strong : 'Success',
+            strong: 'Success',
             message: response.message
           };
           this.isWaiting = false;
@@ -93,7 +100,7 @@ export class RegisterComponent implements OnDestroy {
           this.registerAlert = {
             visible: true,
             status: 'danger',
-            strong : 'Danger',
+            strong: 'Danger',
             message: JSON.parse(err._body).message
           };
           this.isWaiting = false;
@@ -101,11 +108,10 @@ export class RegisterComponent implements OnDestroy {
         },
         () => console.log('Done')
       );
-    }
   }
 
   ngOnDestroy() {
-    if(this.registerSubscription) {
+    if (this.registerSubscription) {
       this.registerSubscription.unsubscribe();
     }
   }

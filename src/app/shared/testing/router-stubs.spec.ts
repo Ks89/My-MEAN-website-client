@@ -19,6 +19,8 @@ export { ActivatedRoute, Router, RouterLink, RouterOutlet} from '@angular/router
 import { Component, Directive, Injectable, Input } from '@angular/core';
 import { NavigationExtras } from '@angular/router';
 
+import { Observable } from 'rxjs/Observable';
+
 @Directive({
   selector: '[routerLink]',
   host: {
@@ -69,5 +71,9 @@ export class ActivatedRouteStub {
   // ActivatedRoute.snapshot.params
   get snapshot() {
     return { params: this.testParams };
+  }
+
+  get queryParams() {
+    return Observable.of(this.testParams);
   }
 }

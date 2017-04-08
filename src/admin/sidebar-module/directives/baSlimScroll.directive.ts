@@ -1,14 +1,13 @@
-import {Directive, Input, Output, ElementRef, EventEmitter} from '@angular/core';
+import { Directive, Input, ElementRef, OnChanges } from '@angular/core';
 
 @Directive({
-  selector: '[baSlimScroll]'
+  selector: '[mmwBaSlimScroll]'
 })
-export class BaSlimScroll {
+export class BaSlimScrollDirective implements OnChanges {
 
   @Input() public baSlimScrollOptions: any;
 
-  constructor(private _elementRef:ElementRef) {
-  }
+  constructor(private _elementRef: ElementRef) {}
 
   ngOnChanges(changes: any) {
     this._scroll();
@@ -24,6 +23,6 @@ export class BaSlimScroll {
   }
 
   private _destroy() {
-    jQuery(this._elementRef.nativeElement).slimScroll({ destroy: true });
+    jQuery(this._elementRef.nativeElement).slimScroll({destroy: true});
   }
 }

@@ -1,15 +1,15 @@
-import {Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {FormGroup, FormBuilder, Validators} from '@angular/forms';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import {Observable} from "rxjs/Observable";
-import {Subscription} from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/observable/combineLatest';
 
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {EmailValidators} from "ng2-validators";
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { EmailValidators } from 'ng2-validators';
 
-import {AuthService, ProfileService} from '../../shared/services/services';
+import { AuthService, ProfileService } from '../../shared/services/services';
 
 @Component({
   selector: 'mmw-profile-page',
@@ -17,39 +17,39 @@ import {AuthService, ProfileService} from '../../shared/services/services';
   templateUrl: 'profile.html'
 })
 export class ProfileComponent implements OnInit, OnDestroy {
-  public pageHeader: any;
-  public formModel: FormGroup;
-  public token: string;
-  public bigProfileImage: string = 'assets/images/profile/bigProfile.png';
-  public profileAlert: any = {visible: false}; // hidden by default
-  public isWaiting: boolean = false; // enable button's spinner
+  pageHeader: any;
+  formModel: FormGroup;
+  token: string;
+  bigProfileImage = 'assets/images/profile/bigProfile.png';
+  profileAlert: any = {visible: false}; // hidden by default
+  isWaiting = false; // enable button's spinner
 
-  public sidebar: any = {
+  sidebar: any = {
     title: 'Other services',
     strapline: ' '
   };
 
   // 3dparty connect links
-  public facebookConnectOauthUrl: string = 'api/connect/facebook';
-  public googleConnectOauthUrl: string = 'api/connect/google';
-  public githubConnectOauthUrl: string = 'api/connect/github';
-  public twitterConnectOauthUrl: string = 'api/connect/twitter';
-  public linkedinConnectOauthUrl: string = 'api/connect/linkedin';
+  facebookConnectOauthUrl = 'api/connect/facebook';
+  googleConnectOauthUrl = 'api/connect/google';
+  githubConnectOauthUrl = 'api/connect/github';
+  twitterConnectOauthUrl = 'api/connect/twitter';
+  linkedinConnectOauthUrl = 'api/connect/linkedin';
 
   // local model
-  public local: any = {
+  local = {
     name: '',
     email: ''
   };
   // 3dparty model
-  public github: any = this.buildJsonUserData();
-  public google: any = this.buildJsonUserData();
-  public facebook: any = this.buildJsonUserData();
-  public twitter: any = this.buildJsonUserData();
-  public linkedin: any = this.buildJsonUserData();
+  github = this.buildJsonUserData();
+  google = this.buildJsonUserData();
+  facebook = this.buildJsonUserData();
+  twitter = this.buildJsonUserData();
+  linkedin = this.buildJsonUserData();
 
   // profile model
-  public profileData = {
+  profileData = {
     localUserEmail: '',
     id: '',
     serviceName: '',
@@ -89,7 +89,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       'surname': [null, Validators.minLength(3)],
       'nickname': [null, Validators.minLength(3)],
       'email': [null, EmailValidators.simple]
-    })
+    });
   }
 
   ngOnInit() {
@@ -100,33 +100,33 @@ export class ProfileComponent implements OnInit, OnDestroy {
     const user$: Observable<any> = this.authService.getLoggedUser();
 
     this.postAuthSubscription = Observable.combineLatest(postAuth$, user$,
-      (postAuth, user) => ({ jwtTokenAsString: postAuth, user }))
+      (postAuth, user) => ({jwtTokenAsString: postAuth, user}))
       .subscribe(
-        result => {
+        res => {
           console.log('**************************');
-          console.log(result.jwtTokenAsString);
+          console.log(res.jwtTokenAsString);
           console.log('**************************');
 
           console.log('#########################');
-          console.log(result.user);
+          console.log(res.user);
           console.log('#########################');
 
           console.log('setting data.........................');
-          setObjectValuesLocal(result.user.local, this.local);
-          setObjectValues(result.user.facebook, this.facebook);
-          setObjectValues(result.user.github, this.github);
-          setObjectValues(result.user.google, this.google);
-          setObjectValues(result.user.twitter, this.twitter);
-          setObjectValues(result.user.linkedin, this.linkedin);
-          if (result.user.profile) {
-            this.formModel.get('name').setValue(result.user.profile.name);
-            this.formModel.get('surname').setValue(result.user.profile.surname);
-            this.formModel.get('nickname').setValue(result.user.profile.nickname);
-            this.formModel.get('email').setValue(result.user.profile.email);
+          setObjectValuesLocal(res.user.local, this.local);
+          setObjectValues(res.user.facebook, this.facebook);
+          setObjectValues(res.user.github, this.github);
+          setObjectValues(res.user.google, this.google);
+          setObjectValues(res.user.twitter, this.twitter);
+          setObjectValues(res.user.linkedin, this.linkedin);
+          if (res.user.profile) {
+            this.formModel.get('name').setValue(res.user.profile.name);
+            this.formModel.get('surname').setValue(res.user.profile.surname);
+            this.formModel.get('nickname').setValue(res.user.profile.nickname);
+            this.formModel.get('email').setValue(res.user.profile.email);
           }
           console.log('---------------setted----------------');
 
-          this.authService.loginEvent.emit(result.user);
+          this.authService.loginEvent.emit(res.user);
         },
         err => console.error(err),
         () => {
@@ -220,11 +220,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
         const logout$: Observable<any> = this.authService.logout();
 
         this.unlinkSubscription = Observable.combineLatest(unlink$, logout$,
-          (unlink, logout) => ({ unlink, logout }))
+          (unlink, logout) => ({unlink, logout}))
           .subscribe(
-            result => {
-              console.log('Unlink + Logout result = ');
-              console.log(result);
+            res => {
+              console.log('Unlink + Logout res = ');
+              console.log(res);
               this.authService.loginEvent.emit(null);
             },
             err => console.error('Impossible to either unlink or logout: ' + err),
@@ -245,9 +245,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
         console.log('NOT last unlink - but service recognized, processing...');
         this.unlinkSubscription2 = this.authService.unlink(serviceName)
           .subscribe(
-            result => {
-              console.log(serviceName + ' Unlinked with result user: ');
-              console.log(result);
+            res => {
+              console.log(serviceName + ' Unlinked with res user: ');
+              console.log(res);
               this.router.navigate(['/post3dauth']);
               console.log('redirected to profile');
             },

@@ -21,7 +21,7 @@ import { RouterModule } from '@angular/router';
 import { routes } from './cv.routing';
 
 import { SharedModule } from '../../shared/shared.module';
-import { CvComponent } from "./cv.component";
+import { CvComponent } from './cv.component';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 

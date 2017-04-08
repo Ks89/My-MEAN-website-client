@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
   templateUrl: 'navbar.html'
 })
 export class NavbarAdminComponent {
-  public currentPath: string = 'fakeString';
+  public currentPath = 'fakeString';
 
   constructor(private router: Router) {}
 

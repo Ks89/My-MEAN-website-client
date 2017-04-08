@@ -1,24 +1,38 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { AuthService } from '../../shared/services/services';
+import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
+import 'rxjs/add/observable/combineLatest';
+import 'rxjs/add/operator/concatAll';
+import 'rxjs/add/operator/do';
+
+import { AuthService } from '../../shared/services/services';
 
 @Component({
   selector: 'mmw-activate-page',
   templateUrl: 'activate.html'
 })
 export class ActivateComponent implements OnInit, OnDestroy {
-  public pageHeader: any;
-  public emailToken: string;
-  public userName: string;
-  public activateAlert: any = { visible: false }; // hidden by default
+  pageHeader: any;
+  emailToken: string;
+  userName: string;
+  activateAlert: object = { visible: false }; // hidden by default
+
+  queryParams$: Observable<any>;
+
   private activateSubscription: Subscription;
 
-  constructor(private authService: AuthService,
-              private route: ActivatedRoute) {
-    this.emailToken = route.snapshot.params['emailToken'];
-    this.userName = route.snapshot.params['userName'];
+  constructor(private authService: AuthService, private route: ActivatedRoute) {
+    const emailToken$: Observable<string> = this.route.queryParams
+      .map(params => params['emailToken'] || 'Not valid');
+
+    const userName$: Observable<string> = this.route.queryParams
+      .map(params => params['userName'] || 'Not valid')
+      .do(val => this.userName = val);
+
+    this.queryParams$ = Observable.combineLatest(emailToken$, userName$,
+      (emailToken, userName) => ({emailToken, userName}));
 
     this.pageHeader = {
       title: 'Activate',
@@ -30,36 +44,38 @@ export class ActivateComponent implements OnInit, OnDestroy {
     this.onActivate();
   }
 
-  private onActivate() {
-    console.log('Calling activate...');
-
-    this.activateSubscription = this.authService.activate(this.emailToken, this.userName)
-    .subscribe(response => {
-        console.log('Response');
-        console.log(response);
-        this.activateAlert = {
-          visible: true,
-          status: 'success',
-          strong : 'Success',
-          message: response.message
-        };
-      },
-      err => {
-        console.error(err);
-        this.activateAlert = {
-          visible: true,
-          status: 'danger',
-          strong : 'Danger',
-          message: JSON.parse(err._body).message
-        };
-      },
-      () => console.log('Done')
-    );
-  }
-
-  ngOnDestroy(): any {
+  ngOnDestroy() {
     if (this.activateSubscription) {
       this.activateSubscription.unsubscribe();
     }
+  }
+
+  private onActivate() {
+    console.log('Calling activate...');
+
+    this.activateSubscription = this.queryParams$
+      .map(params => this.authService.activate(params.emailToken, params.userName))
+      .concatAll() // equivalent to mergeAll(1)
+      .subscribe(response => {
+          console.log('Response');
+          console.log(response);
+          this.activateAlert = {
+            visible: true,
+            status: 'success',
+            strong : 'Success',
+            message: response.message
+          };
+        },
+        err => {
+          console.error(err);
+          this.activateAlert = {
+            visible: true,
+            status: 'danger',
+            strong : 'Danger',
+            message: JSON.parse(err._body).message
+          };
+        },
+        () => console.log('Done')
+      );
   }
 }

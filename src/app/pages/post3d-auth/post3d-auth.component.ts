@@ -1,18 +1,18 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
-import {Observable} from 'rxjs/Observable';
-import {Subscription} from "rxjs/Subscription";
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/observable/combineLatest';
 
-import {AuthService} from '../../shared/services/services';
+import { AuthService } from '../../shared/services/services';
 
 @Component({
   selector: 'mmw-post3d-auth-page',
   templateUrl: 'post3d-auth.html'
 })
 export class Post3dAuthComponent implements OnInit, OnDestroy {
-  public pageHeader: any;
+  pageHeader: any;
 
   private postAuthSubscription: Subscription;
 
@@ -34,12 +34,12 @@ export class Post3dAuthComponent implements OnInit, OnDestroy {
       (postAuth, user) => ({jwtTokenAsString: postAuth, user}))
       .subscribe(
         result => {
-          console.log("post3dauth - getLoggedUser");
+          console.log('post3dauth - getLoggedUser');
           console.log('**************************');
           console.log(result.jwtTokenAsString);
           console.log('**************************');
 
-          console.log("redirecting to profile");
+          console.log('redirecting to profile');
           this.authService.loginEvent.emit(result.user);
           this.router.navigate(['/profile']);
         },

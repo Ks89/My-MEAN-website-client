@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
+
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/skip';
 import 'rxjs/add/observable/of';
@@ -71,10 +72,10 @@ export class UserService {
   getUsers(page: number, pageSize: number): Observable<any[]> {
     let upper = page * pageSize;
     let lower = upper - (pageSize - 1) - 1;
-    console.log("upper: " + upper);
-    console.log("lower: " + lower);
+    console.log('upper: ' + upper);
+    console.log('lower: ' + lower);
 
-    //TODO replace with this.http....
+    // TODO replace with this.http....
     return Observable.of(users).delay(500).take(upper).skip(lower);
   }
 

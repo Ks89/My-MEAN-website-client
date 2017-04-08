@@ -1,35 +1,36 @@
-import {Component, ViewEncapsulation, Input, Output, EventEmitter} from '@angular/core';
-import {Router, Routes, NavigationEnd} from '@angular/router';
+import { Component, ViewEncapsulation, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
+import { Router, Routes, NavigationEnd } from '@angular/router';
+
 import { Subscription } from 'rxjs/Subscription';
 import * as _ from 'lodash';
 
-import {BaMenuService} from './baMenu.service';
-import {MenuService} from "../../../shared/services/menu.service";
+import { BaMenuService } from './baMenu.service';
+import { MenuService } from '../../../shared/services/menu.service';
 
 @Component({
-  selector: 'ba-menu',
+  selector: 'mmw-ba-menu',
   encapsulation: ViewEncapsulation.None,
   templateUrl: 'baMenu.html'
 })
-export class BaMenu {
+export class BaMenuComponent implements OnInit, OnDestroy {
 
-  menuRoutes:Routes = [];
-  @Input() sidebarCollapsed:boolean = false;
-  @Input() menuHeight:number;
+  menuRoutes: Routes = [];
+  @Input() sidebarCollapsed = false;
+  @Input() menuHeight: number;
 
   @Output() expandMenu = new EventEmitter<any>();
 
   menuItems: any[];
   showHoverElem: boolean;
   hoverElemHeight: number;
-  hoverElemLeft:  number;
+  hoverElemLeft: number;
   hoverElemTop: number;
-  outOfArea: number = -200;
+  outOfArea: -200;
 
   protected _onRouteChange: Subscription;
   private menuSubscription: Subscription;
 
-  constructor(private _router:Router, private _service:BaMenuService, private menuService: MenuService) {
+  constructor(private _router: Router, private _service: BaMenuService, private menuService: MenuService) {
     this._onRouteChange = this._router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         if (this.menuItems) {
@@ -42,33 +43,33 @@ export class BaMenu {
     });
   }
 
-  selectMenuAndNotify():void {
+  selectMenuAndNotify(): void {
     if (this.menuItems) {
       this.menuItems = this._service.selectMenuItem(this.menuItems);
     }
   }
 
-  ngOnInit():void {
+  ngOnInit(): void {
     this.menuSubscription = this.menuService.getMenu().subscribe(
       val => {
         let routes = _.cloneDeep(val);
         this.menuItems = this._service.convertRoutesToMenus(routes);
         return this.menuItems;
       },
-        e => console.log('error')
+      e => console.log('error')
     );
   }
 
-  ngOnDestroy():void {
-    if(this._onRouteChange) {
+  ngOnDestroy(): void {
+    if (this._onRouteChange) {
       this._onRouteChange.unsubscribe();
     }
-    if(this.menuSubscription) {
+    if (this.menuSubscription) {
       this.menuSubscription.unsubscribe();
     }
   }
 
-  hoverItem($event: any):void {
+  hoverItem($event: any): void {
     this.showHoverElem = true;
     this.hoverElemHeight = $event.currentTarget.clientHeight;
 
@@ -77,8 +78,8 @@ export class BaMenu {
     this.hoverElemLeft = $event.currentTarget.clientWidth + 11;
   }
 
-  toggleSubMenu($event: any):boolean {
-    var submenu = jQuery($event.currentTarget).next();
+  toggleSubMenu($event: any): boolean {
+    let submenu = jQuery($event.currentTarget).next();
 
     if (this.sidebarCollapsed) {
       this.expandMenu.emit(null);

@@ -1,16 +1,16 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
-import {AuthService} from '../../services/services';
-import {Subscription} from "rxjs";
+import { AuthService } from '../../services/services';
 
 @Component({
   selector: 'mmw-navigation',
   templateUrl: 'navbar.html'
 })
 export class NavbarComponent implements OnInit, OnDestroy {
-  public isLoggedIn: boolean = false;
-  public currentUser: any = {name: ''};
+  isLoggedIn = false;
+  currentUser: any = {name: ''};
 
   private authLoginSubscription: Subscription;
   private authLogoutSubscription: Subscription;
@@ -72,10 +72,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if(this.authLoginSubscription) {
+    if (this.authLoginSubscription) {
       this.authLoginSubscription.unsubscribe();
     }
-    if(this.authLogoutSubscription) {
+    if (this.authLogoutSubscription) {
       this.authLogoutSubscription.unsubscribe();
     }
   }

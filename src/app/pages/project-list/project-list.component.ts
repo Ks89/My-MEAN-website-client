@@ -9,12 +9,12 @@ import { Project, ProjectService } from '../../shared/services/services';
   templateUrl: 'project-list.html'
 })
 export class ProjectListComponent {
-  public projects: Observable<Project[]>;
-  public pageHeader: any;
-  public sidebar: any;
-  public sidebarTitle: string;
-  public message: string;
-  public searchInput: string = ''; // both not null and not undefined
+  projects: Observable<Project[]>;
+  pageHeader: any;
+  sidebar: any;
+  sidebarTitle: string;
+  message: string;
+  searchInput = ''; // both not null and not undefined
 
   constructor(private projectService: ProjectService) {
     this.projects = this.projectService.getProjects();

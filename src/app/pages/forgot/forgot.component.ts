@@ -1,10 +1,12 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { EmailValidators } from 'ng2-validators';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
-import { AuthService } from '../../shared/services/services';
 import { Subscription } from 'rxjs/Subscription';
+
+import { AuthService } from '../../shared/services/services';
+
+import { EmailValidators } from 'ng2-validators';
 
 @Component({
   selector: 'mmw-forgot-page',
@@ -13,14 +15,13 @@ import { Subscription } from 'rxjs/Subscription';
 export class ForgotComponent implements OnDestroy {
   public pageHeader: any;
   public formModel: FormGroup;
-  public forgotAlert: any = { visible: false }; // hidden by default
-  public isWaiting: boolean = false; // enable button's spinner
-  public showFormError: boolean = false;
+  public forgotAlert: any = {visible: false}; // hidden by default
+  public isWaiting = false; // enable button's spinner
+  public showFormError = false;
   private forgotSubscription: Subscription;
   // this class is used when you click on the 'forgot password' to reset your password
 
-  constructor(private authService: AuthService,
-              private router: Router) {
+  constructor(private authService: AuthService, private router: Router) {
     this.pageHeader = {
       title: 'Forgot',
       strapline: ''
@@ -33,17 +34,21 @@ export class ForgotComponent implements OnDestroy {
   }
 
   onForgot() {
-    if (this.formModel.valid) {
-      this.isWaiting = true;
-      console.log('Calling forgot password...');
-      this.forgotSubscription = this.authService.forgot(this.formModel.value.email).subscribe(
+    if (!this.formModel.valid) {
+      return;
+    }
+
+    this.isWaiting = true;
+    console.log('Calling forgot password...');
+    this.forgotSubscription = this.authService.forgot(this.formModel.value.email)
+      .subscribe(
         response => {
           console.log('Response');
           console.log(response);
           this.forgotAlert = {
             visible: true,
             status: 'success',
-            strong : 'Success',
+            strong: 'Success',
             message: response.message
           };
           this.isWaiting = false;
@@ -55,7 +60,7 @@ export class ForgotComponent implements OnDestroy {
           this.forgotAlert = {
             visible: true,
             status: 'danger',
-            strong : 'Danger',
+            strong: 'Danger',
             message: JSON.parse(err._body).message
           };
           this.isWaiting = false;
@@ -63,7 +68,6 @@ export class ForgotComponent implements OnDestroy {
         },
         () => console.log('Done')
       );
-    }
   }
 
   ngOnDestroy(): any {

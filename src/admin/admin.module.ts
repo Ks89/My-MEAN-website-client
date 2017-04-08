@@ -16,7 +16,7 @@ import { SidebarModule } from './sidebar-module/sidebar.module';
 import { ADMIN_COMPONENTS } from './pages/components';
 import { ApplicationAdminComponent } from './application/application.component';
 
-import { LaddaModule } from "angular2-ladda";
+import { LaddaModule } from 'angular2-ladda';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { createNewHosts, createInputTransfer, removeNgStyles } from '@angularclass/hmr';
 import { IdlePreloadModule } from '@angularclass/idle-preload';
@@ -48,7 +48,9 @@ export class AdminModule {
   // ----------- Hot Module Replacement via AngularClass library - BEGIN ------------
   constructor(public appRef: ApplicationRef) {}
   hmrOnInit(store: any): any {
-    if (!store || !store.state) return;
+    if (!store || !store.state) {
+      return;
+    }
     console.log('HMR store', store);
     console.log('store.state.data:', store.state.data);
     // inject AppStore here and update it
@@ -62,7 +64,7 @@ export class AdminModule {
     delete store.restoreInputValues;
   }
   hmrOnDestroy(store: any): any {
-    var cmpLocation = this.appRef.components.map(cmp => cmp.location.nativeElement);
+    let cmpLocation = this.appRef.components.map(cmp => cmp.location.nativeElement);
     // recreate elements
     store.disposeOldHosts = createNewHosts(cmpLocation);
     // inject your AppStore and grab state then set it on store
