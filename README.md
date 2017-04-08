@@ -1,10 +1,15 @@
 [![Travis Build](https://travis-ci.org/Ks89/My-MEAN-website-client.svg?branch=master)](https://travis-ci.org/Ks89/My-MEAN-website-client)   [![AppVeyor Build](https://ci.appveyor.com/api/projects/status/x7r2v139hi84cvsj/branch/master?svg=true)](https://ci.appveyor.com/project/Ks89/my-mean-website-server/branch/master)   [![Code Climate](https://codeclimate.com/github/Ks89/My-MEAN-website-client/badges/gpa.svg)](https://codeclimate.com/github/Ks89/My-MEAN-website-client)   [![CodeClimate Coverage](https://codeclimate.com/github/Ks89/My-MEAN-website-client/badges/coverage.svg)](https://codeclimate.com/github/Ks89/My-MEAN-website-client/coverage)   [![Coveralls Coverage](https://coveralls.io/repos/github/Ks89/My-MEAN-website-client/badge.svg?branch=master)](https://coveralls.io/github/Ks89/My-MEAN-website-client?branch=master)   [![Known Vulnerabilities](https://snyk.io/test/github/ks89/my-mean-website-client/badge.svg)](https://snyk.io/test/github/ks89/my-mean-website-client)
 
 <br>
+
 # My M.E.A.N. website client/front-end (Alpha)
+
 <br>
+
 **This is the client side.** Server side is available [HERE](https://github.com/Ks89/My-MEAN-website-server)
+
 <br>
+
 ## Informations
 My MEAN website is a MEAN's web application that I'm creating as a personal website, but also for other users.
 It's composed by:
