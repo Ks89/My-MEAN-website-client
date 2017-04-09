@@ -1,10 +1,10 @@
 <aside class="al-sidebar" (mouseleave)="hoverElemTop=outOfArea">
-  <ul id="al-sidebar-list" class="al-sidebar-list" mmw-baSlimScroll [baSlimScrollOptions]="{height: menuHeight}">
-    <ba-menu-item
+  <ul id="al-sidebar-list" class="al-sidebar-list" mmwBaSlimScroll [baSlimScrollOptions]="{height: menuHeight}">
+    <mmw-admin-ba-menu-item
       [menuItem]="item"
       (itemHover)="hoverItem($event)"
       (toggleSubMenu)="toggleSubMenu($event)"
-      *ngFor="let item of menuItems"></ba-menu-item>
+      *ngFor="let item of menuItems"></mmw-admin-ba-menu-item>
   </ul>
   <div class="sidebar-hover-elem" [ngStyle]="{top: hoverElemTop + 'px', height: hoverElemHeight + 'px', left: hoverElemLeft + 'px'}"
        [ngClass]="{'show-hover-elem': showHoverElem }"></div>

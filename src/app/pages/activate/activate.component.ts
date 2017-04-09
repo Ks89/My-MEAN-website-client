@@ -17,7 +17,7 @@ export class ActivateComponent implements OnInit, OnDestroy {
   pageHeader: any;
   emailToken: string;
   userName: string;
-  activateAlert: object = { visible: false }; // hidden by default
+  activateAlert: any = { visible: false }; // hidden by default
 
   queryParams$: Observable<any>;
 
