@@ -78,13 +78,13 @@ describe('ProjectListComponent', () => {
       // expect(projectLeftHrefs[1].nativeElement.getAttribute('href')).toBe(BASEURL + PROJECTS[1]._id);
       // expect(projectLeftHrefs[2].nativeElement.getAttribute('href')).toBe(BASEURL + PROJECTS[2]._id);
 
-      const projectLeftImages: DebugElement[] = element.queryAll(By.css('img.media-object'));
+      const projectLeftImages: DebugElement[] = element.queryAll(By.css('img.d-flex.mr-3'));
       expect(projectLeftImages.length).toBe(3);
       expect(projectLeftImages[0].nativeElement.getAttribute('src')).toBe(PROJECTS[0].iconPath);
       expect(projectLeftImages[1].nativeElement.getAttribute('src')).toBe(PROJECTS[1].iconPath);
       expect(projectLeftImages[2].nativeElement.getAttribute('src')).toBe(PROJECTS[2].iconPath);
 
-      const projectHeaders: DebugElement[] = element.queryAll(By.css('h4.media-heading a'));
+      const projectHeaders: DebugElement[] = element.queryAll(By.css('h4.mt-0.mb-1 a'));
       expect(projectHeaders.length).toBe(6);
       expect(projectHeaders[1].nativeElement.textContent).toBe(PROJECTS[0].name);
       expect(projectHeaders[3].nativeElement.textContent).toBe(PROJECTS[1].name);
