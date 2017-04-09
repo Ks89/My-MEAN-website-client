@@ -1,5 +1,29 @@
 # Changelog
 
+## Alpha 6
+
+### **Features**
+- #10 **Implement AOT**
+- #59 **Update to Angular 4**
+- #78 route.queryparam instead of pathparam for some routes
+- #79 change package.json scripts and add a property.js file to read npm flags
+
+### **Chore**
+- #86 Fix GUI problems after the update to Bootstrap alpha 6
+- #76 Refactor npm scripts
+- #81 replace ng2-simple-page-scroll with ng2-page-scroll to support AOT
+
+### **Bugfixes**
+- #65 Fix angular2-image-popup with `npm run build` (production)
+
+### **Refactor**
+- #80 rxjs - unsubscribe correctly
+- #85 refactoring to fix tslint warnings and to improve code quality
+- #83 rxjs prevent subscribe inside another one
+- #75 refactor front-end to improve imports of components, modules and so on...
+
+and other small changes everywhere... :)
+
 
 ## Alpha 5
 

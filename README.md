@@ -30,11 +30,6 @@ Testing:
 - front-end unit: coverage >80%
 - front-end e2e: work in progress, In future alphas I'll complete everything
 
-## Experimental features
-- Angular 4 - still not working => [check here for a preview](https://github.com/Ks89/My-MEAN-website-client/issues/59)
-    - angular2-image-popup needs an update (removing this lib everything is ok :))
-    - protractor is broken (probably protractor's developers should release an update)
-
 ## Requirements
 - macOS, Linux or Windows 10 **with admin privileges**
 - Node.js + npm
@@ -44,6 +39,7 @@ Testing:
 - work in progress... (this is only an alpha, please be patient)
 
 ## News
+- *04/09/2017* - **My MEAN website** Alpha 6 public release [HERE](https://github.com/Ks89/My-MEAN-website-client/releases/tag/v.alpha-6)
 - *01/21/2017* - **My MEAN website** Alpha 5 public release [HERE](https://github.com/Ks89/My-MEAN-website-client/releases/tag/v.alpha-5)
 - *12/30/2016* - **My MEAN website** Alpha 4 public release [HERE](https://github.com/Ks89/My-MEAN-website-client/releases/tag/v.alpha-4)
 - *11/28/2016* - **My MEAN website** Alpha 3 public release [HERE](https://github.com/Ks89/My-MEAN-website-client/releases/tag/v.alpha-3)
