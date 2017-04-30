@@ -22,13 +22,10 @@ function getBrowsers() {
       case 'win32': // Windows
         // TODO add 'PhantomJS' - at the moment isn't working on Windows10 (only for test in ProfileComponent, WTF!!!)
         return ['Chrome', 'Firefox', 'Edge']; // 'PhantomJS', 'IE' not working on Windows
-        break;
       case 'darwin': // macOS
         return ['PhantomJS', 'Chrome', 'Firefox']; // 'Safari' not working very well
-        break;
       default: // other (linux, freebsd, openbsd, sunos, aix)
         return ['PhantomJS', 'Chrome', 'Firefox'];
-        break;
     }
   }
 }
@@ -96,7 +93,7 @@ module.exports = function (config) {
 
     // For AppVeyor and TravisCI to prevent timeouts
     // https://github.com/karma-runner/karma-phantomjs-launcher/issues/126#issuecomment-269738926
-    browserNoActivityTimeout: 100000,
+    browserNoActivityTimeout: 100000
     //browserDisconnectTimeout: 60000,
     //browserDisconnectTolerance: 10
   });

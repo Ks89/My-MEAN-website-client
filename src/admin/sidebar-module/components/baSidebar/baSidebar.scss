@@ -51,12 +51,9 @@ $success-bg: tint($success, 20%);
 $warning-bg: tint($warning, 20%);
 $danger-bg: tint($danger, 20%);
 
-
-
 @mixin bg-translucent-dark($opacity) {
   background: rgba(0, 0, 0, $opacity);
 }
-
 
 $sidebar-width: 190px;
 $angle-left: '\f100';
@@ -68,9 +65,9 @@ $angle-right: '\f101';
   height: 100%;
   left: 0;
   min-height: 100%;
-  /*position: fixed;*/ // because I'm using bootstrap's cols
+  // position: fixed; // because I'm using bootstrap's cols
   top: $top-height;
-  /*width: $sidebar-width;*/ // because I'm using bootstrap's cols
+  // width: $sidebar-width; // because I'm using bootstrap's cols
   z-index: 1001;
 }
 
@@ -92,24 +89,26 @@ $angle-right: '\f101';
 }
 
 .al-sidebar-list-item {
+  color: $sidebar-text;
   display: block;
   float: none;
   padding: 0;
   position: relative;
-  color: $sidebar-text;
 
-  /*span {
-    color: $sidebar-text;
-  }*/
+  // span {
+  //  color: $sidebar-text;
+  //}
 
   &.selected:not(.with-sub-menu) {
     background-color: $primary;
 
-    a.al-sidebar-list-link {
-      color: $sidebar-text;
-
-      b {
+    a {
+      &.al-sidebar-list-link {
         color: $sidebar-text;
+
+        b {
+          color: $sidebar-text;
+        }
       }
     }
   }
@@ -161,9 +160,9 @@ a.al-sidebar-list-link {
   }
 
   i {
+    display: inline-block;
     margin-right: 18px;
     width: 16px;
-    display: inline-block;
   }
 
   b {
@@ -327,7 +326,7 @@ a.al-sidebar-list-link {
 @mixin sidebar-overlap() {
   .al-sidebar {
     transition: width .5s ease;
-    /*width: $sidebar-width;*/ //because I'm using Bootstrap's cols
+    // width: $sidebar-width; //because I'm using Bootstrap's cols
     @include bg-translucent-dark(.75);
 
     .fa-angle-down,
@@ -359,7 +358,6 @@ a.al-sidebar-list-link {
     display: none !important;
   }
 }
-
 
 @media (min-width: 1200px) {
   .menu-collapsed {
