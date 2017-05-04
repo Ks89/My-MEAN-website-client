@@ -17,6 +17,7 @@ before_install:
   - bash travisci/before_install.sh
 addons:
   firefox: latest
+  chrome: stable # or beta
   apt:
     sources:
       - ubuntu-toolchain-r-test
