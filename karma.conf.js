@@ -15,7 +15,7 @@ function getBrowsers() {
       // only for AppVeyor
       return ['Chrome', 'Firefox', 'IE']; // 'PhantomJS' not working on AppVeyor
     } else {
-      return ['PhantomJS', 'Firefox', 'Chrome_travis_ci'];  // Travis CI ('Chrome_travis_ci' is defined below)
+      return ['PhantomJS', 'Firefox', 'Chrome']; //'Chrome_travis_ci'];  // Travis CI ('Chrome_travis_ci' is defined below)
     }
   } else {
     switch(os.platform()) {
@@ -84,12 +84,12 @@ module.exports = function (config) {
       multiline: true
     },
 
-    customLaunchers: {
-      Chrome_travis_ci: {
-        base: 'Chrome',
-        flags: ['--no-sandbox']
-      }
-    },
+    // customLaunchers: {
+    //   Chrome_travis_ci: {
+    //     base: 'Chrome',
+    //     flags: ['--no-sandbox']
+    //   }
+    // },
 
     // For AppVeyor and TravisCI to prevent timeouts
     // https://github.com/karma-runner/karma-phantomjs-launcher/issues/126#issuecomment-269738926

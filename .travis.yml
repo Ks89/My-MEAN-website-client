@@ -2,7 +2,6 @@ language: node_js
 node_js:
   - "7"
   - "6"
-  - "6.3"
 os:
   - linux # uses precise. I should update this to trusty
   - osx
@@ -17,7 +16,6 @@ before_install:
   - bash travisci/before_install.sh
 addons:
   firefox: latest
-  chrome: stable # or beta
   apt:
     sources:
       - ubuntu-toolchain-r-test
