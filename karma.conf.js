@@ -15,7 +15,7 @@ function getBrowsers() {
       // only for AppVeyor
       return ['Chrome', 'Firefox', 'IE']; // 'PhantomJS' not working on AppVeyor
     } else {
-      return ['PhantomJS', 'Firefox', 'Chrome']; //'Chrome_travis_ci'];  // Travis CI ('Chrome_travis_ci' is defined below)
+      return ['PhantomJS', 'Firefox', 'Chrome_travis_ci'];  // Travis CI ('Chrome_travis_ci' is defined below)
     }
   } else {
     switch(os.platform()) {
@@ -35,14 +35,11 @@ module.exports = function (config) {
     basePath: '',
     frameworks: ['jasmine'],
     files: [
-      "./config/karma-test-runner.js"
+      {
+        pattern: './config/karma-test-runner.js',
+        watched: false
+      }
     ],
-    // files: [
-    //   {
-    //     pattern: './config/karma-test-runner.js',
-    //     watched: false
-    //   }
-    // ],
     exclude: [],
     preprocessors: {
       './config/karma-test-runner.js': ['coverage', 'webpack', 'sourcemap']
@@ -93,8 +90,8 @@ module.exports = function (config) {
 
     // For AppVeyor and TravisCI to prevent timeouts
     // https://github.com/karma-runner/karma-phantomjs-launcher/issues/126#issuecomment-269738926
-    browserNoActivityTimeout: 100000
-    //browserDisconnectTimeout: 60000,
-    //browserDisconnectTolerance: 10
+    browserNoActivityTimeout: 100000,
+    browserDisconnectTimeout: 60000,
+    browserDisconnectTolerance: 10
   });
 };
