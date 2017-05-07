@@ -12,7 +12,7 @@
       <br>
       <!-- <div class="error">{{ message }}</div> -->
       <ul class="list-unstyled">
-        <ng-container *ngFor="let project of projects | async | mmwProjectSearchPipe:searchInput">
+        <ng-container *ngFor="let project of visibleProjects | mmwProjectSearchPipe:searchInput">
           <ng-container *ngIf="project.visible">
             <li class="media">
               <!--<br/>-->
@@ -48,6 +48,13 @@
           </ng-container>
         </ng-container>
       </ul>
+
+      <br>
+      <br>
+      <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [maxSize]="5" [pageSize]="elementsPerPage"
+                      [rotate]="true" [ellipses]="true" [boundaryLinks]="true"
+                      (pageChange)="onPageChange($event)">
+      </ngb-pagination>
     </div>
 
 
