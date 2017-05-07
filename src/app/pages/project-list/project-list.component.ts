@@ -23,14 +23,14 @@ export class ProjectListComponent implements OnDestroy {
 
   page = 1;
   elementsPerPage = 3;
-  collectionSize = 0;
+  numElemPerPage = 0;
 
   private subscription: Subscription;
 
   constructor(private pageStore: Store<number>, private projectService: ProjectService) {
     this.subscription = this.projectService.getProjects().subscribe((values: Project[]) => {
       this.fullProjects = values;
-      this.collectionSize = values.length;
+      this.numElemPerPage = values.length;
       this.visibleProjects = values.slice(this.page - 1, this.elementsPerPage);
     });
 
@@ -86,7 +86,7 @@ export class ProjectListComponent implements OnDestroy {
 
   onPageChange(event: Event) {
     let startindex: number = (this.page - 1) * this.elementsPerPage;
-    let endIndex: number = Math.min((this.page * this.elementsPerPage), this.collectionSize);
+    let endIndex: number = Math.min((this.page * this.elementsPerPage), this.numElemPerPage);
     this.visibleProjects = this.fullProjects.slice(startindex, endIndex);
   }
 

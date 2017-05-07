@@ -1,14 +1,17 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { Router } from "@angular/router";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import { StoreModule } from "@ngrx/store";
 
 import { ProjectListComponent } from './project-list.component';
 import { PROJECTS, FakeProjectService } from '../../shared/testing/fake-project.service.spec';
 import { ProjectService } from '../../core/services/services';
 import { RouterLinkStubDirective, RouterOutletStubComponent, RouterStub } from "../../shared/testing/router-stubs.spec";
-import { Router } from "@angular/router";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { SharedModule } from "../../shared/shared.module";
+import { pageNum } from "../../shared/reducers/page-num.reducer";
 
 let comp: ProjectListComponent;
 let fixture: ComponentFixture<ProjectListComponent>;
@@ -22,7 +25,7 @@ function initTestBed() {
   router = new RouterStub();
 
   TestBed.configureTestingModule({
-    imports: [FormsModule, ReactiveFormsModule, SharedModule],
+    imports: [FormsModule, ReactiveFormsModule, SharedModule, NgbModule.forRoot(), StoreModule.provideStore({pageNum: pageNum}),],
     declarations: [ ProjectListComponent, RouterLinkStubDirective, RouterOutletStubComponent  ],
     // schemas:      [ NO_ERRORS_SCHEMA ]
   }).overrideComponent(ProjectListComponent, {
@@ -70,7 +73,7 @@ describe('ProjectListComponent', () => {
       const element: DebugElement = fixture.debugElement;
 
       const values: DebugElement[] = element.queryAll(By.css('a'));
-      expect(values.length).toBe(9);
+      expect(values.length).toBe(14); // because I have to count also page links
 
       // const projectLeftHrefs: DebugElement[] = element.queryAll(By.css('div.media-left a'));
       // expect(projectLeftHrefs.length).toBe(3);
