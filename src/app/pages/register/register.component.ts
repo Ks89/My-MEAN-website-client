@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { EmailValidators, PasswordValidators } from 'ng2-validators';
 
-import { AuthService } from '../../shared/services/services';
+import { AuthService } from '../../core/services/services';
 
 @Component({
   selector: 'mmw-register-page',

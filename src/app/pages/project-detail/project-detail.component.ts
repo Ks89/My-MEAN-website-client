@@ -3,8 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { Project, ProjectService } from '../../shared/services/services';
-import { ProjectGallery } from '../../shared/services/projects.service';
+import { Project, ProjectService } from '../../core/services/services';
+import { ProjectGallery } from '../../core/services/projects.service';
 
 import { Image } from 'angular-modal-gallery';
 

@@ -20,7 +20,7 @@ import { By } from '@angular/platform-browser';
 
 import { ContactComponent } from './contact.component';
 import { FakeContactService } from "../../shared/testing/fake-contact.service.spec";
-import { ContactService } from "../../shared/services/contact.service";
+import { ContactService } from "../../core/services/contact.service";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { PageHeaderComponent } from "../../shared/components/page-header/page-header.component";
 import { LaddaModule } from "angular2-ladda";

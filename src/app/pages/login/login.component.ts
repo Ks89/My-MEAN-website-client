@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
-import { AuthService } from '../../shared/services/services';
+import { AuthService } from '../../core/services/services';
 
 @Component({
   selector: 'mmw-login-page',

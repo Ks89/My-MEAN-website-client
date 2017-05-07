@@ -9,7 +9,7 @@ import 'rxjs/add/observable/combineLatest';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EmailValidators } from 'ng2-validators';
 
-import { AuthService, ProfileService } from '../../shared/services/services';
+import { AuthService, ProfileService } from '../../core/services/services';
 
 @Component({
   selector: 'mmw-profile-page',

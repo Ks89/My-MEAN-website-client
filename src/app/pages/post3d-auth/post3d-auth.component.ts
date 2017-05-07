@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/observable/combineLatest';
 
-import { AuthService } from '../../shared/services/services';
+import { AuthService } from '../../core/services/services';
 
 @Component({
   selector: 'mmw-post3d-auth-page',

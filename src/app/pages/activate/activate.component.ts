@@ -7,7 +7,7 @@ import 'rxjs/add/observable/combineLatest';
 import 'rxjs/add/operator/concatAll';
 import 'rxjs/add/operator/do';
 
-import { AuthService } from '../../shared/services/services';
+import { AuthService } from '../../core/services/services';
 
 @Component({
   selector: 'mmw-activate-page',

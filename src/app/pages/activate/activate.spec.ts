@@ -20,7 +20,7 @@ import { By } from '@angular/platform-browser';
 
 import { ActivateComponent } from './activate.component';
 import { RouterLinkStubDirective, RouterOutletStubComponent, ActivatedRoute, ActivatedRouteStub }   from '../../shared/testing/router-stubs.spec';
-import { AuthService } from "../../shared/services/auth.service";
+import { AuthService } from "../../core/services/auth.service";
 import { FakeAuthService, FAKE_BAD_EMAIL_TOKEN } from "../../shared/testing/fake-auth.service.spec";
 import { PageHeaderComponent } from "../../shared/components/page-header/page-header.component";
 

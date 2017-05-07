@@ -18,7 +18,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/throw';
 
-import { Response as ProfileResponse } from '../services/profile.service';
+import { Response as ProfileResponse } from '../../core/services/profile.service';
 
 export const PROFILE_RESPONSE: ProfileResponse = {
   message: "Profile updated successfully!"

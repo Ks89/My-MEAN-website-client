@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 
-import { Project, ProjectService } from '../../shared/services/services';
+import { Project, ProjectService } from '../../core/services/services';
 
 @Component({
   selector: 'mmw-home-page',

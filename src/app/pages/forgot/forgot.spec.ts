@@ -20,7 +20,7 @@ import { By } from '@angular/platform-browser';
 
 import { ForgotComponent } from './forgot.component';
 import { RouterLinkStubDirective, RouterOutletStubComponent, RouterStub } from '../../shared/testing/helpers.spec';
-import { AuthService } from "../../shared/services/auth.service";
+import { AuthService } from "../../core/services/auth.service";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { FakeAuthService, FAKE_BAD_EMAIL_TOKEN } from "../../shared/testing/fake-auth.service.spec";
 import { Router } from "@angular/router";

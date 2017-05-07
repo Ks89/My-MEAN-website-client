@@ -5,7 +5,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Observable } from "rxjs/Observable";
 import { Subscription } from 'rxjs/Subscription';
 
-import { AuthService } from '../../shared/services/services';
+import { AuthService } from '../../core/services/services';
 
 import { PasswordValidators } from 'ng2-validators';
 

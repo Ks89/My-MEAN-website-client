@@ -21,7 +21,7 @@ import { By } from '@angular/platform-browser';
 
 import { ProjectDetailComponent } from './project-detail.component';
 import { RouterLinkStubDirective, RouterOutletStubComponent, ActivatedRoute, ActivatedRouteStub, RouterStub }   from '../../shared/testing/router-stubs.spec';
-import { ProjectService } from "../../shared/services/projects.service";
+import { ProjectService } from "../../core/services/projects.service";
 import { FakeProjectService, PROJECTS, WRONG_PROJECT_ID } from '../../shared/testing/fake-project.service.spec';
 import { PageHeaderComponent } from "../../shared/components/page-header/page-header.component";
 import { ModalGalleryModule } from "angular-modal-gallery";

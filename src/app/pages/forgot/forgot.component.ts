@@ -4,7 +4,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 
 import { Subscription } from 'rxjs/Subscription';
 
-import { AuthService } from '../../shared/services/services';
+import { AuthService } from '../../core/services/services';
 
 import { EmailValidators } from 'ng2-validators';
 

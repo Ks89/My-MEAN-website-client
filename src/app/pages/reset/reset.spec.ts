@@ -23,7 +23,7 @@ import {
   RouterLinkStubDirective, RouterOutletStubComponent, ActivatedRoute, ActivatedRouteStub, RouterStub, newEvent,
   click
 } from '../../shared/testing/helpers.spec';
-import { AuthService } from "../../shared/services/auth.service";
+import { AuthService } from "../../core/services/auth.service";
 import { FakeAuthService, FAKE_BAD_EMAIL_TOKEN } from "../../shared/testing/fake-auth.service.spec";
 import { PageHeaderComponent } from "../../shared/components/page-header/page-header.component";
 import { LaddaModule } from "angular2-ladda";

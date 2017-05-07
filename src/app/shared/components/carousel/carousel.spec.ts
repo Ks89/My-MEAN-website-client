@@ -20,7 +20,7 @@ import { By } from '@angular/platform-browser';
 
 import { CarouselComponent } from './carousel.component';
 import { PROJECTS, FakeProjectService } from '../../testing/fake-project.service.spec';
-import { ProjectService } from '../../services/services';
+import { ProjectService } from '../../../core/services/services';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 

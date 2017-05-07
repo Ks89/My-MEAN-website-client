@@ -9,9 +9,10 @@ import 'bootstrap-loader';
 import '../styles/styles.scss';
 import '../styles/headings.css';
 
+import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 import { COMPONENTS } from './pages/components';
-import { ApplicationComponent } from './application/application.component';
+import { AppComponent } from './app.component';
 
 import 'hammerjs';
 import 'mousetrap';
@@ -34,17 +35,18 @@ import { RouterModule, PreloadAllModules } from '@angular/router';
     NgbModule.forRoot(), // forRoot ensures the providers are only created once
     RouterModule.forRoot(ROUTES, { useHash: false, preloadingStrategy: PreloadAllModules }),
     SharedModule,
+    CoreModule,
     Ng2PageScrollModule.forRoot(),
     ModalGalleryModule.forRoot(),
     LaddaModule,
     ReCaptchaModule
   ],
   declarations: [
-    ApplicationComponent,
+    AppComponent,
     COMPONENTS
   ],
   providers: [],
-  bootstrap: [ ApplicationComponent ]
+  bootstrap: [ AppComponent ]
 })
 
 export class AppModule {

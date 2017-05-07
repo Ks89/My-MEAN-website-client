@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { AuthService } from '../../services/services';
+import { AuthService } from '../../../core/services/services';
 
 @Component({
   selector: 'mmw-navigation',

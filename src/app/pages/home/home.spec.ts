@@ -20,12 +20,14 @@ import { By } from '@angular/platform-browser';
 
 import { HomeComponent } from './home.component';
 import { RouterLinkStubDirective, RouterOutletStubComponent, RouterStub } from '../../shared/testing/helpers.spec';
-import { ProjectService, Project, ProjectHomeView } from "../../shared/services/projects.service";
+import { ProjectService, Project, ProjectHomeView } from "../../core/services/projects.service";
 import { FakeProjectService, PROJECTS } from "../../shared/testing/fake-project.service.spec";
 import { PageHeaderComponent } from "../../shared/components/page-header/page-header.component";
 import { Router } from "@angular/router";
 import { CarouselComponent } from "../../shared/components/carousel/carousel.component";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import {SharedModule} from "../../shared/shared.module";
+import {CoreModule} from "../../core/core.module";
 
 let comp: HomeComponent;
 let fixture: ComponentFixture<HomeComponent>;
@@ -44,7 +46,7 @@ function initTestBed() {
   router = new RouterStub();
 
   TestBed.configureTestingModule({
-    imports: [ NgbModule.forRoot() ],
+    imports: [ NgbModule.forRoot(), CoreModule ],
     declarations: [ HomeComponent, PageHeaderComponent, CarouselComponent, RouterLinkStubDirective, RouterOutletStubComponent ],
     // schemas:      [ NO_ERRORS_SCHEMA ]
   }).overrideComponent(HomeComponent, {

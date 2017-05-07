@@ -20,7 +20,7 @@ import { By } from '@angular/platform-browser';
 
 import { NavbarComponent } from './navbar.component';
 import { RouterLinkStubDirective, RouterOutletStubComponent, RouterStub } from '../../testing/router-stubs.spec';
-import { AuthService } from "../../services/auth.service";
+import { AuthService } from "../../../core/services/auth.service";
 import { FakeAuthService } from "../../testing/fake-auth.service.spec";
 import { Router } from "@angular/router";
 import {click} from "../../testing/helpers.spec";

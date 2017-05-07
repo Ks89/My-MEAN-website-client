@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { EmailValidators } from 'ng2-validators';
 
-import { ContactService } from '../../shared/services/services';
+import { ContactService } from '../../core/services/services';
 
 @Component({
   selector: 'mmw-contact-page',

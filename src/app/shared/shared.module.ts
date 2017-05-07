@@ -4,7 +4,6 @@ import { RouterModule } from '@angular/router';
 
 import { SHARED_COMPONENTS } from './components/components';
 import { SHARED_PIPES } from './pipes/pipes';
-import { SHARED_SERVICES } from './services/services';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -21,9 +20,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
   declarations: [
     SHARED_COMPONENTS,
     SHARED_PIPES
-  ],
-  providers: [
-    SHARED_SERVICES
   ]
 })
 

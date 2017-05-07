@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { UserService } from '../../shared/services/users.service';
+import { UserService } from '../../core/services/users.service';
 
 @Component({
   selector: 'mmw-admin-users-page',

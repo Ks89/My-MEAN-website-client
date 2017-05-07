@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs/Subscription';
 import * as _ from 'lodash';
 
 import { BaMenuService } from './baMenu.service';
-import { MenuService } from '../../../shared/services/menu.service';
+import { MenuService } from '../../../core/services/menu.service';
 
 @Component({
   selector: 'mmw-ba-menu',

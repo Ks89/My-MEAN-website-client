@@ -20,7 +20,7 @@ import { By } from '@angular/platform-browser';
 
 import { ProfileComponent } from './profile.component';
 import {RouterLinkStubDirective, RouterOutletStubComponent, RouterStub, click} from '../../shared/testing/helpers.spec';
-import { AuthService } from "../../shared/services/auth.service";
+import { AuthService } from "../../core/services/auth.service";
 import {
   FakeAuthService, FakeUser2ServicesNoLocalAuthService,
   FakeUser2ServicesAuthService, FakeLocalUserWithProfileAuthService, FAKE_USER_PROFILE,
@@ -31,7 +31,7 @@ import { PageHeaderComponent } from "../../shared/components/page-header/page-he
 import { LaddaModule } from "angular2-ladda";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
-import { ProfileService } from "../../shared/services/profile.service";
+import { ProfileService } from "../../core/services/profile.service";
 import {
   FakeProfileService, FakeWrongProfileService,
   PROFILE_WRONG_RESPONSE

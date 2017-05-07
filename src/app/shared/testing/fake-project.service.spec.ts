@@ -1,4 +1,4 @@
-import {ProjectHomeView, Project, Author, ProjectGallery} from '../services/projects.service';
+import {ProjectHomeView, Project, Author, ProjectGallery} from '../../core/services/projects.service';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/throw';

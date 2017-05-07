@@ -11,10 +11,11 @@ import '../styles/headings.css';
 
 import 'jquery-slimscroll';
 
+import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 import { SidebarModule } from './sidebar-module/sidebar.module';
 import { ADMIN_COMPONENTS } from './pages/components';
-import { ApplicationAdminComponent } from './application/application.component';
+import { AppComponent } from './app.component';
 
 import { LaddaModule } from 'angular2-ladda';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -33,14 +34,15 @@ import { RouterModule, PreloadAllModules } from '@angular/router';
     RouterModule.forRoot(ROUTES, { useHash: false, preloadingStrategy: PreloadAllModules }),
     LaddaModule,
     SidebarModule,
-    SharedModule
+    SharedModule,
+    CoreModule
   ],
   declarations: [
-    ApplicationAdminComponent,
+    AppComponent,
     ADMIN_COMPONENTS
   ],
   providers: [],
-  bootstrap: [ ApplicationAdminComponent ]
+  bootstrap: [ AppComponent ]
 })
 
 export class AdminModule {

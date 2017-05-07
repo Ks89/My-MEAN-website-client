@@ -1,6 +1,6 @@
 <!-- Angular2 ng-bootstrap's modal dialog START-->
 <!-- To use this, I also defined a <template ngbModalContainer></template> into application.html-->
-<template #modalDialogContent let-c="close" let-d="dismiss">
+<ng-template #modalDialogContent let-c="close" let-d="dismiss">
   <div class="modal-header">
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
       <span aria-hidden="true">&times;</span>
@@ -15,7 +15,7 @@
     <button class="btn btn-primary" type="button" (click)="c('Confirm click')">OK</button>
 		<button class="btn btn-danger" type="button" (click)="d('Close click')">Cancel</button>
   </div>
-</template>
+</ng-template>
 <!-- Angular2 ng-bootstrap's modal dialog END-->
 
 <!-- Real webpage -->

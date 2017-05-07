@@ -3,7 +3,7 @@ import { async, inject, TestBed } from '@angular/core/testing';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import {HttpModule, Http, XHRBackend, Response, ResponseOptions, ResponseType} from '@angular/http';
 import { ProjectService } from './projects.service';
-import { PROJECTS, HOMEVIEWS } from '../testing/fake-project.service.spec';
+import { PROJECTS, HOMEVIEWS } from '../../shared/testing/fake-project.service.spec';
 
 describe('Http-ProjectService (mockBackend)', () => {
 

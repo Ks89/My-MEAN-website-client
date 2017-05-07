@@ -14,11 +14,11 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { Post3dAuthComponent } from './pages/post3d-auth/post3d-auth.component';
 import { NotFound404Component } from './pages/404/not-found404.component';
 
-import { AuthGuard } from './shared/services/auth-guard.service';
+import { AuthGuard } from './core/services/auth-guard.service';
 
 export const ROUTES: Routes = [
   {path: '',                                component: HomeComponent},
-  {path: 'dashboard',                       component: HomeComponent},
+  {path: 'home',                       component: HomeComponent},
   {path: 'projects',                        component: ProjectListComponent},
   {path: 'projects/:projectId',             component: ProjectDetailComponent},
   {path: 'cv',                              loadChildren: './pages/cv/cv.module#CvModule'}, // lazy loading
