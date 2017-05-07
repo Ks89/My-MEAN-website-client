@@ -24,6 +24,10 @@ import { LaddaModule } from 'angular2-ladda';
 import { removeNgStyles, createNewHosts, createInputTransfer } from '@angularclass/hmr';
 import { IdlePreloadModule } from '@angularclass/idle-preload';
 import { RouterModule, PreloadAllModules } from '@angular/router';
+import { StoreDevtoolsModule } from "@ngrx/store-devtools";
+import { StoreModule } from "@ngrx/store";
+
+import { pageNum } from "./shared/reducers/page-num.reducer";
 
 @NgModule({
   imports: [
@@ -39,7 +43,13 @@ import { RouterModule, PreloadAllModules } from '@angular/router';
     Ng2PageScrollModule.forRoot(),
     ModalGalleryModule.forRoot(),
     LaddaModule,
-    ReCaptchaModule
+    ReCaptchaModule,
+
+    StoreModule.provideStore({
+      pageNum: pageNum
+    }),
+
+    StoreDevtoolsModule.instrumentOnlyWithExtension(),
   ],
   declarations: [
     AppComponent,

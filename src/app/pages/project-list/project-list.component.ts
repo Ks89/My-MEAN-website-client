@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { Store } from "@ngrx/store";
 
 import { Project, ProjectService } from '../../core/services/services';
+import { SET_PAGE } from "../../shared/reducers/page-num.reducer";
 
 @Component({
   selector: 'mmw-project-list-page',
@@ -16,8 +18,14 @@ export class ProjectListComponent {
   message: string;
   searchInput = ''; // both not null and not undefined
 
-  constructor(private projectService: ProjectService) {
+  constructor(private pageStore: Store<number>, private projectService: ProjectService) {
     this.projects = this.projectService.getProjects();
+
+    this.pageStore.dispatch({type: SET_PAGE, payload: 4});
+
+    this.pageStore.select('pageNum').subscribe(val => {
+      console.log(`Retrieve page num ${val}`);
+    });
 
     this.pageHeader = {
       title: 'Projects',
