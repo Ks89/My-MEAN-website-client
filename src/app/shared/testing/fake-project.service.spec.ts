@@ -175,7 +175,7 @@ export const PROJECTS: Project[] = [
     "name":"SPF prj",
     "url":"https://github.com/deib-polimi/SPF2",
     "iconPath":"assets/images/projects/project_icons/spf.png",
-    "description":"assets/html/projects/bya/description.html",
+    "description":"assets/html/projects/spf/description.html",
     "shortDescription":"short description 2",
     "license":"apache-v2",
     "licenseText":"assets/html/projects/bya/license.html",

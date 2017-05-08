@@ -151,5 +151,44 @@ describe('ProjectListComponent', () => {
       const timelineIconSuccess: DebugElement = element.query(By.css('div.timeline-badge.success i'));
       expect(timelineIconSuccess.nativeElement.getAttribute('class')).toBe('fa fa-' + comp.sidebar.timeline[4].icon);
     });
+
+    // Test filtering utility
+    it('should filter a valid project with null/undefined value', () => {
+      expect(comp.filterCallback(PROJECTS[0], null)).toBeTruthy();
+      expect(comp.filterCallback(PROJECTS[0], undefined)).toBeTruthy();
+    });
+
+    it('should filter a valid project by name', () => {
+      expect(comp.filterCallback(PROJECTS[0], 'BYA')).toBeTruthy();
+      expect(comp.filterCallback(PROJECTS[0], 'bya')).toBeTruthy();
+      expect(comp.filterCallback(PROJECTS[0], 'bYA')).toBeTruthy();
+    });
+
+    it('should filter a valid project by shortDescription', () => {
+      expect(comp.filterCallback(PROJECTS[0], '1')).toBeTruthy();
+      expect(comp.filterCallback(PROJECTS[0], ' 1')).toBeTruthy();
+      expect(comp.filterCallback(PROJECTS[0], 'short description 1')).toBeTruthy();
+      expect(comp.filterCallback(PROJECTS[0], 'SHORT DESCRIPTION 1')).toBeTruthy();
+      expect(comp.filterCallback(PROJECTS[0], 'Description 1')).toBeTruthy();
+    });
+  });
+
+  describe('---YES---', () => {
+    // Test filtering utility
+    it('should filter a null/undefined project with a null/undefined value', () => {
+      expect(comp.filterCallback(null, null)).toBeTruthy();
+      expect(comp.filterCallback(undefined, null)).toBeTruthy();
+      expect(comp.filterCallback(null, undefined)).toBeTruthy();
+      expect(comp.filterCallback(undefined, undefined)).toBeTruthy();
+    });
+
+    it('should filter a null/undefined project with a valid value', () => {
+      expect(comp.filterCallback(null, '')).toBeFalsy();
+      expect(comp.filterCallback(undefined, '')).toBeFalsy();
+    });
+
+    it('should filter a valid project with a valid missing value', () => {
+      expect(comp.filterCallback(PROJECTS[1], 'Bya')).toBeFalsy();
+    });
   });
 });
