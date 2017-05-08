@@ -141,6 +141,8 @@ module.exports = webpackMerge(commonConfig, {
           '@angularclass/hmr',
           'rxjs',
           '@ng-bootstrap/ng-bootstrap',
+          "@ngrx/core",
+          "@ngrx/store",
           'style-loader',
           'jquery',
           'bootstrap-loader',
