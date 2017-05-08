@@ -21,7 +21,7 @@ dependencies:
     - npm install -g codeclimate-test-reporter
 
   override:
-    - npm install --dev
+    - npm install
 
 ## Customize test commands
 test:
