@@ -39,11 +39,11 @@ test:
     - echo "npm run production + AOT build on CircleCI"
     - npm run build:prod:aot
     # run test
-#    - echo "npm run test on CircleCI"
-#    - npm test
+    - echo "npm run test on CircleCI"
+    - npm test
   post:
     - echo "npm run codeclimate on CircleCI"
-#    - npm run codeclimate
+    - npm run codeclimate
     # send test coverage to coveralls.io
     - echo "npm run coveralls on CircleCI"
-#    - npm run coveralls
+    - npm run coveralls
