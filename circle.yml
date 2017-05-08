@@ -1,0 +1,49 @@
+## Customize the test machine
+machine:
+
+  # Version of ruby to use
+  node:
+    version:
+      7.9.0
+
+  # Add some environment variables
+  environment:
+    NODE_ENV: test
+    CI: yes
+
+  services:
+#    - mongodb # not necessary because started automatically
+    - redis
+
+## Customize dependencies
+dependencies:
+  pre:
+    - npm install -g codeclimate-test-reporter
+
+  override:
+    - npm install --dev
+
+## Customize test commands
+test:
+  override:
+    - echo "npm test on circle ci"
+    # run debug build
+    - echo "npm run debug build on CircleCI"
+    - npm run build:dev
+    # run production build
+    - echo "npm run production build on CircleCI"
+    - npm run build:prod
+    # clean before the real production build
+    - npm run clean
+    # run production + AOT build
+    - echo "npm run production + AOT build on CircleCI"
+    - npm run build:prod:aot
+    # run test
+#    - echo "npm run test on CircleCI"
+#    - npm test
+  post:
+    - echo "npm run codeclimate on CircleCI"
+#    - npm run codeclimate
+    # send test coverage to coveralls.io
+    - echo "npm run coveralls on CircleCI"
+#    - npm run coveralls
