@@ -25,9 +25,9 @@ export function newEvent(eventName: string, bubbles = false, cancelable = false)
 
 // See https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button
 /** Button events to pass to `DebugElement.triggerEventHandler` for RouterLink event handler */
-const ButtonClickEvents = {
-  left: {button: 0},
-  right: {button: 2}
+export const ButtonClickEvents = {
+  left:  { button: 0 },
+  right: { button: 2 }
 };
 
 /** Simulate element click. Defaults to mouse left-button click event. */

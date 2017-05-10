@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/share';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from "rxjs/Subscription";
 
 import { Project, ProjectService } from '../../../core/services/services';
 
@@ -8,12 +7,25 @@ import { Project, ProjectService } from '../../../core/services/services';
   selector: 'mmw-carousel',
   templateUrl: 'carousel.html'
 })
-export class CarouselComponent implements OnInit {
-  public thumbs: Observable<Project[]>;
+export class CarouselComponent implements OnInit, OnDestroy {
+  thumbs: Project[];
+
+  subscription: Subscription;
 
   constructor(private projectService: ProjectService) {}
 
   ngOnInit() {
-    this.thumbs = this.projectService.getProjectsForHomepage().share();
+    this.subscription = this.projectService.getProjectsForHomepage().subscribe(
+      val => {
+        console.log(val);
+        this.thumbs = val;
+      }
+    );
+  }
+
+  ngOnDestroy() {
+    if(this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }
