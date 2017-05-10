@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
@@ -58,9 +58,11 @@ describe('CarouselComponent', () => {
 
     beforeEach(() => fixture.detectChanges());
 
-    it('can display the carousel component', () => {
+    it('can display the carousel component', fakeAsync(() => {
       const element: DebugElement = fixture.debugElement;
 
+      fixture.detectChanges();
+      tick();
       fixture.detectChanges();
 
       const carouselTitles: DebugElement[] = element.queryAll(By.css('h3'));
@@ -69,11 +71,19 @@ describe('CarouselComponent', () => {
       expect(carouselTitles[1].nativeElement.textContent.trim()).toBe(PROJECTS[1].name);
       expect(carouselTitles[2].nativeElement.textContent.trim()).toBe(PROJECTS[2].name);
 
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+
       const slides: DebugElement[] = element.queryAll(By.css('img'));
       expect(slides.length).toBe(PROJECTS.length);
       // expect(slides[0].nativeElement.getAttribute('src')).toBe(PROJECTS[0].projectHomeView[0].carouselImagePath);
       // expect(slides[1].nativeElement.getAttribute('src')).toBe(PROJECTS[1].projectHomeView[0].carouselImagePath);
       // expect(slides[2].nativeElement.getAttribute('src')).toBe(PROJECTS[2].projectHomeView[0].carouselImagePath);
+
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
 
       const carouselTexts: DebugElement[] = element.queryAll(By.css('.carousel-caption p'));
       expect(carouselTexts.length).toBe(PROJECTS.length);
@@ -82,6 +92,6 @@ describe('CarouselComponent', () => {
       // expect(carouselTexts[2].nativeElement.textContent.trim()).toBe(PROJECTS[2].projectHomeView[0].carouselText);
 
       //TODO check carousel image paths
-    });
+    }));
   });
 });

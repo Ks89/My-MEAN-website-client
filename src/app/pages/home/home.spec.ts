@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
@@ -22,12 +22,10 @@ import { HomeComponent } from './home.component';
 import { RouterLinkStubDirective, RouterOutletStubComponent, RouterStub } from '../../shared/testing/helpers.spec';
 import { ProjectService, Project, ProjectHomeView } from "../../core/services/projects.service";
 import { FakeProjectService, PROJECTS } from "../../shared/testing/fake-project.service.spec";
-import { PageHeaderComponent } from "../../shared/components/page-header/page-header.component";
 import { Router } from "@angular/router";
-import { CarouselComponent } from "../../shared/components/carousel/carousel.component";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
-import {SharedModule} from "../../shared/shared.module";
-import {CoreModule} from "../../core/core.module";
+import { SharedModule } from "../../shared/shared.module";
+import { CoreModule } from "../../core/core.module";
 
 let comp: HomeComponent;
 let fixture: ComponentFixture<HomeComponent>;
@@ -46,8 +44,8 @@ function initTestBed() {
   router = new RouterStub();
 
   TestBed.configureTestingModule({
-    imports: [ NgbModule.forRoot(), CoreModule ],
-    declarations: [ HomeComponent, PageHeaderComponent, CarouselComponent, RouterLinkStubDirective, RouterOutletStubComponent ],
+    imports: [ NgbModule.forRoot(), CoreModule, SharedModule ],
+    declarations: [ HomeComponent, RouterLinkStubDirective, RouterOutletStubComponent ],
     // schemas:      [ NO_ERRORS_SCHEMA ]
   }).overrideComponent(HomeComponent, {
     set: {
@@ -80,7 +78,7 @@ describe('HomeComponent', () => {
       links = linkDes.map(de => de.injector.get(RouterLinkStubDirective) as RouterLinkStubDirective);
     });
 
-    it('can display the home page', () => {
+    it('can display the home page', fakeAsync(() => {
       const element: DebugElement = fixture.debugElement;
 
       const title: DebugElement[] = element.queryAll(By.css('h1'));
@@ -90,6 +88,10 @@ describe('HomeComponent', () => {
       const message: DebugElement[] = element.queryAll(By.css('small'));
       expect(message.length).toBe(1); //because pageHeader has a <small> tag in its template
       expect(message[0].nativeElement.textContent.trim()).toBe('Welcome');
+
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
 
       const carouselTitles: DebugElement[] = element.queryAll(By.css('h3'));
       expect(carouselTitles.length).toBe(PROJECTS.filter(val => val.projectHomeView.length > 0).length);
@@ -104,7 +106,7 @@ describe('HomeComponent', () => {
       // expect(carouselTexts[2].nativeElement.textContent.trim()).toBe(HOME_PROJECTS[2].carouselText);
 
       //TODO check carousel image paths
-    });
+    }));
 
     it('can get RouterLinks from template', () => {
       expect(links.length).toBe(3, 'should have 1 links');

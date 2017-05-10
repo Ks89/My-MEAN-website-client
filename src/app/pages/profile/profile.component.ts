@@ -124,7 +124,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
             this.formModel.get('nickname').setValue(res.user.profile.nickname);
             this.formModel.get('email').setValue(res.user.profile.email);
           }
-          console.log('---------------setted----------------');
+          console.log('---------------set----------------');
 
           this.authService.loginEvent.emit(res.user);
         },
