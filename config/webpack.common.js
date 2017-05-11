@@ -75,7 +75,8 @@ module.exports = {
           {
             loader: 'awesome-typescript-loader',
             options: {
-              configFileName: '${TS_CONFIG}'
+              configFileName: '${TS_CONFIG}',
+              useCache: process.env.NODE_ENV !== 'production'
             }
           },
           {
