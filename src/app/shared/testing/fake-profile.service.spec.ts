@@ -37,8 +37,6 @@ export class FakeProfileService {
 
 export class FakeWrongProfileService {
   update(profile: any): Observable<ProfileResponse> {
-    return Observable.throw({
-      _body :  JSON.stringify(PROFILE_WRONG_RESPONSE)
-    });
+    return Observable.throw(new Error(PROFILE_WRONG_RESPONSE.message));
   }
 }

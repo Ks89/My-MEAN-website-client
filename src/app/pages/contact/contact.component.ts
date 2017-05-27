@@ -77,7 +77,7 @@ export class ContactComponent implements OnDestroy {
             visible: true,
             status: 'danger',
             strong : 'Error',
-            message: err
+            message: err.message
           };
           this.isWaiting = false;
           this.showFormError = true;

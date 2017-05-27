@@ -69,9 +69,7 @@ export class FakeAuthService {
         "token": FAKE_JWT_TOKEN
       });
     } else {
-      return Observable.throw({
-        _body :  JSON.stringify({"message":"Incorrect username or password. Or this account is not activated, check your mailbox."})
-      });
+      return Observable.throw(new Error("Incorrect username or password. Or this account is not activated, check your mailbox."));
     }
   }
 
@@ -82,9 +80,7 @@ export class FakeAuthService {
         "message": "An e-mail has been sent to " + emailToken + " with further instructions."
       });
     } else {
-      return Observable.throw({
-        _body :  JSON.stringify({"message":"No account with that token exists."})
-      });
+      return Observable.throw(new Error("No account with that token exists."));
     }
   }
 
@@ -94,9 +90,7 @@ export class FakeAuthService {
         "email": email
       });
     } else {
-      return Observable.throw({
-        _body :  JSON.stringify({"message":"No account with that email address exists."})
-      });
+      return Observable.throw(new Error("No account with that email address exists."));
     }
   }
 
@@ -106,9 +100,7 @@ export class FakeAuthService {
         "message": `An e-mail has been sent to ${emailToken} with further instructions.`
       });
     } else {
-      return Observable.throw({
-        _body :  JSON.stringify({"message":"No account with that token exists."})
-      });
+      return Observable.throw(new Error("No account with that token exists."));
     }
   }
 
@@ -118,9 +110,7 @@ export class FakeAuthService {
         "message": `User with email ${user.email} registered.`
       });
     } else {
-      return Observable.throw({
-        _body :  JSON.stringify({"message":"User already exists. Try to login."})
-      });
+      return Observable.throw(new Error("User already exists. Try to login."));
     }
   }
 
@@ -151,7 +141,7 @@ export class FakeAuthService {
 export class FakeWrongPost3dAuthService extends FakeAuthService {
 
   post3dAuthAfterCallback(): Observable<any> {
-    return Observable.throw('an error message');
+    return Observable.throw(new Error('an error message'));
   }
 }
 
@@ -163,7 +153,7 @@ export class FakeWrongPost3dLoggedUserAuthService extends FakeAuthService {
   }
 
   getLoggedUser(): Observable<any> {
-    return Observable.throw('an error message');
+    return Observable.throw(new Error('an error message'));
   }
 }
 

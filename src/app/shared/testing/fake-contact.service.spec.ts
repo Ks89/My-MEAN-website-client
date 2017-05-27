@@ -17,9 +17,7 @@ export class FakeContactService {
 
   sendFormWithCaptcha(contact: FakeContact): Observable<any> {
     if(!contact.response) {
-      return Observable.throw({
-        _body :  JSON.stringify({message: ["missing-input-response"]})
-      });
+      return Observable.throw(new Error('missing-input-response'));
     } else {
       return Observable.of({ "message": contact.emailFormData.email });
     }

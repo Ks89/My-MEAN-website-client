@@ -52,7 +52,7 @@ export class RegisterComponent implements OnDestroy {
       this.registerAlert = {
         visible: true,
         status: 'danger',
-        strong: 'Danger',
+        strong: 'Error',
         message: 'Password and Password confirm must be equals'
       };
       this.isWaiting = false;
@@ -63,7 +63,7 @@ export class RegisterComponent implements OnDestroy {
       this.registerAlert = {
         visible: true,
         status: 'danger',
-        strong: 'Danger',
+        strong: 'Error',
         message: 'Email and Email confirm must be equals'
       };
       this.isWaiting = false;
@@ -100,8 +100,8 @@ export class RegisterComponent implements OnDestroy {
           this.registerAlert = {
             visible: true,
             status: 'danger',
-            strong: 'Danger',
-            message: err
+            strong: 'Error',
+            message: err.message
           };
           this.isWaiting = false;
           this.showFormError = true;

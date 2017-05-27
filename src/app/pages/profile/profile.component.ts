@@ -198,7 +198,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
             visible: true,
             status: 'danger',
             strong: 'Error',
-            message: err
+            message: err.message
           };
           this.isWaiting = false;
         },

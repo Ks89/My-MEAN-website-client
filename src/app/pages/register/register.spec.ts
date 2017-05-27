@@ -166,7 +166,7 @@ describe('RegisterComponent', () => {
 
       const results: DebugElement[] = element.queryAll(By.css('div.alert.alert-danger'));
       expect(results.length).toBe(1);
-      expect(results[0].nativeElement.textContent.trim()).toBe('Danger Password and Password confirm must be equals');
+      expect(results[0].nativeElement.textContent.trim()).toBe('Error Password and Password confirm must be equals');
     });
 
     it(`should NOT register local account, because emails must the equal`, () => {
@@ -181,7 +181,7 @@ describe('RegisterComponent', () => {
 
       const results: DebugElement[] = element.queryAll(By.css('div.alert.alert-danger'));
       expect(results.length).toBe(1);
-      expect(results[0].nativeElement.textContent.trim()).toBe('Danger Email and Email confirm must be equals');
+      expect(results[0].nativeElement.textContent.trim()).toBe('Error Email and Email confirm must be equals');
     });
 
     it(`should NOT register local account, because you can register only one account with that email`, () => {
@@ -196,7 +196,7 @@ describe('RegisterComponent', () => {
 
       const results: DebugElement[] = element.queryAll(By.css('div.alert.alert-danger'));
       expect(results.length).toBe(1);
-      expect(results[0].nativeElement.textContent.trim()).toBe('Danger User already exists. Try to login.');
+      expect(results[0].nativeElement.textContent.trim()).toBe('Error User already exists. Try to login.');
     });
 
   });

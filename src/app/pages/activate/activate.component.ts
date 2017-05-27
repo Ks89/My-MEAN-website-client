@@ -71,8 +71,8 @@ export class ActivateComponent implements OnInit, OnDestroy {
           this.activateAlert = {
             visible: true,
             status: 'danger',
-            strong : 'Danger',
-            message: err
+            strong : 'Error',
+            message: err.message
           };
         },
         () => console.log('Done')

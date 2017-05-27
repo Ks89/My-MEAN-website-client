@@ -71,7 +71,7 @@ export class LoginComponent {
               visible: true,
               status: 'danger',
               strong: 'Error',
-              message: err
+              message: err.message
             };
             this.isWaiting = false;
             this.showFormError = true;
@@ -85,7 +85,7 @@ export class LoginComponent {
           visible: true,
           status: 'danger',
           strong: 'Error',
-          message: err
+          message: err.message
         };
         this.isWaiting = false;
         this.showFormError = true;
