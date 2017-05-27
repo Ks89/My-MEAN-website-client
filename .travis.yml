@@ -1,7 +1,6 @@
 language: node_js
 node_js:
   - "7"
-  - "6"
 os:
   - linux # uses precise. I should update this to trusty
 #  - osx
