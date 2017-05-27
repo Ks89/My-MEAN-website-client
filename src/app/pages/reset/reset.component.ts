@@ -60,7 +60,7 @@ export class ResetComponent implements OnDestroy {
       this.resetAlert = {
         visible: true,
         status: 'danger',
-        strong : 'Danger',
+        strong : 'Error',
         message: `'Password' and 'Password confirm' must be equals`
       };
       this.isWaiting = false;
@@ -93,8 +93,8 @@ export class ResetComponent implements OnDestroy {
           this.resetAlert = {
             visible: true,
             status: 'danger',
-            strong : 'Danger',
-            message: JSON.parse(err._body).message
+            strong : 'Error',
+            message: err
           };
           this.isWaiting = false;
           this.showFormError = true;

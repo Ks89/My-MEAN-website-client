@@ -176,7 +176,7 @@ describe('ResetComponent', () => {
 
       const results: DebugElement[] = element.queryAll(By.css('div.alert.alert-danger'));
       expect(results.length).toBe(1);
-      expect(results[0].nativeElement.textContent.trim()).toBe(`Danger 'Password' and 'Password confirm' must be equals`);
+      expect(results[0].nativeElement.textContent.trim()).toBe(`Error 'Password' and 'Password confirm' must be equals`);
     });
 
     it(`should NOT reset local account's password`, () => {
@@ -193,7 +193,7 @@ describe('ResetComponent', () => {
       // TestBed initialized with FAKE_BAD_EMAIL_TOKEN, so you cannot reset local account's password
       const results: DebugElement[] = element.queryAll(By.css('div.alert.alert-danger'));
       expect(results.length).toBe(1);
-      expect(results[0].nativeElement.textContent.trim()).toBe('Danger No account with that token exists.');
+      expect(results[0].nativeElement.textContent.trim()).toBe('Error No account with that token exists.');
     });
 
   });

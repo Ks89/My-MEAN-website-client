@@ -22,10 +22,13 @@ export class ProfileService {
       .catch(this.handleError);
   }
 
-  private handleError (error: any) {
-    // TODO In a real world app, we might send the error to remote logging infrastructure
-    let errMsg = error.message || 'Server error';
-    console.error(errMsg); // log to console instead
-    return Observable.throw(new Error(errMsg));
+  private handleError(error: any) {
+    // TODO add remote logging infrastructure
+    let message: string;
+    if(error && error._body) {
+      message = JSON.parse(error._body).message;
+    }
+    console.error(message); // log to console instead
+    return Observable.throw(new Error(message));
   }
 }

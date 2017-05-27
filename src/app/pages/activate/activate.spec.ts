@@ -121,7 +121,7 @@ describe('ActivateComponent', () => {
 
       const welcomeNames: DebugElement[] = element.queryAll(By.css('div.alert.alert-danger'));
       expect(welcomeNames.length).toBe(1);
-      expect(welcomeNames[0].nativeElement.textContent.trim()).toBe('Danger No account with that token exists.');
+      expect(welcomeNames[0].nativeElement.textContent.trim()).toBe('Error No account with that token exists.');
     });
 
   });

@@ -61,7 +61,7 @@ export class ForgotComponent implements OnDestroy {
             visible: true,
             status: 'danger',
             strong: 'Danger',
-            message: JSON.parse(err._body).message
+            message: err
           };
           this.isWaiting = false;
           this.showFormError = true;

@@ -72,7 +72,7 @@ export class ActivateComponent implements OnInit, OnDestroy {
             visible: true,
             status: 'danger',
             strong : 'Danger',
-            message: JSON.parse(err._body).message
+            message: err
           };
         },
         () => console.log('Done')

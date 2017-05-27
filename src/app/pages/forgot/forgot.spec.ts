@@ -137,7 +137,7 @@ describe('ForgotComponent', () => {
 
       const messages: DebugElement[] = element.queryAll(By.css('div.alert.alert-danger'));
       expect(messages.length).toBe(1);
-      expect(messages[0].nativeElement.textContent.trim()).toBe('Danger No account with that email address exists.');
+      expect(messages[0].nativeElement.textContent.trim()).toBe('Error No account with that email address exists.');
     });
   });
 });
