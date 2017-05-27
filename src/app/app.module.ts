@@ -1,6 +1,7 @@
 import { NgModule, ApplicationRef } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpModule } from '@angular/http';
 import { ROUTES }  from './app.routing';
 
@@ -33,6 +34,7 @@ import { pageNum } from "./shared/reducers/page-num.reducer";
   imports: [
     IdlePreloadModule.forRoot(), // forRoot ensures the providers are only created once
     BrowserModule,
+    BrowserAnimationsModule,
     HttpModule,
     FormsModule,
     ReactiveFormsModule,

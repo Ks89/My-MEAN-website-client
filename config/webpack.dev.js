@@ -128,6 +128,7 @@ module.exports = webpackMerge(commonConfig, {
           'webpack'
         ],
         vendor: [
+          '@angular/animations',
           '@angular/common',
           '@angular/compiler',
           '@angular/core',

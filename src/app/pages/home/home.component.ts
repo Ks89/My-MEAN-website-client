@@ -10,7 +10,6 @@ import { Project, ProjectService } from '../../core/services/services';
   templateUrl: 'home.html'
 })
 export class HomeComponent implements OnInit {
-  public products: Observable<Project[]>;
   public thumbs: Observable<Project[]>;
 
   public pageHeader: any;
@@ -25,7 +24,6 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.products = this.projectService.getProjects();
     this.thumbs = this.projectService.getProjectsForHomepage().share();
   }
 }
