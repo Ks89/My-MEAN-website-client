@@ -91,7 +91,10 @@ module.exports = function (config) {
     // For AppVeyor and TravisCI to prevent timeouts
     // https://github.com/karma-runner/karma-phantomjs-launcher/issues/126#issuecomment-269738926
     browserNoActivityTimeout: 100000,
+    captureTimeout: 100000,
     browserDisconnectTimeout: 60000,
-    browserDisconnectTolerance: 10
+    browserDisconnectTolerance: 20,
+    processKillTimeout: 5000,
+    retryLimit: 4
   });
 };
