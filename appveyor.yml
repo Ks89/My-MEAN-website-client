@@ -60,7 +60,7 @@ clone_depth: 5                      # clone entire repository history if not def
 environment:
   matrix:
     - nodejs_version: "7"
-    - nodejs_version: "6"
+#    - nodejs_version: "6"
   NODE_ENV: test
   CI: yes
   APPVEYOR: yes
