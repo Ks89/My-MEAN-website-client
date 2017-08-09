@@ -21,6 +21,7 @@ const CommonsChunkPlugin           = require('webpack/lib/optimize/CommonsChunkP
 const LoaderOptionsPlugin          = require('webpack/lib/LoaderOptionsPlugin');
 const ContextReplacementPlugin     = require('webpack/lib/ContextReplacementPlugin');
 const NamedModulesPlugin           = require('webpack/lib/NamedModulesPlugin');
+const ModuleConcatenationPlugin    = require('webpack/lib/optimize/ModuleConcatenationPlugin');
 
 const CopyWebpackPlugin            = require('copy-webpack-plugin');
 const HtmlWebpackPlugin            = require('html-webpack-plugin');
@@ -28,6 +29,8 @@ const autoprefixer                 = require('autoprefixer');
 const ngcWebpack                   = require('ngc-webpack');
 const ScriptExtHtmlWebpackPlugin   = require('script-ext-html-webpack-plugin');
 const BundleAnalyzerPlugin         = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const VisualizerPlugin             = require('webpack-visualizer-plugin');
+const InlineManifestWebpackPlugin  = require('inline-manifest-webpack-plugin');
 
 const HtmlElementsPlugin           = require('./html-elements-plugin');
 
@@ -39,8 +42,9 @@ const TEMPLATE_ADMIN_PATH          = './src/admin.ejs';
 const TEMPLATE_HTML                = 'index.html';
 const TEMPLATE_ADMIN_HTML          = 'admin.html';
 
-const AOT                          = helpers.hasNpmFlag('aot');
-const TS_CONFIG                    = AOT ? 'tsconfig-aot.json' : 'tsconfig.json';
+const AOT = helpers.hasNpmFlag('aot');
+const PROD = helpers.hasNpmFlag('prod');
+const TS_CONFIG = AOT ? 'tsconfig-aot.json' : 'tsconfig.json';
 
 module.exports = {
   entry: {
@@ -76,7 +80,14 @@ module.exports = {
             loader: 'awesome-typescript-loader',
             options: {
               configFileName: '${TS_CONFIG}',
-              useCache: process.env.NODE_ENV !== 'production'
+              useCache: !AOT && !PROD
+            }
+          },
+          {
+            loader: 'ngc-webpack',
+            options: {
+              // to create smaller aot builds
+              disable: !AOT,
             }
           },
           {
@@ -84,10 +95,6 @@ module.exports = {
           }
         ],
         exclude: [/\.(spec|e2e)\.ts$/]
-      },
-      {
-        test: /\.json$/,
-        use: 'json-loader'
       },
       {
         test: /\.css$/,
@@ -128,6 +135,7 @@ module.exports = {
     ]
   },
   plugins: [
+    new ModuleConcatenationPlugin(),
     new NamedModulesPlugin(),
     new CommonsChunkPlugin({
       name: 'polyfills',
@@ -142,29 +150,24 @@ module.exports = {
     new CommonsChunkPlugin({
       name: ['polyfills', 'vendor'].reverse()
     }),
+    new CommonsChunkPlugin({
+      name: ['manifest'],
+      minChunks: Infinity,
+    }),
     new HtmlWebpackPlugin({
       title: TITLE,
-      inject: true,
-      // chunksSortMode: 'auto', // auto is the default value
+      inject: 'body', //true or 'head'
+      //metadata: METADATA,
+      chunksSortMode: 'dependency',
       chunks: ['polyfills', 'vendor', 'app'],
       template: TEMPLATE_PATH,
       filename: TEMPLATE_HTML
     }),
     new HtmlWebpackPlugin({
       title: TITLE_ADMIN,
-      inject: true,
-      chunksSortMode: function (chunk1, chunk2) {
-        let orders = ['polyfills', 'vendor', 'admin'];
-        let order1 = orders.indexOf(chunk1.names[0]);
-        let order2 = orders.indexOf(chunk2.names[0]);
-        if (order1 > order2) {
-          return 1;
-        } else if (order1 < order2) {
-          return -1;
-        } else {
-          return 0;
-        }
-      },
+      inject: 'body', //true or 'head'
+      //metadata: METADATA,
+      chunksSortMode: 'dependency',
       chunks: ['polyfills', 'vendor', 'admin'],
       template: TEMPLATE_ADMIN_PATH,
       filename: TEMPLATE_ADMIN_HTML
@@ -215,6 +218,15 @@ module.exports = {
       /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
       helpers.root('./src') // location of your src
     ),
+
+    /**
+     * Plugin: InlineManifestWebpackPlugin
+     * Inline Webpack's manifest.js in index.html
+     *
+     * https://github.com/szrenwei/inline-manifest-webpack-plugin
+     */
+    new InlineManifestWebpackPlugin(),
+
     new ngcWebpack.NgcWebpackPlugin({
       disabled: !AOT,
       tsConfig: helpers.root('tsconfig-aot.json')
@@ -282,6 +294,9 @@ module.exports = {
       statsOptions: null,
       // Log level. Can be 'info', 'warn', 'error' or 'silent'.
       logLevel: 'info'
+    }),
+    new VisualizerPlugin({
+      filename: './webpack-visualizer-report.html'
     })
   ],
   node: {

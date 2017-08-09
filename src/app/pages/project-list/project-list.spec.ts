@@ -25,7 +25,7 @@ function initTestBed() {
   router = new RouterStub();
 
   TestBed.configureTestingModule({
-    imports: [FormsModule, ReactiveFormsModule, SharedModule, NgbModule.forRoot(), StoreModule.provideStore({pageNum: pageNum}),],
+    imports: [FormsModule, ReactiveFormsModule, SharedModule, NgbModule.forRoot(), StoreModule.provideStore({pageNum: pageNum})],
     declarations: [ ProjectListComponent, RouterLinkStubDirective, RouterOutletStubComponent  ],
     // schemas:      [ NO_ERRORS_SCHEMA ]
   }).overrideComponent(ProjectListComponent, {

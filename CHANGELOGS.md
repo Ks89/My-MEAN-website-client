@@ -1,5 +1,27 @@
 # Changelog
 
+## Alpha 7
+
+### **Features**
+- #89 Add Circle Ci
+- #88 Add pagination to project-list component
+- #82 add ngrx-store
+- #90 favicon
+
+### **Chore**
+- #84 update to tslint 5
+
+### **Bugfixes**
+- #94 login,register,activate,reset... aren't displaying errors with alerts
+- #92 Fix CI's unit testing issues
+- #91 Replace searchpipe with a custom login to filter elements into project-list
+
+### **Refactor**
+- #87 Apply Angular's style-guide
+
+and all dependencies updated
+
+
 ## Alpha 6
 
 ### **Features**

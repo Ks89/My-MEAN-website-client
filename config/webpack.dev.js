@@ -17,13 +17,13 @@
 
 const webpack                     = require('webpack');
 const DefinePlugin                = require('webpack/lib/DefinePlugin');
+const HotModuleReplacementPlugin = require('webpack/lib/HotModuleReplacementPlugin');
+const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
 
-const HotModuleReplacementPlugin  = require('webpack/lib/HotModuleReplacementPlugin');
 const BrowserSyncPlugin           = require('browser-sync-webpack-plugin');
 const webpackMerge                = require('webpack-merge');
 const webpackMergeDll             = webpackMerge.strategy({plugins: 'replace'});
 const ExtractTextPlugin           = require('extract-text-webpack-plugin');
-const LoaderOptionsPlugin         = require('webpack/lib/LoaderOptionsPlugin');
 const DllBundlesPlugin            = require('webpack-dll-bundles-plugin').DllBundlesPlugin;
 
 const commonConfig                = require('./webpack.common');
@@ -62,7 +62,8 @@ module.exports = webpackMerge(commonConfig, {
     historyApiFallback: true,
     watchOptions: {
       aggregateTimeout: 300,
-      poll: 1000
+      poll: 1000,
+      ignored: /node_modules/
     },
     stats: {colors: true},
     proxy: {
@@ -74,19 +75,19 @@ module.exports = webpackMerge(commonConfig, {
   },
   module: {
     rules: [
-      // {
-      //   enforce: 'pre',
-      //   test: /\.ts$/,
-      //   use: [
-      //     {
-      //       loader: 'tslint-loader',
-      //       options: {
-      //         configFile: 'tslint.json'
-      //       }
-      //     }
-      //   ],
-      //   exclude: [/\.(spec|e2e)\.ts$/, /node_modules/]
-      // },
+      {
+        enforce: 'pre',
+        test: /\.ts$/,
+        use: [
+          {
+            loader: 'tslint-loader',
+            options: {
+              configFile: 'tslint.json'
+            }
+          }
+        ],
+        exclude: [/\.(spec|e2e)\.ts$/, /node_modules/]
+      },
 
       /*
        * css loader support for *.css files (styles directory only)
@@ -162,6 +163,44 @@ module.exports = webpackMerge(commonConfig, {
         plugins: []
       })
     }),
+
+    // new AutoDllPlugin({
+    //   debug: true,
+    //   inject: true,
+    //   context: helpers.root(),
+    //   filename: '[name]_[hash].js',
+    //   path: './dll',
+    //   entry: {
+    //     polyfills: [
+    //       'core-js',
+    //       'zone.js/dist/zone.js',
+    //       'zone.js/dist/long-stack-trace-zone'
+    //     ],
+    //     vendor: [
+    //       '@angular/platform-browser',
+    //       '@angular/platform-browser-dynamic',
+    //       '@angular/core',
+    //       '@angular/common',
+    //       // '@angular/compiler',
+    //       '@angular/forms',
+    //       '@angular/http',
+    //       '@angular/router',
+    //       // "@angularclass/idle-preload",
+    //       '@angularclass/hmr',
+    //       'rxjs',
+    //       '@ng-bootstrap/ng-bootstrap',
+    //       // 'style-loader',
+    //       // 'jquery',
+    //       'bootstrap-loader',
+    //       'hammerjs',
+    //       'lodash',
+    //       'mousetrap',
+    //       'ng2-validators',
+    //       'reflect-metadata',
+    //       'tether'
+    //     ]
+    //   }
+    // }),
 
     new BrowserSyncPlugin(
       // BrowserSync options

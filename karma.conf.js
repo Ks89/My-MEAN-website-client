@@ -15,15 +15,15 @@ function getBrowsers() {
       // only for AppVeyor
       return ['Chrome', 'Firefox', 'IE']; // 'PhantomJS' not working on AppVeyor
     } else {
-      return ['PhantomJS', 'Firefox', 'Chrome_travis_ci'];  // Travis CI ('Chrome_travis_ci' is defined below)
+      return ['PhantomJS', 'Firefox'];  // Travis CI
     }
   } else {
     switch(os.platform()) {
       case 'win32': // Windows
         // TODO add 'PhantomJS' - at the moment isn't working on Windows10 (only for test in ProfileComponent, WTF!!!)
-        return ['Chrome', 'Firefox', 'Edge']; // 'PhantomJS', 'IE' not working on Windows
+        return ['Chrome', 'Firefox', 'IE'];
       case 'darwin': // macOS
-        return ['PhantomJS', 'ChromeCanary', 'Firefox']; // 'Safari' not working very well
+        return ['PhantomJS', 'Chrome', 'Firefox'/*, 'Safari'*/];
       default: // other (linux, freebsd, openbsd, sunos, aix)
         return ['PhantomJS', 'Chrome', 'Firefox'];
     }
@@ -35,11 +35,14 @@ module.exports = function (config) {
     basePath: '',
     frameworks: ['jasmine'],
     files: [
-      {
-        pattern: './config/karma-test-runner.js',
-        watched: false
-      }
+      "./config/karma-test-runner.js"
     ],
+    // files: [
+    //   {
+    //     pattern: './config/karma-test-runner.js',
+    //     watched: false
+    //   }
+    // ],
     exclude: [],
     preprocessors: {
       './config/karma-test-runner.js': ['coverage', 'webpack', 'sourcemap']
@@ -81,20 +84,9 @@ module.exports = function (config) {
       multiline: true
     },
 
-    customLaunchers: {
-      Chrome_travis_ci: {
-        base: 'Chrome',
-        flags: ['--no-sandbox']
-      }
-    },
-
     // For AppVeyor and TravisCI to prevent timeouts
-    // https://github.com/karma-runner/karma-phantomjs-launcher/issues/126#issuecomment-269738926
-    browserNoActivityTimeout: 100000,
-    captureTimeout: 100000,
-    browserDisconnectTimeout: 60000,
-    browserDisconnectTolerance: 20,
-    processKillTimeout: 5000,
-    retryLimit: 4
+    browserNoActivityTimeout: 60000,
+    //browserDisconnectTimeout: 60000,
+    //browserDisconnectTolerance: 10
   });
 };

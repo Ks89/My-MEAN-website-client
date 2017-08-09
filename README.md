@@ -39,6 +39,7 @@ Testing:
 - work in progress... (this is only an alpha, please be patient)
 
 ## News
+- *08/09/2017* - **My MEAN website** Alpha 7 public release [HERE](https://github.com/Ks89/My-MEAN-website-client/releases/tag/v.alpha-6)
 - *04/09/2017* - **My MEAN website** Alpha 6 public release [HERE](https://github.com/Ks89/My-MEAN-website-client/releases/tag/v.alpha-6)
 - *01/21/2017* - **My MEAN website** Alpha 5 public release [HERE](https://github.com/Ks89/My-MEAN-website-client/releases/tag/v.alpha-5)
 - *12/30/2016* - **My MEAN website** Alpha 4 public release [HERE](https://github.com/Ks89/My-MEAN-website-client/releases/tag/v.alpha-4)
