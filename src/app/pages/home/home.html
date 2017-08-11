@@ -7,15 +7,13 @@
 
       <hr class="featurette-divider">
 
-      <div class="card-deck-wrapper">
-        <div class="card-deck">
-          <div class="card" *ngFor="let thumb of thumbs | async">
-            <img class="card-img-top img-fluid" src="{{thumb.projectHomeView.thumbImagePath}}" alt="Generic placeholder image">
-            <div class="card-block text-xs-center">
-              <h4 class="card-title">{{thumb.name}}</h4>
-              <p class="card-text">{{thumb.projectHomeView.thumbText}}</p>
-              <a class="btn btn-default" [routerLink]="['/projects', thumb._id]" class="btn btn-primary">View details &raquo;</a>
-            </div>
+      <div class="card-deck">
+        <div class="card mb-3" *ngFor="let thumb of thumbs | async">
+          <img class="card-img-top" src="{{thumb.projectHomeView.thumbImagePath}}" alt="Generic placeholder image">
+          <div class="card-body">
+            <h4 class="card-title text-center">{{thumb.name}}</h4>
+            <p class="card-text">{{thumb.projectHomeView.thumbText}}</p>
+            <a class="btn btn-default text-right" [routerLink]="['/projects', thumb._id]" class="btn btn-primary">View details &raquo;</a>
           </div>
         </div>
       </div>
@@ -25,11 +23,11 @@
 
     <div *ngFor="let bigThumb of thumbs | async; let i = index">
       <div class="row featurette">
-        <div class="col-md-7 {{i%2==0 ? '' : 'push-md-5'}}">
+        <div class="col-md-7 {{i%2==0 ? '' : 'float-right'}}">
           <h2 class="featurette-heading">{{bigThumb.name}} <span class="text-muted">It'll blow your mind.</span></h2>
           <p class="lead">{{bigThumb.projectHomeView.bigThumbText}}</p>
         </div>
-        <div class="col-md-5 {{i%2==0 ? '' : 'pull-md-7'}}">
+        <div class="col-md-5 {{i%2==0 ? '' : 'float-left'}}">
           <img class="featurette-image img-fluid m-x-auto" src="{{bigThumb.projectHomeView.bigThumbImagePath}}" alt="Generic placeholder image">
         </div>
       </div>
