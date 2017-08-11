@@ -12,7 +12,7 @@ jobs:
       - checkout
       - run:
           name: npm-install-global
-          command: npm install -g codeclimate-test-reporter
+          command: sudo npm install -g codeclimate-test-reporter
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
