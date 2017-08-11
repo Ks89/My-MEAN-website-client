@@ -41,8 +41,11 @@ jobs:
          name: run-e2e
          command: npm run e2e
       - run:
+         name: run-docs
+         command: npm run docs
+      - run:
          name: run-codeclimate
          command: npm run codeclimate
       - run:
          name: run-coveralls
-         command: run coveralls
+         command: npm run coveralls
