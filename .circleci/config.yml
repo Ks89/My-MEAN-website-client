@@ -1,0 +1,48 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/project
+    docker:
+      - image: circleci/node:7.10.0-browsers
+      # Environment variable for all commands executed in the primary container
+        environment:
+          NODE_ENV: test
+          CI: yes
+    steps:
+      - checkout
+      - run:
+          name: npm-install-global
+          command: npm install -g codeclimate-test-reporter
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: npm-install
+          command: npm install
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
+      - run:
+         name: run-build-dev
+         command: npm run build:dev
+      - run:
+         name: run-build-prod
+         command: npm run build:prod
+      - run:
+         name: run-build-prod-aot
+         command: npm run build:prod:aot
+      - run:
+         name: run-test
+         command: npm test
+      - run:
+         name: run-webdriver-update
+         command: npm run webdriver:update
+      - run:
+         name: run-e2e
+         command: npm run e2e
+      - run:
+         name: run-codeclimate
+         command: npm run codeclimate
+      - run:
+         name: run-coveralls
+         command: run coveralls
