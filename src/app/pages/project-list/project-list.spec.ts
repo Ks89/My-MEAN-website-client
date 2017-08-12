@@ -10,8 +10,8 @@ import { ProjectListComponent } from './project-list.component';
 import { PROJECTS, FakeProjectService } from '../../shared/testing/fake-project.service.spec';
 import { ProjectService } from '../../core/services/services';
 import { RouterLinkStubDirective, RouterOutletStubComponent, RouterStub } from "../../shared/testing/router-stubs.spec";
-import { SharedModule } from "../../shared/shared.module";
-import { pageNum } from "../../shared/reducers/page-num.reducer";
+import { SharedModule } from '../../shared/shared.module';
+import { mainReducers } from '../../reducers/index';
 
 let comp: ProjectListComponent;
 let fixture: ComponentFixture<ProjectListComponent>;
@@ -25,7 +25,7 @@ function initTestBed() {
   router = new RouterStub();
 
   TestBed.configureTestingModule({
-    imports: [FormsModule, ReactiveFormsModule, SharedModule, NgbModule.forRoot(), StoreModule.provideStore({pageNum: pageNum})],
+    imports: [FormsModule, ReactiveFormsModule, SharedModule, NgbModule.forRoot(), StoreModule.forRoot(mainReducers)],
     declarations: [ ProjectListComponent, RouterLinkStubDirective, RouterOutletStubComponent  ],
     // schemas:      [ NO_ERRORS_SCHEMA ]
   }).overrideComponent(ProjectListComponent, {
