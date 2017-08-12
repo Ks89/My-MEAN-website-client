@@ -2,8 +2,8 @@ language: node_js
 node_js:
   - "7"
 os:
-  - linux # uses precise. I should update this to trusty
-#  - osx
+  - linux
+  - osx
 dist: trusty # to use Ubuntu 14.04
 #osx_image: xcode8.2 # to use macOS Sierra
 sudo: required
