@@ -24,7 +24,6 @@ const BrowserSyncPlugin           = require('browser-sync-webpack-plugin');
 const webpackMerge                = require('webpack-merge');
 const webpackMergeDll             = webpackMerge.strategy({plugins: 'replace'});
 const ExtractTextPlugin           = require('extract-text-webpack-plugin');
-const DllBundlesPlugin            = require('webpack-dll-bundles-plugin').DllBundlesPlugin;
 const AutoDllPlugin               = require('autodll-webpack-plugin');
 
 const commonConfig                = require('./webpack.common');
@@ -119,33 +118,32 @@ module.exports = webpackMerge(commonConfig, {
     }),
     new DefinePlugin({'webpack': {'ENV': JSON.stringify(METADATA.env)}}),
 
-    new DllBundlesPlugin({
-      bundles: {
+    new AutoDllPlugin({
+      debug: true,
+      inject: true,
+      context: __dirname,
+      filename: '[name]_[hash].js',
+      path: helpers.root('dll'),
+      entry: {
         polyfills: [
-          '@angularclass/hmr',
-          'ts-helpers',
-          'zone.js',
           'core-js',
-          'webpack-dev-server',
-          'webpack'
+          'zone.js/dist/zone.js',
+          'zone.js/dist/long-stack-trace-zone'
         ],
         vendor: [
           '@angular/animations',
-          '@angular/common',
-          '@angular/compiler',
-          '@angular/core',
-          '@angular/forms',
-          '@angular/http',
           '@angular/platform-browser',
           '@angular/platform-browser-dynamic',
-          '@angular/platform-server',
+          '@angular/core',
+          '@angular/common',
+          '@angular/forms',
+          '@angular/http',
           '@angular/router',
-          "@angularclass/idle-preload",
           '@angularclass/hmr',
+          '@ngrx/store',
+          '@ngrx/store-devtools',
           'rxjs',
           '@ng-bootstrap/ng-bootstrap',
-          "@ngrx/store",
-          "@ngrx/store-devtools",
           'style-loader',
           'jquery',
           'bootstrap-loader',
@@ -157,54 +155,8 @@ module.exports = webpackMerge(commonConfig, {
           'angular2-cookie-law',
           'tether'
         ]
-      },
-      context: __dirname,
-      dllDir: helpers.root('dll'),
-      webpackConfig: webpackMergeDll(commonConfig, {
-        devtool: 'cheap-module-source-map',
-        plugins: []
-      })
+      }
     }),
-
-    // new AutoDllPlugin({
-    //   debug: true,
-    //   inject: true,
-    //   context: __dirname,
-    //   filename: '[name]_[hash].js',
-    //   path: helpers.root('dll'),
-    //   entry: {
-    //     polyfills: [
-    //       'core-js',
-    //       'zone.js/dist/zone.js',
-    //       'zone.js/dist/long-stack-trace-zone'
-    //     ],
-    //     vendor: [
-    //       '@angular/animations',
-    //       '@angular/platform-browser',
-    //       '@angular/platform-browser-dynamic',
-    //       '@angular/core',
-    //       '@angular/common',
-    //       '@angular/forms',
-    //       '@angular/http',
-    //       '@angular/router',
-    //       '@angularclass/hmr',
-    //       '@ngrx/store',
-    //       '@ngrx/store-devtools',
-    //       'rxjs',
-    //       '@ng-bootstrap/ng-bootstrap',
-    //       'style-loader',
-    //       'jquery',
-    //       'bootstrap-loader',
-    //       'hammerjs',
-    //       'lodash',
-    //       'mousetrap',
-    //       'ng2-validators',
-    //       'reflect-metadata',
-    //       'angular2-cookie-law',
-    //       'tether'
-    //     ]
-    //   }
-    // }),
 
     new BrowserSyncPlugin(
       // BrowserSync options
