@@ -122,7 +122,7 @@ export class AuthService {
       .map(tokenData => {
         console.log('token obtained from redis');
         console.log('sessionToken ', tokenData);
-        if (!tokenData) {
+        if (!tokenData || tokenData === 'null') {
           return 'sessionToken not valid';
         }
 
@@ -181,8 +181,7 @@ export class AuthService {
   // to be able to return the decoded json user
   private getUserFromSessionStorage(key: string): Observable<any> {
     console.log('getUserFromSessionStorage called method');
-    console.log('sessionStorage: ');
-    console.log(this.getToken(key));
+    console.log('sessionStorage ', this.getToken(key));
     const sessionToken = this.getToken(key);
     if (sessionToken) {
       console.log('getUserFromSessionStorage sessionToken ' + sessionToken);

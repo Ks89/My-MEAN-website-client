@@ -102,6 +102,7 @@ describe('Http-ProjectService (mockBackend)', () => {
 
   describe('#getProjectsById()', () => {
     let service: ProjectService;
+    const notEsistingId: string = 'ey7dhef879wgfh8w9e';
 
     beforeEach(inject([HttpClient, HttpTestingController], (http: HttpClient, httpMock: HttpTestingController) => {
       service = new ProjectService(http);
@@ -120,19 +121,19 @@ describe('Http-ProjectService (mockBackend)', () => {
 
     it('should be OK returning no projects (because the requested project doesn\'t exists)', async(inject([HttpClient, HttpTestingController], (http: HttpClient, httpMock: HttpTestingController) => {
       // mockRespByStatusAndBody(backend, 404, { "message": "Project not found" });
-      service.getProjectsById('ey7dhef879wgfh8w9e')
+      service.getProjectsById(notEsistingId)
         .subscribe((project: any) => expect(project).toEqual({"message":"Project not found"}, 'should have no projects'));
-      mock(httpMock, `${URL_API_PROJECTS}/ey7dhef879wgfh8w9e`, 'GET', { "message": "Project not found" });
+      mock(httpMock, `${URL_API_PROJECTS}/${notEsistingId}`, 'GET', { "message": "Project not found" });
     })));
 
-    // it('should catch an Observable error', async(inject([HttpClient, HttpTestingController], (http: HttpClient, httpMock: HttpTestingController) => {
-    //   // mockError(backend);
-    //   service.getProjectsById(PROJECTS[1]._id)
-    //     .subscribe(
-    //       projects => fail(`shouldn't call this, because I'm expecting an error.`),
-    //       err => expect(_.isError(err)).toBeTruthy());
-    //   mockError(httpMock, `${URL_API_PROJECTS}/blabla`, 'GET');
-    // })));
+    it('should catch an Observable error', async(inject([HttpClient, HttpTestingController], (http: HttpClient, httpMock: HttpTestingController) => {
+      // mockError(backend);
+      service.getProjectsById(PROJECTS[1]._id)
+        .subscribe(
+          projects => fail(`shouldn't call this, because I'm expecting an error.`),
+          err => expect(_.isError(err)).toBeTruthy());
+      mockError(httpMock, `${URL_API_PROJECTS}/${PROJECTS[1]._id}`, 'GET');
+    })));
   });
 });
 

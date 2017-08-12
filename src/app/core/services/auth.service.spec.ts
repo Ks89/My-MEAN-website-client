@@ -265,7 +265,7 @@ describe('Http-AuthService (mockBackend)', () => {
   describe('#unlink()', () => {
     let service: AuthService;
     const serviceName: string = 'github';
-
+    const wrongServiceName: string = 'something';
     const UNLINK_RESP_OK: string = "User unlinked correctly!";
 
     beforeEach(inject([HttpClient, HttpTestingController], (http: HttpClient, httpMock: HttpTestingController) => {
@@ -280,19 +280,19 @@ describe('Http-AuthService (mockBackend)', () => {
       mock(httpMock, `${URL_API_UNLINK}/${serviceName}`, 'GET', UNLINK_RESP_OK);
     })));
 
-    // it('should catch an Observable error', async(inject([HttpClient, HttpTestingController], (http: HttpClient, httpMock: HttpTestingController) => {
-    //   service.unlink('something')
-    //     .subscribe(
-    //       projects => fail(`shouldn't call this, because I'm expecting an error.`),
-    //       err => expect(_.isError(err)).toBeTruthy());
-    //   mockError(httpMock, `${URL_API_UNLINK}/${serviceName}`, 'GET');
-    // })));
+    it('should catch an Observable error', async(inject([HttpClient, HttpTestingController], (http: HttpClient, httpMock: HttpTestingController) => {
+      service.unlink(wrongServiceName)
+        .subscribe(
+          projects => fail(`shouldn't call this, because I'm expecting an error.`),
+          err => expect(_.isError(err)).toBeTruthy());
+      mockError(httpMock, `${URL_API_UNLINK}/${wrongServiceName}`, 'GET');
+    })));
   });
 
   describe('#getUserById()', () => {
     let service: AuthService;
     const validId: string = 'validId';
-
+    const wrongServiceName: string = 'something';
     const GET_USER_BY_ID_RESP_OK: any = {
       '_id':'validId',
       'profile':{
@@ -324,13 +324,13 @@ describe('Http-AuthService (mockBackend)', () => {
       mock(httpMock, `${URL_API_USERS}/${validId}`, 'GET', GET_USER_BY_ID_RESP_OK);
     })));
 
-    // it('should catch an Observable error', async(inject([HttpClient, HttpTestingController], (http: HttpClient, httpMock: HttpTestingController) => {
-    //   service.getUserById('something')
-    //     .subscribe(
-    //       projects => fail(`shouldn't call this, because I'm expecting an error.`),
-    //       err => expect(_.isError(err)).toBeTruthy());
-    //   mockError(httpMock, `${URL_API_USERS}/${validId}`, 'GET');
-    // })));
+    it('should catch an Observable error', async(inject([HttpClient, HttpTestingController], (http: HttpClient, httpMock: HttpTestingController) => {
+      service.getUserById(wrongServiceName)
+        .subscribe(
+          projects => fail(`shouldn't call this, because I'm expecting an error.`),
+          err => expect(_.isError(err)).toBeTruthy());
+      mockError(httpMock, `${URL_API_USERS}/${wrongServiceName}`, 'GET');
+    })));
   });
 
   describe('#logout()', () => {
@@ -365,7 +365,6 @@ describe('Http-AuthService (mockBackend)', () => {
 
   describe('#getTokenRedis()', () => {
     let service: AuthService;
-
     const GET_TOKEN_REDIS_RESP_OK: Object = { token: JWT_TOKEN };
 
     beforeEach(inject([HttpClient, HttpTestingController], (http: HttpClient, httpMock: HttpTestingController) => {
@@ -381,13 +380,13 @@ describe('Http-AuthService (mockBackend)', () => {
       mock(httpMock, URL_API_SESSION_TOKEN, 'GET', GET_TOKEN_REDIS_RESP_OK);
     })));
 
-  //   it('should catch an Observable error', async(inject([HttpClient, HttpTestingController], (http: HttpClient, httpMock: HttpTestingController) => {
-  //     service.getTokenRedis()
-  //       .subscribe(
-  //         projects => fail(`shouldn't call this, because I'm expecting an error.`),
-  //         err => expect(_.isError(err)).toBeTruthy());
-  //     mockError(httpMock, URL_API_SESSION_TOKEN, 'GET');
-  //   })));
+    it('should catch an Observable error', async(inject([HttpClient, HttpTestingController], (http: HttpClient, httpMock: HttpTestingController) => {
+      service.getTokenRedis()
+        .subscribe(
+          projects => fail(`shouldn't call this, because I'm expecting an error.`),
+          err => expect(_.isError(err)).toBeTruthy());
+      mockError(httpMock, URL_API_SESSION_TOKEN, 'GET');
+    })));
   });
 
   describe('#saveToken(), #getToken(), #removeToken()', () => {
@@ -431,8 +430,8 @@ describe('Http-AuthService (mockBackend)', () => {
   });
 
   describe('#decodeJwtToken()', () => {
-    let backend: HttpTestingController;
     let service: AuthService;
+    const wrongServiceName: string = 'something';
 
     const TOKEN_NOT_VALID: Object = {"message":"Jwt not valid or corrupted"};
     const TOKEN_EXPIRED: Object = {"message":"Token Session expired (date)."};
@@ -495,13 +494,13 @@ describe('Http-AuthService (mockBackend)', () => {
       mock(httpMock, `${URL_API_DECODE_TOKEN}/${JWT_TOKEN}`, 'GET', TOKEN_NOT_CHECKABLE);
     })));
 
-    // it('should catch an Observable error', async(inject([HttpClient, HttpTestingController], (http: HttpClient, httpMock: HttpTestingController) => {
-    //   mockError(backend);
-    //   service.decodeJwtToken('something')
-  //       .subscribe(
-  //         projects => fail(`shouldn't call this, because I'm expecting an error.`),
-  //         err => expect(_.isError(err)).toBeTruthy());
-  //   })));
+    it('should catch an Observable error', async(inject([HttpClient, HttpTestingController], (http: HttpClient, httpMock: HttpTestingController) => {
+      service.decodeJwtToken(wrongServiceName)
+        .subscribe(
+          projects => fail(`shouldn't call this, because I'm expecting an error.`),
+          err => expect(_.isError(err)).toBeTruthy());
+      mockError(httpMock, `${URL_API_DECODE_TOKEN}/${wrongServiceName}`, 'GET');
+    })));
   });
 
   describe('#post3dAuthAfterCallback()', () => {
@@ -534,21 +533,20 @@ describe('Http-AuthService (mockBackend)', () => {
       mock(httpMock, URL_API_SESSION_TOKEN, 'GET', {});
     })));
 
-    // FIXME NOT WORKING WITH "NULL" USING HTTPCLIENT
-    // it('should NOT OK (not valid), but with status 200', async(inject([HttpClient, HttpTestingController], (http: HttpClient, httpMock: HttpTestingController) => {
-    //   // mockRespByStatusAndBody(backend, 200, null);
-    //   service.post3dAuthAfterCallback()
-    //     .subscribe(resp => expect(resp).toEqual(TOKEN_NOT_VALID));
-    //   mock(httpMock, URL_API_SESSION_TOKEN, 'GET', null);
-    // })));
+    it('should NOT OK (not valid), but with status 200', async(inject([HttpClient, HttpTestingController], (http: HttpClient, httpMock: HttpTestingController) => {
+      // mockRespByStatusAndBody(backend, 200, null);
+      service.post3dAuthAfterCallback()
+        .subscribe(resp => expect(resp).toEqual(TOKEN_NOT_VALID));
+      mock(httpMock, URL_API_SESSION_TOKEN, 'GET', null);
+    })));
 
-    // it('should catch an Observable error', async(inject([HttpClient, HttpTestingController], (http: HttpClient, httpMock: HttpTestingController) => {
-    //   mockError(backend);
-    //   service.post3dAuthAfterCallback()
-    //     .subscribe(
-    //       projects => fail(`shouldn't call this, because I'm expecting an error.`),
-    //       err => expect(_.isError(err)).toBeTruthy());
-    // })));
+    it('should catch an Observable error', async(inject([HttpClient, HttpTestingController], (http: HttpClient, httpMock: HttpTestingController) => {
+      service.post3dAuthAfterCallback()
+        .subscribe(
+          projects => fail(`shouldn't call this, because I'm expecting an error.`),
+          err => expect(_.isError(err)).toBeTruthy());
+      mockError(httpMock, URL_API_SESSION_TOKEN, 'GET');
+    })));
   });
 
 
@@ -585,46 +583,42 @@ describe('Http-AuthService (mockBackend)', () => {
       window.sessionStorage.setItem('auth', JWT_TOKEN);
       service.getLoggedUser()
         .subscribe(resp => {
-          console.log("^^^^^^^^^^^^^^^^^^");
           console.warn(resp);
-          console.log("^^^^^^^^^^^^^^^^^^");
           expect(resp).toEqual(JWT_MOCK.user);
         });
       mock(httpMock, `${URL_API_DECODE_TOKEN}/${JWT_TOKEN}`, 'GET', JWT_MOCK);
     })));
 
-    // FIXME NOT WORKING WITH "NULL" USING HTTPCLIENT
-    // it('should NOT OK (res null), but with status 200', async(inject([HttpClient, HttpTestingController], (http: HttpClient, httpMock: HttpTestingController) => {
-    //   // mockRespByStatusAndBody(backend, 200, null);
-    //   service.getLoggedUser()
-    //     .subscribe(resp => {
-    //       expect(resp).toEqual(INVALID_DATA);
-    //       expect(service.getToken('auth')).toBeUndefined();
-    //     });
-    //   mock(httpMock, `${URL_API_DECODE_TOKEN}/${JWT_TOKEN}`, 'GET', null);
-    // })));
+    it('should NOT OK (res null), but with status 200', async(inject([HttpClient, HttpTestingController], (http: HttpClient, httpMock: HttpTestingController) => {
+      // mockRespByStatusAndBody(backend, 200, null);
+      service.getLoggedUser()
+        .subscribe(resp => {
+          expect(resp).toEqual(INVALID_DATA);
+          expect(service.getToken('auth')).toBeUndefined();
+        });
+      httpMock.expectNone(`${URL_API_DECODE_TOKEN}/${JWT_TOKEN}`);
+    })));
 
-    // it(`should NOT OK (res is 'invalid-data'), but with status 200`, async(inject([HttpClient, HttpTestingController], (http: HttpClient, httpMock: HttpTestingController) => {
-    //   // mockRespByStatusAndBody(backend, 200, 'invalid-data');
-    //   service.getLoggedUser()
-    //     .subscribe(resp => {
-    //       expect(resp).toEqual(INVALID_DATA);
-    //       expect(service.getToken('auth')).toBeUndefined();
-    //     });
-    //   mock(httpMock, `${URL_API_DECODE_TOKEN}/${JWT_TOKEN}`, 'GET', 'invalid-data');
-    // })));
+    it(`should NOT OK (res is 'invalid-data'), but with status 200`, async(inject([HttpClient, HttpTestingController], (http: HttpClient, httpMock: HttpTestingController) => {
+      service.getLoggedUser()
+        .subscribe(resp => {
+          expect(resp).toEqual(INVALID_DATA);
+          expect(service.getToken('auth')).toBeUndefined();
+        });
+      httpMock.expectNone(`${URL_API_DECODE_TOKEN}/${JWT_TOKEN}`);
+    })));
 
-    // it('should catch an Observable error', async(inject([HttpClient, HttpTestingController], (http: HttpClient, httpMock: HttpTestingController) => {
-    //   mockError(backend);
-    //   // Since I'm using a service with another service inside that uses session storage I have to provide
-    //   // a fake element into session storage with key = 'auth'
-    //   // TODO FIXME - it's ok (because I'm testing getLoggedUser not the inner methods), but it could be a good idea to refactor getLoggedUser and getUserFromSessionStorage
-    //   window.sessionStorage.setItem('auth', JWT_TOKEN);
-    //   service.getLoggedUser()
-    //     .subscribe(
-    //       projects => fail(`shouldn't call this, because I'm expecting an error.`),
-    //       err => expect(_.isError(err)).toBeTruthy());
-    // })));
+    it('should catch an Observable error', async(inject([HttpClient, HttpTestingController], (http: HttpClient, httpMock: HttpTestingController) => {
+      // Since I'm using a service with another service inside that uses session storage I have to provide
+      // a fake element into session storage with key = 'auth'
+      // TODO FIXME - it's ok (because I'm testing getLoggedUser not the inner methods), but it could be a good idea to refactor getLoggedUser and getUserFromSessionStorage
+      window.sessionStorage.setItem('auth', JWT_TOKEN);
+      service.getLoggedUser()
+        .subscribe(
+          projects => fail(`shouldn't call this, because I'm expecting an error.`),
+          err => expect(_.isError(err)).toBeTruthy());
+      mockError(httpMock, `${URL_API_DECODE_TOKEN}/${JWT_TOKEN}`, 'GET');
+    })));
   });
 
 });
