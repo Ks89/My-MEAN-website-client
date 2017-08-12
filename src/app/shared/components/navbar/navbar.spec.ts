@@ -88,7 +88,7 @@ describe('NavbarComponent', () => {
 
         const navLinks: DebugElement[] = element.queryAll(By.css('a.nav-link'));
         expect(navLinks.length).toBe(6);
-        expect(navLinks[0].nativeElement.textContent.trim()).toBe('Projects (current)');
+        expect(navLinks[0].nativeElement.textContent.trim()).toBe('Projects');
         expect(navLinks[1].nativeElement.textContent.trim()).toBe('CV');
         expect(navLinks[2].nativeElement.textContent.trim()).toBe('Contact');
         expect(navLinks[3].nativeElement.textContent.trim()).toBe('About');
@@ -149,11 +149,11 @@ describe('NavbarComponent', () => {
 
         const navLinks: DebugElement[] = element.queryAll(By.css('a.nav-link'));
         expect(navLinks.length).toBe(5);
-        expect(navLinks[0].nativeElement.textContent.trim()).toBe('Projects (current)');
+        expect(navLinks[0].nativeElement.textContent.trim()).toBe('Projects');
         expect(navLinks[1].nativeElement.textContent.trim()).toBe('CV');
         expect(navLinks[2].nativeElement.textContent.trim()).toBe('Contact');
         expect(navLinks[3].nativeElement.textContent.trim()).toBe('About');
-        expect(navLinks[4].nativeElement.textContent.trim()).toBe('Sign in');
+        expect(navLinks[4].nativeElement.textContent.trim()).toBe('Login');
       });
 
       it('can get RouterLinks from template, when user is NOT logged in', () => {

@@ -1,51 +1,58 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { Http, Headers, RequestOptions } from '@angular/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
 
-@Injectable()
+export const URL_API_LOGIN: string = '/api/login';
+export const URL_API_REGISTER: string = '/api/register';
+export const URL_API_RESET: string = '/api/resetNewPassword';
+export const URL_API_FORGOT: string = '/api/reset';
+export const URL_API_ACTIVATE: string = '/api/activateAccount';
+export const URL_API_UNLINK: string = '/api/unlink';
+export const URL_API_USERS: string = '/api/users';
+export const URL_API_LOGOUT: string = '/api/logout';
+export const URL_API_SESSION_TOKEN: string = '/api/sessionToken';
+export const URL_API_DECODE_TOKEN: string = '/api/decodeToken';
+
+  @Injectable()
 export class AuthService {
   public loginEvent: EventEmitter<any> = new EventEmitter();
 
-  private headers = new Headers({'Content-Type': 'application/json'});
-  private options = new RequestOptions({headers: this.headers});
-
-  constructor(private http: Http) {}
+  constructor(private httpClient: HttpClient) {}
 
   // ----------------------------------------------------------
   // ------------------ local authentication ------------------
   // ----------------------------------------------------------
 
   login(user: any): Observable<any> {
-    return this.http.post('/api/login', user, this.options)
+    return this.httpClient.post(URL_API_LOGIN, user)
       .map(response => {
         console.log(response);
-        if (!response || !response.json()) {
+        if (!response) {
           return Observable.throw(new Error('response body is empty'));
           // return this.handleError('response body is empty');
         } else {
-          this.saveToken('auth', response.json().token);
-          return response.json();
+          this.saveToken('auth', response['token']);
+          return response;
         }
-      }).catch(error => {
+      }).catch((error: HttpErrorResponse) => {
         this.removeToken('auth');
-        return this.handleError(error);
+        return Observable.throw(error.error);
       });
   }
 
   register(user: any): Observable<any> {
-    return this.http.post('/api/register', user, this.options)
+    return this.httpClient.post(URL_API_REGISTER, user)
       .map(response => {
         console.log('Done register, response is:');
         console.log(response);
         return response;
-      }).catch(error => {
+      }).catch((error: HttpErrorResponse) => {
         this.removeToken('auth');
-        return this.handleError(error);
+        return Observable.throw(error.error);
       });
-
   }
 
   reset(emailToken: any, newPassword: any): Observable<any> {
@@ -53,17 +60,15 @@ export class AuthService {
       newPassword: newPassword,
       emailToken: emailToken
     };
-    return this.http.post('/api/resetNewPassword', data, this.options)
+    return this.httpClient.post(URL_API_RESET, data)
       .map(response => {
         this.removeToken('auth'); // TODO check if it's correct to remove or I have to save it
-        return response.json();
-      }).catch(this.handleError);
+        return response;
+      });
   }
 
   forgot(email: any): Observable<any> {
-    return this.http.post('/api/reset', {email: email}, this.options)
-      .map(response => response.json())
-      .catch(this.handleError);
+    return this.httpClient.post(URL_API_FORGOT, {email: email});
   }
 
   activate(emailToken: string, userName: string): Observable<any> {
@@ -71,53 +76,42 @@ export class AuthService {
       emailToken: emailToken,
       userName: userName
     };
-    return this.http.post('/api/activateAccount', data, this.options)
-      .map(response => response.json())
-      .catch(this.handleError);
+    return this.httpClient.post(URL_API_ACTIVATE, data);
   }
 
   unlink(serviceName: string): Observable<any> {
     console.log('Called unlink ' + serviceName);
-    return this.http.get(`/api/unlink/${serviceName}`)
-      .catch(this.handleError);
-  };
+    return this.httpClient.get(`${URL_API_UNLINK}/${serviceName}`);
+  }
 
   // ---------------------------------------
   // --- local and 3dauth authentication ---
   // ---------------------------------------
   // function to call the /users/:id REST API
   getUserById(id: string): Observable<any> {
-    return this.http.get(`/api/users/${id}`)
-      .map(response => response.json())
-      .catch(this.handleError);
-  };
+    return this.httpClient.get(`${URL_API_USERS}/${id}`);
+  }
 
   logout(): Observable<any> {
     console.log('Called authentication logout');
     this.removeToken('auth');
 
     // call REST service to remove session data from redis
-    return this.http.get('/api/logout')
-      .map(response => response.json())
-      .catch(this.handleError);
+    return this.httpClient.get(URL_API_LOGOUT);
   }
 
   saveToken(key: any, token: any) {
     console.log('saving token with key: ' + key);
     window.sessionStorage.setItem(key, token);
-  };
+  }
 
   getTokenRedis(): Observable<any> {
-    return this.http.get('/api/sessionToken')
-      .map(response => response.json())
-      .catch(this.handleError);
+    return this.httpClient.get(URL_API_SESSION_TOKEN);
   }
 
   decodeJwtToken(jwtToken: string): Observable<any> {
     // TODO add an if (jwtToken) or something like that
-    return this.http.get(`/api/decodeToken/${jwtToken}`)
-      .map(response => response.json())
-      .catch(this.handleError);
+    return this.httpClient.get(`${URL_API_DECODE_TOKEN}/${jwtToken}`);
   }
 
   // For 3dauth I must save the auth token, before that I can call isLoggedIn.
@@ -127,24 +121,20 @@ export class AuthService {
     return this.getTokenRedis()
       .map(tokenData => {
         console.log('token obtained from redis');
-        console.log('sessionToken ');
-        console.log(tokenData);
+        console.log('sessionToken ', tokenData);
         if (!tokenData) {
           return 'sessionToken not valid';
         }
 
-        // FIXME this could be a bug because in unit-test I have to stringify two times. Why?
-        const tokenObj = JSON.parse(tokenData);
-        console.log('tokenobj: ' + tokenObj);
-        if (tokenObj && tokenObj.token) {
-          console.log('real token is: ' + tokenObj.token);
-          this.saveToken('auth', tokenObj.token);
-          return tokenObj.token;
+        console.log('tokenData ', tokenData);
+        if (tokenData && tokenData.token) {
+          console.log('real token is ', tokenData.token);
+          this.saveToken('auth', tokenData.token);
+          return tokenData.token;
         } else {
           return 'sessionToken not valid. Cannot obtain token';
         }
-      })
-      .catch(this.handleError);
+      });
   }
 
   // Used to know if you are logged in or not
@@ -162,14 +152,12 @@ export class AuthService {
           return 'INVALID DATA';
         } else {
           console.log('getLoggedUser valid');
-          const userData = JSON.parse(res);
-          console.log(userData);
-          const user = userData.user;
+          console.log(res);
+          const user = res.user;
           console.log(user);
           return user;
         }
-      })
-      .catch(this.handleError);
+      });
   }
 
   // -----------------------------------
@@ -204,16 +192,6 @@ export class AuthService {
       // FIXME find a better solution
       return Observable.of(null);
     }
-  }
-
-  private handleError(error: any) {
-    // TODO add remote logging infrastructure
-    let message: string;
-    if(error && error._body) {
-      message = JSON.parse(error._body).message;
-    }
-    console.error(message); // log to console instead
-    return Observable.throw(new Error(message));
   }
 }
 

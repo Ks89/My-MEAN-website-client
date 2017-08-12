@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
+
+export const URL_API_PROJECTS: string = '/api/projects';
+export const URL_API_PROJECTHOME: string = '/api/projecthome';
 
 export class ProjectHomeView {
   constructor(
@@ -62,34 +65,17 @@ export class Project {
 
 @Injectable()
 export class ProjectService {
-  constructor(private http: Http) {}
+  constructor(private httpClient: HttpClient) {}
 
   getProjects(): Observable<Project[]> {
-    return this.http.get('/api/projects')
-      .map(response => response.json())
-      .catch(this.handleError);
+    return this.httpClient.get<Project[]>(URL_API_PROJECTS);
   }
 
   getProjectsById(projectid: string): Observable<Project> {
-    return this.http.get(`/api/projects/${projectid}`)
-      .map(response => response.json())
-      .catch(this.handleError);
+    return this.httpClient.get<Project>(`${URL_API_PROJECTS}/${projectid}`);
   }
 
   getProjectsForHomepage(): Observable<Project[]> {
-    return this.http.get('/api/projecthome')
-      .map(response => response.json())
-      .catch(this.handleError);
+    return this.httpClient.get<Project[]>(URL_API_PROJECTHOME);
   }
-
-  private handleError(error: any) {
-    // TODO add remote logging infrastructure
-    let message: string;
-    if(error && error._body) {
-      message = JSON.parse(error._body).message;
-    }
-    console.error(message); // log to console instead
-    return Observable.throw(new Error(message));
-  }
-
 }

@@ -66,7 +66,7 @@ export class LoginComponent {
             this.router.navigate(['/profile']);
           },
           err => {
-            console.error(err);
+            console.error('login error while getting user', err);
             this.loginAlert = {
               visible: true,
               status: 'danger',
@@ -80,7 +80,7 @@ export class LoginComponent {
         );
       },
       err => {
-        console.error(err);
+        console.error('login error', err);
         this.loginAlert = {
           visible: true,
           status: 'danger',

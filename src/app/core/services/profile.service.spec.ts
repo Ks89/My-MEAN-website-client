@@ -1,9 +1,11 @@
 import * as _ from "lodash";
 import { async, inject, TestBed } from '@angular/core/testing';
-import { MockBackend, MockConnection } from '@angular/http/testing';
-import { HttpModule, Http, XHRBackend, Response, ResponseOptions } from '@angular/http';
+import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
+import { HttpClient } from "@angular/common/http";
 
-import { Response as ProfileResponse, ProfileService } from './profile.service';
+import { Response as ProfileResponse, ProfileService, URL_API_PROFILE } from './profile.service';
+
+const MOCK_GENERIC_ERROREVENT: ErrorEvent = new ErrorEvent('Error');
 
 const PROFILE_UPDATE_REQUEST: any = {
   "localUserEmail": "",
@@ -23,8 +25,8 @@ describe('Http-ProfileService (mockBackend)', () => {
 
   beforeEach( async(() => {
     TestBed.configureTestingModule({
-      imports: [ HttpModule ],
-      providers: [ ProfileService, { provide: XHRBackend, useClass: MockBackend }]
+      imports: [ HttpClientTestingModule ],
+      providers: [ ProfileService ]
     });
   }));
 
@@ -33,52 +35,54 @@ describe('Http-ProfileService (mockBackend)', () => {
       expect(service instanceof ProfileService).toBe(true);
   }));
 
-  it('can instantiate service with "new"', inject([Http], (http: Http) => {
+  it('can instantiate service with "new"', inject([HttpClient, HttpTestingController], (http: HttpClient, httpMock: HttpTestingController) => {
     expect(http).not.toBeNull('http should be provided');
     let service = new ProfileService(http);
     expect(service instanceof ProfileService).toBe(true, 'new service should be ok');
   }));
 
-  it('can provide the mockBackend as XHRBackend', inject([XHRBackend], (backend: MockBackend) => {
-      expect(backend).not.toBeNull('backend should be provided');
+  it('can provide the mockBackend as XHRBackend', inject([HttpClient, HttpTestingController], (http: HttpClient, httpMock: HttpTestingController) => {
+    expect(httpMock).not.toBeNull('httpMock should be provided');
   }));
 
   describe('#update()', () => {
-    let backend: MockBackend;
     let service: ProfileService;
 
-    beforeEach(inject([Http, XHRBackend], (http: Http, be: MockBackend) => {
-      backend = be;
+    beforeEach(inject([HttpClient, HttpTestingController], (http: HttpClient, httpMock: HttpTestingController) => {
       service = new ProfileService(http);
     }));
 
-    it('should have expected the fake profile response', async(inject([], () => {
-      mockRespByStatusAndBody(backend, 200, PROFILE_UPDATE_SUCCESS);
+    it('should have expected the fake profile response', async(inject([HttpClient, HttpTestingController], (http: HttpClient, httpMock: HttpTestingController) => {
+      // mockRespByStatusAndBody(backend, 200, PROFILE_UPDATE_SUCCESS);
       service.update(PROFILE_UPDATE_REQUEST)
         .subscribe(response => expect(response).toEqual(PROFILE_UPDATE_SUCCESS, 'should be a success'));
+      mock(httpMock, URL_API_PROFILE, 'POST', PROFILE_UPDATE_SUCCESS);
     })));
 
-    it('should catch an Observable error', async(inject([], () => {
-      mockError(backend);
+    it('should catch an Observable error', async(inject([HttpClient, HttpTestingController], (http: HttpClient, httpMock: HttpTestingController) => {
       service.update(PROFILE_UPDATE_REQUEST)
         .subscribe(
           projects => fail(`shouldn't call this, because I'm expecting an error.`),
           err => expect(_.isError(err)).toBeTruthy());
+      mockError(httpMock, URL_API_PROFILE, 'POST');
     })));
   });
 });
 
-function mockRespByStatusAndBody(backend: MockBackend, status: number, body?: any) {
-  let data;
-  if(body !== undefined) {
-    data = {status: status, body: body};
-  } else {
-    data = {status: status};
-  }
-  let resp = new Response(new ResponseOptions(data));
-  backend.connections.subscribe((c: MockConnection) => c.mockRespond(resp));
+function mock(httpMock: HttpTestingController, url: string, type: string, response: any) {
+  // At this point, the request is pending, and no response has been
+  // sent. The next step is to expect that the request happened.
+  const req: TestRequest = httpMock.expectOne(url);
+  expect(req.request.method).toEqual(type);
+  // Next, fulfill the request by transmitting a response.
+  req.flush(response); // , { status: 400, statusText: 'Bad Request' });
 }
 
-function mockError(backend: MockBackend) {
-  backend.connections.subscribe((c: MockConnection) => c.mockError(new Error()));
+function mockError(httpMock: HttpTestingController, url: string, type: string, errorEvent: ErrorEvent = MOCK_GENERIC_ERROREVENT) {
+  // At this point, the request is pending, and no response has been
+  // sent. The next step is to expect that the request happened.
+  const req: TestRequest = httpMock.expectOne(url);
+  expect(req.request.method).toEqual(type);
+  // Next, fulfill the request by transmitting a response.
+  req.error(errorEvent);
 }

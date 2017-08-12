@@ -2,7 +2,7 @@ import { NgModule, ApplicationRef } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { ROUTES }  from './admin.routing';
 
 // Third party opensource libraries (that are using scss/css)
@@ -29,7 +29,7 @@ import { RouterModule, PreloadAllModules } from '@angular/router';
     IdlePreloadModule.forRoot(), // forRoot ensures the providers are only created once
     BrowserModule,
     BrowserAnimationsModule,
-    HttpModule,
+    HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
     NgbModule.forRoot(),

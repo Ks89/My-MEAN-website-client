@@ -227,7 +227,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
               console.log(res);
               this.authService.loginEvent.emit(null);
             },
-            err => console.error('Impossible to either unlink or logout: ' + err),
+            err => console.error('Impossible to either unlink or logout', err),
             () => {
               console.log('Last unlink - both unlink and logout completed');
               this.router.navigate(['/']);
