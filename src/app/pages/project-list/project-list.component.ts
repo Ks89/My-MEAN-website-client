@@ -1,10 +1,12 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Subscription } from "rxjs/Subscription";
-import { Store } from "@ngrx/store";
+import { Store } from '@ngrx/store';
 import * as _ from 'lodash';
+import { Observable } from 'rxjs/Observable';
 
 import { Project, ProjectService } from '../../core/services/services';
-import { SET_PAGE } from "../../shared/reducers/page-num.reducer";
+import * as fromRoot from '../../core/reducers/hello-example';
+import * as example from '../../core/actions/hello-example';
 
 @Component({
   selector: 'mmw-project-list-page',
@@ -25,9 +27,12 @@ export class ProjectListComponent implements OnDestroy {
   elementsPerPage = 3;
   totalNumElements = 0;
 
+  helloExample$: Observable<string>;
+
   private subscription: Subscription;
 
-  constructor(private pageStore: Store<number>, private projectService: ProjectService) {
+  constructor(private store: Store<fromRoot.State>,
+              private projectService: ProjectService) {
     this.subscription = this.projectService.getProjects().subscribe((values: Project[]) => {
       this.fullProjects = values;
       this.originalProjects = values;
@@ -35,9 +40,10 @@ export class ProjectListComponent implements OnDestroy {
       this.visibleProjects = values.slice(this.page - 1, this.elementsPerPage);
     });
 
-    this.pageStore.select('pageNum').subscribe(val => {
-      this.page = +val;
-    });
+    this.helloExample$ = this.store.select(fromRoot.getHelloExample);
+    // 'pageNum').subscribe(val => {
+    //   this.page = +val;
+    // });
 
     this.pageHeader = {
       title: 'Projects',
@@ -99,7 +105,8 @@ export class ProjectListComponent implements OnDestroy {
     let startindex: number = (this.page - 1) * this.elementsPerPage;
     let endIndex: number = Math.min((this.page * this.elementsPerPage), this.totalNumElements);
     this.visibleProjects = this.fullProjects.slice(startindex, endIndex);
-    this.pageStore.dispatch({type: SET_PAGE, payload: this.page});
+    // this.pageStore.dispatch({type: SET_PAGE, payload: this.page});
+    this.store.dispatch(new example.SayHelloAction());
   }
 
   ngOnDestroy() {

@@ -25,10 +25,10 @@ import { LaddaModule } from 'angular2-ladda';
 import { removeNgStyles, createNewHosts, createInputTransfer } from '@angularclass/hmr';
 import { IdlePreloadModule } from '@angularclass/idle-preload';
 import { RouterModule, PreloadAllModules } from '@angular/router';
-import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { StoreModule } from "@ngrx/store";
 
-import { pageNum } from "./shared/reducers/page-num.reducer";
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { mainReducers } from './reducers/index';
 
 @NgModule({
   imports: [
@@ -42,16 +42,30 @@ import { pageNum } from "./shared/reducers/page-num.reducer";
     RouterModule.forRoot(ROUTES, { useHash: false, preloadingStrategy: PreloadAllModules }),
     SharedModule,
     CoreModule,
-    Ng2PageScrollModule.forRoot(),
+    Ng2PageScrollModule,
     ModalGalleryModule.forRoot(),
     LaddaModule,
     ReCaptchaModule,
 
-    StoreModule.provideStore({
-      pageNum: pageNum
-    }),
+    /**
+     * StoreModule.forRoot is imported once in the root module, accepting a reducer
+     * function or object map of reducer functions. If passed an object of
+     * mainReducers, combineReducers will be run creating your application
+     * meta-reducer. This returns all providers for an @ngrx/store
+     * based application.
+     * TODO: find a way to add also developmentReducerFactory without breaking AOT
+     */
+    StoreModule.forRoot(mainReducers),
 
-    StoreDevtoolsModule.instrumentOnlyWithExtension(),
+    /**
+     * Store devtools instrument the store retaining past versions of state
+     * and recalculating new states. This enables powerful time-travel
+     * debugging.
+     * To use the debugger, install the Redux Devtools extension for either
+     * Chrome or Firefox
+     * See: https://github.com/zalmoxisus/redux-devtools-extension
+     */
+    webpack.ENV !== 'production' ? StoreDevtoolsModule.instrument() : []
   ],
   declarations: [
     AppComponent,
