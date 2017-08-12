@@ -25,6 +25,7 @@ const webpackMerge                = require('webpack-merge');
 const webpackMergeDll             = webpackMerge.strategy({plugins: 'replace'});
 const ExtractTextPlugin           = require('extract-text-webpack-plugin');
 const DllBundlesPlugin            = require('webpack-dll-bundles-plugin').DllBundlesPlugin;
+const AutoDllPlugin               = require('autodll-webpack-plugin');
 
 const commonConfig                = require('./webpack.common');
 const helpers                     = require('./helpers');
@@ -153,6 +154,7 @@ module.exports = webpackMerge(commonConfig, {
           'mousetrap',
           'ng2-validators',
           'reflect-metadata',
+          'angular2-cookie-law',
           'tether'
         ]
       },
@@ -167,9 +169,9 @@ module.exports = webpackMerge(commonConfig, {
     // new AutoDllPlugin({
     //   debug: true,
     //   inject: true,
-    //   context: helpers.root(),
+    //   context: __dirname,
     //   filename: '[name]_[hash].js',
-    //   path: './dll',
+    //   path: helpers.root('dll'),
     //   entry: {
     //     polyfills: [
     //       'core-js',
@@ -177,26 +179,28 @@ module.exports = webpackMerge(commonConfig, {
     //       'zone.js/dist/long-stack-trace-zone'
     //     ],
     //     vendor: [
+    //       '@angular/animations',
     //       '@angular/platform-browser',
     //       '@angular/platform-browser-dynamic',
     //       '@angular/core',
     //       '@angular/common',
-    //       // '@angular/compiler',
     //       '@angular/forms',
     //       '@angular/http',
     //       '@angular/router',
-    //       // "@angularclass/idle-preload",
     //       '@angularclass/hmr',
+    //       '@ngrx/store',
+    //       '@ngrx/store-devtools',
     //       'rxjs',
     //       '@ng-bootstrap/ng-bootstrap',
-    //       // 'style-loader',
-    //       // 'jquery',
+    //       'style-loader',
+    //       'jquery',
     //       'bootstrap-loader',
     //       'hammerjs',
     //       'lodash',
     //       'mousetrap',
     //       'ng2-validators',
     //       'reflect-metadata',
+    //       'angular2-cookie-law',
     //       'tether'
     //     ]
     //   }

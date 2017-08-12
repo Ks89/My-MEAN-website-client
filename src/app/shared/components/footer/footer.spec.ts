@@ -17,8 +17,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By }              from '@angular/platform-browser';
 import { DebugElement }    from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { FooterComponent } from './footer.component';
+
+import { CookieLawModule } from 'angular2-cookie-law';
 
 let comp:    FooterComponent;
 let fixture: ComponentFixture<FooterComponent>;
@@ -27,6 +30,7 @@ let displayedText: DebugElement;
 describe('FooterComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [ CookieLawModule, BrowserAnimationsModule ],
       declarations: [ FooterComponent ]
     }); // not necessary with webpack .compileComponents();
 
