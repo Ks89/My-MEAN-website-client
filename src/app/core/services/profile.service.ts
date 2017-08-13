@@ -17,6 +17,6 @@ export class ProfileService {
 
   update(profile: any): Observable<Response> {
 
-    return this.httpClient.post(URL_API_PROFILE, profile);
+    return this.httpClient.post<Response>(URL_API_PROFILE, profile);
   }
 }
