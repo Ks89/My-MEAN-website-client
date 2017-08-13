@@ -32,12 +32,12 @@ let fixture: ComponentFixture<CarouselComponent>;
 function initTestBed() {
   TestBed.configureTestingModule({
     imports: [FormsModule, ReactiveFormsModule, NgbModule.forRoot()],
-    declarations: [ CarouselComponent ],
+    declarations: [CarouselComponent],
     // schemas:      [ NO_ERRORS_SCHEMA ]
   }).overrideComponent(CarouselComponent, {
     set: {
       providers: [
-        { provide: ProjectService, useClass: FakeProjectService }
+        {provide: ProjectService, useClass: FakeProjectService}
       ]
     }
   }); // not necessary with webpack .compileComponents();
@@ -46,42 +46,47 @@ function initTestBed() {
   comp = fixture.componentInstance; // CarouselComponent test instance
 
   fixture.detectChanges();
-  return fixture.whenStable().then(() => fixture.detectChanges());
+  // return fixture.whenStable().then(() => fixture.detectChanges()); // not working with this. why????
 }
 
 describe('CarouselComponent', () => {
   beforeEach(() => initTestBed());
 
-  // it('can instantiate it', () => expect(comp).not.toBeNull());
-  //
-  // describe('---YES---', () => {
-  //
-  //   beforeEach(() => fixture.detectChanges());
-  //
-  //   it('can display the carousel component', () => {
-  //     const element: DebugElement = fixture.debugElement;
-  //
-  //     // FIXME these tests are failing only on CIs, but not locally. Why?!
-  //
-  //     const carouselTitles: DebugElement[] = element.queryAll(By.css('h3'));
-  //     // expect(carouselTitles.length).toBe(PROJECTS.length);
-  //     // expect(carouselTitles[0].nativeElement.textContent.trim()).toBe(PROJECTS[0].name);
-  //     // expect(carouselTitles[1].nativeElement.textContent.trim()).toBe(PROJECTS[1].name);
-  //     // expect(carouselTitles[2].nativeElement.textContent.trim()).toBe(PROJECTS[2].name);
-  //
-  //     const slides: DebugElement[] = element.queryAll(By.css('img'));
-  //     // expect(slides.length).toBe(PROJECTS.length);
-  //     // expect(slides[0].nativeElement.getAttribute('src')).toBe(PROJECTS[0].projectHomeView[0].carouselImagePath);
-  //     // expect(slides[1].nativeElement.getAttribute('src')).toBe(PROJECTS[1].projectHomeView[0].carouselImagePath);
-  //     // expect(slides[2].nativeElement.getAttribute('src')).toBe(PROJECTS[2].projectHomeView[0].carouselImagePath);
-  //
-  //     const carouselTexts: DebugElement[] = element.queryAll(By.css('.carousel-caption p'));
-  //     // expect(carouselTexts.length).toBe(PROJECTS.length);
-  //     // expect(carouselTexts[0].nativeElement.textContent.trim()).toBe(PROJECTS[0].projectHomeView[0].carouselText);
-  //     // expect(carouselTexts[1].nativeElement.textContent.trim()).toBe(PROJECTS[1].projectHomeView[0].carouselText);
-  //     // expect(carouselTexts[2].nativeElement.textContent.trim()).toBe(PROJECTS[2].projectHomeView[0].carouselText);
-  //
-  //     //TODO check carousel image paths
-  //   });
-  // });
+  it('can instantiate it', () => expect(comp).not.toBeNull());
+
+  describe('---YES---', () => {
+
+    beforeEach(() => fixture.detectChanges());
+
+    it('can display the carousel component', () => {
+      fixture.detectChanges();
+
+      const element: DebugElement = fixture.debugElement;
+
+      const carouselTitles: DebugElement[] = element.queryAll(By.css('h3'));
+      expect(carouselTitles.length).toBe(PROJECTS.length);
+      expect(carouselTitles[0].nativeElement.textContent.trim()).toBe(PROJECTS[0].name);
+      expect(carouselTitles[1].nativeElement.textContent.trim()).toBe(PROJECTS[1].name);
+      expect(carouselTitles[2].nativeElement.textContent.trim()).toBe(PROJECTS[2].name);
+
+      fixture.detectChanges();
+
+      const slides: DebugElement[] = element.queryAll(By.css('img.img-fluid'));
+      expect(slides.length).toBe(PROJECTS.length);
+      // expect(slides[0].properties['src']).toBe(PROJECTS[0].projectHomeView[0].carouselImagePath);
+      // expect(slides[1].properties['src']).toBe(PROJECTS[1].projectHomeView[0].carouselImagePath);
+      // expect(slides[2].properties['src']).toBe(PROJECTS[2].projectHomeView[0].carouselImagePath);
+      // expect(slides[0].properties['alt']).toBe('Random first slide');
+      // expect(slides[1].properties['alt']).toBe('Random first slide');
+      // expect(slides[2].properties['alt']).toBe('Random first slide');
+
+      const carouselTexts: DebugElement[] = element.queryAll(By.css('.carousel-caption p'));
+      expect(carouselTexts.length).toBe(PROJECTS.length);
+      // expect(carouselTexts[0].nativeElement.textContent.trim()).toBe(PROJECTS[0].projectHomeView[0].carouselText);
+      // expect(carouselTexts[1].nativeElement.textContent.trim()).toBe(PROJECTS[1].projectHomeView[0].carouselText);
+      // expect(carouselTexts[2].nativeElement.textContent.trim()).toBe(PROJECTS[2].projectHomeView[0].carouselText);
+
+      //TODO check carousel image paths
+    });
+  });
 });

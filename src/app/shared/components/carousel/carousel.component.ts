@@ -17,7 +17,6 @@ export class CarouselComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subscription = this.projectService.getProjectsForHomepage().subscribe(
       val => {
-        console.log(val);
         this.thumbs = val;
       }
     );
