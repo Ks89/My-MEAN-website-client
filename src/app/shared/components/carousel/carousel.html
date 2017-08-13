@@ -1,9 +1,11 @@
-<ngb-carousel>
-  <ng-template ngbSlide *ngFor="let thumb of thumbs">
-    <img class="img-fluid" src="{{thumb.projectHomeView.carouselImagePath}}" alt="Random first slide">
-    <div class="carousel-caption d-none d-md-block">
-      <h3>{{thumb.name}}</h3>
-      <p>{{thumb.projectHomeView.carouselText}}</p>
-    </div>
-  </ng-template>
-</ngb-carousel>
+<ng-container *ngIf="thumbs && thumbs.length > 0">
+  <ngb-carousel>
+    <ng-template ngbSlide *ngFor="let thumb of thumbs">
+      <img class="img-fluid" src="{{thumb.projectHomeView.carouselImagePath}}" alt="Random first slide">
+      <div class="carousel-caption d-none d-md-block">
+        <h3>{{thumb.name}}</h3>
+        <p>{{thumb.projectHomeView.carouselText}}</p>
+      </div>
+    </ng-template>
+  </ngb-carousel>
+</ng-container>
