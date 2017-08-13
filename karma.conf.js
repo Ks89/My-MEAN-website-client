@@ -15,19 +15,18 @@ function getBrowsers() {
       // only for AppVeyor
       return ['Chrome', 'Firefox', 'IE'];
     } else if (process.env.TRAVIS) { // variable defined by TRAVIS itself
-      return ['PhantomJS', 'Chrome', 'Firefox'];
+      return ['ChromeHeadless', 'Chrome', 'Firefox'];
     } else if (process.env.CIRCLECI) { // variable defined by CIRCLECI itself
-      return ['PhantomJS', 'Chrome', 'Firefox'];
+      return ['ChromeHeadless', 'Chrome', 'Firefox'];
     }
   } else {
     switch(os.platform()) {
       case 'win32': // Windows
-        // TODO add 'PhantomJS' - at the moment isn't working on Windows10 (only for test in ProfileComponent, WTF!!!)
-        return ['Chrome', 'Firefox', 'IE'];
+        return ['ChromeHeadless', 'Chrome', 'Firefox', 'IE'];
       case 'darwin': // macOS
-        return ['PhantomJS', 'Chrome', 'Firefox'/*, 'Safari'*/];
+        return ['ChromeHeadless', 'Chrome', 'Firefox'/*, 'Safari'*/];
       default: // other (linux, freebsd, openbsd, sunos, aix)
-        return ['PhantomJS', 'Chrome', 'Firefox'];
+        return ['ChromeHeadless', 'Chrome', 'Firefox'];
     }
   }
 }
@@ -84,6 +83,20 @@ module.exports = function (config) {
     },
     jasmineDiffReporter: {
       multiline: true
+    },
+
+    customLaunchers: {
+      ChromeHeadless: {
+        base: 'Chrome',
+        flags: [
+          '--no-sandbox',
+          // See https://chromium.googlesource.com/chromium/src/+/lkgr/headless/README.md
+          '--headless',
+          '--disable-gpu',
+          // Without a remote debugging port, Google Chrome exits immediately.
+          ' --remote-debugging-port=9222',
+        ]
+      }
     },
 
     // For AppVeyor and TravisCI to prevent timeouts
