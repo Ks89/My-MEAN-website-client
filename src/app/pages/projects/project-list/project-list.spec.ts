@@ -1,17 +1,18 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Router } from "@angular/router";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { Router, RouterModule } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
-import { StoreModule } from "@ngrx/store";
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { StoreModule } from '@ngrx/store';
 
 import { ProjectListComponent } from './project-list.component';
-import { PROJECTS, FakeProjectService } from '../../shared/testing/fake-project.service.spec';
-import { ProjectService } from '../../core/services/services';
-import { RouterLinkStubDirective, RouterOutletStubComponent, RouterStub } from "../../shared/testing/router-stubs.spec";
-import { SharedModule } from '../../shared/shared.module';
-import { mainReducers } from '../../reducers/index';
+import { PROJECTS, FakeProjectService } from '../../../shared/testing/fake-project.service.spec';
+import { ProjectService } from '../../../core/services/services';
+import { RouterLinkStubDirective, RouterOutletStubComponent, RouterStub } from '../../../shared/testing/router-stubs.spec';
+import { SharedModule } from '../../../shared/shared.module';
+import { reducers } from '../reducers/index';
+import { mainReducers } from '../../../reducers/index';
 
 let comp: ProjectListComponent;
 let fixture: ComponentFixture<ProjectListComponent>;
@@ -25,9 +26,15 @@ function initTestBed() {
   router = new RouterStub();
 
   TestBed.configureTestingModule({
-    imports: [FormsModule, ReactiveFormsModule, SharedModule, NgbModule.forRoot(), StoreModule.forRoot(mainReducers)],
+    imports: [
+      FormsModule,
+      ReactiveFormsModule,
+      SharedModule,
+      NgbModule.forRoot(),
+      StoreModule.forRoot(mainReducers),
+      StoreModule.forFeature('pageNum', reducers)
+    ],
     declarations: [ ProjectListComponent, RouterLinkStubDirective, RouterOutletStubComponent  ],
-    // schemas:      [ NO_ERRORS_SCHEMA ]
   }).overrideComponent(ProjectListComponent, {
     set: {
       providers: [

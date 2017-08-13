@@ -1,10 +1,8 @@
 import { Routes } from '@angular/router';
 
 import { HomeComponent } from './pages/home/home.component';
-import { ProjectListComponent } from './pages/project-list/project-list.component';
 import { AboutComponent } from './pages/about/about.component';
 import { ContactComponent } from './pages/contact/contact.component';
-import { ProjectDetailComponent } from './pages/project-detail/project-detail.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { LoginComponent } from './pages/login/login.component';
 import { ResetComponent } from './pages/reset/reset.component';
@@ -19,8 +17,15 @@ import { AuthGuard } from './core/services/auth-guard.service';
 export const ROUTES: Routes = [
   {path: '',                                component: HomeComponent},
   {path: 'home',                       component: HomeComponent},
-  {path: 'projects',                        component: ProjectListComponent},
-  {path: 'projects/:projectId',             component: ProjectDetailComponent},
+
+  {
+    path: 'projects',
+    loadChildren: './pages/projects/projects.module#ProjectsModule',
+    data: { preload: true }
+  },
+
+  // {path: 'projects',                        component: ProjectListComponent},
+  // {path: 'projects/:projectId',             component: ProjectDetailComponent},
   {path: 'cv',                              loadChildren: './pages/cv/cv.module#CvModule'}, // lazy loading
   {path: 'contact',                         component: ContactComponent},
   {path: 'about',                           component: AboutComponent},

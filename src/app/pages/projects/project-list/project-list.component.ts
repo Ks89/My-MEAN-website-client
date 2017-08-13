@@ -1,17 +1,16 @@
 import { Component, OnDestroy } from '@angular/core';
-import { Subscription } from "rxjs/Subscription";
+import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
 import * as _ from 'lodash';
-import { Observable } from 'rxjs/Observable';
 
-import { Project, ProjectService } from '../../core/services/services';
-import * as fromRoot from '../../core/reducers/hello-example';
-import * as example from '../../core/actions/hello-example';
+import { Project, ProjectService } from '../../../core/services/services';
+import * as fromPageNum from '../reducers';
+import * as PageNum from '../actions/page-num';
 
 @Component({
   selector: 'mmw-project-list-page',
-  styleUrls: ['timeline.scss'],
-  templateUrl: 'project-list.html'
+  templateUrl: 'project-list.html',
+  styleUrls: ['timeline.scss']
 })
 export class ProjectListComponent implements OnDestroy {
   fullProjects: Project[];
@@ -27,23 +26,23 @@ export class ProjectListComponent implements OnDestroy {
   elementsPerPage = 3;
   totalNumElements = 0;
 
-  helloExample$: Observable<string>;
+  private pageNumSubscription: Subscription;
+  private projectsSubscription: Subscription;
 
-  private subscription: Subscription;
-
-  constructor(private store: Store<fromRoot.State>,
+  constructor(private store: Store<fromPageNum.State>,
               private projectService: ProjectService) {
-    this.subscription = this.projectService.getProjects().subscribe((values: Project[]) => {
+
+    this.projectsSubscription = this.projectService.getProjects().subscribe((values: Project[]) => {
       this.fullProjects = values;
       this.originalProjects = values;
       this.totalNumElements = values.length;
       this.visibleProjects = values.slice(this.page - 1, this.elementsPerPage);
     });
 
-    this.helloExample$ = this.store.select(fromRoot.getHelloExample);
-    // 'pageNum').subscribe(val => {
-    //   this.page = +val;
-    // });
+    this.pageNumSubscription = this.store.select(fromPageNum.getPageNum)
+      .subscribe(val => {
+        this.page = +val;
+      });
 
     this.pageHeader = {
       title: 'Projects',
@@ -105,13 +104,15 @@ export class ProjectListComponent implements OnDestroy {
     let startindex: number = (this.page - 1) * this.elementsPerPage;
     let endIndex: number = Math.min((this.page * this.elementsPerPage), this.totalNumElements);
     this.visibleProjects = this.fullProjects.slice(startindex, endIndex);
-    // this.pageStore.dispatch({type: SET_PAGE, payload: this.page});
-    this.store.dispatch(new example.SayHelloAction());
+    this.store.dispatch(new PageNum.SetPageNum(this.page));
   }
 
   ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+    if (this.projectsSubscription) {
+      this.projectsSubscription.unsubscribe();
+    }
+    if (this.pageNumSubscription) {
+      this.pageNumSubscription.unsubscribe();
     }
   }
 
