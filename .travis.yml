@@ -3,7 +3,7 @@ node_js:
   - "7"
 os:
   - linux
-#  - osx
+  - osx
 dist: trusty # to use Ubuntu 14.04
 #osx_image: xcode8.2 # to use macOS Sierra
 env:
