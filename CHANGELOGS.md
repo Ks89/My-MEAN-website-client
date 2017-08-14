@@ -1,5 +1,29 @@
 # Changelog
 
+## Alpha 8
+
+### **Features**
+- #99 update to **bootstrap 4 beta 1**
+- #98 update to **circleci 2**
+- #96 Add the new **Angular 4.3.x httpclient**
+- #95 **cookie consent banner**
+- #97 update to **ngrx-store 4**
+- #103 switch to autodll
+- #101 projects + project detail should be a module with local actions and reducers
+
+### **Chore**
+- #35 fix Phantomjs on AppVeyor -> Phantomjs removed
+- #74 travis ci switch to macOS sierra using `osx_image: xcode8.2`
+
+### **Bugfixes**
+- #57 fix phantomjs on Windows 10 -> Phantomjs removed
+- #29 If server isn't available, homepage throws an error
+- #102 fix/re-enable tests for carousel and homepage
+- #93 Chrome is not working on TravisCI macOS
+
+and all dependencies updated
+
+
 ## Alpha 7
 
 ### **Features**
