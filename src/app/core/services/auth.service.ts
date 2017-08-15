@@ -5,6 +5,8 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
 
+import { handleError } from '../utils/util';
+
 export const URL_API_LOGIN: string = '/api/login';
 export const URL_API_REGISTER: string = '/api/register';
 export const URL_API_RESET: string = '/api/resetNewPassword';
@@ -16,7 +18,7 @@ export const URL_API_LOGOUT: string = '/api/logout';
 export const URL_API_SESSION_TOKEN: string = '/api/sessionToken';
 export const URL_API_DECODE_TOKEN: string = '/api/decodeToken';
 
-  @Injectable()
+@Injectable()
 export class AuthService {
   public loginEvent: EventEmitter<any> = new EventEmitter();
 
@@ -32,7 +34,7 @@ export class AuthService {
         console.log(response);
         if (!response) {
           return Observable.throw(new Error('response body is empty'));
-          // return this.handleError('response body is empty');
+          // return handleError('response body is empty');
         } else {
           this.saveToken('auth', response['token']);
           return response;
@@ -81,7 +83,7 @@ export class AuthService {
 
   unlink(serviceName: string): Observable<any> {
     console.log('Called unlink ' + serviceName);
-    return this.httpClient.get(`${URL_API_UNLINK}/${serviceName}`);
+    return this.httpClient.get(`${URL_API_UNLINK}/${serviceName}`, {responseType: 'text'});
   }
 
   // ---------------------------------------

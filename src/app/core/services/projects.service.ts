@@ -4,6 +4,8 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
+import { handleError } from '../utils/util';
+
 export const URL_API_PROJECTS: string = '/api/projects';
 export const URL_API_PROJECTHOME: string = '/api/projecthome';
 
@@ -68,14 +70,17 @@ export class ProjectService {
   constructor(private httpClient: HttpClient) {}
 
   getProjects(): Observable<Project[]> {
-    return this.httpClient.get<Project[]>(URL_API_PROJECTS);
+    return this.httpClient.get<Project[]>(URL_API_PROJECTS)
+      .catch(handleError);
   }
 
   getProjectsById(projectid: string): Observable<Project> {
-    return this.httpClient.get<Project>(`${URL_API_PROJECTS}/${projectid}`);
+    return this.httpClient.get<Project>(`${URL_API_PROJECTS}/${projectid}`)
+      .catch(handleError);
   }
 
   getProjectsForHomepage(): Observable<Project[]> {
-    return this.httpClient.get<Project[]>(URL_API_PROJECTHOME);
+    return this.httpClient.get<Project[]>(URL_API_PROJECTHOME)
+      .catch(handleError);
   }
 }
