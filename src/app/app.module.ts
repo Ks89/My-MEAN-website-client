@@ -2,7 +2,9 @@ import { NgModule, ApplicationRef } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { RouterModule, PreloadAllModules } from '@angular/router';
+
 import { ROUTES }  from './app.routing';
 
 // Third party opensource libraries (that are using scss/css)
@@ -24,7 +26,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LaddaModule } from 'angular2-ladda';
 import { removeNgStyles, createNewHosts, createInputTransfer } from '@angularclass/hmr';
 import { IdlePreloadModule } from '@angularclass/idle-preload';
-import { RouterModule, PreloadAllModules } from '@angular/router';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { StoreModule } from "@ngrx/store";
 
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -46,6 +49,13 @@ import { mainReducers } from './reducers/index';
     ModalGalleryModule.forRoot(),
     LaddaModule,
     ReCaptchaModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    }),
 
     /**
      * StoreModule.forRoot is imported once in the root module, accepting a reducer
@@ -121,6 +131,10 @@ export class AppModule {
   // ----------- Hot Module Replacement via AngularClass library - END ------------
 }
 
+// AoT requires an exported function for factories
+export function HttpLoaderFactory(httpClient: HttpClient) {
+  return new TranslateHttpLoader(httpClient, "i18n/", ".json");
+}
 
 
 

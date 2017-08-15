@@ -219,8 +219,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         const unlink$: Observable<any> = this.authService.unlink(serviceName);
         const logout$: Observable<any> = this.authService.logout();
 
-        this.unlinkSubscription = Observable.combineLatest(unlink$, logout$,
-          (unlink, logout) => ({unlink, logout}))
+        this.unlinkSubscription = Observable.combineLatest(unlink$, logout$, (unlink, logout) => ({unlink, logout}))
           .subscribe(
             res => {
               console.log('Unlink + Logout res = ');
@@ -253,7 +252,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
             },
             err => {
               // logServer.error('profile impossible to unlink', reason);
-              console.log('Impossible to unlink: ' + err);
+              console.log('Impossible to unlink', err);
               this.router.navigate(['/']);
             },
             () => console.log('not last unlink: done')

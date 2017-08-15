@@ -3,56 +3,56 @@
 
   <div class="row">
     <div class="col-md-6 col-sm-12">
-      <p class="lead">Already a member? Please <a [routerLink]="['/login']">log in</a> instead.</p>
+      <p class="lead">{{ 'REGISTER.LABEL_ALREADY_MEMBER1' | translate }} <a [routerLink]="['/login']">log in</a> {{ 'REGISTER.LABEL_ALREADY_MEMBER2' | translate }}</p>
 
       <form [formGroup]="formModel" (ngSubmit)="onRegister()" novalidate>
         <div *ngIf="registerAlert.visible" class="alert alert-{{registerAlert.status}}" role="alert">
           <strong>{{registerAlert.strong}}</strong> {{registerAlert.message}}
         </div>
         <div class="form-group" [class.has-warning]="!formModel.get('name').valid" [class.has-danger]="showFormError">
-          <label for="name">Full name</label>
-          <input type="text" class="form-control" id="name" placeholder="Enter your name" formControlName="name">
+          <label for="name">{{ 'REGISTER.LABEL_FULL_NAME' | translate }}</label>
+          <input type="text" class="form-control" id="name" placeholder="{{ 'REGISTER.PLACEHOLDER_FULL_NAME' | translate }}" formControlName="name">
           <span class="form-text text-muted" *ngIf="!formModel.get('name').valid">
-            Type at least 3 characters and at maximum 30
+            {{ 'REGISTER.MSG_FULL_NAME' | translate }}
           </span>
         </div>
         <div class="form-group" [class.has-warning]="!formModel.get('email').valid" [class.has-danger]="showFormError">
-          <label for="email">Email address</label>
-          <input type="email" class="form-control" id="email" placeholder="Email address" formControlName="email">
+          <label for="email">{{ 'REGISTER.LABEL_EMAIL' | translate }}</label>
+          <input type="email" class="form-control" id="email" placeholder="{{ 'REGISTER.PLACEHOLDER_EMAIL' | translate }}" formControlName="email">
           <span class="form-text text-muted" *ngIf="!formModel.get('email').valid">
-            A valid email address is required
+            {{ 'REGISTER.MSG_EMAIL' | translate }}
           </span>
         </div>
         <div class="form-group" [class.has-warning]="!formModel.get('emailConfirm').valid" [class.has-danger]="showFormError">
-          <label for="email">Confirm email address</label>
-          <input type="email" class="form-control" id="emailConfirm" placeholder="Confirm email address" formControlName="emailConfirm">
+          <label for="email">{{ 'REGISTER.LABEL_CONFIRM_EMAIL' | translate }}</label>
+          <input type="email" class="form-control" id="emailConfirm" placeholder="{{ 'REGISTER.PLACEHOLDER_CONFIRM_EMAIL' | translate }}" formControlName="emailConfirm">
           <span class="form-text text-muted" *ngIf="!formModel.get('emailConfirm').valid">
-            Retype the same email address
+            {{ 'REGISTER.MSG_CONFIRM_EMAIL' | translate }}
           </span>
         </div>
         <div class="form-group" [class.has-warning]="!formModel.get('password').valid" [class.has-danger]="showFormError">
-          <label for="password">Password</label>
-          <input type="password" class="form-control" id="password" placeholder="Password" formControlName="password">
+          <label for="password">{{ 'REGISTER.LABEL_PWD' | translate }}</label>
+          <input type="password" class="form-control" id="password" placeholder="{{ 'REGISTER.PLACEHOLDER_PWD' | translate }}" formControlName="password">
           <span class="form-text text-muted" *ngIf="!formModel.get('password').valid">
-            Type a valid password with these rules:
+            {{ 'REGISTER.MSG_PWD_1' | translate }}
             <ul>
-              <li>at least a lowercase char</li>
-              <li>at least an uppercase char</li>
-              <li>at least a digit char</li>
-              <li>at least an alphabetical char</li>
-              <li>at least 8 characters</li>
-              <li>don't repeat 3 chars in a row</li>
+              <li>{{ 'REGISTER.MSG_PWD_2' | translate }}</li>
+              <li>{{ 'REGISTER.MSG_PWD_3' | translate }}</li>
+              <li>{{ 'REGISTER.MSG_PWD_4' | translate }}</li>
+              <li>{{ 'REGISTER.MSG_PWD_5' | translate }}</li>
+              <li>{{ 'REGISTER.MSG_PWD_6' | translate }}</li>
+              <li>{{ 'REGISTER.MSG_PWD_7' | translate }}</li>
             </ul>
           </span>
         </div>
         <div class="form-group" [class.has-warning]="!formModel.get('passwordConfirm').valid" [class.has-danger]="showFormError">
-          <label for="passwordConfirm">Confirm password</label>
-          <input type="password" class="form-control" id="passwordConfirm" placeholder="Confirm password" formControlName="passwordConfirm">
+          <label for="passwordConfirm">{{ 'REGISTER.LABEL_CONFIRM_PWD' | translate }}</label>
+          <input type="password" class="form-control" id="passwordConfirm" placeholder="{{ 'REGISTER.PLACEHOLDER_CONFIRM_PWD' | translate }}" formControlName="passwordConfirm">
           <span class="form-text text-muted" *ngIf="!formModel.get('passwordConfirm').valid">
-            Retype the same password
+            {{ 'REGISTER.MSG_CONFIRM_PWD' | translate }}
           </span>
         </div>
-        <button type="submit" [ladda]='isWaiting' data-style="slide-right" data-spinner-color="White" class="btn btn-primary ladda-button"><span class="ladda-label">Register!</span></button>
+        <button type="submit" [ladda]='isWaiting' data-style="slide-right" data-spinner-color="White" class="btn btn-primary ladda-button"><span class="ladda-label">{{ 'REGISTER.BTN_REGISTER' | translate }}</span></button>
       </form>
     </div>
   </div>

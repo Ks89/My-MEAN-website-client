@@ -42,8 +42,7 @@ export class ProjectsComponent implements OnDestroy {
   private pageNum$: Observable<number>;
   private pageNumSubscription: Subscription;
 
-  constructor( private store: Store<fromPageNum.State>) {
-
+  constructor(private store: Store<fromPageNum.State>) {
     this.pageNum$ = this.store.select(fromPageNum.getPageNum);
 
     // example of ngrx-store's usage

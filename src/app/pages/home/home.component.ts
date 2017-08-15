@@ -4,6 +4,7 @@ import 'rxjs/add/operator/share';
 
 import { Project, ProjectService } from '../../core/services/services';
 
+
 @Component({
   selector: 'mmw-home-page',
   styleUrls: ['home.scss'],

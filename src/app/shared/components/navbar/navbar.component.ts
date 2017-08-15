@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 
 import { AuthService } from '../../../core/services/services';
@@ -15,7 +16,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private authLoginSubscription: Subscription;
   private authLogoutSubscription: Subscription;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService,
+              private router: Router,
+              // required to use ngx-translate inside the template
+              private translate: TranslateService) {}
 
   ngOnInit() {
     this.authLoginSubscription = this.authService.loginEvent

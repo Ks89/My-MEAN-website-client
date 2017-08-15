@@ -3,33 +3,33 @@
 
   <div class="row">
     <div class="col-xs-12 col-sm-8 col-md-6 col-lg-6 vertical-divider-right">
-      <p i18n="site header|An introduction header for this sample@@introductionHeader" class="lead">Not a member? Please <a [routerLink]="['/register']">register</a> first.</p>
+      <p class="lead">{{ 'LOGIN.LBL_MEMBER' | translate }} <a [routerLink]="['/register']">{{ 'LOGIN.URL_REGISTER' | translate }}</a>{{ 'LOGIN.LBL_FIRST' | translate }}</p>
       <form [formGroup]="formModel" (ngSubmit)="onLogin()" novalidate>
         <div *ngIf="loginAlert.visible" class="alert alert-{{loginAlert.status}}" role="alert">
           <strong>{{loginAlert.strong}}</strong> {{loginAlert.message}}
         </div>
         <div class="form-group" [class.has-danger]="showFormError">
-          <label for="email">Email address</label>
-          <input type="email" class="form-control" id="email" placeholder="Enter email" formControlName="email">
+          <label for="email">{{ 'LOGIN.LBL_EMAIL' | translate }}</label>
+          <input type="email" class="form-control" id="email" placeholder="{{ 'LOGIN.PLACEHOLDER_EMAIL' | translate }}" formControlName="email">
         </div>
         <div class="form-group" [class.has-danger]="showFormError">
-          <label for="password">Password</label>
-          <input type="password" class="form-control" id="password" placeholder="Password" formControlName="password">
+          <label for="password">{{ 'LOGIN.LBL_PASSWORD' | translate }}</label>
+          <input type="password" class="form-control" id="password" placeholder="{{ 'LOGIN.PLACEHOLDER_PASSWORD' | translate }}" formControlName="password">
         </div>
-        <button type="submit" [ladda]='isWaiting' data-style="slide-right" data-spinner-color="White" class="btn btn-primary ladda-button"><span class="ladda-label">Sign in!</span></button>
-        <a [routerLink]="['/forgot']">Forgot password?</a>
+        <button type="submit" [ladda]='isWaiting' data-style="slide-right" data-spinner-color="White" class="btn btn-primary ladda-button"><span class="ladda-label">{{ 'LOGIN.BTN_SIGNIN' | translate }}</span></button>
+        <a [routerLink]="['/forgot']">{{ 'LOGIN.URL_FORGOT' | translate }}</a>
       </form>
     </div>
     <div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 vertical-divider-left">
-      <a class="btn btn-primary" href="{{facebookOauthUrl}}"> <span class="fa fa-facebook fa-lg"></span> Login with facebook</a>
+      <a class="btn btn-primary" href="{{facebookOauthUrl}}"> <span class="fa fa-facebook fa-lg"></span> {{ 'LOGIN.FACEBOOK' | translate }} </a>
       <br><br>
-      <a class="btn btn-success" href="{{githubOauthUrl}}"> <span class="fa fa-github fa-lg"></span> Login with github</a>
+      <a class="btn btn-success" href="{{githubOauthUrl}}"> <span class="fa fa-github fa-lg"></span> {{ 'LOGIN.GITHUB' | translate }} </a>
       <br><br>
-      <a class="btn btn-danger" href="{{googleOauthUrl}}"> <span class="fa fa-google fa-lg"></span> Login with google</a>
+      <a class="btn btn-danger" href="{{googleOauthUrl}}"> <span class="fa fa-google fa-lg"></span> {{ 'LOGIN.GOOGLE' | translate }} </a>
       <br><br>
-      <a class="btn btn-default" href="{{linkedinOauthUrl}}"> <span class="fa fa-linkedin fa-lg"></span> Login with linkedin</a>
+      <a class="btn btn-default" href="{{linkedinOauthUrl}}"> <span class="fa fa-linkedin fa-lg"></span> {{ 'LOGIN.LINKEDIN' | translate }} </a>
       <br><br>
-      <a class="btn btn-info" href="{{twitterOauthUrl}}"> <span class="fa fa-twitter fa-lg"></span> Login with twitter</a>
+      <a class="btn btn-info" href="{{twitterOauthUrl}}"> <span class="fa fa-twitter fa-lg"></span> {{ 'LOGIN.TWITTER' | translate }} </a>
     </div>
   </div>
 </div>

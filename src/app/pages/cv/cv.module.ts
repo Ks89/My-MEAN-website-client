@@ -18,12 +18,12 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { routes } from './cv.routing';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { TranslateModule } from '@ngx-translate/core';
 
+import { routes } from './cv.routing';
 import { SharedModule } from '../../shared/shared.module';
 import { CvComponent } from './cv.component';
-
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 console.log('`Lazy` bundle loaded asynchronously');
 
@@ -35,7 +35,8 @@ console.log('`Lazy` bundle loaded asynchronously');
     CommonModule,
     RouterModule.forChild(routes),
     NgbModule.forRoot(), // forRoot ensures the providers are only created once (lazy modules are like root modules)
-    SharedModule
+    SharedModule,
+    TranslateModule.forChild({ isolate: false }),
   ],
   providers: []
 })

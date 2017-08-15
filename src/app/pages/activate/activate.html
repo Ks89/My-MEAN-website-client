@@ -4,7 +4,7 @@
 	<div class="row">
 	  <div class="col-md-12 col-sm-12">
 
-	    <h4>Welcome {{userName}}</h4>
+	    <h4>{{ 'ACTIVATE.WELCOME' | translate }} {{userName}}</h4>
 
       <br><br>
 
@@ -14,7 +14,7 @@
 
       <br>
 	    <br>
-	  	<p> Back to <a [routerLink]="['/login']">login</a></p>
+	  	<p> {{ 'ACTIVATE.BACK' | translate }} <a [routerLink]="['/login']">login</a></p>
 
 	  </div>
 	</div>

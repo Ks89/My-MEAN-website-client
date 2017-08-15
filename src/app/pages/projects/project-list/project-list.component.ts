@@ -19,7 +19,6 @@ export class ProjectListComponent implements OnDestroy {
 
   pageHeader: any;
   sidebar: any;
-  sidebarTitle: string;
   message: string;
 
   page = 1;
@@ -50,7 +49,6 @@ export class ProjectListComponent implements OnDestroy {
     };
 
     // init the timeline into the sidebar
-    this.sidebarTitle = 'What can you do?';
     this.sidebar = {
       timeline: [
         {

@@ -1,10 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Router, RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { StoreModule } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { ProjectListComponent } from './project-list.component';
 import { PROJECTS, FakeProjectService } from '../../../shared/testing/fake-project.service.spec';
@@ -32,9 +33,10 @@ function initTestBed() {
       SharedModule,
       NgbModule.forRoot(),
       StoreModule.forRoot(mainReducers),
-      StoreModule.forFeature('pageNum', reducers)
+      StoreModule.forFeature('pageNum', reducers),
+      TranslateModule.forRoot()
     ],
-    declarations: [ ProjectListComponent, RouterLinkStubDirective, RouterOutletStubComponent  ],
+    declarations: [ ProjectListComponent, RouterLinkStubDirective, RouterOutletStubComponent ],
   }).overrideComponent(ProjectListComponent, {
     set: {
       providers: [

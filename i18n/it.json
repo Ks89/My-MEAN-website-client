@@ -1,0 +1,167 @@
+{
+  "HOME": {
+    "TITLE": "KS",
+    "STRAPLINE": "Benvenuto",
+    "BTN_DETAILS": "Vai a dettaglio"
+  },
+  "PROJECTS": {
+    "TITLE": "Progetti",
+    "STRAPLINE": "",
+    "LBL_FILTER_RESULT": "Filtra risultati",
+    "PLACEHOLDER_FILTER": "Scrivi per filtrare i progetti",
+    "LBL_WHAT_CAN_DO": "Cosa puoi fare?",
+    "LBL_DISCOVER": "Scopri",
+    "LBL_DISCOVER_TEXT": "Guarda i miei progetti su GitHub.",
+    "LBL_LIKE": "Star",
+    "LBL_LIKE_TEXT": "Metti una stella sui progetti che ti piacciono.",
+    "LBL_IMPROVE": "Migliora",
+    "LBL_IMPROVE_TEXT": "Fai il fork di un progetto per migliorarlo.",
+    "LBL_COLLABORATE": "Collabora",
+    "LBL_COLLABORATE_TEXT": "Crea pull request con le tue modifiche.",
+    "LBL_SHARE": "Conndividi",
+    "LBL_SHARE_TEXT": "Condividi il progetto coi tuoi amici o sul web."
+  },
+  "PROJECT_DETAIL": {
+    "DESCRIPTION": "Descrizione",
+    "CHANGELOG": "Changelog",
+    "RELEASES": "Rilasci",
+    "NEWS": "Novita'",
+    "FEATURES": "Funzionalita'",
+    "FUTURE_EXTENSIONS": "Estensioni future",
+    "VIDEO": "Video",
+    "IMAGES": "Immagini",
+    "LICENSES": "Licenza"
+  },
+  "ACTIVATE": {
+    "WELCOME": "Benvenuto",
+    "BACK": "Torna a"
+  },
+  "FORGOT": {
+    "LBL_TYPE_EMAIL": "Inserisci l'email usata per creare il tuo account",
+    "LBL_EMAIL": "Indirizzo Email",
+    "PLACEHOLDER_EMAIL": "Inserisci il tuo indirizzo email",
+    "MSG_EMAIL": "E' richiesto un indirizzo email valido",
+    "BTN_RESET_PWD": "Reset della password!",
+    "BACK": "Torna a"
+  },
+  "LOGIN": {
+    "LBL_MEMBER": "Non sei un membro? Per favore",
+    "LBL_FIRST": "",
+    "URL_REGISTER": "registrati",
+    "LBL_EMAIL": "Indirizzo email",
+    "PLACEHOLDER_EMAIL": "Inserisci un indirizzo email",
+    "LBL_PASSWORD": "Password",
+    "PLACEHOLDER_PASSWORD": "Inserisci la tua password",
+    "URL_FORGOT": "Password dimenticata?",
+    "BTN_SIGNIN": "Entra!",
+    "FACEBOOK": "Login con Facebook",
+    "GITHUB": "Login con Github",
+    "GOOGLE": "Login con Google",
+    "LINKEDIN": "Login con Linkedin",
+    "TWITTER": "Login con Twitter"
+  },
+  "POST3D_AUTH": {
+    "": "Ti sei loggato correttamente tramite il servizio esterno scelto",
+    "BACK": "Back to"
+  },
+  "PROFILE": {
+    "ASK_DESTROY_TITLE": "Vuoi veramenente distruggere questo account?",
+    "ASK_DESTROY_MSG_HTML": "Se scolleghi l'ultimo servizio, <strong>non sarai in grado di fare login ancora</strong> in questo account.<br>Tutti i dati salvati saranno rapidamente distrutti.",
+    "BTN_ASK_OK": "OK",
+    "BTN_ASK_CANCEL": "Indietro",
+    "ALT_PROFILE_IMAGE": "Immagine profilo",
+    "LABEL_SERVICES": "Servizi collegati",
+    "LABEL_UPDATE_PROFILE": "Aggiorna il profilo",
+    "LABEL_NAME": "Nome",
+    "PLACEHOLDER_NAME": "Inserisci il tuo nome",
+    "MSG_NAME": "Scrivi almeno 3 caratteri",
+    "LABEL_SURNAME": "Cognome",
+    "PLACEHOLDER_SURNAME": "Inserisci il tuo cognome",
+    "MSG_SURNAME": "Scrivi almeno 3 caratteri",
+    "LABEL_NICKNAME": "Nickname",
+    "PLACEHOLDER_NICKNAME": "Inserisci il tuo nickname",
+    "MSG_NICKNAME": "Scrivi almeno 3 caratteri",
+    "LABEL_EMAIL": "Email",
+    "PLACEHOLDER_EMAIL": "Inserisci la tua email",
+    "MSG_EMAIL": "Scrivi almeno 3 caratteri",
+    "BTN_UPDATE": "Aggiorna profilo!",
+    "MSG_CONNECT": "Connetti questo account con altri servizi! Sarai in grado di accedere allo stesso account con piu' servizi.",
+    "BTN_CONNECT": "connetti",
+    "MSG_UNLINK": "Scollega un servizio da questo account! Non sarai piu' in grado di fare login con questo servizio.",
+    "BTN_UNLINK": "scollega"
+  },
+  "REGISTER": {
+    "LABEL_ALREADY_MEMBER1": "Gia' un membro? Per favore esegui il",
+    "LABEL_ALREADY_MEMBER2": "",
+    "LABEL_FULL_NAME": "Nome completo",
+    "PLACEHOLDER_FULL_NAME": "Inserisci il tuo nome",
+    "MSG_FULL_NAME": "Inserisci da 3 a 30 caratteri",
+    "LABEL_EMAIL": "Indirizzo email",
+    "PLACEHOLDER_EMAIL": "Indirizzo email",
+    "MSG_EMAIL": "E' richiesto un indirizzo email valido",
+    "LABEL_CONFIRM_EMAIL": "Conferma indirizzo email",
+    "PLACEHOLDER_CONFIRM_EMAIL": "Conferma indirizzo email",
+    "MSG_CONFIRM_EMAIL": "Inserisci lo stesso indirizzo email",
+    "LABEL_PWD": "Password",
+    "PLACEHOLDER_PWD": "Password",
+    "MSG_PWD_1": "Inserisci una password valida con queste regole:",
+    "MSG_PWD_2": "almeno un carattere minuscolo",
+    "MSG_PWD_3": "almeno un carattere maiuscolo",
+    "MSG_PWD_4": "almeno un numero",
+    "MSG_PWD_5": "almeno un carattere alfabetico",
+    "MSG_PWD_6": "almeno 8 caratteri",
+    "MSG_PWD_7": "non ripetere lo stesso carattere per 3 volte consecutivamente",
+    "LABEL_CONFIRM_PWD": "Conferma password",
+    "PLACEHOLDER_CONFIRM_PWD": "Conferma password",
+    "MSG_CONFIRM_PWD": "Inserisci la stessa password",
+    "BTN_REGISTER": "Registrati!"
+  },
+  "RESET": {
+    "LABEL_NEW_PASSWORD": "Inserisci una nuova password",
+    "LABEL_NEW_PWD": "Nuova Password",
+    "PLACEHOLDER_NEW_PWD": "Inserisci la nuova password",
+    "MSG_NEW_PWD_1": "Inserisci una password valida con queste regole:",
+    "MSG_NEW_PWD_2": "almeno un carattere minuscolo",
+    "MSG_NEW_PWD_3": "almeno un carattere maiuscolo",
+    "MSG_NEW_PWD_4": "almeno un numero",
+    "MSG_NEW_PWD_5": "almeno un carattere alfabetico",
+    "MSG_NEW_PWD_6": "almeno 8 caratteri",
+    "MSG_NEW_PWD_7": "non ripetere lo stesso carattere per 3 volte consecutivamente",
+    "LABEL_CONFIRM_PWD": "Conferma password",
+    "PLACEHOLDER_CONFIRM_PWD": "Conferma password",
+    "MSG_CONFIRM_PWD": "Inserisci la stessa password",
+    "BTN_CHANGE_PWD": "Cambia password!",
+    "BACK": "Torna a"
+  },
+  "CV": {
+    "TITLE": "CV",
+    "STRAPLINE": "",
+    "NOT_IMPLEMENTED": "Non ancora implementato"
+  },
+  "CONTACT": {
+    "TITLE": "Contatti",
+    "STRAPLINE": "",
+    "LBL_SEND_EMAIL": "Inviami una email",
+    "LBL_EMAIL": "Email",
+    "PLACEHOLDER_EMAIL": "Email",
+    "LBL_SUBJECT": "Mittente",
+    "PLACEHOLDER_SUBJECT": "Mittente",
+    "LBL_MESSAGE": "Messaggio",
+    "PLACEHOLDER_MESSAGE": "Testo del messaggio",
+    "BTN_SEND": "Invia",
+    "MSG_VALID_EMAIL": "E' richiesto un indirizzo email valido",
+    "MSG_MIN_4_CHARS": "Scrivi almeno 4 caratteri",
+    "MSG_MIN_15_CHARS": "Scrivi almeno 15 caratteri"
+  },
+  "ABOUT": {
+    "TITLE": "About",
+    "STRAPLINE": "",
+    "NOT_IMPLEMENTED": "Non ancora implementato"
+  },
+  "404": {
+    "NOT_FOUND": "Pagina non trovata"
+  },
+  "NAVBAR": {
+    "SELECT": "Cambia lingua"
+  }
+}

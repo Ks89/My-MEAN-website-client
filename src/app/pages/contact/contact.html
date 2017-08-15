@@ -3,39 +3,60 @@
 
   <div class="row">
 
+
+    <!--"CONTACT": {-->
+    <!--"TITLE": "Contact",-->
+    <!--"STRAPLINE": "",-->
+    <!--"LBL_SEND_EMAIL": "Send me an email",-->
+    <!--"LBL_EMAIL": "Email",-->
+    <!--"PLACEHOLDER_EMAIL": "Email",-->
+    <!--"LBL_SUBJECT": "Subject",-->
+    <!--"PLACEHOLDER_SUBJECT": "Subject",-->
+    <!--"LBL_MESSAGE": "Message",-->
+    <!--"PLACEHOLDER_MESSAGE": "Message text",-->
+    <!--"BTN_SEND": "Send"-->
+    <!--"MSG_VALID_EMAIL": "A valid email address is required",-->
+    <!--"MSG_MIN_CHARS": "Type at least {num} characters",-->
+    <!--},-->
+
   <div class="col-xs-12 col-sm-10 col-md-6 col-lg-6">
-    <p class="lead">Send me an email</p>
+    <p class="lead">{{ 'CONTACT.LBL_SEND_EMAIL' | translate }}</p>
       <form [formGroup]="formModel" (ngSubmit)="onSend()" novalidate>
         <div *ngIf="contactAlert.visible" class="alert alert-{{contactAlert.status}}" role="alert">
           <strong>{{contactAlert.strong}}</strong> {{contactAlert.message}}
         </div>
         <div class="form-group" [class.has-warning]="!formModel.get('email').valid" [class.has-danger]="showFormError">
           <label for="emailInput">Email</label>
-          <input type="email" class="form-control" id="emailInput" placeholder="Email" formControlName="email">
+          <input type="email" class="form-control" id="emailInput" placeholder="{{ 'CONTACT.PLACEHOLDER_EMAIL' | translate }}" formControlName="email">
             <span class="form-text text-muted" *ngIf="!formModel.get('email').valid">
-              A valid email address is required
+              {{ 'CONTACT.MSG_VALID_EMAIL' | translate }}
             </span>
         </div>
         <div class="form-group" [class.has-warning]="!formModel.get('subject').valid" [class.has-danger]="showFormError">
           <label for="subjectInput">Subject</label>
-          <input class="form-control" id="subjectInput" placeholder="Subject" formControlName="subject">
+          <input class="form-control" id="subjectInput" placeholder="{{ 'CONTACT.PLACEHOLDER_SUBJECT' | translate }}" formControlName="subject">
             <span class="form-text text-muted" *ngIf="!formModel.get('subject').valid">
-              Type at least 4 characters
+              {{ 'CONTACT.MSG_MIN_4_CHARS' | translate }}
             </span>
         </div>
         <div class="form-group" [class.has-warning]="!formModel.get('message').valid" [class.has-danger]="showFormError">
           <label for="textInput">Message</label>
           <textarea class="form-control" id="textInput" name="messageText" rows="5"
-                placeholder="Message text" formControlName="message">
+                placeholder="{{ 'CONTACT.PLACEHOLDER_MESSAGE' | translate }}" formControlName="message">
           </textarea>
           <span class="form-text text-muted" *ngIf="!formModel.get('message').valid">
-            Type at least 15 characters
+              {{ 'CONTACT.MSG_MIN_15_CHARS' | translate }}
           </span>
         </div>
-        <button type="submit" [ladda]='isWaiting' data-style="slide-right" data-spinner-color="White" class="btn btn-primary ladda-button"><span class="ladda-label">Send</span></button>
+        <button type="submit" [ladda]='isWaiting' data-style="slide-right" data-spinner-color="White"
+                class="btn btn-primary ladda-button">
+          <span class="ladda-label">{{ 'CONTACT.BTN_SEND' | translate }}</span>
+        </button>
 
         <!-- The recaptcha2's directive. site_key is the publickey, so don't be scared-->
-        <re-captcha (captchaResponse)="handleCorrectCaptcha($event)" site_key="6Lf0jxQTAAAAAIDxhvAqGseKy_KV2_4iViVeQWYi"></re-captcha>
+        <re-captcha (captchaResponse)="handleCorrectCaptcha($event)"
+                    site_key="6Lf0jxQTAAAAAIDxhvAqGseKy_KV2_4iViVeQWYi">
+        </re-captcha>
       </form>
   </div>
 </div>

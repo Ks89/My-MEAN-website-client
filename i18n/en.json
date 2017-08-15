@@ -1,0 +1,167 @@
+{
+  "HOME": {
+    "TITLE": "KS",
+    "STRAPLINE": "Welcome",
+    "BTN_DETAILS": "View details"
+  },
+  "PROJECTS": {
+    "TITLE": "Projects",
+    "STRAPLINE": "",
+    "LBL_FILTER_RESULT": "Filter results",
+    "PLACEHOLDER_FILTER": "Write a text to filter projects",
+    "LBL_WHAT_CAN_DO": "What can you do?",
+    "LBL_DISCOVER": "Discover",
+    "LBL_DISCOVER_TEXT": "Check my projects on GitHub.",
+    "LBL_LIKE": "Like",
+    "LBL_LIKE_TEXT": "Star the project that you like.",
+    "LBL_IMPROVE": "Improve",
+    "LBL_IMPROVE_TEXT": "Fork a project to enhance it.",
+    "LBL_COLLABORATE": "Collaborate",
+    "LBL_COLLABORATE_TEXT": "Create a pull request with your improvements.",
+    "LBL_SHARE": "Share",
+    "LBL_SHARE_TEXT": "Share the project with your friends or on the web."
+  },
+  "PROJECT_DETAIL": {
+    "DESCRIPTION": "Description",
+    "CHANGELOG": "Changelog",
+    "RELEASES": "Releases",
+    "NEWS": "News",
+    "FEATURES": "Features",
+    "FUTURE_EXTENSIONS": "Future extensions",
+    "VIDEO": "Video",
+    "IMAGES": "Images",
+    "LICENSES": "License"
+  },
+  "ACTIVATE": {
+    "WELCOME": "Welcome",
+    "BACK": "Back to"
+  },
+  "FORGOT": {
+    "LBL_TYPE_EMAIL": "Type the email used to create your account",
+    "LBL_EMAIL": "Email address",
+    "PLACEHOLDER_EMAIL": "Enter your email address",
+    "MSG_EMAIL": "A valid email address is required",
+    "BTN_RESET_PWD": "Reset password!",
+    "BACK": "Back to"
+  },
+  "LOGIN": {
+    "LBL_MEMBER": "Not a member? Please",
+    "LBL_FIRST": " first",
+    "URL_REGISTER": "register",
+    "LBL_EMAIL": "Email address",
+    "PLACEHOLDER_EMAIL": "Enter email address",
+    "LBL_PASSWORD": "Password",
+    "PLACEHOLDER_PASSWORD": "Password",
+    "URL_FORGOT": "Forgot password?",
+    "BTN_SIGNIN": "Sign in!",
+    "FACEBOOK": "Login with Facebook",
+    "GITHUB": "Login with Github",
+    "GOOGLE": "Login with Google",
+    "LINKEDIN": "Login with Linkedin",
+    "TWITTER": "Login with Twitter"
+  },
+  "POST3D_AUTH": {
+    "SUCCESS": "You are successfully logged in with the chosen external service",
+    "BACK": "Back to"
+  },
+  "PROFILE": {
+    "ASK_DESTROY_TITLE": "Whould you really destroy your account?",
+    "ASK_DESTROY_MSG_HTML": "If you unlink the last service, <strong>you won't be able to login again</strong> to this account.<br>All your saved data will be quickly destroyed.",
+    "BTN_ASK_OK": "OK",
+    "BTN_ASK_CANCEL": "Cancel",
+    "ALT_PROFILE_IMAGE": "Profile image",
+    "LABEL_SERVICES": "Connected services",
+    "LABEL_UPDATE_PROFILE": "Update your profile",
+    "LABEL_NAME": "Name",
+    "PLACEHOLDER_NAME": "Enter your name",
+    "MSG_NAME": "Type at least 3 characters",
+    "LABEL_SURNAME": "Surname",
+    "PLACEHOLDER_SURNAME": "Enter your surname",
+    "MSG_SURNAME": "Type at least 3 characters",
+    "LABEL_NICKNAME": "Nickname",
+    "PLACEHOLDER_NICKNAME": "Enter your nickname",
+    "MSG_NICKNAME": "Type at least 3 characters",
+    "LABEL_EMAIL": "Email",
+    "PLACEHOLDER_EMAIL": "Enter your email",
+    "MSG_EMAIL": "Type at least 3 characters",
+    "BTN_UPDATE": "Update!",
+    "MSG_CONNECT": "Connect this account with other services! You'll be able to access to the same account with many services.",
+    "BTN_CONNECT": "connect",
+    "MSG_UNLINK": "Unlink a service from this account! You won't be able to login anymore with that service.",
+    "BTN_UNLINK": "unlink"
+  },
+  "REGISTER": {
+    "LABEL_ALREADY_MEMBER1": "Already a member? Please",
+    "LABEL_ALREADY_MEMBER2": "instead",
+    "LABEL_FULL_NAME": "Full name",
+    "PLACEHOLDER_FULL_NAME": "Enter your name",
+    "MSG_FULL_NAME": "Type at least 3 characters and at maximum 30",
+    "LABEL_EMAIL": "Email address",
+    "PLACEHOLDER_EMAIL": "Email address",
+    "MSG_EMAIL": "A valid email address is required",
+    "LABEL_CONFIRM_EMAIL": "Confirm email address",
+    "PLACEHOLDER_CONFIRM_EMAIL": "Confirm email address",
+    "MSG_CONFIRM_EMAIL": "Retype the same email address",
+    "LABEL_PWD": "Password",
+    "PLACEHOLDER_PWD": "Password",
+    "MSG_PWD_1": "Type a valid password with these rules:",
+    "MSG_PWD_2": "at least a lowercase char",
+    "MSG_PWD_3": "at least an uppercase char",
+    "MSG_PWD_4": "at least a digit char",
+    "MSG_PWD_5": "at least an alphabetical char",
+    "MSG_PWD_6": "at least 8 characters",
+    "MSG_PWD_7": "don't repeat 3 chars in a row",
+    "LABEL_CONFIRM_PWD": "Confirm password",
+    "PLACEHOLDER_CONFIRM_PWD": "Confirm password",
+    "MSG_CONFIRM_PWD": "Retype the same password",
+    "BTN_REGISTER": "Register!"
+  },
+  "RESET": {
+    "LABEL_NEW_PASSWORD": "Type a new password",
+    "LABEL_NEW_PWD": "New Password",
+    "PLACEHOLDER_NEW_PWD": "Enter your password",
+    "MSG_NEW_PWD_1": "Type a valid password with these rules:",
+    "MSG_NEW_PWD_2": "at least a lowercase char",
+    "MSG_NEW_PWD_3": "at least an uppercase char",
+    "MSG_NEW_PWD_4": "at least a digit char",
+    "MSG_NEW_PWD_5": "at least an alphabetical char",
+    "MSG_NEW_PWD_6": "at least 8 characters",
+    "MSG_NEW_PWD_7": "don't repeat 3 chars in a row",
+    "LABEL_CONFIRM_PWD": "Confirm password",
+    "PLACEHOLDER_CONFIRM_PWD": "Confirm password",
+    "MSG_CONFIRM_PWD": "Retype the same password",
+    "BTN_CHANGE_PWD": "Change password!",
+    "BACK": "Back to"
+  },
+  "CV": {
+    "TITLE": "CV",
+    "STRAPLINE": "",
+    "NOT_IMPLEMENTED": "Not implemented yet"
+  },
+  "CONTACT": {
+    "TITLE": "Contact",
+    "STRAPLINE": "",
+    "LBL_SEND_EMAIL": "Send me an email",
+    "LBL_EMAIL": "Email",
+    "PLACEHOLDER_EMAIL": "Email",
+    "LBL_SUBJECT": "Subject",
+    "PLACEHOLDER_SUBJECT": "Subject",
+    "LBL_MESSAGE": "Message",
+    "PLACEHOLDER_MESSAGE": "Message text",
+    "BTN_SEND": "Send",
+    "MSG_VALID_EMAIL": "A valid email address is required",
+    "MSG_MIN_4_CHARS": "Type at least 4 characters",
+    "MSG_MIN_15_CHARS": "Type at least 15 characters"
+  },
+  "ABOUT": {
+    "TITLE": "About",
+    "STRAPLINE": "",
+    "NOT_IMPLEMENTED": "Not implemented yet"
+  },
+  "404": {
+    "NOT_FOUND": "Error page not found"
+  },
+  "NAVBAR": {
+    "SELECT": "Change language"
+  }
+}

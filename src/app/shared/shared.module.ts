@@ -6,13 +6,17 @@ import { SHARED_COMPONENTS } from './components/components';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CookieLawModule } from 'angular2-cookie-law';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
     CommonModule,
     RouterModule,
     CookieLawModule,
-    NgbModule // without forRoot, because this is a child module
+
+    // without forRoot, because this is a child module
+    TranslateModule,
+    NgbModule
   ],
   exports: [
     SHARED_COMPONENTS

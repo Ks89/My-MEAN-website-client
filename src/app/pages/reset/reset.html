@@ -4,40 +4,40 @@
   <div class="row">
     <div class="col-md-12 col-sm-12">
 
-      <h4>Type a new password</h4><br><br>
+      <h4>{{ 'RESET.LABEL_NEW_PASSWORD' | translate }}</h4><br><br>
 
       <form [formGroup]="formModel" (ngSubmit)="onReset()" novalidate>
         <div *ngIf="resetAlert.visible" class="alert alert-{{resetAlert.status}}" role="alert">
           <strong>{{resetAlert.strong}}</strong> {{resetAlert.message}}
         </div>
         <div class="form-group" [class.has-warning]="!formModel.get('password').valid" [class.has-danger]="showFormError">
-          <label for="password">New Password</label>
-          <input type="password" class="form-control" id="password" placeholder="Enter your password" formControlName="password">
+          <label for="password">{{ 'RESET.LABEL_NEW_PWD' | translate }}</label>
+          <input type="password" class="form-control" id="password" placeholder="{{ 'RESET.PLACEHOLDER_NEW_PWD' | translate }}" formControlName="password">
           <span class="form-text text-muted" *ngIf="!formModel.get('password').valid">
-            Type a valid password with these rules:
+            {{ 'RESET.MSG_NEW_PWD_1' | translate }}
             <ul>
-              <li>at least a lowercase char</li>
-              <li>at least an uppercase char</li>
-              <li>at least a digit char</li>
-              <li>at least an alphabetical char</li>
-              <li>at least 8 characters</li>
-              <li>don't repeat 3 chars in a row</li>
+              <li>{{ 'RESET.MSG_NEW_PWD_2' | translate }}</li>
+              <li>{{ 'RESET.MSG_NEW_PWD_3' | translate }}</li>
+              <li>{{ 'RESET.MSG_NEW_PWD_4' | translate }}</li>
+              <li>{{ 'RESET.MSG_NEW_PWD_5' | translate }}</li>
+              <li>{{ 'RESET.MSG_NEW_PWD_6' | translate }}</li>
+              <li>{{ 'RESET.MSG_NEW_PWD_7' | translate }}</li>
             </ul>
           </span>
         </div>
         <div class="form-group" [class.has-warning]="!formModel.get('passwordConfirm').valid" [class.has-danger]="showFormError">
-          <label for="passwordConfirm">Confirm password</label>
-          <input type="password" class="form-control" id="passwordConfirm" placeholder="Confirm password" formControlName="passwordConfirm">
+          <label for="passwordConfirm">{{ 'RESET.LABEL_CONFIRM_PWD' | translate }}</label>
+          <input type="password" class="form-control" id="passwordConfirm" placeholder="{{ 'RESET.PLACEHOLDER_CONFIRM_PWD' | translate }}" formControlName="passwordConfirm">
           <span class="form-text text-muted" *ngIf="!formModel.get('passwordConfirm').valid">
-            Retype the same password
+            {{ 'RESET.MSG_CONFIRM_PWD' | translate }}
           </span>
         </div>
-        <button type="submit" [disabled]="alreadyChanged" [ladda]='isWaiting' data-style="slide-right" data-spinner-color="White" class="btn btn-primary ladda-button"><span class="ladda-label">Change password!</span></button>
+        <button type="submit" [disabled]="alreadyChanged" [ladda]='isWaiting' data-style="slide-right" data-spinner-color="White" class="btn btn-primary ladda-button"><span class="ladda-label">{{ 'RESET.BTN_CHANGE_PWD' | translate }}</span></button>
       </form>
 
       <br>
       <br>
-      <p> Back to <a [routerLink]="['/login']">login</a></p>
+      <p> {{ 'RESET.BACK' | translate }} <a [routerLink]="['/login']">login</a></p>
     </div>
   </div>
 </div>

@@ -26,6 +26,9 @@ import { Router } from "@angular/router";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { SharedModule } from "../../shared/shared.module";
 import { CoreModule } from "../../core/core.module";
+import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
+import { HttpLoaderFactory } from "../../app.module";
+import { HttpClient } from "@angular/common/http";
 
 let comp: HomeComponent;
 let fixture: ComponentFixture<HomeComponent>;
@@ -43,7 +46,7 @@ function initTestBed() {
   router = new RouterStub();
 
   TestBed.configureTestingModule({
-    imports: [ NgbModule.forRoot(), CoreModule, SharedModule ],
+    imports: [ NgbModule.forRoot(), CoreModule, SharedModule, TranslateModule.forRoot() ],
     declarations: [ HomeComponent, RouterLinkStubDirective, RouterOutletStubComponent ],
     // schemas:      [ NO_ERRORS_SCHEMA ]
   }).overrideComponent(HomeComponent, {

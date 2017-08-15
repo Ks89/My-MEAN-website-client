@@ -41,6 +41,7 @@ import { ModalGalleryModule } from 'angular-modal-gallery';
 // **************************************************************************
 
 import { Ng2PageScrollModule, PageScrollConfig } from 'ng2-page-scroll';
+import { TranslateModule } from '@ngx-translate/core';
 
 console.log('`Projects` bundle loaded asynchronously');
 
@@ -56,7 +57,8 @@ console.log('`Projects` bundle loaded asynchronously');
     RouterModule,
     NgbModule,
     Ng2PageScrollModule,
-    ModalGalleryModule, // no for root here
+    ModalGalleryModule,
+    TranslateModule.forChild({ isolate: false }),
 
     // add ngrx to this lazy loaded module
     StoreModule.forFeature('pageNum', reducers)
