@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
 import * as _ from 'lodash';
@@ -7,17 +7,19 @@ import { Project, ProjectService } from '../../../core/services/services';
 import * as fromPageNum from '../reducers';
 import * as PageNum from '../actions/page-num';
 
+import { TranslateService } from '@ngx-translate/core';
+
 @Component({
   selector: 'mmw-project-list-page',
   templateUrl: 'project-list.html',
   styleUrls: ['timeline.scss']
 })
-export class ProjectListComponent implements OnDestroy {
+export class ProjectListComponent implements OnInit, OnDestroy {
   fullProjects: Project[];
   originalProjects: Project[];
   visibleProjects: Project[];
 
-  pageHeader: any;
+  pageHeader: any = { title:'', strapline: '' };
   sidebar: any;
   message: string;
 
@@ -27,9 +29,11 @@ export class ProjectListComponent implements OnDestroy {
 
   private pageNumSubscription: Subscription;
   private projectsSubscription: Subscription;
+  private i18nSubscription: Subscription;
 
   constructor(private store: Store<fromPageNum.State>,
-              private projectService: ProjectService) {
+              private projectService: ProjectService,
+              private translate: TranslateService) {
 
     this.projectsSubscription = this.projectService.getProjects().subscribe((values: Project[]) => {
       this.fullProjects = values;
@@ -87,6 +91,16 @@ export class ProjectListComponent implements OnDestroy {
     this.message = 'Searching for projects';
   }
 
+  ngOnInit() {
+    this.i18nSubscription = this.translate.get('PROJECTS')
+      .subscribe((res: any) => {
+        this.pageHeader = {
+          title: res['TITLE'],
+          strapline: res['STRAPLINE']
+        };
+      });
+  }
+
   onKeyupFilter(value: string) {
     if (!value || value === '') {
       this.fullProjects = this.originalProjects;
@@ -111,6 +125,9 @@ export class ProjectListComponent implements OnDestroy {
     }
     if (this.pageNumSubscription) {
       this.pageNumSubscription.unsubscribe();
+    }
+    if (this.i18nSubscription) {
+      this.i18nSubscription.unsubscribe();
     }
   }
 

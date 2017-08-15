@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
@@ -7,30 +7,42 @@ import { Subscription } from 'rxjs/Subscription';
 import { AuthService } from '../../core/services/services';
 
 import { EmailValidators } from 'ng2-validators';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'mmw-forgot-page',
   templateUrl: 'forgot.html'
 })
-export class ForgotComponent implements OnDestroy {
-  public pageHeader: any;
-  public formModel: FormGroup;
-  public forgotAlert: any = {visible: false}; // hidden by default
-  public isWaiting = false; // enable button's spinner
-  public showFormError = false;
-  private forgotSubscription: Subscription;
+export class ForgotComponent implements OnInit, OnDestroy {
   // this class is used when you click on the 'forgot password' to reset your password
 
-  constructor(private authService: AuthService, private router: Router) {
-    this.pageHeader = {
-      title: 'Forgot',
-      strapline: ''
-    };
+  pageHeader: any = { title:'', strapline: '' };
+  formModel: FormGroup;
+  forgotAlert: any = {visible: false}; // hidden by default
+  isWaiting = false; // enable button's spinner
+  showFormError = false;
+
+  private forgotSubscription: Subscription;
+  private i18nSubscription: Subscription;
+
+  constructor(private authService: AuthService,
+              private router: Router,
+              private translate: TranslateService) {
 
     const fb = new FormBuilder();
     this.formModel = fb.group({
       'email': [null, EmailValidators.simple]
     });
+  }
+
+  ngOnInit() {
+    this.i18nSubscription = this.translate.get('FORGOT')
+      .subscribe((res: any) => {
+        this.pageHeader = {
+          title: res['TITLE'],
+          strapline: res['STRAPLINE']
+        };
+      });
   }
 
   onForgot() {
@@ -73,6 +85,10 @@ export class ForgotComponent implements OnDestroy {
   ngOnDestroy(): any {
     if (this.forgotSubscription) {
       this.forgotSubscription.unsubscribe();
+    }
+
+    if (this.i18nSubscription) {
+      this.i18nSubscription.unsubscribe();
     }
   }
 }

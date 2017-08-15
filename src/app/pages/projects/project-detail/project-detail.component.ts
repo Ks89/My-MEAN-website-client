@@ -28,11 +28,9 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 
   private projectSubscription: Subscription;
 
-  constructor(
-    private route: ActivatedRoute,
-    private projectService: ProjectService,
-    private router: Router
-  ) {
+  constructor(private route: ActivatedRoute,
+              private projectService: ProjectService,
+              private router: Router) {
 
     this.projectId = route.snapshot.params['projectId'];
 

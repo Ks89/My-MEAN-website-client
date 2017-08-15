@@ -1,9 +1,10 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
 
 import { EmailValidators, PasswordValidators } from 'ng2-validators';
+import { TranslateService } from '@ngx-translate/core';
 
 import { AuthService } from '../../core/services/services';
 
@@ -11,20 +12,19 @@ import { AuthService } from '../../core/services/services';
   selector: 'mmw-register-page',
   templateUrl: 'register.html'
 })
-export class RegisterComponent implements OnDestroy {
-  pageHeader: any;
+export class RegisterComponent implements OnInit, OnDestroy {
+  pageHeader: any = { title:'', strapline: '' };
   formModel: FormGroup;
   registerAlert: any = {visible: false}; // hidden by default
   showFormError = false;
   isWaiting = false; // enable button's spinner
 
   private registerSubscription: Subscription;
+  private i18nSubscription: Subscription;
 
-  constructor(private authService: AuthService, private router: Router) {
-    this.pageHeader = {
-      title: 'Create a new accout',
-      strapline: ''
-    };
+  constructor(private authService: AuthService,
+              private router: Router,
+              private translate: TranslateService) {
 
     const passwordValidator = Validators.compose([
       PasswordValidators.alphabeticalCharacterRule(1),
@@ -42,6 +42,16 @@ export class RegisterComponent implements OnDestroy {
       'password': [null, passwordValidator],
       'passwordConfirm': [null, null]
     });
+  }
+
+  ngOnInit() {
+    this.i18nSubscription = this.translate.get('REGISTER')
+      .subscribe((res: any) => {
+        this.pageHeader = {
+          title: res['TITLE'],
+          strapline: res['STRAPLINE']
+        };
+      });
   }
 
   onRegister() {
@@ -113,6 +123,9 @@ export class RegisterComponent implements OnDestroy {
   ngOnDestroy() {
     if (this.registerSubscription) {
       this.registerSubscription.unsubscribe();
+    }
+    if (this.i18nSubscription) {
+      this.i18nSubscription.unsubscribe();
     }
   }
 }

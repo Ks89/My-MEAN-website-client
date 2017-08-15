@@ -1,9 +1,10 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { Subscription } from 'rxjs/Subscription';
 
 import { EmailValidators } from 'ng2-validators';
+import { TranslateService } from '@ngx-translate/core';
 
 import { ContactService } from '../../core/services/services';
 
@@ -11,9 +12,9 @@ import { ContactService } from '../../core/services/services';
   selector: 'mmw-contact-page',
   templateUrl: 'contact.html'
 })
-export class ContactComponent implements OnDestroy {
+export class ContactComponent implements OnInit, OnDestroy {
 
-  pageHeader: any;
+  pageHeader: any = { title:'', strapline: '' };
   formModel: FormGroup;
   contactAlert: any = { visible: false }; // hidden by default
   isWaiting = false; // enable button's spinner
@@ -21,19 +22,26 @@ export class ContactComponent implements OnDestroy {
 
   private sendFormSubscription: Subscription;
   private recaptchaResponse: any;
+  private i18nSubscription: Subscription;
 
-  constructor(private contactService: ContactService) {
-    this.pageHeader = {
-      title: 'Contact',
-      strapline: ''
-    };
-
+  constructor(private contactService: ContactService,
+              private translate: TranslateService) {
     const fb = new FormBuilder();
     this.formModel = fb.group({
       'email': [null, EmailValidators.simple],
       'subject': [null, Validators.minLength(4)],
       'message': [null, Validators.minLength(15)],
     });
+  }
+
+  ngOnInit() {
+    this.i18nSubscription = this.translate.get('CONTACT')
+      .subscribe((res: any) => {
+        this.pageHeader = {
+          title: res['TITLE'],
+          strapline: res['STRAPLINE']
+        };
+      });
   }
 
   handleCorrectCaptcha(captchaResponse: string) {
@@ -89,6 +97,10 @@ export class ContactComponent implements OnDestroy {
   ngOnDestroy(): any {
     if (this.sendFormSubscription) {
       this.sendFormSubscription.unsubscribe();
+    }
+
+    if (this.i18nSubscription) {
+      this.i18nSubscription.unsubscribe();
     }
   }
 }

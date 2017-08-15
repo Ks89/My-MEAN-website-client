@@ -33,10 +33,14 @@
     "LICENSES": "Licenza"
   },
   "ACTIVATE": {
+    "TITLE": "Attivazione account",
+    "STRAPLINE": "",
     "WELCOME": "Benvenuto",
     "BACK": "Torna a"
   },
   "FORGOT": {
+    "TITLE": "Forgot",
+    "STRAPLINE": "",
     "LBL_TYPE_EMAIL": "Inserisci l'email usata per creare il tuo account",
     "LBL_EMAIL": "Indirizzo Email",
     "PLACEHOLDER_EMAIL": "Inserisci il tuo indirizzo email",
@@ -45,6 +49,8 @@
     "BACK": "Torna a"
   },
   "LOGIN": {
+    "TITLE": "Sign in",
+    "STRAPLINE": "",
     "LBL_MEMBER": "Non sei un membro? Per favore",
     "LBL_FIRST": "",
     "URL_REGISTER": "registrati",
@@ -61,10 +67,12 @@
     "TWITTER": "Login con Twitter"
   },
   "POST3D_AUTH": {
-    "": "Ti sei loggato correttamente tramite il servizio esterno scelto",
+    "SUCCESS": "Ti sei loggato correttamente tramite il servizio esterno scelto",
     "BACK": "Back to"
   },
   "PROFILE": {
+    "TITLE": "Profilo",
+    "STRAPLINE": "Benvenuto",
     "ASK_DESTROY_TITLE": "Vuoi veramenente distruggere questo account?",
     "ASK_DESTROY_MSG_HTML": "Se scolleghi l'ultimo servizio, <strong>non sarai in grado di fare login ancora</strong> in questo account.<br>Tutti i dati salvati saranno rapidamente distrutti.",
     "BTN_ASK_OK": "OK",
@@ -91,6 +99,8 @@
     "BTN_UNLINK": "scollega"
   },
   "REGISTER": {
+    "TITLE": "Registrazione nuovo account",
+    "STRAPLINE": "",
     "LABEL_ALREADY_MEMBER1": "Gia' un membro? Per favore esegui il",
     "LABEL_ALREADY_MEMBER2": "",
     "LABEL_FULL_NAME": "Nome completo",
@@ -117,6 +127,8 @@
     "BTN_REGISTER": "Registrati!"
   },
   "RESET": {
+    "TITLE": "Reset password",
+    "STRAPLINE": "",
     "LABEL_NEW_PASSWORD": "Inserisci una nuova password",
     "LABEL_NEW_PWD": "Nuova Password",
     "PLACEHOLDER_NEW_PWD": "Inserisci la nuova password",

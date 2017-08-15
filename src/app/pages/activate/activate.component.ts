@@ -7,6 +7,8 @@ import 'rxjs/add/observable/combineLatest';
 import 'rxjs/add/operator/concatAll';
 import 'rxjs/add/operator/do';
 
+import { TranslateService } from '@ngx-translate/core';
+
 import { AuthService } from '../../core/services/services';
 
 @Component({
@@ -14,7 +16,7 @@ import { AuthService } from '../../core/services/services';
   templateUrl: 'activate.html'
 })
 export class ActivateComponent implements OnInit, OnDestroy {
-  pageHeader: any;
+  pageHeader: any = { title:'', strapline: '' };
   emailToken: string;
   userName: string;
   activateAlert: any = { visible: false }; // hidden by default
@@ -22,8 +24,12 @@ export class ActivateComponent implements OnInit, OnDestroy {
   queryParams$: Observable<any>;
 
   private activateSubscription: Subscription;
+  private i18nSubscription: Subscription;
 
-  constructor(private authService: AuthService, private route: ActivatedRoute) {
+  constructor(private authService: AuthService,
+              private route: ActivatedRoute,
+              private translate: TranslateService) {
+
     const emailToken$: Observable<string> = this.route.queryParams
       .map(params => params['emailToken'] || 'Not valid');
 
@@ -31,22 +37,29 @@ export class ActivateComponent implements OnInit, OnDestroy {
       .map(params => params['userName'] || 'Not valid')
       .do(val => this.userName = val);
 
-    this.queryParams$ = Observable.combineLatest(emailToken$, userName$,
-      (emailToken, userName) => ({emailToken, userName}));
-
-    this.pageHeader = {
-      title: 'Activate',
-      strapline: ''
-    };
+    this.queryParams$ = Observable
+      .combineLatest(emailToken$, userName$, (emailToken, userName) => ({emailToken, userName}));
   }
 
   ngOnInit() {
     this.onActivate();
+
+    this.i18nSubscription = this.translate.get('ACTIVATE')
+      .subscribe((res: any) => {
+        this.pageHeader = {
+          title: res['TITLE'],
+          strapline: res['STRAPLINE']
+        };
+      });
   }
 
   ngOnDestroy() {
     if (this.activateSubscription) {
       this.activateSubscription.unsubscribe();
+    }
+
+    if (this.i18nSubscription) {
+      this.i18nSubscription.unsubscribe();
     }
   }
 

@@ -1,6 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { Subscription } from 'rxjs/Subscription';
+
+import { TranslateService } from '@ngx-translate/core';
 
 import { AuthService } from '../../core/services/services';
 
@@ -9,30 +12,40 @@ import { AuthService } from '../../core/services/services';
   styleUrls: ['login.scss'],
   templateUrl: 'login.html'
 })
-export class LoginComponent {
-  public pageHeader: any;
-  public formModel: FormGroup;
-  public loginAlert: any = {visible: false}; // hidden by default
-  public isWaiting = false; // enable button's spinner
-  public showFormError = false;
+export class LoginComponent implements OnInit, OnDestroy {
+  pageHeader: any = { title:'', strapline: '' };
+  formModel: FormGroup;
+  loginAlert: any = {visible: false}; // hidden by default
+  isWaiting = false; // enable button's spinner
+  showFormError = false;
 
-  public facebookOauthUrl = 'api/auth/facebook';
-  public googleOauthUrl = 'api/auth/google';
-  public githubOauthUrl = 'api/auth/github';
-  public linkedinOauthUrl = 'api/auth/linkedin';
-  public twitterOauthUrl = 'api/auth/twitter';
+  facebookOauthUrl = 'api/auth/facebook';
+  googleOauthUrl = 'api/auth/google';
+  githubOauthUrl = 'api/auth/github';
+  linkedinOauthUrl = 'api/auth/linkedin';
+  twitterOauthUrl = 'api/auth/twitter';
 
-  constructor(private authService: AuthService, private router: Router) {
-    this.pageHeader = {
-      title: 'Sign in',
-      strapline: ''
-    };
+  private i18nSubscription: Subscription;
+
+  constructor(private authService: AuthService,
+              private router: Router,
+              private translate: TranslateService) {
 
     const fb = new FormBuilder();
     this.formModel = fb.group({
       'email': [null, null],
       'password': [null, null]
     });
+  }
+
+  ngOnInit() {
+    this.i18nSubscription = this.translate.get('LOGIN')
+      .subscribe((res: any) => {
+        this.pageHeader = {
+          title: res['TITLE'],
+          strapline: res['STRAPLINE']
+        };
+      });
   }
 
   onLogin() {
@@ -92,5 +105,11 @@ export class LoginComponent {
       },
       () => console.log('Done')
     );
+  }
+
+  ngOnDestroy() {
+    if (this.i18nSubscription) {
+      this.i18nSubscription.unsubscribe();
+    }
   }
 }

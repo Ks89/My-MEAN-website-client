@@ -12,11 +12,12 @@ import { AuthService } from '../../core/services/services';
   templateUrl: 'post3d-auth.html'
 })
 export class Post3dAuthComponent implements OnInit, OnDestroy {
-  pageHeader: any;
+  pageHeader: any = { title:'', strapline: '' };
 
   private postAuthSubscription: Subscription;
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService,
+              private router: Router) {
     this.pageHeader = {
       title: 'PostLogin',
       strapline: ''

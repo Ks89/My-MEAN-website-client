@@ -8,6 +8,7 @@ import 'rxjs/add/observable/combineLatest';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EmailValidators } from 'ng2-validators';
+import { TranslateService } from '@ngx-translate/core';
 
 import { AuthService, ProfileService } from '../../core/services/services';
 
@@ -17,7 +18,7 @@ import { AuthService, ProfileService } from '../../core/services/services';
   templateUrl: 'profile.html'
 })
 export class ProfileComponent implements OnInit, OnDestroy {
-  pageHeader: any;
+  pageHeader: any = { title:'', strapline: '' };
   formModel: FormGroup;
   token: string;
   bigProfileImage = 'assets/images/profile/bigProfile.png';
@@ -66,10 +67,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
   private updateSubscription: Subscription;
   private unlinkSubscription: Subscription;
   private unlinkSubscription2: Subscription;
+  private i18nSubscription: Subscription;
 
   constructor(private profileService: ProfileService,
               private route: ActivatedRoute, private router: Router,
-              private authService: AuthService, private modalService: NgbModal) {
+              private authService: AuthService, private modalService: NgbModal,
+              private translate: TranslateService) {
     this.token = route.snapshot.params['token'];
 
     if (this.token === null || this.token === undefined) {
@@ -94,6 +97,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     console.log('ngOnInit');
+
+    this.i18nSubscription = this.translate.get('PROFILE')
+      .subscribe((res: any) => {
+        this.pageHeader = {
+          title: res['TITLE'],
+          strapline: res['STRAPLINE']
+        };
+      });
+
     // 3dparty authentication
 
     const postAuth$: Observable<any> = this.authService.post3dAuthAfterCallback();
@@ -276,6 +288,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
     if (this.unlinkSubscription2) {
       this.unlinkSubscription2.unsubscribe();
+    }
+    if (this.i18nSubscription) {
+      this.i18nSubscription.unsubscribe();
     }
   }
 

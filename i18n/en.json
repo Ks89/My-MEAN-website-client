@@ -33,10 +33,14 @@
     "LICENSES": "License"
   },
   "ACTIVATE": {
+    "TITLE": "Activate account",
+    "STRAPLINE": "",
     "WELCOME": "Welcome",
     "BACK": "Back to"
   },
   "FORGOT": {
+    "TITLE": "Forgot",
+    "STRAPLINE": "",
     "LBL_TYPE_EMAIL": "Type the email used to create your account",
     "LBL_EMAIL": "Email address",
     "PLACEHOLDER_EMAIL": "Enter your email address",
@@ -45,6 +49,8 @@
     "BACK": "Back to"
   },
   "LOGIN": {
+    "TITLE": "Sign in",
+    "STRAPLINE": "",
     "LBL_MEMBER": "Not a member? Please",
     "LBL_FIRST": " first",
     "URL_REGISTER": "register",
@@ -65,6 +71,8 @@
     "BACK": "Back to"
   },
   "PROFILE": {
+    "TITLE": "Profile",
+    "STRAPLINE": "Welcome",
     "ASK_DESTROY_TITLE": "Whould you really destroy your account?",
     "ASK_DESTROY_MSG_HTML": "If you unlink the last service, <strong>you won't be able to login again</strong> to this account.<br>All your saved data will be quickly destroyed.",
     "BTN_ASK_OK": "OK",
@@ -91,6 +99,8 @@
     "BTN_UNLINK": "unlink"
   },
   "REGISTER": {
+    "TITLE": "Register",
+    "STRAPLINE": "",
     "LABEL_ALREADY_MEMBER1": "Already a member? Please",
     "LABEL_ALREADY_MEMBER2": "instead",
     "LABEL_FULL_NAME": "Full name",
@@ -117,6 +127,8 @@
     "BTN_REGISTER": "Register!"
   },
   "RESET": {
+    "TITLE": "Reset",
+    "STRAPLINE": "",
     "LABEL_NEW_PASSWORD": "Type a new password",
     "LABEL_NEW_PWD": "New Password",
     "PLACEHOLDER_NEW_PWD": "Enter your password",
