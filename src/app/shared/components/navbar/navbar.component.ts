@@ -19,7 +19,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   constructor(private authService: AuthService,
               private router: Router,
               // required to use ngx-translate inside the template
-              private translate: TranslateService) {}
+              public translate: TranslateService) {}
 
   ngOnInit() {
     this.authLoginSubscription = this.authService.loginEvent

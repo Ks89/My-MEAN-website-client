@@ -18,6 +18,7 @@
 const webpack                  = require('webpack');
 const path                     = require('path');
 
+const CopyWebpackPlugin        = require('copy-webpack-plugin');
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin');
 
 const helpers                  = require('./helpers');
@@ -25,7 +26,7 @@ const helpers                  = require('./helpers');
 module.exports = {
   devtool: 'inline-source-map',
   resolve: {
-    extensions: ['.ts', '.js'],
+    extensions: ['.ts', '.js', '.json'],
     modules: [helpers.root('src'),'node_modules']
   },
   module: {
@@ -70,11 +71,6 @@ module.exports = {
         exclude: [/\.e2e\.ts$/]
       },
       {
-        test: /\.json$/,
-        loader: 'json-loader',
-        exclude: [helpers.root('src/index.html'), helpers.root('src/admin.html')]
-      },
-      {
         test: /\.css$/,
         loader: ['to-string-loader', 'css-loader'],
         exclude: [helpers.root('src/index.html'), helpers.root('src/admin.html')]
@@ -109,6 +105,19 @@ module.exports = {
     ]
   },
   plugins: [
+    new CopyWebpackPlugin([
+      { from: './assets',
+        to: './assets'
+      },
+      {
+        from: 'node_modules/font-awesome/css/font-awesome.min.css',
+        to: 'assets/font-awesome/css/font-awesome.min.css',
+      },
+      {
+        from: 'node_modules/font-awesome/fonts',
+        to: 'assets/font-awesome/fonts'
+      }
+    ]),
     new ContextReplacementPlugin(
       // The (\\|\/) piece accounts for path separators in *nix and Windows
       /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,

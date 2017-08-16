@@ -92,7 +92,7 @@ export class ProjectListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.i18nSubscription = this.translate.get('PROJECTS')
+    this.i18nSubscription = this.translate.get('PROFILE')
       .subscribe((res: any) => {
         this.pageHeader = {
           title: res['TITLE'],
