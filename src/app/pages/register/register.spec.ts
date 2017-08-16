@@ -18,6 +18,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { RegisterComponent } from './register.component';
 import { RouterLinkStubDirective, RouterOutletStubComponent, RouterStub } from '../../shared/testing/helpers.spec';
@@ -45,7 +46,7 @@ function initTestBed() {
   router = new RouterStub();
 
   TestBed.configureTestingModule({
-    imports: [FormsModule, ReactiveFormsModule, LaddaModule],
+    imports: [ FormsModule, ReactiveFormsModule, LaddaModule, TranslateModule.forRoot() ],
     declarations: [ RegisterComponent, PageHeaderComponent, RouterLinkStubDirective, RouterOutletStubComponent ],
     // schemas:      [ NO_ERRORS_SCHEMA ]
   }).overrideComponent(RegisterComponent, {

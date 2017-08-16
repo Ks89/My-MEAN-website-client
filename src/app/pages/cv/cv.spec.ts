@@ -17,6 +17,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { CvComponent } from './cv.component';
 
@@ -27,6 +28,7 @@ describe('CvComponent', () => {
   beforeEach( async(() => {
 
     TestBed.configureTestingModule({
+      imports: [ TranslateModule.forRoot() ],
       declarations: [ CvComponent/*, PageHeaderComponent*/ ]
       // schemas:      [ NO_ERRORS_SCHEMA ]
     }); // not necessary with webpack .compileComponents();

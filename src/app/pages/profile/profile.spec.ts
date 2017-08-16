@@ -17,9 +17,10 @@
 import {async, ComponentFixture, TestBed, fakeAsync, tick} from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { ProfileComponent } from './profile.component';
-import {RouterLinkStubDirective, RouterOutletStubComponent, RouterStub, click} from '../../shared/testing/helpers.spec';
+import { RouterLinkStubDirective, RouterOutletStubComponent, RouterStub, click } from '../../shared/testing/helpers.spec';
 import { AuthService } from "../../core/services/auth.service";
 import {
   FakeAuthService, FakeUser2ServicesNoLocalAuthService,
@@ -81,7 +82,7 @@ function initTestBed(withToken: boolean, authServiceMocked: any, profileServiceM
   }
 
   TestBed.configureTestingModule({
-    imports: [FormsModule, ReactiveFormsModule, LaddaModule, NgbModule.forRoot()],
+    imports: [ FormsModule, ReactiveFormsModule, LaddaModule, NgbModule.forRoot(), TranslateModule.forRoot() ],
     declarations: [ ProfileComponent, PageHeaderComponent, RouterLinkStubDirective, RouterOutletStubComponent ],
     // schemas:      [ NO_ERRORS_SCHEMA ]
   }).overrideComponent(ProfileComponent, {

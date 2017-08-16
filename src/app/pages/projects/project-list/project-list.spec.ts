@@ -131,7 +131,7 @@ describe('ProjectListComponent', () => {
       expect(badges[8].nativeElement.textContent.trim()).toBe(PROJECTS[2].tags[2]);
 
       const timelineHeader: DebugElement = element.query(By.css('h3#timeline'));
-      expect(timelineHeader.nativeElement.textContent).toBe(comp.sidebarTitle);
+      expect(timelineHeader.nativeElement.textContent).toBe('What can you do?');
 
       const timelineTitles: DebugElement[] = element.queryAll(By.css('h4.timeline-title'));
       expect(timelineTitles.length).toBe(5);

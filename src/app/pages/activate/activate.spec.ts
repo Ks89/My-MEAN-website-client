@@ -17,6 +17,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { ActivateComponent } from './activate.component';
 import { RouterLinkStubDirective, RouterOutletStubComponent, ActivatedRoute, ActivatedRouteStub }   from '../../shared/testing/router-stubs.spec';
@@ -39,6 +40,7 @@ function initTestBed(emailToken: string, userName: string) {
   activatedRoute.testParams = { emailToken: emailToken, userName: userName };
 
   TestBed.configureTestingModule({
+    imports: [ TranslateModule.forRoot() ],
     declarations: [ ActivateComponent, PageHeaderComponent, RouterLinkStubDirective, RouterOutletStubComponent ],
     // schemas:      [ NO_ERRORS_SCHEMA ]
   }).overrideComponent(ActivateComponent, {

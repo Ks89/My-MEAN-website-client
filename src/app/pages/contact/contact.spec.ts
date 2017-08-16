@@ -17,6 +17,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import {DebugElement, NO_ERRORS_SCHEMA} from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { ContactComponent } from './contact.component';
 import { FakeContactService } from "../../shared/testing/fake-contact.service.spec";
@@ -31,7 +32,7 @@ let fixture: ComponentFixture<ContactComponent>;
 function initTestBed() {
   //TODO Find a way to remove NO_ERRORS_SCHEMA and add RecaptchaModule
   TestBed.configureTestingModule({
-    imports: [FormsModule, ReactiveFormsModule, LaddaModule],
+    imports: [ FormsModule, ReactiveFormsModule, LaddaModule, TranslateModule.forRoot() ],
     declarations: [ContactComponent, PageHeaderComponent],
     schemas: [NO_ERRORS_SCHEMA],
   }).overrideComponent(ContactComponent, {

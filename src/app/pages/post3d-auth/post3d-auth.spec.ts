@@ -17,9 +17,10 @@
 import {ComponentFixture, TestBed, fakeAsync, tick, async} from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { Post3dAuthComponent } from './post3d-auth.component';
-import {RouterLinkStubDirective, RouterOutletStubComponent, RouterStub, click} from '../../shared/testing/helpers.spec';
+import { RouterLinkStubDirective, RouterOutletStubComponent, RouterStub, click } from '../../shared/testing/helpers.spec';
 import { AuthService } from "../../core/services/auth.service";
 import { FakeAuthService, FakeWrongPost3dAuthService, FakeWrongPost3dLoggedUserAuthService } from "../../shared/testing/fake-auth.service.spec";
 import { PageHeaderComponent } from "../../shared/components/page-header/page-header.component";
@@ -39,7 +40,7 @@ function initTestBed(authServiceMocked) {
   router = { navigate: jasmine.createSpy('navigate') };
 
   TestBed.configureTestingModule({
-    imports: [FormsModule, ReactiveFormsModule, LaddaModule],
+    imports: [ FormsModule, ReactiveFormsModule, LaddaModule, TranslateModule.forRoot()],
     declarations: [ Post3dAuthComponent, PageHeaderComponent, RouterLinkStubDirective, RouterOutletStubComponent ],
     // schemas:      [ NO_ERRORS_SCHEMA ]
   }).overrideComponent(Post3dAuthComponent, {

@@ -36,14 +36,10 @@ module.exports = function (config) {
     basePath: '',
     frameworks: ['jasmine'],
     files: [
+      './assets/read-json.js',
+      {pattern: './assets/i18n/*.json', included: false},
       "./config/karma-test-runner.js"
     ],
-    // files: [
-    //   {
-    //     pattern: './config/karma-test-runner.js',
-    //     watched: false
-    //   }
-    // ],
     exclude: [],
     preprocessors: {
       './config/karma-test-runner.js': ['coverage', 'webpack', 'sourcemap']

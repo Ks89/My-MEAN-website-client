@@ -17,6 +17,7 @@
 import {async, ComponentFixture, TestBed, fakeAsync, tick} from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { ResetComponent } from './reset.component';
 import {
@@ -50,7 +51,7 @@ function initTestBed(emailToken: string) {
   activatedRoute.testParams = { emailToken: emailToken};
 
   TestBed.configureTestingModule({
-    imports: [FormsModule, ReactiveFormsModule, LaddaModule],
+    imports: [ FormsModule, ReactiveFormsModule, LaddaModule, TranslateModule.forRoot()],
     declarations: [ ResetComponent, PageHeaderComponent, RouterLinkStubDirective, RouterOutletStubComponent ],
     // schemas:      [ NO_ERRORS_SCHEMA ]
   }).overrideComponent(ResetComponent, {

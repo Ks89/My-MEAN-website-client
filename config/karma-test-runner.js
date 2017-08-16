@@ -48,7 +48,7 @@ require('rxjs/Rx');
  * any file that ends with spec.js and get its path. By passing in true
  * we say do this recursively
  */
-var testContext = require.context('../src', true, /\.spec\.ts/);
+var testContext = require.context('../src', true, /about\.spec\.ts/);
 
 
 /*
