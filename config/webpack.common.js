@@ -175,6 +175,12 @@ module.exports = {
     new ScriptExtHtmlWebpackPlugin({
       defaultAttribute: 'defer'
     }),
+    // new ScriptExtHtmlWebpackPlugin({
+    //   sync: /polyfills|vendor/,
+    //   defaultAttribute: 'async',
+    //   preload: [/polyfills|vendor|app|admin/],
+    //   prefetch: [/chunk/]
+    // }),
     /*
      * Plugin: HtmlElementsPlugin
      * Description: Generate html tags based on javascript maps.
