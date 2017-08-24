@@ -15,9 +15,9 @@
  */
 
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { DebugElement } from '@angular/core';
+import { DebugElement, EventEmitter, Pipe, PipeTransform } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService, TranslationChangeEvent } from '@ngx-translate/core';
 
 import { AboutComponent } from './about.component';
 import { PageHeaderComponent } from "../../shared/components/page-header/page-header.component";
@@ -28,35 +28,62 @@ let fixture: ComponentFixture<AboutComponent>;
 
 import { Observable } from "rxjs";
 
-declare let readJSON: any;
+// class TranslateCustomLoader implements TranslateLoader {
+//   getTranslation(lang: string): Observable<any> {
+//     if (lang == "it") {
+//       let it = readJSON('assets/i18n/it.json');
+//       console.log('------------------------------------', it);
+//       return Observable.of(it);
+//     }
+//     let en = readJSON('assets/i18n/en.json');
+//     console.log('------------------------------------', en);
+//     return Observable.of(en);
+//   }
+// }
 
-class TranslateCustomLoader implements TranslateLoader {
-  getTranslation(lang: string): Observable<any> {
-    if (lang == "it") {
-      let it = readJSON('assets/i18n/it.json');
-      console.log('------------------------------------', it);
-      return Observable.of(it);
-    }
-    let en = readJSON('assets/i18n/en.json');
-    console.log('------------------------------------', en);
-    return Observable.of(en);
+@Pipe({
+  name: "translate"
+})
+export class TranslatePipeMock implements PipeTransform {
+  public name: string = "translate";
+
+  public transform(query: string, ...args: any[]): any {
+    return query;
   }
 }
 
+class TranslateServiceStub {
+
+  private _onTranslationChange: EventEmitter<TranslationChangeEvent> = new EventEmitter<TranslationChangeEvent>();
+
+  public get(key: any): any {
+    return Observable.of(key);
+  }
+
+
+}
 
 describe('AboutComponent', () => {
   beforeEach(async(() => {
 
     TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot({
-        loader: {
-          provide: TranslateLoader,
-          useClass: TranslateCustomLoader
-        }
-      })],
-      declarations: [AboutComponent, PageHeaderComponent],
+      // imports: [
+      //   TranslateModule.forRoot({
+      //   loader: {
+      //     provide: TranslateLoader,
+      //     useClass: TranslateCustomLoader
+      //   }
+      // })],
+      declarations: [AboutComponent, PageHeaderComponent, TranslatePipe]
       // schemas:      [ NO_ERRORS_SCHEMA ]
-    }); // not necessary with webpack .compileComponents();
+    }).overrideComponent(AboutComponent, {
+      set: {
+        providers: [
+          {provide: TranslateService, useClass: TranslateServiceStub}
+        ]
+      }
+    });
+
 
     fixture = TestBed.createComponent(AboutComponent);
     comp = fixture.componentInstance;

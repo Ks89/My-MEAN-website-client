@@ -36,7 +36,6 @@ module.exports = function (config) {
     basePath: '',
     frameworks: ['jasmine'],
     files: [
-      './assets/read-json.js',
       {pattern: './assets/i18n/*.json', included: false},
       "./config/karma-test-runner.js"
     ],

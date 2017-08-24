@@ -39,13 +39,14 @@ Testing:
 - work in progress... (this is only an alpha, please be patient)
 
 ## News
-- *08/10/2017* - **My MEAN website** Alpha 7 public release [HERE](https://github.com/Ks89/My-MEAN-website-client/releases/tag/v.alpha-6)
-- *04/09/2017* - **My MEAN website** Alpha 6 public release [HERE](https://github.com/Ks89/My-MEAN-website-client/releases/tag/v.alpha-6)
-- *01/21/2017* - **My MEAN website** Alpha 5 public release [HERE](https://github.com/Ks89/My-MEAN-website-client/releases/tag/v.alpha-5)
-- *12/30/2016* - **My MEAN website** Alpha 4 public release [HERE](https://github.com/Ks89/My-MEAN-website-client/releases/tag/v.alpha-4)
-- *11/28/2016* - **My MEAN website** Alpha 3 public release [HERE](https://github.com/Ks89/My-MEAN-website-client/releases/tag/v.alpha-3)
-- *10/27/2016* - **My MEAN website** Alpha 2 public release [HERE](https://github.com/Ks89/My-MEAN-website-server/releases/tag/v.alpha-2.2)
-- *08/15/2016* - **My MEAN website** Alpha 1 public release [HERE](https://github.com/Ks89/My-MEAN-website-server/releases/tag/v.alpha-1)
+- *??/08/2017* - **My MEAN website** Alpha 8 public release [HERE](https://github.com/Ks89/My-MEAN-website-client/releases/tag/v.alpha-6)
+- *10/08/2017* - **My MEAN website** Alpha 7 public release [HERE](https://github.com/Ks89/My-MEAN-website-client/releases/tag/v.alpha-6)
+- *09/04/2017* - **My MEAN website** Alpha 6 public release [HERE](https://github.com/Ks89/My-MEAN-website-client/releases/tag/v.alpha-6)
+- *21/01/2017* - **My MEAN website** Alpha 5 public release [HERE](https://github.com/Ks89/My-MEAN-website-client/releases/tag/v.alpha-5)
+- *30/12/2016* - **My MEAN website** Alpha 4 public release [HERE](https://github.com/Ks89/My-MEAN-website-client/releases/tag/v.alpha-4)
+- *28/11/2016* - **My MEAN website** Alpha 3 public release [HERE](https://github.com/Ks89/My-MEAN-website-client/releases/tag/v.alpha-3)
+- *27/10/2016* - **My MEAN website** Alpha 2 public release [HERE](https://github.com/Ks89/My-MEAN-website-server/releases/tag/v.alpha-2.2)
+- *15/08/2016* - **My MEAN website** Alpha 1 public release [HERE](https://github.com/Ks89/My-MEAN-website-server/releases/tag/v.alpha-1)
 
 
 ## How to install (MacOS)
