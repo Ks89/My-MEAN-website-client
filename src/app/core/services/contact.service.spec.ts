@@ -76,7 +76,7 @@ describe('Http-ContactService (mockBackend)', () => {
       service.sendFormWithCaptcha(CONTACT_SENDFORM_WITH_CAPTCHA_RESPONSE)
         .subscribe(
           projects => fail(`shouldn't call this, because I'm expecting an error.`),
-          err => expect(_.isError(err)).toBeTruthy());
+          err => expect(err instanceof ErrorEvent).toBeTruthy());
       mockError(httpMock, URL_API_EMAIL, 'POST');
     })));
   });

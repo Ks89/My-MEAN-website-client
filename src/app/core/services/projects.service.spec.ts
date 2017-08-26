@@ -61,7 +61,7 @@ describe('Http-ProjectService (mockBackend)', () => {
       service.getProjects()
         .subscribe(
           projects => fail(`shouldn't call this, because I'm expecting an error.`),
-          err => expect(_.isError(err)).toBeTruthy());
+          err => expect(err instanceof ErrorEvent).toBeTruthy());
       mockError(httpMock, URL_API_PROJECTS, 'GET');
     })));
   });
@@ -95,7 +95,7 @@ describe('Http-ProjectService (mockBackend)', () => {
       service.getProjectsForHomepage()
         .subscribe(
           projects => fail(`shouldn't call this, because I'm expecting an error.`),
-          err => expect(_.isError(err)).toBeTruthy());
+          err => expect(err instanceof ErrorEvent).toBeTruthy());
       mockError(httpMock, URL_API_PROJECTHOME, 'GET');
     })));
   });
@@ -131,7 +131,7 @@ describe('Http-ProjectService (mockBackend)', () => {
       service.getProjectsById(PROJECTS[1]._id)
         .subscribe(
           projects => fail(`shouldn't call this, because I'm expecting an error.`),
-          err => expect(_.isError(err)).toBeTruthy());
+          err => expect(err instanceof ErrorEvent).toBeTruthy());
       mockError(httpMock, `${URL_API_PROJECTS}/${PROJECTS[1]._id}`, 'GET');
     })));
   });

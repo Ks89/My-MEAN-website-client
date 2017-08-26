@@ -63,7 +63,7 @@ describe('Http-ProfileService (mockBackend)', () => {
       service.update(PROFILE_UPDATE_REQUEST)
         .subscribe(
           projects => fail(`shouldn't call this, because I'm expecting an error.`),
-          err => expect(_.isError(err)).toBeTruthy());
+          err => expect(err instanceof ErrorEvent).toBeTruthy());
       mockError(httpMock, URL_API_PROFILE, 'POST');
     })));
   });
