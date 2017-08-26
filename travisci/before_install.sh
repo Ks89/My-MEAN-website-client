@@ -2,6 +2,10 @@
 
 echo "Before install - OS is $TRAVIS_OS_NAME"
 
+
+git clone https://github.com/Ks89/My-MEAN-website-server.git TRAVIS_BUILD_DIR/../My-MEAN-website-server
+
+
 # ----------------------------------------------------
 # ----------------------------------------------------
 # ------------------- CLIENT SIDE --------------------
