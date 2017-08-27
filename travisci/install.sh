@@ -13,6 +13,8 @@ fi
 
 
 # Installing server side local dependencies
-npm --prefix ./My-MEAN-website-server/ install ./My-MEAN-website-server/
+cd My-MEAN-website-server
+npm install
+cd ..
 
 echo "Server-side's local dependencies installed"
