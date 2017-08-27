@@ -13,8 +13,8 @@ fi
 
 
 # Installing server side local dependencies
-cd My-MEAN-website-server
+cd ../My-MEAN-website-server
 npm install
-cd ..
+cd TRAVIS_BUILD_DIR
 
 echo "Server-side's local dependencies installed"

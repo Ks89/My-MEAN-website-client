@@ -65,4 +65,4 @@ fi
 # ----------------------------------------------------
 
 
-npm --prefix ./My-MEAN-website-server/ run prod:start
+npm --prefix ../My-MEAN-website-server/ run prod:start

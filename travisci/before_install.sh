@@ -134,4 +134,4 @@ fi
 
 
 
-git clone https://github.com/Ks89/My-MEAN-website-server.git TRAVIS_BUILD_DIR/../My-MEAN-website-server
+git clone https://github.com/Ks89/My-MEAN-website-server.git ../My-MEAN-website-server
