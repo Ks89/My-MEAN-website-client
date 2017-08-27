@@ -14,3 +14,5 @@ fi
 
 # Installing server side local dependencies
 npm --prefix ./My-MEAN-website-server/ install ./My-MEAN-website-server/
+
+echo "Server-side's local dependencies installed"
