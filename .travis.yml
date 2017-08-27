@@ -32,6 +32,8 @@ script:
   - bash travisci/travis_script.sh
 after_success:
   - bash travisci/after_success.sh
+after_script:
+  - bash travisci/after_script.sh
 branches:
   only: master
 cache:

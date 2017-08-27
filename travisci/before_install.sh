@@ -2,10 +2,6 @@
 
 echo "Before install - OS is $TRAVIS_OS_NAME"
 
-
-git clone https://github.com/Ks89/My-MEAN-website-server.git TRAVIS_BUILD_DIR/../My-MEAN-website-server
-
-
 # ----------------------------------------------------
 # ----------------------------------------------------
 # ------------------- CLIENT SIDE --------------------
@@ -117,8 +113,25 @@ echo "USER_EMAIL = $USER_EMAIL"
 echo "PASS_EMAIL = $PASS_EMAIL"
 echo "RECAPTCHA_PUBLIC = $RECAPTCHA_PUBLIC"
 echo "RECAPTCHA_SECRET = $RECAPTCHA_SECRET"
+
+echo "Installing global dependencies"
+# install global dependencies
+if [[ $TRAVIS_OS_NAME = 'osx' ]]; then
+    echo "Installing $TRAVIS_OS_NAME global dependencies"
+    sudo npm install -g pm2
+    #pm2 update
+else
+    echo "Installing $TRAVIS_OS_NAME global dependencies"
+    # to fix a problem with nodejs 6 on linux
+    npm install -g pm2
+    #pm2 update
+fi
 # ----------------------------------------------------
 # ----------------------------------------------------
 # ----------------------------------------------------
 # ----------------------------------------------------
 # ----------------------------------------------------
+
+
+
+git clone https://github.com/Ks89/My-MEAN-website-server.git TRAVIS_BUILD_DIR/../My-MEAN-website-server
