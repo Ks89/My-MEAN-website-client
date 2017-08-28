@@ -15,9 +15,11 @@ npm run clean
 echo "npm run production + AOT build on $TRAVIS_OS_NAME"
 npm run build:prod:aot
 
-# run test
+# run unit test
 echo "npm run test on $TRAVIS_OS_NAME"
 npm test
 
-# TODO add protractor tests with npm run webdriver:update && npm run e2e
+# run e2e test (requires server-side up and running)
+echo "npm run e2e on $TRAVIS_OS_NAME"
+npm run webdriver:update
 npm run e2e
