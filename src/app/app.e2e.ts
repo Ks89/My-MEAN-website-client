@@ -18,7 +18,7 @@ import {browser, by, element} from 'protractor';
 
 describe('App', () => {
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     await browser.get('/');
   });
 
