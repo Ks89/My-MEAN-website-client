@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {browser, by, element} from 'protractor';
+import { browser, by, element, ElementFinder } from 'protractor';
 
 describe('App', () => {
 
@@ -22,8 +22,8 @@ describe('App', () => {
     await browser.get('/');
   });
 
-  it('should have a title', async () => {
-    let subject = await browser.getTitle();
-    //expect(subject).toEqual('My MEAN Website');
+  it('should have a page header', async () => {
+    let title: ElementFinder = element(by.id('title'));
+    expect(title.getText()).toEqual('KS Welcome');
   });
 });
