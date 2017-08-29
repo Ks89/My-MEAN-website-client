@@ -1,7 +1,7 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/project
+    working_directory: ~/project # this entire string is the value of the env var $CIRCLE_WORKING_DIRECTORY
     docker:
       - image: circleci/node:7.10.0-browsers
       # Environment variable for all commands executed in the primary container
@@ -52,7 +52,7 @@ jobs:
          command: git clone https://github.com/Ks89/My-MEAN-website-server.git ../My-MEAN-website-server
       - run:
           name: npm-install-server
-          command: cd ../My-MEAN-website-server && npm install && cd ../$CIRCLE_WORKING_DIRECTORY
+          command: cd ../My-MEAN-website-server && npm install && cd $CIRCLE_WORKING_DIRECTORY
       - run:
          name: run-build-dev
          command: npm run build:dev
