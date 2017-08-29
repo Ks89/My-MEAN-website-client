@@ -52,13 +52,19 @@ jobs:
          command: git clone https://github.com/Ks89/My-MEAN-website-server.git ../My-MEAN-website-server
       - run:
           name: npm-install-server
-          command: cd ../My-MEAN-website-server && npm install && cd $CIRCLE_WORKING_DIRECTORY
+          command: cd ../My-MEAN-website-server && npm install && cd ../project
+      - run:
+          name: pm2-start-prod-server
+          command: npm --prefix ../My-MEAN-website-server/ run prod:start
       - run:
          name: run-build-dev
          command: npm run build:dev
       - run:
          name: run-build-prod
          command: npm run build:prod
+      - run:
+         name: run-clean
+         command: npm run clean # clean before the real production build
       - run:
          name: run-build-prod-aot
          command: npm run build:prod:aot
@@ -68,9 +74,12 @@ jobs:
       - run:
          name: run-webdriver-update
          command: npm run webdriver:update
-#      - run:
-#         name: run-e2e
-#         command: npm run e2e
+      - run:
+         name: run-e2e
+         command: npm run e2e
+      - run:
+         name: pm2-stop-prod-server
+         command: npm --prefix ../My-MEAN-website-server/ run prod:stop
       - run:
          name: run-docs
          command: npm run docs
