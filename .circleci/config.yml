@@ -53,6 +53,7 @@ jobs:
       - run:
           name: npm-install-server
           command: cd ../My-MEAN-website-server && npm install && cd ../project
+          # also try this better approach: npm --prefix ../My-MEAN-website-server/ run prod:start
       - run:
           name: pm2-start-prod-server
           command: npm --prefix ../My-MEAN-website-server/ run prod:start
