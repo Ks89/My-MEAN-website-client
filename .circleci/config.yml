@@ -8,11 +8,36 @@ jobs:
         environment:
           NODE_ENV: test
           CI: yes
+          MONGODB_URI: mongodb://localhost/KS
+          MONGODB_TESTING_URI: mongodb://localhost/test-db
+          JWT_SECRET: faketestjwt
+          TWITTER_CONSUMER_KEY: consumerkey
+          TWITTER_CONSUMER_SECRET: consumersecret
+          TWITTER_CALLBACK_URL: http://127.0.0.1:3300/api/auth/twitter/callback
+          TWITTER_PROFILE_URL: https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true
+          FACEBOOK_APP_ID: appid
+          FACEBOOK_APP_SECRET: appsecret
+          FACEBOOK_CALLBACK_URL: http://localhost:3300/api/auth/facebook/callback
+          GOOGLE_CLIENT_ID: clientid
+          GOOGLE_CLIENT_SECRET: clientsecret
+          GOOGLE_CALLBACK_URL: http://localhost:3300/api/auth/google/callback
+          GITHUB_CLIENT_ID: clientid
+          GITHUB_CLIENT_SECRET: clientsecret
+          GITHUB_CALLBACK_URL: http://localhost:3300/api/auth/github/callback
+          LINKEDIN_CLIENT_ID: clientid
+          LINKEDIN_CLIENT_SECRET: clientsecret
+          LINKEDIN_CALLBACK_URL: http://localhost:3300/api/auth/linkedin/callback
+          USER_EMAIL: fake@fake.it
+          PASS_EMAIL: fakepasswordemail
+          RECAPTCHA_PUBLIC: recaptchapublic
+          RECAPTCHA_SECRET: recaptchasecret
+      - image: circleci/mongo:3.4.4
+      - image: sameersbn/redis:latest
     steps:
       - checkout
       - run:
           name: npm-install-global
-          command: sudo npm install -g codeclimate-test-reporter
+          command: sudo npm install -g codeclimate-test-reporter pm2
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
@@ -22,6 +47,12 @@ jobs:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
             - ./node_modules
+      - run:
+         name: pull-server-side-from-github
+         command: git clone https://github.com/Ks89/My-MEAN-website-server.git ../My-MEAN-website-server
+      - run:
+          name: npm-install-server
+          command: cd ../My-MEAN-website-server && npm install && cd ../$CIRCLE_WORKING_DIRECTORY
       - run:
          name: run-build-dev
          command: npm run build:dev
@@ -37,9 +68,9 @@ jobs:
       - run:
          name: run-webdriver-update
          command: npm run webdriver:update
-      - run:
-         name: run-e2e
-         command: npm run e2e
+#      - run:
+#         name: run-e2e
+#         command: npm run e2e
       - run:
          name: run-docs
          command: npm run docs
