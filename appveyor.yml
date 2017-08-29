@@ -60,10 +60,37 @@ clone_depth: 5                      # clone entire repository history if not def
 environment:
   matrix:
     - nodejs_version: "7"
-#    - nodejs_version: "6"
   NODE_ENV: test
   CI: yes
   APPVEYOR: yes
+
+  # -----------------------------------------
+  # Only for server side used by e2e tests
+  MONGODB_URI: mongodb://localhost/KS
+  MONGODB_TESTING_URI: mongodb://localhost/test-db
+  JWT_SECRET: faketestjwt
+  TWITTER_CONSUMER_KEY: consumerkey
+  TWITTER_CONSUMER_SECRET: consumersecret
+  TWITTER_CALLBACK_URL: http://127.0.0.1:3300/api/auth/twitter/callback
+  TWITTER_PROFILE_URL: https://api.twitter.com/1.1/account/verify_credentials.json?include_email: true
+  FACEBOOK_APP_ID: appid
+  FACEBOOK_APP_SECRET: appsecret
+  FACEBOOK_CALLBACK_URL: http://localhost:3300/api/auth/facebook/callback
+  GOOGLE_CLIENT_ID: clientid
+  GOOGLE_CLIENT_SECRET: clientsecret
+  GOOGLE_CALLBACK_URL: http://localhost:3300/api/auth/google/callback
+  GITHUB_CLIENT_ID: clientid
+  GITHUB_CLIENT_SECRET: clientsecret
+  GITHUB_CALLBACK_URL: http://localhost:3300/api/auth/github/callback
+  LINKEDIN_CLIENT_ID: clientid
+  LINKEDIN_CLIENT_SECRET: clientsecret
+  LINKEDIN_CALLBACK_URL: http://localhost:3300/api/auth/linkedin/callback
+  USER_EMAIL: fake@fake.it
+  PASS_EMAIL: fakepasswordemail
+  RECAPTCHA_PUBLIC: recaptchapublic
+  RECAPTCHA_SECRET: recaptchasecret
+  # -----------------------------------------
+
   CODECLIMATE_REPO_TOKEN:
     secure: byRx0agrhNKcx2rY//XQ+BMDxO2nncnZGp0zpSCyYtl/59o6giXxdgxWkbHMTvfLiwazQqb8z7w97uqUy/gKAWhdp5pU5ioswTxKF6beR0o=
   COVERALLS_REPO_TOKEN:
@@ -93,6 +120,7 @@ install:
   - npm install -g npm@latest
   - set PATH=%APPDATA%\npm;%PATH%
   - npm install -g codeclimate-test-reporter
+  - npm install -g pm2
   - npm install
 
 
@@ -130,7 +158,6 @@ build_script:
   - npm run clean
   - echo "npm run production + AOT build on $TRAVIS_OS_NAME"
   - npm run build:prod:aot
-  # TODO add protractor tests with npm run webdriver:update && npm run e2e
 
 #---------------------------------#
 #       tests configuration       #
@@ -148,6 +175,7 @@ test_script:
   - ps: "npm --version # PowerShell" # Pass comment to PS for easier debugging
   # run tests
   - npm test
+  # TODO add protractor tests with npm run webdriver:update && npm run e2e
 
 #---------------------------------#
 #      artifacts configuration    #
