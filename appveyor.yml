@@ -72,7 +72,7 @@ environment:
   TWITTER_CONSUMER_KEY: consumerkey
   TWITTER_CONSUMER_SECRET: consumersecret
   TWITTER_CALLBACK_URL: http://127.0.0.1:3300/api/auth/twitter/callback
-  TWITTER_PROFILE_URL: https://api.twitter.com/1.1/account/verify_credentials.json?include_email: true
+  TWITTER_PROFILE_URL: "https://api.twitter.com/1.1/account/verify_credentials.json?include_email: true"
   FACEBOOK_APP_ID: appid
   FACEBOOK_APP_SECRET: appsecret
   FACEBOOK_CALLBACK_URL: http://localhost:3300/api/auth/facebook/callback
