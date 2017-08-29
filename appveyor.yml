@@ -24,10 +24,11 @@ branches:
 #skip_tags: true
 
 # Skipping commits affecting specific files (GitHub only). More details here: /docs/appveyor-yml
-#skip_commits:
-#  files:
-#    - docs/*
-#    - '**/*.html'
+skip_commits:
+  files:
+     - .circleci/*
+     - travisci/*
+     - .travis.yml
 
 # Including commits affecting specific files (GitHub only). More details here: /docs/appveyor-yml
 #only_commits:
