@@ -48,11 +48,12 @@ exports.config = {
   capabilities: {
     'browserName': 'chrome',
     'chromeOptions': {
-      args: [ "--headless", "--disable-gpu", "--window-size=800,600" ]
+      // args: ["--headless", "--disable-gpu", "--window-size=800,600"]
+      'args': ['show-fps-counter=true']
     }
   },
 
-  onPrepare: function() {
+  onPrepare: function () {
     browser.ignoreSynchronization = true;
   },
 
@@ -62,5 +63,7 @@ exports.config = {
    * useAllAngular2AppRoots: tells Protractor to wait for any angular2 apps on the page instead of just the one matching
    * `rootEl`
    */
-  useAllAngular2AppRoots: true
+  useAllAngular2AppRoots: true,
+
+  SELENIUM_PROMISE_MANAGER: false
 };
