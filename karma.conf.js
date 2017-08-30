@@ -13,7 +13,7 @@ function getBrowsers() {
   if (process.env.CI) {
     if (process.env.APPVEYOR) { // variable defined by APPVEYOR itself
       // only for AppVeyor
-      return ['Chrome', 'Firefox', 'IE'];
+      return ['Chrome', 'Firefox' /*, 'IE'*/];
     } else if (process.env.TRAVIS) { // variable defined by TRAVIS itself
       return ['ChromeHeadless', 'Chrome', 'Firefox'];
     } else if (process.env.CIRCLECI) { // variable defined by CIRCLECI itself
