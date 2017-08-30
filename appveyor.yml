@@ -50,6 +50,7 @@ skip_commits:
 # scripts that are called at very beginning, before repo cloning
 init:
   - git config --global core.autocrlf input
+  # used to access with Windows Remote Desktop
   - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 
@@ -107,7 +108,8 @@ matrix:
 cache: node_modules -> package.json
 
 # enable service required for build/tests
-#services:
+services:
+  - mongodb
 
 # scripts that run after cloning repository
 install:
@@ -117,6 +119,10 @@ install:
   - ps: Write-Host 'Start install in PowerShell'
   # batch commands start from cmd:
   - cmd: echo Start install in cmd
+  # install redis-server for windows
+  - nuget install redis-64 -excludeversion
+  - redis-64\tools\redis-server.exe --service-install
+  - redis-64\tools\redis-server.exe --service-start
   # install nodejs and dependencies both global and local
   # use appveyor-retry to retry if npm install fails
   - cmd: appveyor-retry powershell Install-Product node $env:nodejs_version
