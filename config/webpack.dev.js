@@ -22,7 +22,6 @@ const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
 
 const BrowserSyncPlugin           = require('browser-sync-webpack-plugin');
 const webpackMerge                = require('webpack-merge');
-const webpackMergeDll             = webpackMerge.strategy({plugins: 'replace'});
 const ExtractTextPlugin           = require('extract-text-webpack-plugin');
 const AutoDllPlugin               = require('autodll-webpack-plugin');
 
