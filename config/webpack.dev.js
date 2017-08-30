@@ -123,7 +123,7 @@ module.exports = webpackMerge(commonConfig, {
       inject: true,
       context: __dirname,
       filename: '[name]_[hash].js',
-      path: helpers.root('dll'),
+      path: './dll',
       entry: {
         polyfills: [
           'core-js',
