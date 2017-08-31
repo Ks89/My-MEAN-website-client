@@ -131,8 +131,10 @@ install:
   - npm install -g codeclimate-test-reporter
   - npm install -g pm2
   - npm install
+  - ls
   - git clone https://github.com/Ks89/My-MEAN-website-server.git ../My-MEAN-website-server
-  - cd ../My-MEAN-website-server && npm install && cd ../project
+  - ls
+  - cd ../My-MEAN-website-server && npm install && cd ./my-mean-website-client
 
 #---------------------------------#
 #       build configuration       #
