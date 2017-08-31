@@ -134,6 +134,10 @@ install:
   - ls
   - git clone https://github.com/Ks89/My-MEAN-website-server.git ../My-MEAN-website-server
   - ls
+  - cd ..
+  - ls
+  - cd ..
+  - ls
   - cd ../My-MEAN-website-server && npm install && cd ./my-mean-website-client
 
 #---------------------------------#
