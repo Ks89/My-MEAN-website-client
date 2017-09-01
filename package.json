@@ -33,6 +33,7 @@
     "server:prod:ci": "http-server dist -p 3300 -c-1 --cors",
     "pree2e": "npm-run-all -p -r webdriver:update build:prod:aot",
     "e2e": "npm run protractor:delay",
+    "ci:e2e": "npm run protractor:delay",
     "protractor": "protractor",
     "protractor:delay": "sleep 3 && npm run protractor",
     "protractor:live": "protractor --elementExplorer",

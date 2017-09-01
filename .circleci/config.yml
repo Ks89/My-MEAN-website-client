@@ -77,7 +77,7 @@ jobs:
          command: npm run webdriver:update
       - run:
          name: run-e2e
-         command: npm run e2e
+         command: npm run ci:e2e
       - run:
          name: pm2-stop-prod-server
          command: npm --prefix ../My-MEAN-website-server/ run prod:stop
