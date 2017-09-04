@@ -23,8 +23,6 @@ describe('App', () => {
   });
 
   it('should display the homepage with projects', () => {
-    let subject: any =  browser.getTitle();
-    expect(subject).toEqual('My MEAN Website');
 
     let titleText: any =  element(by.id('title')).getText();
     expect(titleText).toEqual('KS Welcome');

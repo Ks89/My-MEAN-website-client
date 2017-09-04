@@ -20,6 +20,12 @@ echo "npm run test on $TRAVIS_OS_NAME"
 npm test
 
 # run e2e test (requires server-side up and running)
+echo "dropping db collections"
+mongo KS --eval 'db.projects.drop()'
+
+echo "filling db with data"
+mongorestore -d KS -c projects --dir=../My-MEAN-website-server/db-dump-e2e/KS/projects.bson
+
 echo "npm run e2e on $TRAVIS_OS_NAME"
 npm run webdriver:update
 npm run e2e
