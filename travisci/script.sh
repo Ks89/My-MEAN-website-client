@@ -26,6 +26,7 @@ mongo KS --eval 'db.projects.drop()'
 echo "filling db with data"
 mongorestore -d KS -c projects --dir=./db-dump-e2e/KS/projects.bson
 
+sleep 5
+
 echo "npm run e2e on $TRAVIS_OS_NAME"
-npm run webdriver:update
-npm run e2e
+npm run ci:e2e

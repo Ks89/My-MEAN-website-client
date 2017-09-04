@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { browser, by, element, ElementArrayFinder } from 'protractor';
+import { browser, by, element } from 'protractor';
 
 describe('App', () => {
 
