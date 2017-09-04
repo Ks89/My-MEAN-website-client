@@ -129,13 +129,13 @@ install:
   - npm install -g npm@latest
   - set PATH=%APPDATA%\npm;%PATH%
   - npm install -g codeclimate-test-reporter
-  - npm install -g pm2
+  #- npm install -g pm2 # it's not working and I don't know why
   - npm install
   - git clone https://github.com/Ks89/My-MEAN-website-server.git ../My-MEAN-website-server
   - cd ../My-MEAN-website-server
   - npm install
   - ls
-  - npm run prod:start
+  - npm start # this should be 'npm run prod:start' but I cannot use pm2 on Appveyor (why??)
   - cd ..
   - cd my-mean-website-client
   - ls
@@ -240,7 +240,7 @@ on_success:
 # after build failure or success
 on_finish:
    - cd ../My-MEAN-website-server
-   - npm run prod:stop
+   #- npm run prod:stop # should stop server
 
 #---------------------------------#
 #         notifications           #
