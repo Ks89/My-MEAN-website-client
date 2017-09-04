@@ -24,7 +24,7 @@ echo "dropping db collections"
 mongo KS --eval 'db.projects.drop()'
 
 echo "filling db with data"
-mongorestore -d KS -c projects --dir=../My-MEAN-website-server/db-dump-e2e/KS/projects.bson
+mongorestore -d KS -c projects --dir=./db-dump-e2e/KS/projects.bson
 
 echo "npm run e2e on $TRAVIS_OS_NAME"
 npm run webdriver:update
