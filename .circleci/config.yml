@@ -72,9 +72,9 @@ jobs:
       - run:
          name: run-test
          command: npm test
-      - run:
-         name: mongo-drop
-         command: mongo KS --eval 'db.projects.drop()'
+#      - run:
+#         name: mongo-drop
+#         command: mongo KS --eval 'db.projects.drop()'
       - run:
          name: mongorestore
          command: mongorestore -d KS -c projects --dir=./db-dump-e2e/KS/projects.bson
