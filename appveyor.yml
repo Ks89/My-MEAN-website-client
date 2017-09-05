@@ -129,7 +129,7 @@ install:
   - npm install -g npm@latest
   - set PATH=%APPDATA%\npm;%PATH%
   - npm install -g codeclimate-test-reporter
-  - npm install -g pm2
+ # - npm install -g pm2
   - npm install
   - echo Cloning server
   - ls
