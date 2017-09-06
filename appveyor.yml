@@ -201,8 +201,8 @@ test_script:
   # run tests
   - npm test
   # drop db collection and fill it with data
-  - mongo KS --eval 'db.projects.drop()'
-  - mongorestore -d KS -c projects --dir=./db-dump-e2e/KS/projects.bson
+#  - mongo KS --eval 'db.projects.drop()'
+#  - mongorestore -d KS -c projects --dir=./db-dump-e2e/KS/projects.bson
   # update webdriver + run e2e tests
   - npm run webdriver:update
   - npm run e2e
