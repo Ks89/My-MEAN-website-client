@@ -15,18 +15,17 @@
  */
 
 
-const webpack                  = require('webpack');
-const path                     = require('path');
+const webpack = require('webpack');
 
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin');
 
-const helpers                  = require('./helpers');
+const helpers = require('./helpers');
 
 module.exports = {
   devtool: 'inline-source-map',
   resolve: {
     extensions: ['.ts', '.js'],
-    modules: [helpers.root('src'),'node_modules']
+    modules: [helpers.root('src'), 'node_modules']
   },
   module: {
     rules: [
@@ -70,11 +69,6 @@ module.exports = {
         exclude: [/\.e2e\.ts$/]
       },
       {
-        test: /\.json$/,
-        loader: 'json-loader',
-        exclude: [helpers.root('src/index.html'), helpers.root('src/admin.html')]
-      },
-      {
         test: /\.css$/,
         loader: ['to-string-loader', 'css-loader'],
         exclude: [helpers.root('src/index.html'), helpers.root('src/admin.html')]
@@ -111,8 +105,32 @@ module.exports = {
   plugins: [
     new ContextReplacementPlugin(
       // The (\\|\/) piece accounts for path separators in *nix and Windows
-      /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
+      /angular(\\|\/)core(\\|\/)@angular/,
       helpers.root('./src') // location of your src
     )
-  ]
+  ],
+  /**
+   * Disable performance hints
+   *
+   * See: https://github.com/a-tarasyuk/rr-boilerplate/blob/master/webpack/dev.config.babel.js#L41
+   */
+  performance: {
+    hints: false
+  },
+
+  /**
+   * Include polyfills or mocks for various node stuff
+   * Description: Node configuration
+   *
+   * See: https://webpack.github.io/docs/configuration.html#node
+   */
+  node: {
+    global: true,
+    process: false,
+    crypto: 'empty',
+    module: false,
+    clearImmediate: false,
+    setImmediate: false
+  }
+
 };

@@ -24,6 +24,6 @@ describe('App', () => {
 
   it('should have a title', async () => {
     let subject = await browser.getTitle();
-    //expect(subject).toEqual('My MEAN Website');
+    expect(subject).toEqual('My MEAN Website');
   });
 });

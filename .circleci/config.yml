@@ -75,9 +75,9 @@ jobs:
 #      - run:
 #         name: mongo-drop
 #         command: mongo KS --eval 'db.projects.drop()'
-      - run:
-         name: mongorestore
-         command: mongorestore -d KS -c projects --dir=./db-dump-e2e/KS/projects.bson
+#      - run:
+#         name: mongorestore
+#         command: mongorestore -d KS -c projects --dir=./db-dump-e2e/KS/projects.bson
       - run:
          name: run-webdriver-update
          command: npm run webdriver:update

@@ -36,14 +36,17 @@ module.exports = function (config) {
     basePath: '',
     frameworks: ['jasmine'],
     files: [
-      "./config/karma-test-runner.js"
+      { pattern: './config/karma-test-runner.js', watched: false },
+      { pattern: './assets/**/*', watched: false, included: false, served: true, nocache: false }
     ],
-    // files: [
-    //   {
-    //     pattern: './config/karma-test-runner.js',
-    //     watched: false
-    //   }
-    // ],
+    
+    // /**
+    //  * By default all assets are served at http://localhost:[PORT]/base/
+    //  */
+    // proxies: {
+    //   "/assets/": "/base/src/assets/"
+    // },
+
     exclude: [],
     preprocessors: {
       './config/karma-test-runner.js': ['coverage', 'webpack', 'sourcemap']
