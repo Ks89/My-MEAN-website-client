@@ -1,6 +1,6 @@
 'use strict';
 
-const webpackConfig = require('./config/webpack.test');
+const webpackTestConfig = require('./config/webpack.test');
 const os = require('os');
 
 console.log(`Starting Karma with isCI=${!!isCI()}`);
@@ -48,7 +48,7 @@ module.exports = function (config) {
     preprocessors: {
       './config/karma-test-runner.js': ['coverage', 'webpack', 'sourcemap']
     },
-    webpack: webpackConfig,
+    webpack: webpackTestConfig,
 
     webpackMiddleware: {
       stats: {

@@ -29,13 +29,8 @@ mongorestore -d KS -c projects --dir=./db-dump-e2e/KS/projects.bson
 sleep 5
 
 # start
-ls
-echo TRAVIS_BUILD_DIR
 export FRONT_END_PATH=../My-MEAN-website-client/dist
-export PROJECT_DIR=TRAVIS_BUILD_DIR
-
 echo "FRONT_END_PATH is $FRONT_END_PATH"
-echo "PROJECT_DIR is $PROJECT_DIR"
 
 npm --prefix ../My-MEAN-website-server/ run prod:start
 
