@@ -139,8 +139,6 @@ install:
   - ls
   - cd ..
   - ls
-  - cd my-mean-website-client
-  - ls
   - cd My-MEAN-website-server
   - ls
   - npm install
