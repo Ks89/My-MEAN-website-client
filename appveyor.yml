@@ -128,7 +128,9 @@ install:
   - cmd: appveyor-retry powershell Install-Product node $env:nodejs_version
   - npm install -g npm@5.3
   - set PATH=%APPDATA%\npm;%PATH%
-  - npm install -g codeclimate-test-reporter pm2 forever # On AppVeyor I'm not able to use pm2 (why??) so I switched to forever
+  - npm install -g codeclimate-test-reporter
+#  - npm install -g pm2
+  - npm install -g forever # On AppVeyor I'm not able to use pm2 (why??) so I switched to forever
   - npm install
   - echo Cloning server
   - git clone https://github.com/Ks89/My-MEAN-website-server.git
