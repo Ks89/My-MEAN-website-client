@@ -133,10 +133,18 @@ install:
   - npm install -g forever # On AppVeyor I'm not able to use pm2 (why??) so I switched to forever
   - npm install
   - echo Cloning server
+  - ls
   - git clone https://github.com/Ks89/My-MEAN-website-server.git
+  - ls
+  - cd ..
+  - ls
+  - cd my-mean-website-client
+  - ls
   - cd My-MEAN-website-server
+  - ls
   - npm install
-  - set NODE_ENV=production && forever start -s ./bin/www # similar to npm run prod:start but with forever instead of pm2
+  - ls
+  - set NODE_ENV=production && forever start -s bin/www # similar to npm run prod:start but with forever instead of pm2
   - ls
   - cd ..
   - ls
