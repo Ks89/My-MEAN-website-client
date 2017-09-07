@@ -1,7 +1,7 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/project # this entire string is the value of the env var $CIRCLE_WORKING_DIRECTORY
+    working_directory: ~/project
     docker:
       - image: circleci/node:7.10.0-browsers
       # Environment variable for all commands executed in the primary container
@@ -34,6 +34,13 @@ jobs:
       - image: circleci/mongo:latest
       - image: sameersbn/redis:latest
     steps:
+      - run:
+          name: update-chrome
+          command: |
+              curl -L -o google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+              sudo dpkg -i google-chrome.deb
+              sudo sed -i 's|HERE/chrome\"|HERE/chrome\" --disable-setuid-sandbox|g' /opt/google/chrome/google-chrome
+              rm google-chrome.deb
       - checkout
       - run:
           name: npm-install-global
@@ -58,41 +65,41 @@ jobs:
           name: pm2-start-prod-server
           command: npm --prefix ../My-MEAN-website-server/ run prod:start
       - run:
-         name: run-build-dev
-         command: npm run build:dev
+          name: run-build-dev
+          command: npm run build:dev
       - run:
-         name: run-build-prod
-         command: npm run build:prod
+          name: run-build-prod
+          command: npm run build:prod
       - run:
-         name: run-clean
-         command: npm run clean # clean before the real production build
+          name: run-clean
+          command: npm run clean # clean before the real production build
       - run:
-         name: run-build-prod-aot
-         command: npm run build:prod:aot
+          name: run-build-prod-aot
+          command: npm run build:prod:aot
       - run:
-         name: run-test
-         command: npm test
+          name: run-test
+          command: npm test
 #      - run:
-#         name: mongo-drop
-#         command: mongo KS --eval 'db.projects.drop()'
+#          name: mongo-drop
+#          command: mongo KS --eval 'db.projects.drop()'
 #      - run:
-#         name: mongorestore
-#         command: mongorestore -d KS -c projects --dir=./db-dump-e2e/KS/projects.bson
+#          name: mongorestore
+#          command: mongorestore -d KS -c projects --dir=./db-dump-e2e/KS/projects.bson
       - run:
-         name: run-webdriver-update
-         command: npm run webdriver:update
+          name: run-webdriver-update
+          command: npm run webdriver:update
       - run:
-         name: run-e2e
-         command: npm run ci:e2e
+          name: run-e2e
+          command: npm run ci:e2e
       - run:
-         name: pm2-stop-prod-server
-         command: npm --prefix ../My-MEAN-website-server/ run prod:stop
+          name: pm2-stop-prod-server
+          command: npm --prefix ../My-MEAN-website-server/ run prod:stop
       - run:
-         name: run-docs
-         command: npm run docs
+          name: run-docs
+          command: npm run docs
       - run:
-         name: run-codeclimate
-         command: npm run codeclimate
+          name: run-codeclimate
+          command: npm run codeclimate
       - run:
-         name: run-coveralls
-         command: npm run coveralls
+          name: run-coveralls
+          command: npm run coveralls
