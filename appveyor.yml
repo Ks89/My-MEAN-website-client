@@ -137,7 +137,8 @@ install:
   - cd My-MEAN-website-server
   - npm install
   - set NODE_ENV=production && forever start -s ./bin/www # similar to npm run prod:start but with forever instead of pm2
-  - cd ../my-mean-website-client
+  - cd ..
+  - cd my-mean-website-client
   - ls
 
 #---------------------------------#
