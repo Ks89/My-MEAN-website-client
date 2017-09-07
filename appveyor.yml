@@ -105,6 +105,7 @@ matrix:
   fast_finish: true     # set this flag to immediately finish build once one of the jobs fails.
 
 # build cache to preserve files/folders between builds
+# TODO restore cache
 # cache: node_modules -> package.json
 
 # enable service required for build/tests
@@ -134,7 +135,7 @@ install:
   - npm install
   - echo Cloning server
   - ls
-  - git clone https://github.com/Ks89/My-MEAN-website-server.git
+  - git clone https://github.com/Ks89/My-MEAN-website-server.git ../My-MEAN-website-server
   - ls
   - cd ..
   - ls
