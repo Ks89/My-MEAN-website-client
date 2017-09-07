@@ -31,7 +31,7 @@ jobs:
           PASS_EMAIL: fakepasswordemail
           RECAPTCHA_PUBLIC: recaptchapublic
           RECAPTCHA_SECRET: recaptchasecret
-      - image: circleci/mongo:3.4.4
+      - image: circleci/mongo:latest
       - image: sameersbn/redis:latest
     steps:
       - checkout
