@@ -134,7 +134,7 @@ install:
   - git clone https://github.com/Ks89/My-MEAN-website-server.git
   - cd My-MEAN-website-server
   - npm install
-  - NODE_ENV=production && forever start -s ./bin/www # similar to npm run prod:start but with forever instead of pm2
+  - set NODE_ENV=production && forever start -s ./bin/www # similar to npm run prod:start but with forever instead of pm2
   - cd ../my-mean-website-client
   - ls
 
