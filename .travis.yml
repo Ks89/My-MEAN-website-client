@@ -30,7 +30,7 @@ matrix:
   fast_finish: true
 
 before_install:
-  - bash travisci/before_install.sh
+  - source travisci/before_install.sh
 install:
   - bash travisci/install.sh
 after_install:
