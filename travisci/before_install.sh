@@ -125,12 +125,9 @@ echo "Installing global dependencies"
 if [[ $TRAVIS_OS_NAME = 'osx' ]]; then
     echo "Installing $TRAVIS_OS_NAME global dependencies"
     sudo npm install -g pm2
-    #pm2 update
 else
     echo "Installing $TRAVIS_OS_NAME global dependencies"
-    # to fix a problem with nodejs 6 on linux
     npm install -g pm2
-    #pm2 update
 fi
 # ----------------------------------------------------
 # ----------------------------------------------------
