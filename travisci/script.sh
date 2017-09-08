@@ -35,7 +35,7 @@ echo "FRONT_END_PATH is $FRONT_END_PATH"
 cd ../My-MEAN-website-server
 # npm --prefix ../My-MEAN-website-server/ run prod:start
 # pm2 start bin/www -i 4 --env development  # I should change this with a custom value, for instance "e2e" or "ci"
-npm start
+BYPASS_CI=yes NODE_ENV=development npm start NODE_ENV=development npm start # CI==='yes' by default and you cannot change it
 cd ../My-MEAN-website-client
 
 sleep 5
