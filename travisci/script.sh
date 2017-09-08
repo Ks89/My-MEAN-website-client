@@ -40,6 +40,10 @@ pm2 start bin/www -i 4 --env development  # I should change this with a custom v
 # BYPASS_CI=yes NODE_ENV=development npm start # CI==='yes' by default and you cannot change it
 cd ../My-MEAN-website-client
 
+
+# update webdriver to be able to run e2e tests
+npm run webdriver:update
+
 sleep 5
 
 echo "npm run e2e on $TRAVIS_OS_NAME"

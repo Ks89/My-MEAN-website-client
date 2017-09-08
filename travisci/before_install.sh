@@ -3,7 +3,7 @@
 echo "Before install - OS is $TRAVIS_OS_NAME"
 
 # switch to npm 5
-npm install npm@5 -g
+npm install -g npm@5
 npm cache verify
 npm prune
 npm update
