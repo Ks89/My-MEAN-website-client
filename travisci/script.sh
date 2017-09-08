@@ -34,7 +34,8 @@ echo "FRONT_END_PATH is $FRONT_END_PATH"
 
 cd ../My-MEAN-website-server
 # npm --prefix ../My-MEAN-website-server/ run prod:start
-pm2 start bin/www -i 4 --env development  # I should change this with a custom value, for instance "e2e" or "ci"
+# pm2 start bin/www -i 4 --env development  # I should change this with a custom value, for instance "e2e" or "ci"
+npm start
 cd ../My-MEAN-website-client
 
 sleep 5
