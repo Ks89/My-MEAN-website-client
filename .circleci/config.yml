@@ -59,10 +59,10 @@ jobs:
           # also try this better approach: npm --prefix ../My-MEAN-website-server/ run prod:start
       - run:
           name: pm2-start-prod-server # npm --prefix ../My-MEAN-website-server/ run prod:start
-          command: ls && pm2 start bin/www -i 4 --env development
+          command: cd ../My-MEAN-website-server && pm2 start bin/www -i 4 --env development
       - run:
           name: run-build-dev
-          command: ls && cd ../project && ls && npm run build:dev
+          command: npm run build:dev
       - run:
           name: run-build-prod
           command: npm run build:prod
@@ -95,7 +95,7 @@ jobs:
           command: npm run ci:e2e
       - run:
           name: pm2-stop-prod-server
-          command: pm2 stop bin/www # npm --prefix ../My-MEAN-website-server/ run prod:stop
+          command: cd ../My-MEAN-website-server && pm2 stop bin/www # npm --prefix ../My-MEAN-website-server/ run prod:stop
       - run:
           name: run-docs
           command: npm run docs
