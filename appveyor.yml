@@ -143,7 +143,11 @@ install:
   - ls
   - npm install
   - ls
-  - set NODE_ENV=production && forever start -s bin/www # similar to npm run prod:start but with forever instead of pm2
+  - set FRONT_END_PATH=../my-mean-website-client/dist
+#  - echo "FRONT_END_PATH is $FRONT_END_PATH"
+  - set BYPASS_CI=yes
+#  - echo "BYPASS_CI is $BYPASS_CI"
+  - set NODE_ENV=development && forever start -s bin/www # similar to npm run prod:start but with forever instead of pm2
   - ls
   - cd ..
   - ls
@@ -202,11 +206,12 @@ test_script:
   # run tests
   - npm test
   # drop db collection and fill it with data
-#  - mongo KS --eval 'db.projects.drop()'
-#  - mongorestore -d KS -c projects --dir=./db-dump-e2e/KS/projects.bson
+  - mongo test-db --eval "db.getCollectionNames()"
+  - mongo test-db --eval 'db.projects.drop()'
+  - mongorestore -d test-db -c projects --dir=./db-dump-e2e/KS/projects.bson --maintainInsertionOrder
   # update webdriver + run e2e tests
   - npm run webdriver:update
-  - npm run e2e
+  - npm run ci:e2e
 
 #---------------------------------#
 #      artifacts configuration    #
