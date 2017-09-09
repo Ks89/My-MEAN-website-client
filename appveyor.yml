@@ -68,6 +68,8 @@ environment:
   CI: yes
   APPVEYOR: yes
 
+  MONGO_BINS: "C:\mongodb\bin" # only for Appveyor!
+
   # -----------------------------------------
   # Only for server side used by e2e tests
   MONGODB_URI: mongodb://localhost/KS
@@ -206,7 +208,7 @@ test_script:
   # run tests
   - npm test
   # add mongo bins (like mongo and mongorestore) to path
-  - ps: "$env:Path += ';C:\mongodb\bin'"
+  - ps: $env:path = "$env:MONGO_BINS;$env:path"
   # drop db collection and fill it with data
   - mongo test-db --eval "db.getCollectionNames()"
   - mongo test-db --eval 'db.projects.drop()'
