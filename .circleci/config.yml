@@ -55,11 +55,13 @@ jobs:
          command: git clone https://github.com/Ks89/My-MEAN-website-server.git ../My-MEAN-website-server
       - run:
           name: npm-install-server
-          command: cd ../My-MEAN-website-server && npm install && cd ../project
+          command: cd ../My-MEAN-website-server && npm install
           # also try this better approach: npm --prefix ../My-MEAN-website-server/ run prod:start
       - run:
           name: pm2-start-prod-server
-          command: pm2 start bin/www -i 4 --env development #npm --prefix ../My-MEAN-website-server/ run prod:start
+          command: |
+                pm2 start bin/www -i 4 --env development # npm --prefix ../My-MEAN-website-server/ run prod:start
+                cd ../project
       - run:
           name: run-build-dev
           command: npm run build:dev
