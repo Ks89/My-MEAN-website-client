@@ -21,10 +21,15 @@ npm test
 
 # run e2e test (requires server-side up and running)
 echo "dropping db collections"
-mongo KS --eval 'db.projects.drop()'
+mongo test-db --eval 'db.projects.drop()'
+mongo KS --eval "db.getCollectionNames()"
+
+mongo test-db --eval "db.getCollectionNames()"
+mongo KS --eval "db.getCollectionNames()"
 
 echo "filling db with data"
 mongorestore -d KS -c projects --dir=./db-dump-e2e/KS/projects.bson
+mongorestore -d test-db -c projects --dir=./db-dump-e2e/KS/projects.bson
 
 sleep 5
 
