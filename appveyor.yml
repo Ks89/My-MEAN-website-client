@@ -136,25 +136,15 @@ install:
   - npm install -g forever # On AppVeyor I'm not able to use pm2 (why??) so I switched to forever
   - npm install
   - echo Cloning server
-  - ls
   - git clone https://github.com/Ks89/My-MEAN-website-server.git ../My-MEAN-website-server
-  - ls
-  - cd ..
-  - ls
-  - cd My-MEAN-website-server
-  - ls
+  - cd ../My-MEAN-website-server
   - npm install
-  - ls
   - set FRONT_END_PATH=../my-mean-website-client/dist
-#  - echo "FRONT_END_PATH is $FRONT_END_PATH"
+  - echo FRONT_END_PATH is %FRONT_END_PATH%
   - set BYPASS_CI=yes
-#  - echo "BYPASS_CI is $BYPASS_CI"
+  - echo BYPASS_CI is %BYPASS_CI%
   - set NODE_ENV=development && forever start -s bin/www # similar to npm run prod:start but with forever instead of pm2
-  - ls
-  - cd ..
-  - ls
-  - cd my-mean-website-client
-  - ls
+  - cd ../my-mean-website-client
 
 #---------------------------------#
 #       build configuration       #

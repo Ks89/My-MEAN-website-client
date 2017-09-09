@@ -19,13 +19,16 @@ npm run build:prod:aot
 echo "npm run test on $TRAVIS_OS_NAME"
 npm test
 
-# run e2e test (requires server-side up and running)
+# run e2e test (requires a db with some data and the server-side up and running)
 echo "dropping db collections for test-db"
 mongo test-db --eval "db.getCollectionNames()"
 mongo test-db --eval 'db.projects.drop()'
+mongo KS --eval "db.getCollectionNames()"
+mongo KS --eval 'db.projects.drop()'
 
 echo "filling test-db with data"
 mongorestore -d test-db -c projects --dir=./db-dump-e2e/KS/projects.bson --maintainInsertionOrder
+mongorestore -d KS -c projects --dir=./db-dump-e2e/KS/projects.bson --maintainInsertionOrder
 
 sleep 5
 
