@@ -29,7 +29,7 @@ describe('App', () => {
 
     let cards = element.all(by.css('.card-body')).all(by.css('.card-title.text-center'));
     expect(cards.count()).toEqual(3);
-    expect(cards.getText()).toEqual(['BYAManager', 'Superapp', 'SPF']);
+    expect(cards.getText()).toEqual(['BYAManager', 'SPF', 'Superapp']);
 
     let cardsDescription = element.all(by.css('.card-body')).all(by.css('.card-text'));
     expect(cardsDescription.count()).toEqual(3);
@@ -37,7 +37,7 @@ describe('App', () => {
 
     let featuretteHeading = element.all(by.css('.featurette-heading'));
     expect(featuretteHeading.count()).toEqual(3);
-    expect(featuretteHeading.getText()).toEqual([`BYAManager It'll blow your mind.`, `Superapp It'll blow your mind.`, `SPF It'll blow your mind.`]);
+    expect(featuretteHeading.getText()).toEqual([`BYAManager It'll blow your mind.`, `SPF It'll blow your mind.`, `Superapp It'll blow your mind.`]);
 
     let featuretteDescription = element.all(by.css('p.lead'));
     expect(featuretteDescription.count()).toEqual(3);
