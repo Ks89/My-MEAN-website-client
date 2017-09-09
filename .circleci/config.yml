@@ -6,6 +6,9 @@ jobs:
       - image: circleci/node:7.10.0-browsers
       # Environment variable for all commands executed in the primary container
         environment:
+#          MONGO_BINS: ./
+          BYPASS_CI: yes
+          FRONT_END_PATH: ../My-MEAN-website-client/dist
           NODE_ENV: test
           CI: yes
           MONGODB_URI: mongodb://localhost/KS
@@ -56,7 +59,7 @@ jobs:
           # also try this better approach: npm --prefix ../My-MEAN-website-server/ run prod:start
       - run:
           name: pm2-start-prod-server
-          command: npm --prefix ../My-MEAN-website-server/ run prod:start
+          command: pm2 start bin/www -i 4 --env development #npm --prefix ../My-MEAN-website-server/ run prod:start
       - run:
           name: run-build-dev
           command: npm run build:dev
@@ -72,12 +75,18 @@ jobs:
       - run:
           name: run-test
           command: npm test
-#      - run:
-#          name: mongo-drop
-#          command: mongo KS --eval 'db.projects.drop()'
-#      - run:
-#          name: mongorestore
-#          command: mongorestore -d KS -c projects --dir=./db-dump-e2e/KS/projects.bson
+      - run:
+          name: mongo-drop
+          command: |
+                mongo test-db --eval "db.getCollectionNames()"
+                mongo test-db --eval 'db.projects.drop()'
+                mongo KS --eval "db.getCollectionNames()"
+                mongo KS --eval 'db.projects.drop()'
+      - run:
+          name: mongorestore
+          command: |
+                mongorestore -d test-db -c projects --dir=./db-dump-e2e/KS/projects.bson --maintainInsertionOrder
+                mongorestore -d KS -c projects --dir=./db-dump-e2e/KS/projects.bson --maintainInsertionOrder
       - run:
           name: run-webdriver-update
           command: npm run webdriver:update
@@ -86,7 +95,7 @@ jobs:
           command: npm run ci:e2e
       - run:
           name: pm2-stop-prod-server
-          command: npm --prefix ../My-MEAN-website-server/ run prod:stop
+          command: pm2 stop bin/www # npm --prefix ../My-MEAN-website-server/ run prod:stop
       - run:
           name: run-docs
           command: npm run docs
