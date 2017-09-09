@@ -76,6 +76,9 @@ jobs:
           name: run-test
           command: npm test
       - run:
+          name: search-mongo
+          command: find / f -name "mongorestore"
+      - run:
           name: mongo-drop
           command: |
                 mongo test-db --eval "db.getCollectionNames()"
