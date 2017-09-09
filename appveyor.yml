@@ -205,6 +205,8 @@ test_script:
   - ps: "npm --version # PowerShell" # Pass comment to PS for easier debugging
   # run tests
   - npm test
+  # add mongo bins (like mongo and mongorestore) to path
+  - ps: "$env:Path += ';C:\mongodb\bin'"
   # drop db collection and fill it with data
   - mongo test-db --eval "db.getCollectionNames()"
   - mongo test-db --eval 'db.projects.drop()'
