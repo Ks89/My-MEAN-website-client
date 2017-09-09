@@ -68,7 +68,7 @@ environment:
   CI: yes
   APPVEYOR: yes
 
-  MONGO_BINS: "C:\mongodb\bin" # only for Appveyor!
+  MONGO_BINS: "C:\\mongodb\\bin" # only for Appveyor!
 
   # -----------------------------------------
   # Only for server side used by e2e tests
