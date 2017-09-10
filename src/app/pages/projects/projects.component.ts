@@ -23,12 +23,6 @@
  */
 
 import { Component, OnDestroy } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-
-import { Store } from '@ngrx/store';
-import * as fromPageNum from './reducers';
-import * as PageNum from './actions/page-num';
 
 /**
  * Component of the lazy loaded module for the app SPA
@@ -39,29 +33,9 @@ import * as PageNum from './actions/page-num';
 })
 export class ProjectsComponent implements OnDestroy {
 
-  private pageNum$: Observable<number>;
-  private pageNumSubscription: Subscription;
-
-  constructor( private store: Store<fromPageNum.State>) {
-
-    this.pageNum$ = this.store.select(fromPageNum.getPageNum);
-
-    // example of ngrx-store's usage
-    // subscribe to pageNum (a number, for instance the current page of a table with pagination)
-    // initially is 0, after it will be 4 (see below) -> this is only an example for demonstration purpose
-    this.pageNumSubscription = this.pageNum$.subscribe((val: number) => {
-      console.log(`Page num retrieved from ngrx-store is ${val}`);
-    });
-
-    this.store.dispatch(new PageNum.SetPageNum(4)); // I chose a constant value for this example :)
-  }
+  constructor() {}
 
   ngOnDestroy() {
     console.log('Destroy called');
-
-    // unsubscribe to all Subscriptions to prevent memory leaks and wrong behaviour
-    if (this.pageNumSubscription) {
-      this.pageNumSubscription.unsubscribe();
-    }
   }
 }
