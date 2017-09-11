@@ -15,7 +15,6 @@
  */
 
 import { browser, by, element } from 'protractor';
-import { NewsletterAdminComponent } from "../../../../admin/pages/newsletter/newsletter.component";
 
 describe('Project list page', () => {
 
@@ -39,8 +38,8 @@ describe('Project list page', () => {
     // try navigation between pages using the pagination buttons
     let pageItems: any = element.all(by.css('.page-item'));
     expect(pageItems.count()).toEqual(6);
-    expect(pageItems.get(2).getText()).toStartWith('1');
-    expect(pageItems.get(3).getText()).toStartWith('2');
+    expect(pageItems.get(2).getText()).toEqual('1\n(current)');
+    expect(pageItems.get(3).getText()).toEqual('2');
     pageItems.get(3).click();
     projectNames = element.all(by.css('.media-body')).all(by.css('.project-name'));
     expect(projectNames.count()).toEqual(1);
@@ -55,12 +54,13 @@ describe('Project list page', () => {
     expect(projectNames.getText()).toEqual(['SPF']);
 
     // no elements
+    filterInput.clear();
     filterInput.sendKeys('wrong');
     projectNames = element.all(by.css('.media-body')).all(by.css('.project-name'));
     expect(projectNames.count()).toEqual(0);
 
-    // TODO find a way to remove data from input field
-    // filterInput.clear();
+    filterInput.clear();
+    filterInput.sendKeys('');
   });
 
   it('should navigate to the project detail page',() => {
@@ -91,22 +91,31 @@ describe('Project list page', () => {
     expect(licenseTitle).toEqual('License');
   });
 
-  // it('should navigate to the project detail page and display angular-modal-gallery',() => {
-  //   // all elements
-  //   let projectNames: any = element.all(by.css('.media-body')).all(by.css('.project-name'));
-  //   expect(projectNames.count()).toEqual(3);
-  //   expect(projectNames.getText()).toEqual(['BYAManager', 'SPF', 'Superapp']);
-  //
-  //   // click on a project to navigate to its detail
-  //   projectNames.get(0).click();
-  //
-  //   let imgThumbs: any = element.all(by.css('div')).all(by.css('img.ng-thumb'));
-  //   expect(imgThumbs.count()).toEqual(11);
-  //   imgThumbs.get(0).click();
-  //
-  //   let navRight: any = element(by.css('a.nav-right i'));
-  //   expect(navRight.getAttribute('class')).toEqual('fa fa-angle-right');
-  //   let navLeft: any = element(by.css('a.nav-left i'));
-  //   expect(navLeft.getAttribute('class')).toEqual('fa fa-angle-left');
-  // });
+  it('should navigate to the project detail page and display angular-modal-gallery',() => {
+    // all elements
+    let projectNames: any = element.all(by.css('.media-body')).all(by.css('.project-name'));
+    expect(projectNames.count()).toEqual(3);
+    expect(projectNames.getText()).toEqual(['BYAManager', 'SPF', 'Superapp']);
+
+    // click on a project to navigate to its detail
+    projectNames.get(0).click();
+
+    // scroll to the bottom of the page using a
+    // big value (500000) as y coordinate
+    browser.executeScript('window.scrollTo(0,500000);');
+
+    let imgThumbs: any = element.all(by.css('.ng-thumb'));
+    expect(imgThumbs.count()).toEqual(11);
+    imgThumbs.get(0).click();
+
+    let navRight: any = element(by.css('a.nav-right i'));
+    expect(navRight.getAttribute('class')).toEqual('fa fa-angle-right');
+    let navLeft: any = element(by.css('a.nav-left i'));
+    expect(navLeft.getAttribute('class')).toEqual('fa fa-angle-left');
+
+    let img: any = element(by.css('img.effect'));
+    expect(img).not.toBeUndefined();
+    expect(img.getAttribute('src')).toEqual('http://localhost:3000/assets/images/projects/byamanager/1.jpg');
+    expect(img.getAttribute('alt')).toEqual('Image 1');
+  });
 });
