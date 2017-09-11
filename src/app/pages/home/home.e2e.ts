@@ -16,7 +16,7 @@
 
 import { browser, by, element } from 'protractor';
 
-describe('App', () => {
+describe('Home page', () => {
 
   beforeAll( () => {
     browser.get('/');

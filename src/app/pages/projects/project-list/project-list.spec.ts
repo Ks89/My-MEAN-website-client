@@ -110,7 +110,7 @@ describe('ProjectListComponent', () => {
       expect(projectHeaders[2].nativeElement.getAttribute('href')).toBe(PROJECTS[1].url);
       expect(projectHeaders[4].nativeElement.getAttribute('href')).toBe(PROJECTS[2].url);
 
-      const shortDescriptions: DebugElement[] = element.queryAll(By.css('p.name'));
+      const shortDescriptions: DebugElement[] = element.queryAll(By.css('p.project-desc'));
       expect(shortDescriptions.length).toBe(3);
       expect(shortDescriptions[0].nativeElement.textContent).toBe(PROJECTS[0].shortDescription);
       expect(shortDescriptions[1].nativeElement.textContent).toBe(PROJECTS[1].shortDescription);

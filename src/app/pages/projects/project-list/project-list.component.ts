@@ -32,6 +32,8 @@ export class ProjectListComponent implements OnDestroy {
   constructor(private store: Store<fromPageNum.State>,
               private projectService: ProjectService) {
 
+    console.log('Constyructor: ' + this.page);
+
     this.projectsSubscription = this.projectService.getProjects().subscribe((values: Project[]) => {
       this.fullProjects = values;
       this.originalProjects = values;
@@ -39,9 +41,12 @@ export class ProjectListComponent implements OnDestroy {
       this.visibleProjects = values.slice(this.page - 1, this.elementsPerPage);
     });
 
+    console.log('This page: ' + this.page);
+
     this.pageNumSubscription = this.store.select(fromPageNum.getPageNum)
       .subscribe(val => {
         this.page = +val;
+        console.log('This page after store select: ' + this.page);
       });
 
     this.pageHeader = {
@@ -90,6 +95,7 @@ export class ProjectListComponent implements OnDestroy {
   }
 
   onKeyupFilter(value: string) {
+    console.log('This page onKeyupFilter begin: ' + this.page);
     if (!value || value === '') {
       this.fullProjects = this.originalProjects;
     }
@@ -98,13 +104,16 @@ export class ProjectListComponent implements OnDestroy {
     this.totalNumElements = this.fullProjects.length;
     this.page = 1;
     this.onPageChange();
+    console.log('This page onKeyupFilter end: ' + this.page);
   }
 
   onPageChange() {
+    console.log('This page onpagechange begin: ' + this.page);
     let startindex: number = (this.page - 1) * this.elementsPerPage;
     let endIndex: number = Math.min((this.page * this.elementsPerPage), this.totalNumElements);
     this.visibleProjects = this.fullProjects.slice(startindex, endIndex);
     this.store.dispatch(new PageNum.SetPageNum(this.page));
+    console.log('This page onpagechange end: ' + this.page);
   }
 
   ngOnDestroy() {
