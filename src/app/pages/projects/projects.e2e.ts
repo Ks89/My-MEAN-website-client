@@ -16,7 +16,7 @@
 
 import { browser, by, element } from 'protractor';
 
-describe('Project list page', () => {
+describe('Projects page', () => {
 
   beforeEach( () => {
     browser.get('/projects');
