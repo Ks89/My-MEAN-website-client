@@ -26,11 +26,11 @@ exports.config = {
   baseUrl: 'http://localhost:3000',
 
   specs: [
-    /**
-     * add jasmine-expect before tests
-     * https://github.com/JamieMason/Jasmine-Matchers)
-     */
-    'node_modules/jasmine-expect/index.js',
+    // /**
+    //  * add jasmine-expect before tests
+    //  * https://github.com/JamieMason/Jasmine-Matchers)
+    //  */
+    // 'node_modules/jasmine-expect/index.js',
     /**
      * My e2e tests
      */
