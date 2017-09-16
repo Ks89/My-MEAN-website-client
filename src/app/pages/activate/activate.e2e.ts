@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-import { browser, by, element } from 'protractor';
+import { browser, by, element, protractor } from 'protractor';
+
+let EC = protractor.ExpectedConditions;
 
 describe('Activation page', () => {
 
   beforeEach( () => {
-    browser.get('/activate?emailToken=0b67e05c26916daf14dabaddead1ed4b2ddcec410609ded8c7ee101e8b43aa6cbb69951163f64994ea74251f113bdb5c4a3cfcd626f8b3d86feca7261d65649a&userName=aaa');
-    //http://localhost:8080/activate?emailToken=2a00b92e4329844aef2ddb08e5cb4b333179d28875e8a9f061b290c839a5b8166e1bf620a70365214e7c1fd7724a62435f214ceed3b166b837e5b640adf154b7&userName=aaa
+    browser.get('/activate?emailToken=185fa7a1c9c2aafeae011681eb86ac56868c31ceaec8aeaf22df3c8d5b4a83d21303b74a6eccb6be08fd2e49a35a0818f0aae7df4c7c971a1942d6aae0e08023&userName=aaa');
   });
 
   it('should display the activation page', () => {
@@ -31,10 +32,12 @@ describe('Activation page', () => {
     let leadText: any =  element(by.css('h4')).getText();
     expect(leadText).toEqual('Welcome aaa');
 
-    // TODO find a better way to wait for the result message (success/error)
-    browser.sleep(2000);
+    let statusElement: any =  element(by.css('div.alert'));
 
-    let statusText: any =  element(by.css('div.alert')).getText();
-    expect(statusText).toEqual('Success An e-mail has been sent to stefano.cappa.ks89@gmail.com with further instructions.');
+    browser.wait(EC.elementToBeClickable(statusElement), 60000)
+      .then(() => {
+        expect(statusElement.isPresent()).toBe(true);
+        expect(statusElement.getText()).toEqual('Success An e-mail has been sent to activate@fake-mmw.com with further instructions.');
+      });
   });
 });
