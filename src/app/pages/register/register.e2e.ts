@@ -31,14 +31,14 @@ describe('Register page', () => {
     expect(leadText).toEqual('Already a member? Please log in instead.');
 
     let fullNameInput: any = element(by.id('name'));
-    fullNameInput.sendKeys('Name Surname');
-    expect(fullNameInput.getAttribute('value')).toEqual('Name Surname');
+    fullNameInput.sendKeys('Test registration');
+    expect(fullNameInput.getAttribute('value')).toEqual('Test registration');
     let emailInput: any = element(by.id('email'));
-    emailInput.sendKeys('fake@fake.com');
-    expect(emailInput.getAttribute('value')).toEqual('fake@fake.com');
+    emailInput.sendKeys('register@fake-mmw.com');
+    expect(emailInput.getAttribute('value')).toEqual('register@fake-mmw.com');
     let emailConfirmInput: any = element(by.id('emailConfirm'));
-    emailConfirmInput.sendKeys('fake@fake.com');
-    expect(emailConfirmInput.getAttribute('value')).toEqual('fake@fake.com');
+    emailConfirmInput.sendKeys('register@fake-mmw.com');
+    expect(emailConfirmInput.getAttribute('value')).toEqual('register@fake-mmw.com');
     let passwordInput: any = element(by.id('password'));
     passwordInput.sendKeys('Qw12345678');
     expect(passwordInput.getAttribute('value')).toEqual('Qw12345678');

@@ -16,31 +16,28 @@
 
 import { browser, by, element } from 'protractor';
 
-describe('Login page', () => {
+describe('Forgot page', () => {
 
   beforeEach( () => {
-    browser.get('/login');
+    browser.get('/forgot');
   });
 
-  it('should display the login page', () => {
+  it('should display the forgot page', () => {
 
     let titleText: any =  element(by.id('title')).getText();
-    expect(titleText).toEqual('Sign in');
+    expect(titleText).toEqual('Forgot');
 
-    let leadText: any =  element(by.css('p.lead')).getText();
-    expect(leadText).toEqual('Not a member? Please register first.');
+    let leadText: any =  element(by.css('h4')).getText();
+    expect(leadText).toEqual('Type the email used to create your account');
 
     let emailInput: any = element(by.id('email'));
-    emailInput.sendKeys('login@fake-mmw.com');
-    expect(emailInput.getAttribute('value')).toEqual('login@fake-mmw.com');
-    let passwordInput: any = element(by.id('password'));
-    passwordInput.sendKeys('Qw12345678');
-    expect(passwordInput.getAttribute('value')).toEqual('Qw12345678');
+    emailInput.sendKeys('forgot@fake-mmw.com');
+    expect(emailInput.getAttribute('value')).toEqual('forgot@fake-mmw.com');
 
-    let signInButton = element(by.id('signInButton'));
-    signInButton.click();
+    let forgotButton = element(by.id('forgotButton'));
+    forgotButton.click();
 
-    let profileImage = element(by.css('.img-thumbnail'));
-    expect(profileImage).toBeDefined();
+    // TODO add a test to check for no errors
+    // TODO check also redirect
   });
 });
