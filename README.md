@@ -89,7 +89,9 @@ PS: If you didn't start server-side before, you won't be able to see the entire 
 - `npm test`
 
 ## How to run e2e tests (with protractor)
-- `npm run e2e`
+- Run the [server-side](https://github.com/Ks89/My-MEAN-website-server) inside `My-MEAN-website-server`'s folder with `BYPASS_CI=yes npm run prod:start`
+- `npm run e2e` (to run e2e tests of client-side)
+- to stop [server-side](https://github.com/Ks89/My-MEAN-website-server) run `npm run prod:stop` inside `My-MEAN-website-server`'s folder
 
 ## How to start (development mode with HMR and BrowserSync)
 1. cd `My-MEAN-website-server`

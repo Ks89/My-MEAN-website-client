@@ -41,7 +41,7 @@ mongo test-db --eval 'db.users.update({ "local.email":"activate@fake-mmw.com"}, 
 echo "updating reset expire date"
 mongo KS --eval 'db.users.update({ "local.email":"reset@fake-mmw.com"}, { $set: { "local.resetPasswordExpires": new Date((new Date()).getTime() + 10 * 24 * 60 * 60 * 1000)} })'
 mongo test-db --eval 'db.users.update({ "local.email":"reset@fake-mmw.com"}, { $set: { "local.resetPasswordExpires": new Date((new Date()).getTime() + 10 * 24 * 60 * 60 * 1000)} })'
-∑
+
 sleep 5
 
 # start
