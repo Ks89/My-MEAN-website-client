@@ -34,8 +34,10 @@ module.exports = {
     // /** <link> tags for favicons **/
     { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/assets/favicon.png' },
 
-    // /** <link> tags for a Web App Manifest **/
-    // { rel: 'manifest', href: '/assets/manifest.json' },
+    /**
+     * <link> tags for a Web App Manifest
+     */
+    { rel: 'manifest', href: '/assets/manifest.json' },
 
     /** font-awesome css **/
     { rel: 'stylesheet', href: '/assets/font-awesome/css/font-awesome.min.css' }

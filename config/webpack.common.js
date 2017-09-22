@@ -135,7 +135,7 @@ module.exports = {
     ]
   },
   plugins: [
-    new ModuleConcatenationPlugin(),
+    new ModuleConcatenationPlugin(), // enable scope hoisting
     new NamedModulesPlugin(),
     new CommonsChunkPlugin({
       name: 'polyfills',
