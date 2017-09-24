@@ -4,9 +4,9 @@ node_js:
 
 os:
   - linux
-  - osx
+#  - osx # removed OSX because macOS builds on travisci are becoming unstable
 dist: trusty # to use Ubuntu 14.04
-osx_image: xcode8.3 # to use macOS Sierra 10.12
+#osx_image: xcode8.3 # to use macOS Sierra 10.12
 sudo: false
 
 git:
@@ -50,6 +50,7 @@ after_success:
   - source travisci/after_success.sh
 after_script:
   - bash travisci/after_script.sh
+
 cache:
   apt: true
   bundler: true
