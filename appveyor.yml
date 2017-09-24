@@ -51,7 +51,7 @@ skip_commits:
 init:
   - git config --global core.autocrlf input
   # used to access with Windows Remote Desktop
-  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+#  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 
 # fetch repository as zip archive
