@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-import { browser, by, element } from 'protractor';
+import { browser, by, element, protractor } from 'protractor';
+
+let EC = protractor.ExpectedConditions;
 
 describe('Login page', () => {
 
@@ -42,5 +44,18 @@ describe('Login page', () => {
 
     let profileImage = element(by.css('.img-thumbnail'));
     expect(profileImage).toBeDefined();
+
+    // logout
+    let navbarDropdown = element(by.id('navbarDropdownMenuLink'));
+    browser.wait(EC.presenceOf(navbarDropdown), 60000)
+      .then(() => {
+        navbarDropdown.click();
+        let dropdownLinks = element.all(by.css('.dropdown-item'));
+        expect(dropdownLinks.count()).toEqual(2);
+        browser.wait(EC.presenceOf(dropdownLinks.get(1)), 60000)
+          .then(() => {
+            dropdownLinks.get(1).click();
+          });
+      });
   });
 });

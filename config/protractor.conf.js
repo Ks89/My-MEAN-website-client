@@ -20,7 +20,7 @@
 // 2. npm run e2e
 
 require('ts-node/register');
-var helpers = require('./helpers');
+let helpers = require('./helpers');
 
 exports.config = {
   baseUrl: 'http://localhost:3000',
@@ -56,12 +56,23 @@ exports.config = {
     'browserName': 'chrome',
     'chromeOptions': {
       // args: ["--headless", "--disable-gpu", "--window-size=800,600"]
-      'args': ['show-fps-counter=true']
+      'args': ['show-fps-counter=true', "--window-size=1280,1024"]
     }
   },
 
   onPrepare: function () {
     browser.ignoreSynchronization = true;
+
+    if (!process.env.CI) {
+      // only for local environment, because dotenv isn't working on CIs
+      // don't require dotenv at the beginning of this file!!! You have to require it only inside this if statement
+      // use dotenv to load variables for e2e testing on your PC
+      const dotenv = require('dotenv').config({path: '.env_e2e'}); //to read info from .env_e2e file
+      if (dotenv.error) {
+        throw dotenv.error;
+      }
+      console.log('dotenv loaded', dotenv.parsed);
+    }
   },
 
   /**

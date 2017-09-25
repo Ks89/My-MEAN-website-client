@@ -110,6 +110,7 @@
     "copyfiles": "^1.2.0",
     "coveralls": "^2.13.1",
     "css-loader": "^0.28.7",
+    "dotenv": "^4.0.0",
     "exports-loader": "^0.6.4",
     "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^0.11.1",

@@ -31,3 +31,5 @@ docs
 dll
 
 **/webpack-bundle-analyzer-report.*
+
+.env_e2e
