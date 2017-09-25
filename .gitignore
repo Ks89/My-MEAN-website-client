@@ -28,6 +28,7 @@ dist
 aot
 .awcache
 docs
+documentation
 dll
 
 **/webpack-bundle-analyzer-report.*
