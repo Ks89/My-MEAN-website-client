@@ -207,7 +207,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
   }
 
-  unlink(serviceName: string): any {
+  unlink(serviceName: string) {
     console.log('unlink ' + serviceName + ' called');
 
     if (this.checkIfLastUnlinkProfile(serviceName)) {
@@ -265,7 +265,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): any {
+  is3dPartyServiceConnected(serviceName: string) {
+    return (this[serviceName].email && this[serviceName].email.length > 0) || (this[serviceName].name && this[serviceName].name.length > 0);
+  }
+
+  ngOnDestroy() {
     if (this.postAuthSubscription) {
       this.postAuthSubscription.unsubscribe();
     }
@@ -289,7 +293,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     };
   }
 
-  private checkIfLastUnlinkProfile(serviceName: any) {
+  private checkIfLastUnlinkProfile(serviceName: string) {
     console.log('checkIfLastUnlinkProfile with serviceName: ' + serviceName);
     switch (serviceName) {
       case 'github':

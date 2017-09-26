@@ -31,11 +31,11 @@
 				<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
 					<h3>Connected services</h3>
 					&nbsp;<span class="fa fa-user fa-2x" *ngIf="local.email.length > 0">&nbsp;</span>
-					<span class="fa fa-facebook fa-2x" *ngIf="facebook.email.length > 0">&nbsp;</span>
-					<span class="fa fa-github fa-2x" *ngIf="github.email.length > 0">&nbsp;</span>
-					<span class="fa fa-google fa-2x" *ngIf="google.email.length > 0">&nbsp;</span>
-					<span class="fa fa-linkedin fa-2x" *ngIf="linkedin.email.length > 0">&nbsp;</span>
-					<span class="fa fa-twitter fa-2x" *ngIf="twitter.name.length > 0 || twitter.email.length > 0">&nbsp;</span>
+					<span class="fa fa-facebook fa-2x" *ngIf="is3dPartyServiceConnected('facebook')">&nbsp;</span>
+					<span class="fa fa-github fa-2x" *ngIf="is3dPartyServiceConnected('github')">&nbsp;</span>
+					<span class="fa fa-google fa-2x" *ngIf="is3dPartyServiceConnected('google')">&nbsp;</span>
+					<span class="fa fa-linkedin fa-2x" *ngIf="is3dPartyServiceConnected('linkedin')">&nbsp;</span>
+					<span class="fa fa-twitter fa-2x" *ngIf="is3dPartyServiceConnected('twitter')">&nbsp;</span>
 				</div>
 			</div>
 
@@ -98,23 +98,23 @@
 				Connect this account with other services!
 				You'll be able to access to the same account with many services.
 			</h6>
-			<div *ngIf="facebook.email.length === 0">
+			<div *ngIf="!is3dPartyServiceConnected('facebook')">
 				<a class="btn btn-primary white-button" href="{{facebookConnectOauthUrl}}"> <span class="fa fa-facebook fa-lg"></span> connect</a>
 				<br><br>
 			</div>
-			<div *ngIf="github.email.length === 0">
+			<div *ngIf="!is3dPartyServiceConnected('github')">
 				<a class="btn btn-primary white-button" href="{{githubConnectOauthUrl}}"> <span class="fa fa-github fa-lg"></span> connect</a>
 				<br><br>
 			</div>
-			<div *ngIf="google.email.length === 0">
+			<div *ngIf="!is3dPartyServiceConnected('google')">
 				<a class="btn btn-primary white-button" href="{{googleConnectOauthUrl}}"> <span class="fa fa-google fa-lg"></span> connect</a>
 				<br><br>
 			</div>
-			<div *ngIf="twitter.name.length === 0 && twitter.email.length === 0">
+			<div *ngIf="!is3dPartyServiceConnected('twitter')">
 				<a class="btn btn-primary white-button" href="{{twitterConnectOauthUrl}}"> <span class="fa fa-twitter fa-lg"></span> connect</a>
 				<br><br>
 			</div>
-			<div *ngIf="linkedin.email.length === 0">
+			<div *ngIf="!is3dPartyServiceConnected('linkedin')">
 				<a class="btn btn-primary white-button" href="{{linkedinConnectOauthUrl}}"> <span class="fa fa-linkedin fa-lg"></span> connect</a>
 				<br><br>
 			</div>
@@ -128,23 +128,23 @@
 				<a class="btn btn-primary white-button" (click)="unlink('local')"> <span class="fa fa-user fa-lg"></span> unlink</a>
 				<br><br>
 			</div>
-			<div *ngIf="facebook.email.length > 0">
+			<div *ngIf="is3dPartyServiceConnected('facebook')">
 				<a class="btn btn-primary white-button" (click)="unlink('facebook')"> <span class="fa fa-facebook fa-lg"></span> unlink</a>
 				<br><br>
 			</div>
-			<div *ngIf="github.email.length > 0">
+			<div *ngIf="is3dPartyServiceConnected('github')">
 				<a class="btn btn-primary white-button" (click)="unlink('github')"> <span class="fa fa-github fa-lg"></span> unlink</a>
 				<br><br>
 			</div>
-			<div *ngIf="google.email.length > 0">
+			<div *ngIf="is3dPartyServiceConnected('google')">
 				<a class="btn btn-primary white-button" (click)="unlink('google')"> <span class="fa fa-google fa-lg"></span> unlink</a>
 				<br><br>
 			</div>
-			<div *ngIf="twitter.name.length > 0 && twitter.email.length > 0">
+			<div *ngIf="is3dPartyServiceConnected('twitter')">
 				<a class="btn btn-primary white-button" (click)="unlink('twitter')"> <span class="fa fa-twitter fa-lg"></span> unlink</a>
 				<br><br>
 			</div>
-			<div *ngIf="linkedin.email.length > 0">
+			<div *ngIf="is3dPartyServiceConnected('linkedin')">
 				<a class="btn btn-primary white-button" (click)="unlink('linkedin')"> <span class="fa fa-linkedin fa-lg"></span> unlink</a>
 				<br><br>
 			</div>
