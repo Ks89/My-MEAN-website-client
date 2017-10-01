@@ -32,7 +32,7 @@
     "init-db": "bash ./db-dump-e2e/init.sh",
     "pree2e": "npm-run-all -p -r build:prod:aot init-db",
     "e2e": "npm run webdriver:update && npm run protractor",
-    "e2e:ci": "npm run webdriver:update:ci && npm run protractor:delay",
+    "e2e:ci": "npm-run-all -p -r webdriver:update:ci && npm run protractor:delay",
     "protractor": "protractor",
     "protractor:delay": "sleep 3 && npm run protractor",
     "webdriver:update": "webdriver-manager update",

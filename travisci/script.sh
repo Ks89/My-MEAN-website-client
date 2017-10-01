@@ -24,22 +24,15 @@ echo "dropping db collections for test-db"
 mongo test-db --eval "db.getCollectionNames()"
 mongo test-db --eval 'db.projects.drop()'
 mongo test-db --eval 'db.users.drop()'
-mongo KS --eval "db.getCollectionNames()"
-mongo KS --eval 'db.projects.drop()'
-mongo KS --eval 'db.users.drop()'
 
 echo "filling test-db with data"
 mongorestore -d test-db -c projects --dir=./db-dump-e2e/KS/projects.bson --maintainInsertionOrder
-mongorestore -d KS -c projects --dir=./db-dump-e2e/KS/projects.bson --maintainInsertionOrder
 mongorestore -d test-db -c users --dir=./db-dump-e2e/KS/users.bson --maintainInsertionOrder
-mongorestore -d KS -c users --dir=./db-dump-e2e/KS/users.bson --maintainInsertionOrder
 
 echo "updating activation expire date"
-mongo KS --eval 'db.users.update({ "local.email":"activate@fake-mmw.com"}, { $set: { "local.activateAccountExpires": new Date((new Date()).getTime() + 10 * 24 * 60 * 60 * 1000)} })'
 mongo test-db --eval 'db.users.update({ "local.email":"activate@fake-mmw.com"}, { $set: { "local.activateAccountExpires": new Date((new Date()).getTime() + 10 * 24 * 60 * 60 * 1000)} })'
 
 echo "updating reset expire date"
-mongo KS --eval 'db.users.update({ "local.email":"reset@fake-mmw.com"}, { $set: { "local.resetPasswordExpires": new Date((new Date()).getTime() + 10 * 24 * 60 * 60 * 1000)} })'
 mongo test-db --eval 'db.users.update({ "local.email":"reset@fake-mmw.com"}, { $set: { "local.resetPasswordExpires": new Date((new Date()).getTime() + 10 * 24 * 60 * 60 * 1000)} })'
 
 sleep 5

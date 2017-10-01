@@ -20,7 +20,7 @@ node_modules
 ~/
 .DS_Store
 .env
-
+.env_e2e
 .idea
 
 # Compiled front-end files
@@ -33,4 +33,4 @@ dll
 
 **/webpack-bundle-analyzer-report.*
 
-.env_e2e
+

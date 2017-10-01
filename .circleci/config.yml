@@ -78,15 +78,13 @@ jobs:
       - run:
           name: mongo-drop
           command: |
-                mongo test-db --eval "db.getCollectionNames()"
                 mongo test-db --eval 'db.projects.drop()'
-                mongo KS --eval "db.getCollectionNames()"
-                mongo KS --eval 'db.projects.drop()'
+                mongo test-db --eval 'db.users.drop()'
       - run:
           name: mongorestore
           command: |
                 mongorestore -d test-db -c projects --dir=./db-dump-e2e/KS/projects.bson --maintainInsertionOrder
-                mongorestore -d KS -c projects --dir=./db-dump-e2e/KS/projects.bson --maintainInsertionOrder
+                mongorestore -d test-db -c users --dir=./db-dump-e2e/KS/users.bson --maintainInsertionOrder
       - run:
           name: run-webdriver-update
           command: npm run webdriver:update:ci
