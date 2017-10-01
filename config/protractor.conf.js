@@ -16,7 +16,7 @@
 
 
 // run:
-// 1. npm run webdriver:update
+// 1. npm run webdriver:update:ci
 // 2. npm run e2e
 
 require('ts-node/register');

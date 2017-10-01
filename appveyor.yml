@@ -142,7 +142,8 @@ install:
   - echo FRONT_END_PATH is %FRONT_END_PATH%
   - set BYPASS_CI=yes
   - echo BYPASS_CI is %BYPASS_CI%
-  - set NODE_ENV=development && forever start -s bin/www # similar to npm run prod:start but with forever instead of pm2
+  - npm run ci:forever:start # similar to npm run prod:start but with forever instead of pm2
+#  - set NODE_ENV=development && forever start -s bin/www # similar to npm run prod:start but with forever instead of pm2
   - cd ../my-mean-website-client
 
 #---------------------------------#
@@ -206,8 +207,8 @@ test_script:
   - mongo KS --eval 'db.projects.drop()'
   - mongorestore -d KS -c projects --dir=./db-dump-e2e/KS/projects.bson --maintainInsertionOrder
   # update webdriver + run e2e tests
-  - npm run webdriver:update
-  - npm run ci:e2e
+  - npm run webdriver:update:ci
+  - npm run e2e:ci
 
 #---------------------------------#
 #      artifacts configuration    #
@@ -239,6 +240,7 @@ deploy_script:
 # on successful build
 on_success:
   - npm run docs
+  - npm run compodoc
   - codeclimate-test-reporter < coverage/lcov.info
   - node .\node_modules\coveralls\bin\coveralls.js < .\coverage\lcov.info
 
@@ -249,7 +251,9 @@ on_success:
 # after build failure or success
 on_finish:
    - echo Stopping server
-   - forever stop -s ../My-MEAN-website-server/bin/www # similar to npm run prod:start but with forever instead of pm2
+   - cd ../My-MEAN-website-server
+   - npm run ci:forever:stop # similar to npm run prod:start but with forever instead of pm2
+#   - forever stop -s ../My-MEAN-website-server/bin/www # similar to npm run prod:start but with forever instead of pm2
 
 #---------------------------------#
 #         notifications           #

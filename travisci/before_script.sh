@@ -2,7 +2,7 @@
 
 echo "Before script - OS is $TRAVIS_OS_NAME"
 
-# update webdriver (like npm run webdriver:update)
+# update webdriver (like npm run webdriver:update:ci)
 node ./node_modules/protractor/bin/webdriver-manager update
 # rebuild again node-sass
 npm rebuild node-sass

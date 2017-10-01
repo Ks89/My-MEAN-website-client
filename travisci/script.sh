@@ -51,15 +51,14 @@ export BYPASS_CI=yes
 echo "BYPASS_CI is $BYPASS_CI"
 
 cd ../My-MEAN-website-server
-# npm --prefix ../My-MEAN-website-server/ run prod:start
-pm2 start bin/www -i 4 --env development  # FIXME I should change this with a custom value instead of "development", for instance "e2e" or "ci"
+npm run ci:pm2:start
 cd ../My-MEAN-website-client
 
 
 # update webdriver to be able to run e2e tests
-npm run webdriver:update
+npm run webdriver:update:ci
 
 sleep 5
 
 echo "npm run e2e on $TRAVIS_OS_NAME"
-npm run ci:e2e
+npm run e2e:ci

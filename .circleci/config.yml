@@ -58,8 +58,8 @@ jobs:
           command: cd ../My-MEAN-website-server && npm install
           # also try this better approach: npm --prefix ../My-MEAN-website-server/ run prod:start
       - run:
-          name: pm2-start-prod-server # npm --prefix ../My-MEAN-website-server/ run prod:start
-          command: cd ../My-MEAN-website-server && pm2 start bin/www -i 4 --env development
+          name: pm2-start-prod-server
+          command: cd ../My-MEAN-website-server && npm run ci:pm2:start
       - run:
           name: run-build-dev
           command: npm run build:dev
@@ -89,16 +89,19 @@ jobs:
                 mongorestore -d KS -c projects --dir=./db-dump-e2e/KS/projects.bson --maintainInsertionOrder
       - run:
           name: run-webdriver-update
-          command: npm run webdriver:update
+          command: npm run webdriver:update:ci
       - run:
           name: run-e2e
-          command: npm run ci:e2e
+          command: npm run e2e:ci
       - run:
           name: pm2-stop-prod-server
-          command: cd ../My-MEAN-website-server && pm2 stop bin/www # npm --prefix ../My-MEAN-website-server/ run prod:stop
+          command: cd ../My-MEAN-website-server && npm run ci:pm2:stop
       - run:
           name: run-docs
           command: npm run docs
+      - run:
+          name: run-compodoc
+          command: npm run compodoc
       - run:
           name: run-codeclimate
           command: npm run codeclimate
