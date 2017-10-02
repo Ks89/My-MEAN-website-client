@@ -40,11 +40,9 @@ sleep 5
 # start
 export FRONT_END_PATH=../My-MEAN-website-client/dist
 echo "FRONT_END_PATH is $FRONT_END_PATH"
-export BYPASS_CI=yes
-echo "BYPASS_CI is $BYPASS_CI"
 
 cd ../My-MEAN-website-server
-npm run ci:pm2:start
+npm run e2e:start
 cd ../My-MEAN-website-client
 
 

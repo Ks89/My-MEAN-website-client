@@ -16,20 +16,20 @@ jobs:
           JWT_SECRET: faketestjwt
           TWITTER_CONSUMER_KEY: consumerkey
           TWITTER_CONSUMER_SECRET: consumersecret
-          TWITTER_CALLBACK_URL: http://127.0.0.1:3300/api/auth/twitter/callback
+          TWITTER_CALLBACK_URL: http://127.0.0.1:3000/api/auth/twitter/callback
           TWITTER_PROFILE_URL: https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true
           FACEBOOK_APP_ID: appid
           FACEBOOK_APP_SECRET: appsecret
-          FACEBOOK_CALLBACK_URL: http://localhost:3300/api/auth/facebook/callback
+          FACEBOOK_CALLBACK_URL: http://localhost:3000/api/auth/facebook/callback
           GOOGLE_CLIENT_ID: clientid
           GOOGLE_CLIENT_SECRET: clientsecret
-          GOOGLE_CALLBACK_URL: http://localhost:3300/api/auth/google/callback
+          GOOGLE_CALLBACK_URL: http://localhost:3000/api/auth/google/callback
           GITHUB_CLIENT_ID: clientid
           GITHUB_CLIENT_SECRET: clientsecret
-          GITHUB_CALLBACK_URL: http://localhost:3300/api/auth/github/callback
+          GITHUB_CALLBACK_URL: http://localhost:3000/api/auth/github/callback
           LINKEDIN_CLIENT_ID: clientid
           LINKEDIN_CLIENT_SECRET: clientsecret
-          LINKEDIN_CALLBACK_URL: http://localhost:3300/api/auth/linkedin/callback
+          LINKEDIN_CALLBACK_URL: http://localhost:3000/api/auth/linkedin/callback
           USER_EMAIL: fake@fake.it
           PASS_EMAIL: fakepasswordemail
           RECAPTCHA_PUBLIC: recaptchapublic
@@ -59,7 +59,7 @@ jobs:
           # also try this better approach: npm --prefix ../My-MEAN-website-server/ run prod:start
       - run:
           name: pm2-start-prod-server
-          command: cd ../My-MEAN-website-server && npm run ci:pm2:start
+          command: cd ../My-MEAN-website-server && npm run e2e:start
       - run:
           name: run-build-dev
           command: npm run build:dev
@@ -93,7 +93,7 @@ jobs:
           command: npm run e2e:ci
       - run:
           name: pm2-stop-prod-server
-          command: cd ../My-MEAN-website-server && npm run ci:pm2:stop
+          command: cd ../My-MEAN-website-server && npm run e2e:stop
       - run:
           name: run-docs
           command: npm run docs

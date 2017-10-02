@@ -77,20 +77,20 @@ environment:
   JWT_SECRET: faketestjwt
   TWITTER_CONSUMER_KEY: consumerkey
   TWITTER_CONSUMER_SECRET: consumersecret
-  TWITTER_CALLBACK_URL: http://127.0.0.1:3300/api/auth/twitter/callback
+  TWITTER_CALLBACK_URL: http://127.0.0.1:3000/api/auth/twitter/callback
   TWITTER_PROFILE_URL: "https://api.twitter.com/1.1/account/verify_credentials.json?include_email: true"
   FACEBOOK_APP_ID: appid
   FACEBOOK_APP_SECRET: appsecret
-  FACEBOOK_CALLBACK_URL: http://localhost:3300/api/auth/facebook/callback
+  FACEBOOK_CALLBACK_URL: http://localhost:3000/api/auth/facebook/callback
   GOOGLE_CLIENT_ID: clientid
   GOOGLE_CLIENT_SECRET: clientsecret
-  GOOGLE_CALLBACK_URL: http://localhost:3300/api/auth/google/callback
+  GOOGLE_CALLBACK_URL: http://localhost:3000/api/auth/google/callback
   GITHUB_CLIENT_ID: clientid
   GITHUB_CLIENT_SECRET: clientsecret
-  GITHUB_CALLBACK_URL: http://localhost:3300/api/auth/github/callback
+  GITHUB_CALLBACK_URL: http://localhost:3000/api/auth/github/callback
   LINKEDIN_CLIENT_ID: clientid
   LINKEDIN_CLIENT_SECRET: clientsecret
-  LINKEDIN_CALLBACK_URL: http://localhost:3300/api/auth/linkedin/callback
+  LINKEDIN_CALLBACK_URL: http://localhost:3000/api/auth/linkedin/callback
   USER_EMAIL: fake@fake.it
   PASS_EMAIL: fakepasswordemail
   RECAPTCHA_PUBLIC: recaptchapublic
@@ -140,10 +140,7 @@ install:
   - npm install
   - set FRONT_END_PATH=../my-mean-website-client/dist
   - echo FRONT_END_PATH is %FRONT_END_PATH%
-  - set BYPASS_CI=yes
-  - echo BYPASS_CI is %BYPASS_CI%
-  - npm run ci:forever:start # similar to npm run prod:start but with forever instead of pm2
-#  - set NODE_ENV=development && forever start -s bin/www # similar to npm run prod:start but with forever instead of pm2
+  - npm run e2e:forever:startt # similar to npm run prod:start but with forever instead of pm2
   - cd ../my-mean-website-client
 
 #---------------------------------#
@@ -250,8 +247,7 @@ on_success:
 on_finish:
    - echo Stopping server
    - cd ../My-MEAN-website-server
-   - npm run ci:forever:stop # similar to npm run prod:start but with forever instead of pm2
-#   - forever stop -s ../My-MEAN-website-server/bin/www # similar to npm run prod:start but with forever instead of pm2
+   - npm run e2e:forever:stop # similar to npm run prod:start but with forever instead of pm2
 
 #---------------------------------#
 #         notifications           #
