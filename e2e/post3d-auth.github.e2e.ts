@@ -18,13 +18,13 @@ import { browser, by, element, protractor } from 'protractor';
 
 let EC = protractor.ExpectedConditions;
 
-describe('Post3d-auth page', () => {
+describe('Post3d-auth page github', () => {
 
   beforeAll(() => {
     browser.get('/login');
   });
 
-  it('should login with a third-party service', () => {
+  it('should login with a third-party service github', () => {
 
     let loginGithubButton = element(by.css('a.btn.btn-success'));
     loginGithubButton.click();
@@ -42,7 +42,7 @@ describe('Post3d-auth page', () => {
 
         browser.wait(EC.urlContains('profile'), 5000)
           .then(() => {
-            console.log('already authorized - OK!');
+            console.log('github already authorized - OK!');
 
             checkProfilePage();
 
@@ -50,7 +50,7 @@ describe('Post3d-auth page', () => {
             logout();
           }).catch(err => {
             let githubAuthorizeButton = element(by.id('js-oauth-authorize-btn'));
-            console.log('first authorization - OK!');
+            console.log('github first authorization - OK!');
             // first authorization
             browser.wait(EC.presenceOf(githubAuthorizeButton), 5000)
               .then(() => {
