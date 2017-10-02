@@ -42,9 +42,10 @@ export FRONT_END_PATH=../My-MEAN-website-client/dist
 echo "FRONT_END_PATH is $FRONT_END_PATH"
 
 cd ../My-MEAN-website-server
+ls
 npm run e2e:start
 cd ../My-MEAN-website-client
-
+ls
 
 # update webdriver to be able to run e2e tests
 npm run webdriver:update:ci
