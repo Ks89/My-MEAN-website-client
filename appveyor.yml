@@ -140,7 +140,7 @@ install:
   - npm install
   - set FRONT_END_PATH=../my-mean-website-client/dist
   - echo FRONT_END_PATH is %FRONT_END_PATH%
-  - npm run e2e:forever:startt # similar to npm run prod:start but with forever instead of pm2
+  - npm run e2e:forever:start # similar to npm run prod:start but with forever instead of pm2
   - cd ../my-mean-website-client
 
 #---------------------------------#
