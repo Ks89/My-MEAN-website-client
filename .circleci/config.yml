@@ -76,15 +76,11 @@ jobs:
           name: run-test
           command: npm test
       - run:
-          name: mongo-drop
-          command: |
-                mongo test-db --eval 'db.projects.drop()'
-                mongo test-db --eval 'db.users.drop()'
+          name: npm-run-init-db
+          command: npm run init-db
       - run:
-          name: mongorestore
-          command: |
-                mongorestore -d test-db -c projects --dir=./db-dump-e2e/KS/projects.bson --maintainInsertionOrder
-                mongorestore -d test-db -c users --dir=./db-dump-e2e/KS/users.bson --maintainInsertionOrder
+          name: run-build-prod-aot-again-for-e2e-testing
+          command: npm run build:prod:aot #again because it is used by e2e testing
       - run:
           name: run-webdriver-update
           command: npm run webdriver:update:ci

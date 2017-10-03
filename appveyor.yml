@@ -197,10 +197,8 @@ test_script:
   # add mongo bins (like mongo and mongorestore) to path
   - ps: $env:path = "$env:MONGO_BINS;$env:path"
   # drop db collection and fill it with data
-  - mongo test-db --eval 'db.projects.drop()'
-  - mongo test-db --eval 'db.users.drop()'
-  - mongorestore -d test-db -c projects --dir=./db-dump-e2e/KS/projects.bson --maintainInsertionOrder
-  - mongorestore -d test-db -c users --dir=./db-dump-e2e/KS/users.bson --maintainInsertionOrder
+  - npm run init-db
+  - npm run build:prod:aot #again because it is used by e2e testing
   # update webdriver + run e2e tests
   - npm run webdriver:update:ci
   - npm run e2e:ci
