@@ -46,6 +46,13 @@ describe('Register page', () => {
     passwordConfirmInput.sendKeys('Qw12345678');
     expect(passwordConfirmInput.getAttribute('value')).toEqual('Qw12345678');
 
+    // workaround for AppVeyor because, otherwise It cannot find this button
+    // scroll to the bottom of the page using a
+    // big value (500000) as y coordinate
+    // This is used in other tests, but for meaningful cases.
+    // Here it is a workaround
+    browser.executeScript('window.scrollTo(0,500000);');
+
     let registerButton = element(by.id('registerButton'));
     registerButton.click();
     let statusMessage: any = element(by.css('div.alert.alert-danger'));

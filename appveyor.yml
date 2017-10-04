@@ -102,6 +102,21 @@ environment:
   COVERALLS_REPO_TOKEN:
     secure: Rq8TOMtxRLCrtZqN5mZ6eAeGO1Y7ZCN0k1I7Dy314tv+ttGMeHEnRNsK9XNXj4JJ
 
+  # e2e login 3dparty services encrypted variables
+  GITHUB_USER_E2E:
+    secure: ihh/L2oIgPV44m62RqHyUg==
+  GITHUB_PWD_E2E:
+    secure: ho+DXyA9uvK4Z0CzaJAI2w==
+  GOOGLE_USER_E2E:
+    secure: O23NnzEBu9MGRUXb2/qrgpR7YQHYYx8s3c24VNuexnc=
+  GOOGLE_PWD_E2E
+    secure: ho+DXyA9uvK4Z0CzaJAI2w==
+  FACEBOOK_USER_E2E
+    secure: yqbbafttbo_1506980248@tfbnw.net
+  FACEBOOK_PWD_E2E
+    secure: ho+DXyA9uvK4Z0CzaJAI2w==
+
+
 # this is how to allow failing jobs in the matrix
 matrix:
   fast_finish: true     # set this flag to immediately finish build once one of the jobs fails.
