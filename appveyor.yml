@@ -109,11 +109,11 @@ environment:
     secure: ho+DXyA9uvK4Z0CzaJAI2w==
   GOOGLE_USER_E2E:
     secure: O23NnzEBu9MGRUXb2/qrgpR7YQHYYx8s3c24VNuexnc=
-  GOOGLE_PWD_E2E
+  GOOGLE_PWD_E2E:
     secure: ho+DXyA9uvK4Z0CzaJAI2w==
-  FACEBOOK_USER_E2E
+  FACEBOOK_USER_E2E:
     secure: yqbbafttbo_1506980248@tfbnw.net
-  FACEBOOK_PWD_E2E
+  FACEBOOK_PWD_E2E:
     secure: ho+DXyA9uvK4Z0CzaJAI2w==
 
 
