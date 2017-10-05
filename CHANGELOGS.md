@@ -1,5 +1,22 @@
 # Changelog
 
+## Alpha 9
+
+### **Features**
+- **#21 e2e testing with protractor (initial implementation)** **(HUGE FEATURE :))** There are still some bugs on Windows/Appveyor, but it's ok on Linux/macOS.
+- #110 add compodoc
+- #109 add manifest.json to create standalone apps on mobile devices
+
+### **Chore**
+- #108 For both unit and e2e tests I should use test-db instead of the real db (for both CI and local invironment)
+- #112 update readme with e2e instructions
+
+### **Bugfixes**
+- #111 manage users for 3dparty services that don't want to expose either email or name
+- #105 When you navigate to projects, the first page of projects will be the second one, why??
+- #104 Fix service unit test bug in v.alpha-8
+
+
 ## Alpha 8
 
 ### **Features**

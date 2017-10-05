@@ -15,7 +15,7 @@ My MEAN website is a MEAN's web application that I'm creating as a personal webs
 It's composed by:
 - M: a MongoDb's database
 - E: a back-end with Express js
-- A: a front-end in Angular 2
+- A: a front-end in Angular >= 4
 - N: a back-end in Node.js
 - redis
 - webpack and gulp
@@ -28,17 +28,18 @@ If you are interested, star this project on GitHub, share it and create pull req
 
 Testing:
 - front-end unit: coverage >80%
-- front-end e2e: work in progress, In future alphas I'll complete everything
+- front-end e2e: work in progress, initial implementation available in Alpha 9
 
 ## Requirements
 - macOS, Linux or Windows 10 **with admin privileges**
 - Node.js + npm
 - some global npm dependencies
-- [My-MEAN-website server](https://github.com/Ks89/My-MEAN-website-server) Alpha4 or greater
+- [My-MEAN-website server](https://github.com/Ks89/My-MEAN-website-server)
 - Google Chrome and Mozilla Firefox (mandatory if you want to run `npm test`) (also Internet Explorer if you are using Windows)
 - work in progress... (this is only an alpha, please be patient)
 
 ## News
+- *10/06/2017* - **My MEAN website** Alpha 9 public release [HERE](https://github.com/Ks89/My-MEAN-website-client/releases/tag/v.alpha-6)
 - *08/20/2017* - **My MEAN website** Alpha 8 public release [HERE](https://github.com/Ks89/My-MEAN-website-client/releases/tag/v.alpha-6)
 - *08/10/2017* - **My MEAN website** Alpha 7 public release [HERE](https://github.com/Ks89/My-MEAN-website-client/releases/tag/v.alpha-6)
 - *04/09/2017* - **My MEAN website** Alpha 6 public release [HERE](https://github.com/Ks89/My-MEAN-website-client/releases/tag/v.alpha-6)
@@ -50,22 +51,28 @@ Testing:
 
 
 ## How to install (MacOS)
+
 - install both [Mozilla Firefox](https://www.mozilla.org/en-US/firefox/new/) and [Google Chrome](https://www.google.com/chrome/browser/desktop/index.html)
 - from the `setup` folder of this project, run `bash install-macos.sh`
-- import the db dump (.json) from `docs`'s folder using MongoChef or another software
+- import the db dump (.bson) from `db-dump-prod`'s folder either running `db-dump-prod/init.sh` to do it automatically thanks to both `mongo` ad `mongorestore` CLIs, or using Studio 3T (previously MongoChef)
 
 ## How to install (Linux)
+
+*Tested only on Ubuntu*
+
 - install both [Mozilla Firefox](https://www.mozilla.org/en-US/firefox/new/) and [Google Chrome](https://www.google.com/chrome/browser/desktop/index.html)
-- from the `setup` folder of this project, run `bash install-linux.sh`
-- import the db dump (.json) from `docs`'s folder using MongoChef or another software
+- from the `setup` folder of this project, run `bash install-ubuntu.sh`
+- import the db dump (.bson) from `db-dump-prod`'s folder either running `db-dump-prod/init.sh` to do it automatically thanks to both `mongo` ad `mongorestore` CLIs, or using Studio 3T (previously MongoChef)
 
 ## How to install (Windows 10)
+
 *Tested only on Windows 10*
 
 - install both [Mozilla Firefox](https://www.mozilla.org/en-US/firefox/new/) and [Google Chrome](https://www.google.com/chrome/browser/desktop/index.html)
 - install Node.js from the [official website](https://www.nodejs.org)
 - install MongoDb Community from the [official website](https://www.mongodb.com)
-- import the db dump (.json) from `docs`'s folder using MongoChef or another software [HERE](http://3t.io/mongochef/download/)
+- create a db called `KS` (obviously you have to start MongoDb to do that). You can configure this value later, but for debug/local environment I suggest this name
+- import the db dump (.bson) from `db-dump-prod`'s folder either running `db-dump-prod/init.sh` to do it automatically thanks to both `mongo` ad `mongorestore` CLIs (if available in your PATH variable), or using Studio 3T (previously MongoChef)
 - install redis-server for Windows (file .msi) [HERE](https://github.com/MSOpenTech/redis/releases)
 - install Python 2.7.x from the [official website](https://www.python.org)
 - from the `setup` folder of this project, run with PowerShell as administator `bash install-windows.sh`
@@ -75,23 +82,14 @@ Both options will require to download really big files from microsoft.com (manua
 
 ## How to setup
 1. if necessary rename (case-sensitive) the main folder of this project into `My-MEAN-website-client` to match `FRONT_END_PATH` in `.env` file of [server-side](https://github.com/Ks89/My-MEAN-website-server)
-2. put the main folder of this project near `My-MEAN-website-server` (in the future I'll give you a way to configure this)
-3. execute `npm install` into the root folder (if it will fail, run it again)
-4. follow [the tutorial](https://github.com/Ks89/My-MEAN-website-server) to prepare [My-MEAN-website server](https://github.com/Ks89/My-MEAN-website-server)  (remember to start both MongoDb and redis-server)
-5. start [My-MEAN-website server](https://github.com/Ks89/My-MEAN-website-server)  with `npm start`
-6. execute `npm start` into the root folder to start this application (client/front-end)
+2. execute `npm install` into the root folder (if it will fail, run it again)
+3. follow [the tutorial](https://github.com/Ks89/My-MEAN-website-server) to prepare [My-MEAN-website server](https://github.com/Ks89/My-MEAN-website-server)  (remember to start both MongoDb and redis-server)
+4. start [My-MEAN-website server](https://github.com/Ks89/My-MEAN-website-server)  with `npm start`
+5. execute `npm start` into the root folder to run this application (client/front-end)
 
 This will start this application at http://localhost:3300
 
-PS: If you didn't start server-side before, you won't be able to see the entire home page (because created using data taken from DB)
-
-## How to run unit tests (with karma)
-- `npm test`
-
-## How to run e2e tests (with protractor)
-- Run the [server-side](https://github.com/Ks89/My-MEAN-website-server) inside `My-MEAN-website-server`'s folder with `BYPASS_CI=yes npm run prod:start`
-- `npm run e2e` (to run e2e tests of client-side)
-- to stop [server-side](https://github.com/Ks89/My-MEAN-website-server) run `npm run prod:stop` inside `My-MEAN-website-server`'s folder
+PS: If you didn't execute server-side before, you won't be able to see the entire home page (because created using data taken from DB)
 
 ## How to start (development mode with HMR and BrowserSync)
 1. cd `My-MEAN-website-server`
@@ -109,7 +107,7 @@ Attention: it's very unstable, because I decided to implement only some basic fe
 2. `npm start`
 3. cd ..
 4. cd `My-MEAN-website-client` (if necessary rename it (case-sensitive) to match `FRONT_END_PATH` in `.env` file of [server-side](https://github.com/Ks89/My-MEAN-website-server))
-5. `npm run buildDev`
+5. `npm run build:dev`
 6. Surf to **http://localhost:3000**
 
 If you want to start the admin page, go to **http://localhost:3000/admin.html**
@@ -120,11 +118,34 @@ Attention: it's very unstable, because I decided to implement only some basic fe
 2. `npm start`
 3. cd ..
 4. cd `My-MEAN-website-client` (if necessary rename it (case-sensitive) to match `FRONT_END_PATH` in `.env` file of [server-side](https://github.com/Ks89/My-MEAN-website-server))
-5. `npm run build`
-6. Surf to **http://localhost:3000** (if [My-MEAN-website server](https://github.com/Ks89/My-MEAN-website-server) is in dev mode, otherwise the correct port will be `3000`)
+5. `npm run build:prod`
+6. Surf to **http://localhost:3000**
 
 If you want to start the admin page, go to **http://localhost:3000/admin.html**
 Attention: it's very unstable, because I decided to implement only some basic features. I'll improve it in the next alphas.
+
+## How to start (production mode + AOT bundle - recommended for production)
+1. cd `My-MEAN-website-server`
+2. `npm start`
+3. cd ..
+4. cd `My-MEAN-website-client` (if necessary rename it (case-sensitive) to match `FRONT_END_PATH` in `.env` file of [server-side](https://github.com/Ks89/My-MEAN-website-server))
+5. `npm run build:prod:aot`
+6. Surf to **http://localhost:3000**
+
+If you want to start the admin page, go to **http://localhost:3000/admin.html**
+Attention: it's very unstable, because I decided to implement only some basic features. I'll improve it in the next alphas.
+
+## How to run unit tests (with karma)
+- `npm test`
+
+## How to run e2e tests (with protractor)
+
+*When you run `npm run e2e`, this will init a fake db called `test-db` with some fixed data available into `./db-dump-e2e`*
+
+- Run the [server-side](https://github.com/Ks89/My-MEAN-website-server) inside `My-MEAN-website-server`'s folder with either `npm run e2e:start` or `npm run e2e:forever:start`
+- `npm run build:prod:aot` to create your production build of the client-side into `./dist`
+- `npm run e2e` (to run e2e tests of client-side using the bundle available inside `./dist`)
+- to stop [server-side](https://github.com/Ks89/My-MEAN-website-server) run either `npm run e2e:stop` or `npm run e2e:forever:stop` inside `My-MEAN-website-server`'s folder
 
 ## Features
 Work in progress... (this is only an alpha, please be patient)
