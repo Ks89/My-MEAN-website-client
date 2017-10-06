@@ -43,13 +43,6 @@ describe('Contact page', () => {
     // let recaptchaCheckbox = element(by.css('span#recaptcha-anchor'));
     // recaptchaCheckbox.click();
 
-    // workaround for Windows/Appveyor because, otherwise It cannot find this button
-    // scroll to the bottom of the page using a
-    // big value (500000) as y coordinate
-    // This is used in other tests, but for meaningful cases.
-    // Here it is a workaround
-    browser.executeScript('window.scrollTo(0,500000);');
-
     let sendButton = element(by.id('sendButton'));
     sendButton.click();
     let statusMessage: any = element(by.css('div.alert.alert-danger'));

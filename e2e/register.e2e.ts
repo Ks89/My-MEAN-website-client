@@ -46,7 +46,7 @@ describe('Register page', () => {
     passwordConfirmInput.sendKeys('Qw12345678');
     expect(passwordConfirmInput.getAttribute('value')).toEqual('Qw12345678');
 
-    // workaround for Windows/Appveyor because, otherwise It cannot find this button
+    // workaround for AppVeyor because, otherwise It cannot find this button
     // scroll to the bottom of the page using a
     // big value (500000) as y coordinate
     // This is used in other tests, but for meaningful cases.

@@ -44,25 +44,10 @@ describe('Projects page', () => {
         expect(pageItems.count()).toEqual(6);
         expect(pageItems.get(2).getText()).toEqual('1\n(current)');
         expect(pageItems.get(3).getText()).toEqual('2');
-
-        // workaround for Windows/Appveyor because, otherwise It cannot find this button
-        // scroll to the bottom of the page using a
-        // big value (500000) as y coordinate
-        // This is used in other tests, but for meaningful cases.
-        // Here it is a workaround
-        browser.executeScript('window.scrollTo(0,500000);');
         pageItems.get(3).click();
-
         projectNames = element.all(by.css('.media-body')).all(by.css('.project-name'));
         expect(projectNames.count()).toEqual(1);
         expect(projectNames.getText()).toEqual(['SWIMv2']);
-
-        // workaround for Windows/Appveyor because, otherwise It cannot find this button
-        // scroll to the bottom of the page using a
-        // big value (500000) as y coordinate
-        // This is used in other tests, but for meaningful cases.
-        // Here it is a workaround
-        browser.executeScript('window.scrollTo(0,500000);');
         pageItems.get(2).click();
 
         // only one element
@@ -90,13 +75,6 @@ describe('Projects page', () => {
       .then(() => {
         expect(projectNames.count()).toEqual(3);
         expect(projectNames.getText()).toEqual(['BYAManager', 'SPF', 'Superapp']);
-
-        // workaround for Windows/Appveyor because, otherwise It cannot find this button
-        // scroll to the bottom of the page using a
-        // big value (500000) as y coordinate
-        // This is used in other tests, but for meaningful cases.
-        // Here it is a workaround
-        browser.executeScript('window.scrollTo(0,500000);');
 
         // click on a project to navigate to its detail
         projectNames.get(0).click();
@@ -128,13 +106,6 @@ describe('Projects page', () => {
       .then(() => {
         expect(projectNames.count()).toEqual(3);
         expect(projectNames.getText()).toEqual(['BYAManager', 'SPF', 'Superapp']);
-
-        // workaround for Windows/Appveyor because, otherwise It cannot find this button
-        // scroll to the bottom of the page using a
-        // big value (500000) as y coordinate
-        // This is used in other tests, but for meaningful cases.
-        // Here it is a workaround
-        browser.executeScript('window.scrollTo(0,500000);');
 
         // click on a project to navigate to its detail
         projectNames.get(0).click();

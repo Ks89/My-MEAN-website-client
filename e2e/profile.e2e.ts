@@ -71,13 +71,6 @@ describe('Profile page', () => {
     emailProfileInput.sendKeys('profile@fake-mmw.com');
     expect(emailProfileInput.getAttribute('value')).toEqual('profile@fake-mmw.com');
 
-    // workaround for Windows/Appveyor because, otherwise It cannot find this button
-    // scroll to the bottom of the page using a
-    // big value (500000) as y coordinate
-    // This is used in other tests, but for meaningful cases.
-    // Here it is a workaround
-    browser.executeScript('window.scrollTo(0,500000);');
-
     let updateProfileButton = element(by.id('updateButton'));
     updateProfileButton.click();
 
