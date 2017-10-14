@@ -5,8 +5,10 @@ echo "deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/testing multiver
 echo "updating apt"
 sudo apt-get update
 
-sudo apt-get purge libssl1.0.0
-sudo apt-get purge 1.0.1t-1+deb8u6
+sudo apt-get purge -y libssl1.0.0
+sudo apt-get purge -y 1.0.1t-1+deb8u6
+
+sudo apt-get install -y libssl
 
 echo "installing mongodb"
 sudo apt-get install -y mongodb-org-shell
