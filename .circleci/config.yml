@@ -39,6 +39,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: install-mongodb
+          command: bash ./.circleci/install-mongodb.sh
+      - run:
           name: npm-install-global
           command: sudo npm install -g codeclimate-test-reporter pm2
       - restore_cache:
