@@ -4,6 +4,10 @@ sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A1
 echo "deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/testing multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.4.list
 echo "updating apt"
 sudo apt-get update
+
+
+sudo apt-get install libssl/xenial libssl-dev/xenial openssl/xenial
+
 echo "installing mongodb"
 sudo apt-get install -y mongodb-org-shell
 echo "mongodb install script comleted"
